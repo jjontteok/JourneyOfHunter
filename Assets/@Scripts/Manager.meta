@@ -1,7 +1,11 @@
 fileFormatVersion: 2
+<<<<<<< Updated upstream
  Monster
 guid: 4ff4a1d6a4dcce64ab2be012ccf09b58
  Develop
+=======
+guid: ee91c34fec5a48248a4ad584671a7238
+>>>>>>> Stashed changes
 folderAsset: yes
 DefaultImporter:
   externalObjects: {}
