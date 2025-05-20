@@ -1,10 +1,8 @@
 fileFormatVersion: 2
- Monster
-guid: 4ff4a1d6a4dcce64ab2be012ccf09b58
- Develop
-folderAsset: yes
-DefaultImporter:
+guid: e7cdc63430a71744181505f386a877fe
+NativeFormatImporter:
   externalObjects: {}
+  mainObjectFileID: 11400000
   userData: 
   assetBundleName: 
   assetBundleVariant: 

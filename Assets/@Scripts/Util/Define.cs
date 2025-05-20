@@ -21,4 +21,16 @@ public class Define
     #region SpawnSpots
     public Vector3 SpawnSpot1 = new Vector3();
     #endregion
+
+
+    #region Animator
+    //public readonly static int Attack = Animator.StringToHash("Attack");
+    public readonly static int Speed = Animator.StringToHash("Speed");
+    public readonly static int IsAttacking = Animator.StringToHash("IsAttacking");
+    #endregion
+
+    #region Tag
+   // public const string PlayerTag = "Player";
+    public const string EnemyTag = "Enemy";
+    #endregion
 }
