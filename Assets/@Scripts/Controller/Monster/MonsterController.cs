@@ -39,7 +39,7 @@ public abstract class MonsterController : MonoBehaviour
     private Animator _animator;
     private AttackRangeController _attackRangeController;
 
-    bool _isAttacking = false;
+    //bool _isAttacking = false;
 
     private void Awake()
     {
@@ -76,7 +76,7 @@ public abstract class MonsterController : MonoBehaviour
     // 타겟 이동 메서드
     public void MoveToTarget(Vector3 targetPos)
     {
-        if(!_isAttacking)
+        if(!_animator.GetBool(Define.IsAttacking))
         {
             Debug.Log("걷는중");
             Vector3 targetDir = (targetPos - transform.position).normalized;
@@ -93,16 +93,19 @@ public abstract class MonsterController : MonoBehaviour
     //- 추후 스킬 사용 몬스터 대비 가상함수로 구현
     public virtual void Attack()
     {
-        _isAttacking = true;
-        _animator.SetTrigger(Define.Attack);
-        Debug.Log("공격 중");
+        if(!_animator.GetBool(Define.IsAttacking))
+        {
+            _animator.SetBool(Define.IsAttacking, true);
+            _animator.SetTrigger(Define.Attack);
+            Debug.Log("공격 중");
+        }
     }
 
     // * 공격 종료 메서드
     //- 공격 플래그 false 및 종료 트리거 발생
     public virtual void EndAttack()
     {
-        _isAttacking = false;
+        _animator.SetBool(Define.IsAttacking, false);
         _animator.SetTrigger(Define.EndAttack);
         Debug.Log("공격 종료");
     }
@@ -143,7 +146,7 @@ public abstract class MonsterController : MonoBehaviour
     //- stay로 처리했기에 피격 쿨타임을 적용 시켜 밸런스 조정 필요
     private void OnCollisionStay(Collision collision)
     {
-        if(_isAttacking)
+        if(_animator.GetBool(Define.IsAttacking))
         {
             if(collision.gameObject.CompareTag(Define.PlayerTag))
             {
