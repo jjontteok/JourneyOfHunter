@@ -1,20 +1,3 @@
-<<<<<<< Updated upstream
-using UnityEngine;
-
-public class PlayerController : MonoBehaviour
-{
-    private Collider _collider;
-    public Vector3 Center
-    {
-        get => _collider.bounds.center;
-    }
-
-    private void Start()
-    {
-        _collider = GetComponent<Collider>();
-    }
-}
-=======
 using System;
 using System.Collections.Generic;
 using UnityEngine;
@@ -48,7 +31,7 @@ public class PlayerController : MonoBehaviour
             pos.z = 5;
             transform.position = pos;
         }
-        // ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½Æ´Ï°ï¿½ wasd ï¿½Ô·ï¿½ ï¿½ï¿½ ï¿½Ìµï¿½
+        // °ø°Ý ÁßÀÌ ¾Æ´Ï°í wasd ÀÔ·Â ½Ã ÀÌµ¿
         if (!_animator.GetBool(Define.IsAttacking) && (Input.GetButton("Horizontal") || Input.GetButton("Vertical")))
         {
             float h = Input.GetAxis("Horizontal");
@@ -80,7 +63,7 @@ public class PlayerController : MonoBehaviour
     
 
     /// 
-    /// Å¥ + ï¿½ï¿½Å³Ê¸ï¿½ ï¿½Ì¿ï¿½ï¿½ï¿½ ï¿½ï¿½Å³ È°ï¿½ï¿½
+    /// Å¥ + µñ¼Å³Ê¸® ÀÌ¿ëÇÑ ½ºÅ³ È°¿ë
     /// 
     #region Skill Queue
     Queue<GameObject> _skillQueue = new Queue<GameObject>();
@@ -100,13 +83,13 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-    // ï¿½ï¿½Å¸ï¿½ï¿½ ï¿½Ê±ï¿½È­ï¿½ï¿½, ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½Å³ï¿½ï¿½ Å¥ï¿½ï¿½ ï¿½Ö±ï¿½
+    // ÄðÅ¸ÀÓ ÃÊ±âÈ­µÈ, »ç¿ë °¡´ÉÇÑ ½ºÅ³À» Å¥¿¡ ³Ö±â
     void EnqueueSkill(GameObject skill)
     {
         _skillQueue.Enqueue(skill);
     }
 
-    // Å¥ï¿½ï¿½ ï¿½ï¿½Å³ï¿½ï¿½ ï¿½Ö°ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ß»ï¿½ - Update ï¿½Ô¼ï¿½ï¿½ï¿½ ï¿½ß°ï¿½
+    // Å¥¿¡ ½ºÅ³ÀÌ ÀÖ°í °ø°Ý ÁßÀÌÁö ¾ÊÀ¸¸é ¹ß»ç - Update ÇÔ¼ö¿¡ Ãß°¡
     void SkillAttack()
     {
         if (_skillQueue.Count > 0 && !_animator.GetBool(Define.IsAttacking))
@@ -115,13 +98,13 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-    // ï¿½ï¿½Å¸ï¿½ï¿½ ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½Â¿ï¿½ ï¿½ï¿½Å³ ï¿½ß°ï¿½
+    // ÄðÅ¸ÀÓ ´ë±â ÁßÀÎ ¼Â¿¡ ½ºÅ³ Ãß°¡
     public void AddDictionary(GameObject skill)
     {
         _skillDictionary.Add(skill.GetComponent<SkillTest>(), skill);
     }
 
-    // ï¿½ï¿½Å¸ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½Å³ ï¿½ï¿½ï¿½ï¿½ï¿½Ï°ï¿½ Å¥ï¿½ï¿½ ï¿½ß°ï¿½
+    // ÄðÅ¸ÀÓ ³¡³­ ½ºÅ³ Á¦°ÅÇÏ°í Å¥¿¡ Ãß°¡
     public void RemoveDictionary(GameObject skill)
     {
         _skillDictionary.Remove(skill.GetComponent<SkillTest>());
@@ -129,4 +112,3 @@ public class PlayerController : MonoBehaviour
     }
     #endregion
 }
->>>>>>> Stashed changes
