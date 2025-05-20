@@ -9,7 +9,6 @@ public class PlayerController : MonoBehaviour
     [SerializeField] float _speed = 10f;
     //public GameObject stepRayUpper;
     //public GameObject stepRayLower;
-    float stepSmooth = 0.1f;
 
     void Start()
     {
@@ -31,7 +30,7 @@ public class PlayerController : MonoBehaviour
             pos.z = 5;
             transform.position = pos;
         }
-        // °ø°Ý ÁßÀÌ ¾Æ´Ï°í wasd ÀÔ·Â ½Ã ÀÌµ¿
+        // ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½Æ´Ï°ï¿½ wasd ï¿½Ô·ï¿½ ï¿½ï¿½ ï¿½Ìµï¿½
         if (!_animator.GetBool(Define.IsAttacking) && (Input.GetButton("Horizontal") || Input.GetButton("Vertical")))
         {
             float h = Input.GetAxis("Horizontal");
@@ -39,8 +38,11 @@ public class PlayerController : MonoBehaviour
             Vector3 movement = new Vector3(h, 0, v);
             //transform.Translate(movement.normalized * _speed * Time.deltaTime, Space.World);
             _rigidbody.MovePosition(_rigidbody.position + movement.normalized * _speed * Time.deltaTime);
-           
 
+            Vector3 newPos = transform.position;
+            newPos.x = Mathf.Clamp(transform.position.x, -23, 23);
+            newPos.z = Mathf.Clamp(transform.position.z, 3, transform.position.z);
+            transform.position = newPos;
             _animator.SetFloat(Define.Speed, movement.magnitude);
             transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(movement), _speed * Time.deltaTime);
         }
@@ -63,7 +65,7 @@ public class PlayerController : MonoBehaviour
     
 
     /// 
-    /// Å¥ + µñ¼Å³Ê¸® ÀÌ¿ëÇÑ ½ºÅ³ È°¿ë
+    /// Å¥ + ï¿½ï¿½Å³Ê¸ï¿½ ï¿½Ì¿ï¿½ï¿½ï¿½ ï¿½ï¿½Å³ È°ï¿½ï¿½
     /// 
     #region Skill Queue
     Queue<GameObject> _skillQueue = new Queue<GameObject>();
@@ -83,13 +85,13 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-    // ÄðÅ¸ÀÓ ÃÊ±âÈ­µÈ, »ç¿ë °¡´ÉÇÑ ½ºÅ³À» Å¥¿¡ ³Ö±â
+    // ï¿½ï¿½Å¸ï¿½ï¿½ ï¿½Ê±ï¿½È­ï¿½ï¿½, ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½Å³ï¿½ï¿½ Å¥ï¿½ï¿½ ï¿½Ö±ï¿½
     void EnqueueSkill(GameObject skill)
     {
         _skillQueue.Enqueue(skill);
     }
 
-    // Å¥¿¡ ½ºÅ³ÀÌ ÀÖ°í °ø°Ý ÁßÀÌÁö ¾ÊÀ¸¸é ¹ß»ç - Update ÇÔ¼ö¿¡ Ãß°¡
+    // Å¥ï¿½ï¿½ ï¿½ï¿½Å³ï¿½ï¿½ ï¿½Ö°ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ß»ï¿½ - Update ï¿½Ô¼ï¿½ï¿½ï¿½ ï¿½ß°ï¿½
     void SkillAttack()
     {
         if (_skillQueue.Count > 0 && !_animator.GetBool(Define.IsAttacking))
@@ -98,13 +100,13 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-    // ÄðÅ¸ÀÓ ´ë±â ÁßÀÎ ¼Â¿¡ ½ºÅ³ Ãß°¡
+    // ï¿½ï¿½Å¸ï¿½ï¿½ ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½Â¿ï¿½ ï¿½ï¿½Å³ ï¿½ß°ï¿½
     public void AddDictionary(GameObject skill)
     {
         _skillDictionary.Add(skill.GetComponent<SkillTest>(), skill);
     }
 
-    // ÄðÅ¸ÀÓ ³¡³­ ½ºÅ³ Á¦°ÅÇÏ°í Å¥¿¡ Ãß°¡
+    // ï¿½ï¿½Å¸ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½Å³ ï¿½ï¿½ï¿½ï¿½ï¿½Ï°ï¿½ Å¥ï¿½ï¿½ ï¿½ß°ï¿½
     public void RemoveDictionary(GameObject skill)
     {
         _skillDictionary.Remove(skill.GetComponent<SkillTest>());
