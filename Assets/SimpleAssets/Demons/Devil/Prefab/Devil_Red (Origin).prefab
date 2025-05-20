@@ -7592,9 +7592,9 @@ GameObject:
   - component: {fileID: 3936133187004136714}
   - component: {fileID: 7062040221370377964}
   - component: {fileID: 8335621096072642167}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Devil_Red (Origin)
-  m_TagString: Untagged
+  m_TagString: Monster
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

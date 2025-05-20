@@ -28,7 +28,7 @@ public class SkillTest : MonoBehaviour
             if(_currentTime>=_coolTime)
             {
                 _isCoolTime = false;
-                _player.RemoveDictionary(this.gameObject);
+                //_player.RemoveDictionary(this.gameObject);
             }
         }
     }
@@ -46,6 +46,6 @@ public class SkillTest : MonoBehaviour
         gameObject.SetActive(false);
         _currentTime = 0f;
         _isCoolTime = true;
-        _player.AddDictionary(gameObject);
+        //_player.AddDictionary(gameObject);
     }
 }

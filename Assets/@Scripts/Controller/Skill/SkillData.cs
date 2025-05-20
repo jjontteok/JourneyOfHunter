@@ -15,5 +15,6 @@ public class SkillData : ScriptableObject
 public enum SkillType
 {
     Target,
-    NonTarget
+    NonTarget,
+    Buff
 }
