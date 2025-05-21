@@ -14,9 +14,15 @@ public class SkillSystem : MonoBehaviour
     // 스킬 슬롯 리스트 - 일단은 타겟형 스킬 보관 슬롯
     List<SkillSlot> _slotList = new List<SkillSlot>();
 
-    private void Start()
+    private void Awake()
     {
-        // skillDataList에서 데이터를 가져와 스킬 슬롯에 등록한다
+        InitializeSkillSystem();
+    }
+
+    void InitializeSkillSystem()
+    {
+        // skillDataList에서 데이터를 가져온다
+        // 스킬 슬롯 오브젝트를 생성하고 스킬을 등록한다
         foreach (var data in skillDataList)
         {
             if (data.skillPrefab != null)
@@ -27,19 +33,9 @@ public class SkillSystem : MonoBehaviour
                 SkillSlot slot = go.AddComponent<SkillSlot>();
                 slot.SetSkill(data);
                 _slotList.Add(slot);
-
-                ////data에 해당하는 스킬 프리팹을 복제
-                //GameObject skillObject = Instantiate(data.skillPrefab, transform);
-                //skillObject.SetActive(false);
-                //Skill skillComponent = skillObject.GetComponent<Skill>();
-                //if (skillComponent != null)
-                //{
-                //    skillComponent.Initialize(data);
-                //    _skillList.Add(skillComponent);
-                //}
             }
         }
-        //InitializeSkill();
+
     }
 
     public void TestAttack()

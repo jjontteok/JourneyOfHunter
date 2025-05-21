@@ -9,7 +9,7 @@ using UnityEngine;
 public class SkillSlot : MonoBehaviour
 {
     SkillData _skillData;
-    Skill _currentSkill;
+    ActiveSkill _currentSkill;
     PlayerController _player;
     Transform _target;
 
@@ -18,7 +18,9 @@ public class SkillSlot : MonoBehaviour
 
     private void Awake()
     {
+        // 나중에 게임매니저에서 가져오든지 할 예정
         _player = FindAnyObjectByType<PlayerController>();
+        IsActivatePossible = false;
     }
 
     // 처음 슬롯 생성 시 스킬 등록
@@ -27,9 +29,10 @@ public class SkillSlot : MonoBehaviour
         // 맨 처음엔 사용 가능한 상태
         IsActivatePossible = true;
         _skillData = skillData;
-        _currentSkill = Instantiate(_skillData.skillPrefab, Vector3.zero, Quaternion.identity, transform).GetComponent<Skill>();
+        _currentSkill = Instantiate(_skillData.skillPrefab, Vector3.zero, Quaternion.identity, transform).GetComponent<ActiveSkill>();
         _currentSkill.Initialize(skillData);
-        // 나중에 게임매니저에서 가져오든지 할 예정
+        // 스킬 오브젝트 생성되면 활성화
+        IsActivatePossible = true;
     }
 
     public IEnumerator CoStartCoolTime()
@@ -56,8 +59,8 @@ public class SkillSlot : MonoBehaviour
 
     GameObject GetNearestTarget(float distance)
     {
-        if(_player==null)
-            _player=FindAnyObjectByType<PlayerController>();
+        if (_player == null)
+            _player = FindAnyObjectByType<PlayerController>();
         //거리 내의 monster collider 탐색
         Collider[] targets = Physics.OverlapSphere(_player.transform.position, distance, 1 << LayerMask.NameToLayer(Define.MonsterTag));
         if (targets == null)
