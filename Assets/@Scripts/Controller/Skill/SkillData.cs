@@ -8,6 +8,7 @@ public class SkillData : ScriptableObject
     public float durationTime;
     public float targetDistance;
     public float damage;
+    public float speed;
     public GameObject skillPrefab;
     public SkillType skillType;
 }

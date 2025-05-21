@@ -16,15 +16,20 @@ public class SkillSlot : MonoBehaviour
     // 슬롯에 등록된 스킬의 사용 가능 여부
     public bool IsActivatePossible { get; set; }
 
+    private void Awake()
+    {
+        _player = FindAnyObjectByType<PlayerController>();
+    }
+
     // 처음 슬롯 생성 시 스킬 등록
     public void SetSkill(SkillData skillData)
     {
         // 맨 처음엔 사용 가능한 상태
         IsActivatePossible = true;
         _skillData = skillData;
-        _currentSkill = Instantiate(_skillData.skillPrefab).GetComponent<Skill>();
+        _currentSkill = Instantiate(_skillData.skillPrefab, Vector3.zero, Quaternion.identity, transform).GetComponent<Skill>();
+        _currentSkill.Initialize(skillData);
         // 나중에 게임매니저에서 가져오든지 할 예정
-        _player = FindAnyObjectByType<PlayerController>();
     }
 
     public IEnumerator CoStartCoolTime()
@@ -36,11 +41,11 @@ public class SkillSlot : MonoBehaviour
     private void Update()
     {
         // 쿨타임 초기화되어 스킬 사용 가능한 경우
-        if(IsActivatePossible)
+        if (IsActivatePossible)
         {
             // 가장 가까운 타겟을 탐색하고, 있으면 스킬 발동
             _target = GetNearestTarget(_skillData.targetDistance)?.transform;
-            if( _target != null )
+            if (_target != null)
             {
                 _currentSkill.StartAttack(_target);
                 IsActivatePossible = false;
@@ -51,8 +56,10 @@ public class SkillSlot : MonoBehaviour
 
     GameObject GetNearestTarget(float distance)
     {
+        if(_player==null)
+            _player=FindAnyObjectByType<PlayerController>();
         //거리 내의 monster collider 탐색
-        Collider[] targets = Physics.OverlapSphere(_player.transform.position, distance, 1<<LayerMask.NameToLayer(Define.MonsterTag));
+        Collider[] targets = Physics.OverlapSphere(_player.transform.position, distance, 1 << LayerMask.NameToLayer(Define.MonsterTag));
         if (targets == null)
             return null;
         HashSet<Collider> neighbors = new HashSet<Collider>(targets);

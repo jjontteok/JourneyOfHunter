@@ -13,9 +13,10 @@ MonoBehaviour:
   m_Name: RedSlash
   m_EditorClassIdentifier: 
   skillName: default skill
-  coolTime: 1
+  coolTime: 4
   durationTime: 2
   targetDistance: 10
   damage: 10
-  skillPrefab: {fileID: 3420422698038078123, guid: 3f0b42a4957b1ff4ea3bc948a21db476, type: 3}
+  speed: 20
+  skillPrefab: {fileID: 1686826729540970824, guid: 87a957abb03352844ae19c523551ca9f, type: 3}
   skillType: 0

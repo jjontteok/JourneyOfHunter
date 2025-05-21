@@ -78,7 +78,7 @@ public abstract class MonsterController : MonoBehaviour
     {
         if(!_animator.GetBool(Define.IsAttacking))
         {
-            Debug.Log("걷는중");
+            //Debug.Log("걷는중");
             Vector3 targetDir = (targetPos - transform.position).normalized;
 
             transform.position += targetDir * _runtimeData.Speed * Time.deltaTime;
@@ -121,10 +121,11 @@ public abstract class MonsterController : MonoBehaviour
     // * 방어력 적용 데미지 계산 메서드
     public void GetDamaged(float damage)
     {
+        Debug.Log($"대미지 입음: {gameObject.name}");
         float finalDamage = damage - _runtimeData.Def > 0 ? damage - _runtimeData.Def : 0;
         _runtimeData.HP -= damage;
-        if (_runtimeData.HP <= 0)
-            Die();
+        //if (_runtimeData.HP <= 0)
+        //    Die();
     }
 
     // * 사망 메서드
@@ -139,7 +140,7 @@ public abstract class MonsterController : MonoBehaviour
     //- start주기함수에서 실행
     public virtual void Spawned()
     {
-        Instantiate(_monsterData.SpawnEffect);
+        //Instantiate(_monsterData.SpawnEffect);
     }
 
     // * 플레이어 충돌 및 공격 중일 시 데미지 계산

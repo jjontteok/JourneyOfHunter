@@ -18,10 +18,13 @@ public class TargetSkill : ActiveSkill
             Vector3 dir = (target.position - _player.transform.position).normalized;
 
             //플레이어 위치에 스킬 생성
-            transform.position = _player.transform.position;
-            transform.rotation = Quaternion.LookRotation(dir);
+            //transform.position = _player.transform.position;
+            //transform.rotation = Quaternion.LookRotation(dir);
+            transform.localPosition = Vector3.zero;
             _player.Rotate(dir);
             gameObject.SetActive(true);
+            // particle system인 경우
+            gameObject.GetComponent<ParticleSystem>()?.Play();
             StartCoroutine(DeActivateSkill()); //스킬 시전 후 스킬 비활성화
         }
 
