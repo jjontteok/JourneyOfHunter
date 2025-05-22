@@ -5,7 +5,7 @@ public class ActiveSkill : Skill
     protected Animator _animator;
     protected SkillColliderController _coll;
 
-    protected override void ActivateSkill(Transform target)
+    public override void ActivateSkill(Transform target = null)
     {
         // 타겟형 스킬인 경우, 방향 설정 및 콜라이더 위치 조정
         if (target != null)
@@ -30,9 +30,9 @@ public class ActiveSkill : Skill
     {
         base.Initialize(data);
         _animator = _player.GetComponent<Animator>();
-        SkillColliderController[] colls = GetComponentsInChildren<SkillColliderController>();
-        foreach (var coll in colls)
-            Debug.Log(coll.name);
+        //SkillColliderController[] colls = GetComponentsInChildren<SkillColliderController>();
+        //foreach (var coll in colls)
+        //    Debug.Log(coll.name);
         _coll = GetComponentInChildren<SkillColliderController>();
         _coll.SetColliderInfo(_skillData.speed, _skillData.damage, _skillData.targetDistance, _skillData.castingTime, _skillData.hitEffectPrefab);
     }

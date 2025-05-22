@@ -69,9 +69,10 @@ public class SkillColliderController : MonoBehaviour
             Vector3 direction = (other.transform.position - transform.position).normalized;
             Physics.Raycast(transform.position, direction, out hit);
             // 충돌 지점에서 반대 방향으로 hit effect 발생
-            GameObject effect = Instantiate(_effect, hit.point, Quaternion.Inverse(Quaternion.Euler(direction)));
-            effect.GetComponent<ParticleSystem>().Play();
-            Destroy(effect, 0.5f);
+            GameObject effect1 = Instantiate(_effect, hit.point, Quaternion.LookRotation(hit.normal));
+            effect1.name = "effect1";
+            effect1.GetComponent<ParticleSystem>().Play();
+            Destroy(effect1, 0.5f);
         }
     }
 }

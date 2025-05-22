@@ -18,7 +18,7 @@ public abstract class Skill : MonoBehaviour
     }
 
     //실제로 스킬 활성화
-    protected abstract void ActivateSkill(Transform target);
+    public abstract void ActivateSkill(Transform target = null);
 
     //스킬 시전 후 해당 스킬 비활성화
     protected IEnumerator DeActivateSkill()
@@ -28,8 +28,8 @@ public abstract class Skill : MonoBehaviour
     }
 
     //test
-    public void StartAttack(Transform target)
-    {
-        ActivateSkill(target);
-    }
+    //public void StartAttack(Transform target)
+    //{
+    //    ActivateSkill(target);
+    //}
 }

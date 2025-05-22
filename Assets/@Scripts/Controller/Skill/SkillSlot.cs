@@ -66,7 +66,7 @@ public class SkillSlot : MonoBehaviour
                 if (_target != null)
                 {
                     IsActivatePossible = false;
-                    _currentSkill.StartAttack(_target);
+                    _currentSkill.ActivateSkill(_target);
                     StartCoroutine(CoStartCoolTime());
                 }
             }
@@ -74,7 +74,7 @@ public class SkillSlot : MonoBehaviour
             else
             {
                 IsActivatePossible = false;
-                _currentSkill.StartAttack(null);
+                _currentSkill.ActivateSkill();
                 StartCoroutine(CoStartCoolTime());
             }
         }

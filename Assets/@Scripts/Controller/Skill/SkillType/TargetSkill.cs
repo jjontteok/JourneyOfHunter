@@ -3,7 +3,7 @@ using UnityEngine;
 //타겟형 스킬에 부착될 스크립트
 public class TargetSkill : ActiveSkill
 {
-    protected override void ActivateSkill(Transform target)
+    public override void ActivateSkill(Transform target)
     {
         base.ActivateSkill(target);
         //// 타겟형 스킬인 경우, 방향 설정 및 콜라이더 위치 조정

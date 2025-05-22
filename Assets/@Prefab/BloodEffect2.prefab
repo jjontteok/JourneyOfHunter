@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 4553287630450876387}
   - component: {fileID: 4553287630450876386}
   m_Layer: 0
-  m_Name: CFXR2 Blood Shape Splash
+  m_Name: BloodEffect2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

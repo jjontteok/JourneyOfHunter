@@ -10,7 +10,7 @@ public class RedSlash : TargetSkill, SwordMotion
         //_animator.SetBool(Define.IsAttacking, true);
     }
 
-    protected override void ActivateSkill(Transform target)
+    public override void ActivateSkill(Transform target)
     {
         // 공격 모션 중일 경우 모션은 생략
         if (!_animator.GetBool(Define.IsAttacking))

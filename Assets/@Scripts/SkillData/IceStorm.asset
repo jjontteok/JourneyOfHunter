@@ -20,4 +20,5 @@ MonoBehaviour:
   damage: 5
   speed: 0
   skillPrefab: {fileID: 3330801768823971673, guid: d92b0f3e717f551429647b92bfbd6b45, type: 3}
+  hitEffectPrefab: {fileID: 6823200998282874702, guid: c9fadf9a3cea4d94c84d78b7886a201d, type: 3}
   skillType: 1

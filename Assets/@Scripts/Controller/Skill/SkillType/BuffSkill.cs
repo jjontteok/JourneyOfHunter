@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class BuffSkill : Skill
 {
-    protected override void ActivateSkill(Transform target)
+    public override void ActivateSkill(Transform target)
     {
         throw new System.NotImplementedException();
     }
