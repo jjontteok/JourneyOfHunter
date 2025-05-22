@@ -12,6 +12,7 @@ public class SkillSlot : MonoBehaviour
     ActiveSkill _currentSkill;
     PlayerController _player;
     Transform _target;
+    bool _isTargetExist;
 
     // 슬롯에 등록된 스킬의 사용 가능 여부
     public bool IsActivatePossible { get; set; }
@@ -30,7 +31,18 @@ public class SkillSlot : MonoBehaviour
         IsActivatePossible = true;
         _skillData = skillData;
         _currentSkill = Instantiate(_skillData.skillPrefab, Vector3.zero, Quaternion.identity, transform).GetComponent<ActiveSkill>();
+        // 타겟이 필요한 스킬인지 아닌지 체크
+        TargetSkill skill = _currentSkill.GetComponent<TargetSkill>();
+        if (skill != null)
+        {
+            _isTargetExist = true;
+        }
+        else
+        {
+            _isTargetExist = false;
+        }
         _currentSkill.Initialize(skillData);
+        _currentSkill.gameObject.SetActive(false);
         // 스킬 오브젝트 생성되면 활성화
         IsActivatePossible = true;
     }
@@ -46,12 +58,23 @@ public class SkillSlot : MonoBehaviour
         // 쿨타임 초기화되어 스킬 사용 가능한 경우
         if (IsActivatePossible)
         {
-            // 가장 가까운 타겟을 탐색하고, 있으면 스킬 발동
-            _target = GetNearestTarget(_skillData.targetDistance)?.transform;
-            if (_target != null)
+            // Target형 스킬인 경우
+            if (_isTargetExist)
             {
-                _currentSkill.StartAttack(_target);
+                // 가장 가까운 타겟을 탐색하고, 있으면 스킬 발동
+                _target = GetNearestTarget(_skillData.targetDistance)?.transform;
+                if (_target != null)
+                {
+                    IsActivatePossible = false;
+                    _currentSkill.StartAttack(_target);
+                    StartCoroutine(CoStartCoolTime());
+                }
+            }
+            // Target형 스킬이 아닌 경우
+            else
+            {
                 IsActivatePossible = false;
+                _currentSkill.StartAttack(null);
                 StartCoroutine(CoStartCoolTime());
             }
         }

@@ -12,11 +12,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e807fb188ff3a544ba349f772e49f4cc, type: 3}
   m_Name: RedSlash
   m_EditorClassIdentifier: 
-  skillName: default skill
+  skillName: RedSlash
   coolTime: 4
   durationTime: 2
-  targetDistance: 10
+  castingTime: 0.5
+  targetDistance: 8
   damage: 10
-  speed: 20
+  speed: 15
   skillPrefab: {fileID: 1686826729540970824, guid: 87a957abb03352844ae19c523551ca9f, type: 3}
+  hitEffectPrefab: {fileID: 8289835090337771732, guid: 47792076493795b4695e563244ece739, type: 3}
   skillType: 0

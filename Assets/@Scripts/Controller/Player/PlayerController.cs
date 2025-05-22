@@ -31,7 +31,7 @@ public class PlayerController : MonoBehaviour
 
     void Move()
     {
-        if (transform.position.z >= 108.2)
+        if (transform.position.z >= 113.2)
         {
             Vector3 pos = transform.position;
             pos.z = 5;

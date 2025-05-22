@@ -1,11 +1,13 @@
 using UnityEngine;
 
-public class NonTargetSkill : Skill
+public class NonTargetSkill : ActiveSkill
 {
+    // NonTarget이므로 target 받을 필욘 없ㅇ
     protected override void ActivateSkill(Transform target)
     {
-        transform.position = _player.transform.position;
-        gameObject.SetActive(true);
-        StartCoroutine(DeActivateSkill());
+        base.ActivateSkill(null);
+        //gameObject.SetActive(true);
+        //gameObject.GetComponent<ParticleSystem>()?.Play();
+        //StartCoroutine(DeActivateSkill());
     }
 }

@@ -18,7 +18,7 @@ struct MonsterStatus
     {
         Name = monsterData.Name;
         Description = monsterData.Description;
-        Atk = monsterData.Atk;          
+        Atk = monsterData.Atk;
         Def = monsterData.Def;
         HP = monsterData.HP;
         Speed = monsterData.Speed;
@@ -76,7 +76,7 @@ public abstract class MonsterController : MonoBehaviour
     // 타겟 이동 메서드
     public void MoveToTarget(Vector3 targetPos)
     {
-        if(!_animator.GetBool(Define.IsAttacking))
+        if (!_animator.GetBool(Define.IsAttacking))
         {
             //Debug.Log("걷는중");
             Vector3 targetDir = (targetPos - transform.position).normalized;
@@ -93,7 +93,7 @@ public abstract class MonsterController : MonoBehaviour
     //- 추후 스킬 사용 몬스터 대비 가상함수로 구현
     public virtual void Attack()
     {
-        if(!_animator.GetBool(Define.IsAttacking))
+        if (!_animator.GetBool(Define.IsAttacking))
         {
             _animator.SetBool(Define.IsAttacking, true);
             _animator.SetTrigger(Define.Attack);
@@ -121,7 +121,7 @@ public abstract class MonsterController : MonoBehaviour
     // * 방어력 적용 데미지 계산 메서드
     public void GetDamaged(float damage)
     {
-        Debug.Log($"대미지 입음: {gameObject.name}");
+        Debug.Log($"대미지 {damage}입음: {gameObject.name}");
         float finalDamage = damage - _runtimeData.Def > 0 ? damage - _runtimeData.Def : 0;
         _runtimeData.HP -= damage;
         //if (_runtimeData.HP <= 0)
@@ -147,9 +147,9 @@ public abstract class MonsterController : MonoBehaviour
     //- stay로 처리했기에 피격 쿨타임을 적용 시켜 밸런스 조정 필요
     private void OnCollisionStay(Collision collision)
     {
-        if(_animator.GetBool(Define.IsAttacking))
+        if (_animator.GetBool(Define.IsAttacking))
         {
-            if(collision.gameObject.CompareTag(Define.PlayerTag))
+            if (collision.gameObject.CompareTag(Define.PlayerTag))
             {
                 // 공격 처리
                 // collision.gameObject.GetComponent<PlayerController>().피격메서드;
