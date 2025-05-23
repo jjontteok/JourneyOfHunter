@@ -1,27 +1,19 @@
+using System;
 using UnityEngine;
 
-//Å¸°ÙÇü ½ºÅ³¿¡ ºÎÂøµÉ ½ºÅ©¸³Æ®
+//íƒ€ê²Ÿí˜• ìŠ¤í‚¬ì— ë¶€ì°©ë  ìŠ¤í¬ë¦½íŠ¸
 public class TargetSkill : ActiveSkill
 {
-    public override void ActivateSkill(Transform target)
+    public event Action<Vector3> OnSkillSet;
+
+    protected Vector3 _direction;
+
+    // ìŠ¤í‚¬ì˜ ë°©í–¥ ì„¤ì • ì¶”ê°€
+    public override void ActivateSkill(Transform target, Vector3 pos = default)
     {
-        base.ActivateSkill(target);
-        //// Å¸°ÙÇü ½ºÅ³ÀÎ °æ¿ì, ¹æÇâ ¼³Á¤ ¹× Äİ¶óÀÌ´õ À§Ä¡ Á¶Á¤
-        //if (target != null)
-        //{
-        //    //Å¸°Ù ¹æÇâÀ¸·Î ½ºÅ³ ¹æÇâ ¼³Á¤
-        //    Vector3 dir = (target.position - _player.transform.position).normalized;
-        //    _player.Rotate(dir);
-
-        //    //ÇÃ·¹ÀÌ¾î À§Ä¡¿¡ ½ºÅ³ È°¼ºÈ­
-        //    transform.localPosition = Vector3.zero;
-        //    _coll.transform.localPosition = Vector3.zero;
-        //    _coll.SetColliderDirection(Vector3.forward);
-        //}
-        //gameObject.SetActive(true);
-        //// particle systemÀÎ °æ¿ì
-        //gameObject.GetComponent<ParticleSystem>()?.Play();
-
-        //StartCoroutine(DeActivateSkill()); //½ºÅ³ ½ÃÀü ÈÄ ½ºÅ³ ºñÈ°¼ºÈ­
+        base.ActivateSkill(target, pos);
+        //íƒ€ê²Ÿ ë°©í–¥ìœ¼ë¡œ ìŠ¤í‚¬ ë°©í–¥ ì„¤ì •
+        _direction = (target.position - transform.position).normalized;        
+        OnSkillSet?.Invoke(_direction);
     }
 }

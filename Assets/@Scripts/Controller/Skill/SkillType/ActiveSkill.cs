@@ -2,38 +2,21 @@ using UnityEngine;
 
 public class ActiveSkill : Skill
 {
-    protected Animator _animator;
-    protected SkillColliderController _coll;
-
-    public override void ActivateSkill(Transform target = null)
+    // ìŠ¤í‚¬ ì˜¤ë¸Œì íŠ¸ í™œì„±í™” + ëª¨ì…˜ ì‹¤í–‰ + ë¹„í™œì„±í™” ì½”ë£¨í‹´
+    public override void ActivateSkill(Transform target = null, Vector3 pos = default)
     {
-        // Å¸°ÙÇü ½ºÅ³ÀÎ °æ¿ì, ¹æÇâ ¼³Á¤ ¹× Äİ¶óÀÌ´õ À§Ä¡ Á¶Á¤
-        if (target != null)
-        {
-            //Å¸°Ù ¹æÇâÀ¸·Î ½ºÅ³ ¹æÇâ ¼³Á¤
-            Vector3 dir = (target.position - _player.transform.position).normalized;
-            _player.Rotate(dir);
-
-            _coll.SetColliderDirection(Vector3.forward);
-        }
-        //ÇÃ·¹ÀÌ¾î À§Ä¡¿¡ ½ºÅ³ È°¼ºÈ­
-        transform.localPosition = Vector3.zero;
-        _coll.transform.localPosition = Vector3.zero;
+        //í”Œë ˆì´ì–´ ìœ„ì¹˜ì— ìŠ¤í‚¬ í™œì„±í™”
+        transform.position = pos;
         gameObject.SetActive(true);
-        // particle systemÀÎ °æ¿ì
+        // particle systemì¸ ê²½ìš°
         gameObject.GetComponent<ParticleSystem>()?.Play();
 
-        StartCoroutine(DeActivateSkill()); //½ºÅ³ ½ÃÀü ÈÄ ½ºÅ³ ºñÈ°¼ºÈ­
+        //ìŠ¤í‚¬ ì‹œì „ í›„ ìŠ¤í‚¬ ë¹„í™œì„±í™”
+        StartCoroutine(DeActivateSkill()); 
     }
 
-    public override void Initialize(SkillData data)
+    public override void Initialize()
     {
-        base.Initialize(data);
-        _animator = _player.GetComponent<Animator>();
-        //SkillColliderController[] colls = GetComponentsInChildren<SkillColliderController>();
-        //foreach (var coll in colls)
-        //    Debug.Log(coll.name);
-        _coll = GetComponentInChildren<SkillColliderController>();
-        _coll.SetColliderInfo(_skillData.speed, _skillData.damage, _skillData.targetDistance, _skillData.castingTime, _skillData.hitEffectPrefab);
+        base.Initialize();
     }
 }

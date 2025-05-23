@@ -4,23 +4,22 @@ using UnityEngine;
 public abstract class Skill : MonoBehaviour
 {
     [SerializeField] protected SkillData _skillData;
-    [SerializeField] protected WaitForSeconds _skillCoolTime;
-    [SerializeField] protected WaitForSeconds _skillDurationTime;
+    protected WaitForSeconds _skillCoolTime;
+    protected WaitForSeconds _skillDurationTime;
 
-    protected PlayerController _player;
+    public SkillData SkillData {  get { return _skillData; } }
 
-    public virtual void Initialize(SkillData data)
+    public virtual void Initialize()
     {
-        _skillData = data;
-        _skillCoolTime = new WaitForSeconds(data.coolTime);
-        _skillDurationTime = new WaitForSeconds(data.durationTime);
-        _player = FindAnyObjectByType<PlayerController>();
+        //_skillData = data;
+        _skillCoolTime = new WaitForSeconds(_skillData.coolTime);
+        _skillDurationTime = new WaitForSeconds(_skillData.durationTime);
     }
 
-    //½ÇÁ¦·Î ½ºÅ³ È°¼ºÈ­
-    public abstract void ActivateSkill(Transform target = null);
+    //ì‹¤ì œë¡œ ìŠ¤í‚¬ í™œì„±í™”
+    public abstract void ActivateSkill(Transform target = null, Vector3 pos = default);
 
-    //½ºÅ³ ½ÃÀü ÈÄ ÇØ´ç ½ºÅ³ ºñÈ°¼ºÈ­
+    //ìŠ¤í‚¬ ì‹œì „ í›„ í•´ë‹¹ ìŠ¤í‚¬ ë¹„í™œì„±í™”
     protected IEnumerator DeActivateSkill()
     {
         yield return _skillDurationTime;

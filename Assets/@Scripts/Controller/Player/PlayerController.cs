@@ -25,6 +25,14 @@ public class PlayerController : MonoBehaviour
         _animator = GetComponent<Animator>();
         _rigidbody = GetComponent<Rigidbody>();
         _skillSystem = GetComponent<SkillSystem>();
+        _skillSystem.InitializeSkillSystem();
+        foreach(var slot in _skillSystem._slotList)
+        {
+            if(slot._skill.SkillData.skillType==Define.SkillType.RigidbodyTarget||slot._skill.SkillData.skillType==Define.SkillType.TransformTarget)
+            {
+                slot._skill.GetComponent<TargetSkill>().OnSkillSet += Rotate;
+            }
+        }
     }
 
     void Move()

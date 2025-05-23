@@ -2,12 +2,9 @@ using UnityEngine;
 
 public class NonTargetSkill : ActiveSkill
 {
-    // NonTarget이므로 target 받을 필욘 없ㅇ
-    public override void ActivateSkill(Transform target)
+    // NonTarget이므로 target 받을 필욘 없
+    public override void ActivateSkill(Transform target = null, Vector3 pos = default)
     {
-        base.ActivateSkill(null);
-        //gameObject.SetActive(true);
-        //gameObject.GetComponent<ParticleSystem>()?.Play();
-        //StartCoroutine(DeActivateSkill());
+        base.ActivateSkill(null, pos);
     }
 }

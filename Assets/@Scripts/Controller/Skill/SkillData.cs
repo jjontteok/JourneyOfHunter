@@ -10,14 +10,10 @@ public class SkillData : ScriptableObject
     public float targetDistance;
     public float damage;
     public float speed;
-    public GameObject skillPrefab;
+    public float force;
+    public GameObject connectedSkillPrefab;
     public GameObject hitEffectPrefab;
-    public SkillType skillType;
-}
-
-public enum SkillType
-{
-    Target,
-    NonTarget,
-    Buff
+    public Define.SkillType skillType;
+    public Define.MotionType motionType;
+    public Define.HandlerType handlerType;
 }

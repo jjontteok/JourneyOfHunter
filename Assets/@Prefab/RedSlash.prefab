@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 2537889097858128248}
   - component: {fileID: 8965976515997273295}
   - component: {fileID: 6088570977605603493}
-  - component: {fileID: 6953431003954664949}
+  - component: {fileID: 6946743902046210975}
   m_Layer: 0
   m_Name: RedSlash
   m_TagString: Untagged
@@ -4894,7 +4894,7 @@ ParticleSystemRenderer:
   m_MeshWeighting2: 1
   m_MeshWeighting3: 1
   m_MaskInteraction: 0
---- !u!114 &6953431003954664949
+--- !u!114 &6946743902046210975
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -4903,7 +4903,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1686826729540970824}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0b3bb40b7962702409344b9922ad3b48, type: 3}
+  m_Script: {fileID: 11500000, guid: 6f2acc40d47701f498ca01a527d9cb19, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   _skillData: {fileID: 11400000, guid: e7cdc63430a71744181505f386a877fe, type: 2}

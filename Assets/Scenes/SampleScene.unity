@@ -26253,6 +26253,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 100937343383773172, guid: 93503a21174f5d345a804c39bfa48549, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 480558520949680470, guid: 93503a21174f5d345a804c39bfa48549, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0.03820634
@@ -26292,6 +26296,22 @@ PrefabInstance:
     - target: {fileID: 480558520949680470, guid: 93503a21174f5d345a804c39bfa48549, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1785197051167034762, guid: 93503a21174f5d345a804c39bfa48549, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1791193377959401522, guid: 93503a21174f5d345a804c39bfa48549, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4696200484418394562, guid: 93503a21174f5d345a804c39bfa48549, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5501169325968666655, guid: 93503a21174f5d345a804c39bfa48549, type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7106771230575074518, guid: 93503a21174f5d345a804c39bfa48549, type: 3}
       propertyPath: m_Name
@@ -26407,9 +26427,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: faad88a27561d0f44b2ac89e3a0edb31, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  skillDataList:
-  - {fileID: 11400000, guid: e7cdc63430a71744181505f386a877fe, type: 2}
-  - {fileID: 11400000, guid: d3f83f20550104043a5b4a2e6081daab, type: 2}
+  _skillList:
+  - {fileID: 6946743902046210975, guid: 87a957abb03352844ae19c523551ca9f, type: 3}
+  - {fileID: -1100704787368900728, guid: d92b0f3e717f551429647b92bfbd6b45, type: 3}
+  _slotList: []
 --- !u!1 &1424057682
 GameObject:
   m_ObjectHideFlags: 0

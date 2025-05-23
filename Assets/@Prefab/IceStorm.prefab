@@ -4918,8 +4918,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1530918033433827943}
-  - component: {fileID: 2953250394436360789}
   - component: {fileID: 6321784448994215620}
+  - component: {fileID: 723700410942443696}
   m_Layer: 0
   m_Name: SkillCollider
   m_TagString: Untagged
@@ -4942,8 +4942,20 @@ Transform:
   m_Children: []
   m_Father: {fileID: 4909476103769827045}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!135 &2953250394436360789
-SphereCollider:
+--- !u!114 &6321784448994215620
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1983003686877178438}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5114ada6216e0b04eb187bcacb8d26b0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!136 &723700410942443696
+CapsuleCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -4960,21 +4972,11 @@ SphereCollider:
   m_IsTrigger: 1
   m_ProvidesContacts: 0
   m_Enabled: 1
-  serializedVersion: 3
+  serializedVersion: 2
   m_Radius: 3
+  m_Height: 15
+  m_Direction: 1
   m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &6321784448994215620
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1983003686877178438}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5114ada6216e0b04eb187bcacb8d26b0, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &2088912552524142970
 GameObject:
   m_ObjectHideFlags: 0
@@ -9943,7 +9945,7 @@ GameObject:
   - component: {fileID: 4909476103769827045}
   - component: {fileID: 6606805665546837639}
   - component: {fileID: 5848881405003251048}
-  - component: {fileID: 6619182500493061895}
+  - component: {fileID: -1100704787368900728}
   m_Layer: 0
   m_Name: IceStorm
   m_TagString: Untagged
@@ -14837,7 +14839,7 @@ ParticleSystemRenderer:
   m_MeshWeighting2: 1
   m_MeshWeighting3: 1
   m_MaskInteraction: 0
---- !u!114 &6619182500493061895
+--- !u!114 &-1100704787368900728
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -14846,7 +14848,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 3330801768823971673}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e6cad0fa2fe7985409978d1cfa02ec8c, type: 3}
+  m_Script: {fileID: 11500000, guid: 5c3bdf417f8fa404488830e0a40deda1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   _skillData: {fileID: 11400000, guid: d3f83f20550104043a5b4a2e6081daab, type: 2}
