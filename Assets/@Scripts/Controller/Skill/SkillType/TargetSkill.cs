@@ -13,7 +13,9 @@ public class TargetSkill : ActiveSkill
     {
         base.ActivateSkill(target, pos);
         //타겟 방향으로 스킬 방향 설정
-        _direction = (target.position - transform.position).normalized;        
+        _direction = (target.position - transform.position).normalized;
+        transform.rotation = Quaternion.LookRotation(_direction);
+        transform.Rotate(new Vector3(0, 0, 90f));
         OnSkillSet?.Invoke(_direction);
     }
 }

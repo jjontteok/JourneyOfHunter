@@ -12,6 +12,6 @@ public class AoENonTargetSkill : NonTargetSkill
     {
         base.Initialize();
         _coll = GetComponentInChildren<SkillColliderController>();
-        _coll.SetColliderInfo(_skillData.speed, _skillData.damage, _skillData.targetDistance, _skillData.castingTime, _skillData.hitEffectPrefab);
+        _coll.SetColliderInfo(_skillData.damage, _skillData.hitEffectPrefab);
     }
 }

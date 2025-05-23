@@ -2,73 +2,26 @@ using UnityEngine;
 
 public class SkillColliderController : MonoBehaviour
 {
-    float _speed;
     float _damage;
-    float _distance;
-    float _castingTime;
-
-    float _currentTime = 0f;
-    bool _isCasting = false;
-    Vector3 _direction;
     GameObject _effect;
 
-    public void SetColliderInfo(float speed, float damage, float distance, float casting, GameObject effect)
+    public void SetColliderInfo(float damage, GameObject effect)
     {
-        _speed = speed;
         _damage = damage;
-        _distance = distance;
-        _castingTime = casting;
         _effect = effect;
-    }
-
-    public void SetColliderDirection(Vector3 dir)
-    {
-        _direction = dir;
-    }
-
-    // activateµÇ¸é(È°¼ºÈ­µÇ¸é), Ä³½ºÆÃ µ¿ÀÛ ½ÃÀÛ
-    private void OnEnable()
-    {
-        if (_castingTime > 0)
-        {
-            _isCasting = true;
-        }
-    }
-
-    void Update()
-    {
-        // Ä³½ºÆÃ µ¿ÀÛ ÁßÀÌÁö ¾ÊÀ» ¶© distance±îÁö ÀÌµ¿
-        if (!_isCasting)
-        {
-            if (Vector3.Distance(transform.position, transform.parent.position) < _distance)
-            {
-                transform.Translate(_direction.normalized * _speed * Time.deltaTime);
-                //InfiniteLoopDetector.Run();
-            }
-        }
-        // Ä³½ºÆÃ µ¿ÀÛ ÁßÀÏ ¶§
-        else
-        {
-            _currentTime += Time.deltaTime;
-            if (_currentTime >= _castingTime)
-            {
-                _isCasting = false;
-                _currentTime = 0f;
-            }
-        }
-
     }
 
     private void OnTriggerEnter(Collider other)
     {
+        Debug.Log($"Enter: {other.name}");
         if (other.CompareTag(Define.MonsterTag))
         {
             other.GetComponent<MonsterController>().GetDamaged(_damage);
-            // raycast¸¦ ÀÌ¿ëÇØ ½ºÅ³ÀÇ Ãæµ¹ ÁöÁ¡ °è»ê
+            // raycastë¥¼ ì´ìš©í•´ ìŠ¤í‚¬ì˜ ì¶©ëŒ ì§€ì  ê³„ì‚°
             RaycastHit hit;
             Vector3 direction = (other.transform.position - transform.position).normalized;
             Physics.Raycast(transform.position, direction, out hit);
-            // Ãæµ¹ ÁöÁ¡¿¡¼­ ¹İ´ë ¹æÇâÀ¸·Î hit effect ¹ß»ı
+            // ì¶©ëŒ ì§€ì ì—ì„œ ë°˜ëŒ€ ë°©í–¥ìœ¼ë¡œ hit effect ë°œìƒ
             GameObject effect1 = Instantiate(_effect, hit.point, Quaternion.LookRotation(hit.normal));
             effect1.name = "effect1";
             effect1.GetComponent<ParticleSystem>().Play();

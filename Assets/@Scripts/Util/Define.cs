@@ -23,6 +23,11 @@ public class Define
     public const string GroundTag = "Ground";
     #endregion
 
+    #region Layer
+    public const string PlayerSkillLayer = "PlayerSkill";
+    public const string MonsterSkillLayer = "MonsterSkill";
+    #endregion
+
     #region Path
     public const string DemonPath = "Monsters/Demon";
     #endregion

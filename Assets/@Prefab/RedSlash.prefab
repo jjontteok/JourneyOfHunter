@@ -4918,8 +4918,8 @@ GameObject:
   - component: {fileID: 6711134841621723020}
   - component: {fileID: 3381909858343351701}
   - component: {fileID: 7558162495826639196}
-  m_Layer: 0
-  m_Name: coll
+  m_Layer: 8
+  m_Name: HitBox
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -4959,7 +4959,7 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 0.28, y: 2, z: 0.79}
+  m_Size: {x: 0.28, y: 2, z: 0.4}
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!114 &7558162495826639196
 MonoBehaviour:

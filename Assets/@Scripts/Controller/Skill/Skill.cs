@@ -11,7 +11,6 @@ public abstract class Skill : MonoBehaviour
 
     public virtual void Initialize()
     {
-        //_skillData = data;
         _skillCoolTime = new WaitForSeconds(_skillData.coolTime);
         _skillDurationTime = new WaitForSeconds(_skillData.durationTime);
     }
@@ -25,10 +24,4 @@ public abstract class Skill : MonoBehaviour
         yield return _skillDurationTime;
         gameObject.SetActive(false);
     }
-
-    //test
-    //public void StartAttack(Transform target)
-    //{
-    //    ActivateSkill(target);
-    //}
 }

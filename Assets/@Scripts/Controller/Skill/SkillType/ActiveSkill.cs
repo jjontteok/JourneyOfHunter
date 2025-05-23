@@ -9,10 +9,14 @@ public class ActiveSkill : Skill
         transform.position = pos;
         gameObject.SetActive(true);
         // particle system인 경우
-        gameObject.GetComponent<ParticleSystem>()?.Play();
+        ParticleSystem particleSystem = gameObject.GetComponent<ParticleSystem>();
+        if (particleSystem != null)
+        {
+            particleSystem.Play();
+        }
 
         //스킬 시전 후 스킬 비활성화
-        StartCoroutine(DeActivateSkill()); 
+        StartCoroutine(DeActivateSkill());
     }
 
     public override void Initialize()

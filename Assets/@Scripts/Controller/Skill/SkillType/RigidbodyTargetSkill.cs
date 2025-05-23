@@ -16,6 +16,7 @@ public class RigidbodyTargetSkill : TargetSkill
         _direction.y = _rigidbody.linearVelocity.y;
         _rigidbody.linearVelocity = _direction * _skillData.force;
         _rigidbody.linearVelocity = Vector3.zero;
+
     }
 
     private void OnTriggerEnter(Collider other)

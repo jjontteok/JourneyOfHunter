@@ -4918,10 +4918,10 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1530918033433827943}
-  - component: {fileID: 6321784448994215620}
   - component: {fileID: 723700410942443696}
-  m_Layer: 0
-  m_Name: SkillCollider
+  - component: {fileID: 9140272676879186388}
+  m_Layer: 8
+  m_Name: HitBox
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -4942,18 +4942,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 4909476103769827045}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &6321784448994215620
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1983003686877178438}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5114ada6216e0b04eb187bcacb8d26b0, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!136 &723700410942443696
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -4977,6 +4965,18 @@ CapsuleCollider:
   m_Height: 15
   m_Direction: 1
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &9140272676879186388
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1983003686877178438}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5114ada6216e0b04eb187bcacb8d26b0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &2088912552524142970
 GameObject:
   m_ObjectHideFlags: 0

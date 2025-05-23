@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.Animations;
 
 /// SkillSlot
 /// Target형 스킬들을 보관 및 스킬 쿨타임 관리하는 슬롯
@@ -31,8 +32,12 @@ public class SkillSlot : MonoBehaviour
     {
         // 맨 처음엔 사용 가능한 상태
         IsActivatePossible = true;
-        _skill = Instantiate(skill, transform).GetComponent<ActiveSkill>();
-        _skill.transform.localPosition = Vector3.zero;
+        _skill = Instantiate(skill).GetComponent<ActiveSkill>();
+        //_skill.transform.localPosition = Vector3.zero;
+        //_skill.transform.SetParent(transform);
+        //ParentConstraint constraint = _skill.GetComponent<ParentConstraint>();
+        //constraint.AddSource(new ConstraintSource { sourceTransform = _player.transform, });
+
         // 타겟이 필요한 스킬인지 아닌지 체크
         if (_skill.SkillData.skillType == Define.SkillType.RigidbodyTarget || _skill.SkillData.skillType == Define.SkillType.TransformTarget)
         {
@@ -67,7 +72,7 @@ public class SkillSlot : MonoBehaviour
                 if (_target != null)
                 {
                     IsActivatePossible = false;
-                    _skill.ActivateSkill(_target,transform.position);
+                    _skill.ActivateSkill(_target, transform.position);
                     SetAnimator(_skill.SkillData.motionType);
                     StartCoroutine(CoStartCoolTime());
                 }
