@@ -6,8 +6,8 @@ public class ActiveSkill : Skill
     public override void ActivateSkill(Transform target = null, Vector3 pos = default)
     {
         //플레이어 위치에 스킬 활성화
-        transform.position = pos;
         gameObject.SetActive(true);
+        transform.position = pos;
         // particle system인 경우
         ParticleSystem particleSystem = gameObject.GetComponent<ParticleSystem>();
         if (particleSystem != null)

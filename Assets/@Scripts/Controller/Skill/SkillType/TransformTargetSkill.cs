@@ -14,7 +14,7 @@ public class TransformTargetSkill : TargetSkill
 
     private void OnEnable()
     {
-        if(_skillData.castingTime>0)
+        if (_skillData.castingTime > 0)
         {
             _isCasting = true;
             dir = _direction;
@@ -39,15 +39,15 @@ public class TransformTargetSkill : TargetSkill
         // 캐스팅 동작 중이지 않을 땐 distance까지 이동
         if (!_isCasting)
         {
-            if(Vector3.Distance(transform.position,_coll.transform.position)<_skillData.targetDistance)
+            if (Vector3.Distance(transform.position, _coll.transform.position) < _skillData.targetDistance)
             {
-                _coll.transform.Translate(dir * _skillData.speed * Time.deltaTime,Space.World);
+                _coll.transform.Translate(dir * _skillData.speed * Time.deltaTime, Space.World);
             }
         }
         else
         {
             _currentTime += Time.deltaTime;
-            if(_currentTime>=_skillData.castingTime)
+            if (_currentTime >= _skillData.castingTime)
             {
                 _isCasting = false;
                 _currentTime = 0f;

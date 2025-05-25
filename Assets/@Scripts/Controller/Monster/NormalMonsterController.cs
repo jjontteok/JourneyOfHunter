@@ -1,4 +1,3 @@
-using UnityEditor;
 using UnityEngine;
 
 public class NormalMonsterController : MonsterController
@@ -10,6 +9,6 @@ public class NormalMonsterController : MonsterController
 
     private void Update()
     {
-        //MoveToTarget(_target.transform.position);
+        MoveToTarget(_target.transform.position);
     }
 }

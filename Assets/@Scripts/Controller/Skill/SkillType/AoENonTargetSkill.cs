@@ -3,6 +3,7 @@ using UnityEngine;
 public class AoENonTargetSkill : NonTargetSkill
 {
     SkillColliderController _coll;
+
     void Start()
     {
         Initialize();

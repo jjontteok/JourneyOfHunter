@@ -19,7 +19,7 @@ MonoBehaviour:
   Atk: 0
   Def: 0
   HP: 0
-  Speed: 5
+  Speed: 3
   AttackSpeed: 0
   MoveRange: 0
   AttackRange: 1.1

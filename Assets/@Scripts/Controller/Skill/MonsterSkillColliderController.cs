@@ -19,15 +19,20 @@ public class MonsterSkillColliderController : MonoBehaviour
         {
             GameObject effect = Instantiate(_effect);
             _effect.transform.position = transform.position;
-            //_effect.SetActive(true);
-            gameObject.SetActive(false);
+            if (_connectedSkill != null)
+            {
+                transform.parent.gameObject.SetActive(false);
+            }
         }
 
         if(other.CompareTag(Define.GroundTag))
         {
-            GameObject connectedSkill = Instantiate(_connectedSkill);
-            _connectedSkill.transform.position = transform.position;
-            gameObject.SetActive(false);
+            if (_connectedSkill != null)
+            {
+                GameObject connectedSkill = Instantiate(_connectedSkill);
+                _connectedSkill.transform.position = transform.position;
+                transform.parent.gameObject.SetActive(false);
+            }
         }
     }
 }

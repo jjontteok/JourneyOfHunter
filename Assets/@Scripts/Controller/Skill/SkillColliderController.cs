@@ -13,7 +13,6 @@ public class SkillColliderController : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        Debug.Log($"Enter: {other.name}");
         if (other.CompareTag(Define.MonsterTag))
         {
             other.GetComponent<MonsterController>().GetDamaged(_damage);
