@@ -81,7 +81,7 @@ public class SkillSlot : MonoBehaviour
             else
             {
                 IsActivatePossible = false;
-                _skill.ActivateSkill(null,transform.position);
+                _skill.ActivateSkill(null, transform.position);
                 SetAnimator(_skill.SkillData.motionType);
                 StartCoroutine(CoStartCoolTime());
             }

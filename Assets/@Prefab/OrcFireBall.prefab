@@ -12,8 +12,8 @@ GameObject:
   - component: {fileID: 7378886995968437033}
   - component: {fileID: 4645802391774194497}
   - component: {fileID: 8390363030364772604}
-  - component: {fileID: 5774708769005800481}
   - component: {fileID: 7361768405558644791}
+  - component: {fileID: 8986116275526978950}
   m_Layer: 9
   m_Name: HitBox
   m_TagString: Untagged
@@ -110,18 +110,6 @@ SphereCollider:
   serializedVersion: 3
   m_Radius: 0.5
   m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &5774708769005800481
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1313709573927777963}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ed5c6a6e0deff6b4d823f4c2750d8dbe, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!54 &7361768405558644791
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -149,6 +137,18 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
+--- !u!114 &8986116275526978950
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1313709573927777963}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 393fa1cc67ce012408d2af79fc7178da, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &5044618708990068363
 GameObject:
   m_ObjectHideFlags: 0
@@ -158,7 +158,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4224175315550938106}
-  - component: {fileID: 8545694602721245040}
+  - component: {fileID: 6909237056614686869}
   m_Layer: 0
   m_Name: OrcFireBall
   m_TagString: Untagged
@@ -182,7 +182,7 @@ Transform:
   - {fileID: 2192360168602788095}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &8545694602721245040
+--- !u!114 &6909237056614686869
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -191,7 +191,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 5044618708990068363}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d4a681bc49f575040a7cbd6bb7ecd805, type: 3}
+  m_Script: {fileID: 11500000, guid: 953aa8c144ed71e4596fcc59ba6d2ab2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   _skillData: {fileID: 11400000, guid: d3c44373888d12d4bafafede3aeb14cb, type: 2}

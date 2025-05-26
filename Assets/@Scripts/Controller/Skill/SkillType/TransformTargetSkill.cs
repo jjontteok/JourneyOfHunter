@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class TransformTargetSkill : TargetSkill
 {
-    SkillColliderController _coll;
+    PenetrationColliderController _coll;
     bool _isCasting = false;
     float _currentTime = 0f;
     Vector3 dir;
@@ -17,7 +17,7 @@ public class TransformTargetSkill : TargetSkill
         if (_skillData.castingTime > 0)
         {
             _isCasting = true;
-            dir = _direction;
+            //dir = _direction;
         }
     }
 
@@ -30,8 +30,8 @@ public class TransformTargetSkill : TargetSkill
     public override void Initialize()
     {
         base.Initialize();
-        _coll = GetComponentInChildren<SkillColliderController>();
-        _coll.SetColliderInfo(_skillData.damage, _skillData.hitEffectPrefab);
+        _coll = GetComponentInChildren<PenetrationColliderController>();
+        _coll.SetColliderInfo(_skillData.damage, _skillData.connectedSkillPrefab, _skillData.hitEffectPrefab);
     }
 
     private void Update()
@@ -41,7 +41,7 @@ public class TransformTargetSkill : TargetSkill
         {
             if (Vector3.Distance(transform.position, _coll.transform.position) < _skillData.targetDistance)
             {
-                _coll.transform.Translate(dir * _skillData.speed * Time.deltaTime, Space.World);
+                _coll.transform.Translate(_direction * _skillData.speed * Time.deltaTime, Space.World);
             }
         }
         else

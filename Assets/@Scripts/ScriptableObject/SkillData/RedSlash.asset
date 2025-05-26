@@ -21,7 +21,7 @@ MonoBehaviour:
   speed: 15
   force: 0
   connectedSkillPrefab: {fileID: 0}
-  hitEffectPrefab: {fileID: 4553287630450876385, guid: f5f7cfb700e6b3e419c0e156473bee3e, type: 3}
+  hitEffectPrefab: {fileID: 5880797563127281583, guid: 9fdefb0a3da64f3438b1a44b600c3cad, type: 3}
   skillType: 1
   motionType: 1
   handlerType: 0

@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class AoENonTargetSkill : NonTargetSkill
 {
-    SkillColliderController _coll;
+    PenetrationColliderController _coll;
 
     void Start()
     {
@@ -12,7 +12,7 @@ public class AoENonTargetSkill : NonTargetSkill
     public override void Initialize()
     {
         base.Initialize();
-        _coll = GetComponentInChildren<SkillColliderController>();
-        _coll.SetColliderInfo(_skillData.damage, _skillData.hitEffectPrefab);
+        _coll = GetComponentInChildren<PenetrationColliderController>();
+        _coll.SetColliderInfo(_skillData.damage, _skillData.connectedSkillPrefab, _skillData.hitEffectPrefab);
     }
 }
