@@ -40,6 +40,7 @@ public class DirectionNonTargetSkill : NonTargetSkill
     void ActivateDNTSkill(Vector3 pos = default)
     {        
         base.ActivateSkill(null, pos);
+        _particle.Play();
         // 현재 플레이어가 바라보는 방향 == 스킬 발동 방향
         //_direction = (transform.localRotation * transform.parent.rotation).eulerAngles;
         _direction = FindAnyObjectByType<PlayerController>().transform.forward;

@@ -14,8 +14,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   skillName: QuickGreenSlash
   coolTime: 2
-  durationTime: 2.5
-  castingTime: 1.5
+  durationTime: 1
+  castingTime: 0.5
   targetDistance: 3
   damage: 5
   speed: 0
