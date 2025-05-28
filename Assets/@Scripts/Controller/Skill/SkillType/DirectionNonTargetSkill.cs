@@ -47,9 +47,8 @@ public class DirectionNonTargetSkill : NonTargetSkill
         _particle?.Play();
         // 현재 플레이어가 바라보는 방향 == 스킬 발동 방향
         // 플레이어 객체를 받아오는 방법 강구 필요        
-        
         transform.rotation = _playerController.transform.rotation;
-        //transform.rotation = Quaternion.Euler(_direction);
+
         // 발동 방향으로 _range 각도와 targetDistance 거리 내의 적 탐색
         Collider[] targets = Physics.OverlapSphere(transform.position, _skillData.targetDistance, 1 << LayerMask.NameToLayer(Define.MonsterTag));
         foreach (Collider collider in targets)
@@ -90,8 +89,8 @@ public class DirectionNonTargetSkill : NonTargetSkill
     bool IsColliderInRange(Collider collider)
     {
         Vector3 toMonster = (collider.transform.position - transform.position).normalized;
-        float degree = GetAngleBetweenDirections(toMonster, _direction);
-        if (Mathf.Abs(degree) <= _skillData.angle / 2)
+        float degree = GetAngleBetweenDirections(toMonster, transform.forward);
+        if (degree <= _skillData.angle / 2)
         {
             return true;
         }

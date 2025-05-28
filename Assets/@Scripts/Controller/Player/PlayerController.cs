@@ -54,7 +54,7 @@ public class PlayerController : MonoBehaviour
 
             Vector3 newPos = transform.position;
             newPos.x = Mathf.Clamp(transform.position.x, -23, 23);
-            newPos.z = Mathf.Clamp(transform.position.z, 3, transform.position.z);
+            newPos.z = Mathf.Clamp(transform.position.z, 3, 115f);
             transform.position = newPos;
             _animator.SetFloat(Define.Speed, movement.magnitude);
             transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(movement), _speed * Time.deltaTime);
