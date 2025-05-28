@@ -16,12 +16,13 @@ MonoBehaviour:
   coolTime: 5
   durationTime: 1
   castingTime: 0.1
-  targetDistance: 3
+  targetDistance: 6
   damage: 5
   speed: 0
   force: 0
+  angle: 0
   connectedSkillPrefab: {fileID: 0}
-  hitEffectPrefab: {fileID: 5112403345868107898, guid: 6f34ef0d986e9db4199cf75805f79753, type: 3}
+  hitEffectPrefab: {fileID: 5112403345868107898, guid: 76bd86df99b0e3946bef8e28b75c9925, type: 3}
   skillType: 2
   motionType: 2
   handlerType: 0

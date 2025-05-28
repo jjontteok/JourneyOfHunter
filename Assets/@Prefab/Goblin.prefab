@@ -21273,6 +21273,7 @@ MonoBehaviour:
   _explosionSkillData: {fileID: 11400000, guid: 4ac3ac6a22cf63a4f8f22f2fe6c1cc78, type: 2}
   _bulletSkillData: {fileID: 11400000, guid: d3c44373888d12d4bafafede3aeb14cb, type: 2}
   _bulletSkillPrefab: {fileID: 5044618708990068363, guid: 24241f121a64ac04893c15ca7743bdb5, type: 3}
+  _explosionSkillPrefab: {fileID: 4428409035099419300, guid: d62c02e58afcf98468f911fbf4c2c68b, type: 3}
 --- !u!1 &5819480540799236197
 GameObject:
   m_ObjectHideFlags: 0

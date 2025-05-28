@@ -2,6 +2,8 @@ using UnityEngine;
 
 public class Define
 {
+    public static string SkillDictionary = "SkillDictionary";
+
     #region Animator
     public readonly static int Idle = Animator.StringToHash("Idle");
     public readonly static int Attack = Animator.StringToHash("Attack");

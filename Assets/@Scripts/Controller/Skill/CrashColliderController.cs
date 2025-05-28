@@ -4,14 +4,19 @@ using UnityEngine;
 public class CrashColliderController : MonoBehaviour
 {
     float _damage;
-    GameObject _connectedSkill;
     GameObject _effect;
+    //GameObject _connectedSkillPrefab;
+    ActiveSkill _connectedSkill;
     ParticleSystem _particle;
 
-    public void SetColliderInfo(float damage, GameObject connectedSkill, GameObject effect)
+    public void SetColliderInfo(float damage, GameObject connectedSkillPrefab, GameObject effect)
     {
         _damage = damage;
-        _connectedSkill = connectedSkill;
+        if (connectedSkillPrefab != null)
+        {
+            _connectedSkill=Instantiate(connectedSkillPrefab).GetComponent<ActiveSkill>();
+            _connectedSkill.gameObject.SetActive(false);
+        }
         _effect = effect;
         _particle = GetComponent<ParticleSystem>();
     }
@@ -20,8 +25,8 @@ public class CrashColliderController : MonoBehaviour
     {
         if (_connectedSkill != null)
         {
-            GameObject connectedSkill = Instantiate(_connectedSkill);
-            connectedSkill.transform.position = transform.position;
+            _connectedSkill.ActivateSkill(null, transform.position);
+            // 부모 스킬 꺼주기
             transform.parent.gameObject.SetActive(false);
         }
     }

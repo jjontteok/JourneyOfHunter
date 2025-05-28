@@ -14,14 +14,15 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   skillName: 
   coolTime: 0
-  durationTime: 2.5
+  durationTime: 2
   castingTime: 0
   targetDistance: 0
   damage: 15
   speed: 0
   force: 0
+  angle: 0
   connectedSkillPrefab: {fileID: 0}
-  hitEffectPrefab: {fileID: 2504214343621411470, guid: 3ed0d324122d7b24eaec75c55c74aafc, type: 3}
+  hitEffectPrefab: {fileID: 2504214343621411470, guid: 49fa13df8c065f844adbd5114be9b29e, type: 3}
   skillType: 2
   motionType: 0
   handlerType: 0

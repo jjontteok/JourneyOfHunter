@@ -23,39 +23,4 @@ public class RigidbodyTargetSkill : TargetSkill
         _rigidbody.linearVelocity = dir * _skillData.force;
     }
 
-    //private void OnTriggerEnter(Collider other)
-    //{
-    //    if(other.CompareTag(Define.GroundTag))
-    //    {
-    //        ActivateConnectedSkill();
-    //    }
-    //    if(other.CompareTag(Define.PlayerTag))
-    //    {
-    //        GameObject hitEffect = Instantiate(_skillData.hitEffectPrefab);
-    //        hitEffect.transform.position = transform.position;
-    //    }
-    //}
-
-    //void ActivateConnectedSkill()
-    //{
-    //    GameObject connectedSkill = Instantiate(_skillData.connectedSkillPrefab);
-    //    connectedSkill.transform.position = transform.position;
-    //    Skill skill = connectedSkill.GetComponent<Skill>();
-    //    switch (skill.SkillData.skillType)
-    //    {
-    //        case Define.SkillType.RigidbodyTarget:
-
-    //            break;
-    //        case Define.SkillType.TransformTarget:
-    //            break;
-    //        case Define.SkillType.AoENonTarget:
-    //            break;
-    //        case Define.SkillType.DirectionNonTarget:
-    //            break;
-    //        case Define.SkillType.Buff:
-    //            break;
-    //        default:
-    //            break;
-    //    }
-    //}
 }

@@ -13,17 +13,26 @@ public class NamedMonsterController : MonsterController
     [SerializeField] private SkillData _explosionSkillData;
     [SerializeField] private SkillData _bulletSkillData;
     [SerializeField] private GameObject _bulletSkillPrefab;
+    [SerializeField] private GameObject _explosionSkillPrefab;
+
     float _coolTime = 0.0f;
 
     private MoveRangeController _moveRangeController;
 
-    private RigidbodyTargetSkill _skill;
+    private RigidbodyTargetSkill _bulletSkill;
+
+    private AoENonTargetSkill _explosionSkill;
 
 
     private void Awake()
     {
         //_playableDirector = GetComponent<PlayableDirector>();
         //_playableDirector.Play();
+        Initialize();
+    }
+
+    public override void Initialize()
+    {
         _originPos = transform.position;
         base.Initialize();
         GameObject moveRange = new GameObject("MoveRange");
@@ -31,11 +40,15 @@ public class NamedMonsterController : MonsterController
         _moveRangeController = moveRange.GetOrAddComponent<MoveRangeController>();
         _moveRangeController.Intiailize(_runtimeData.MoveRange);
 
-        _skill = Instantiate(_bulletSkillPrefab).GetComponent<RigidbodyTargetSkill>();
-        _skill.Initialize();
-        _skill.gameObject.SetActive(false);
+        _bulletSkill = Instantiate(_bulletSkillPrefab).GetComponent<RigidbodyTargetSkill>();
+        _bulletSkill.Initialize();
+        _bulletSkill.gameObject.SetActive(false);
 
-        //¿ÀºêÁ§Æ® ¸Å´ÏÀú¿¡¼­ °¡Á®¿Ã ¿¹Á¤ -> ¼öÁ¤ ÇÊ¿ä
+        _explosionSkill = Instantiate(_explosionSkillPrefab).GetComponent<AoENonTargetSkill>();
+        _explosionSkill.Initialize();
+        _explosionSkill.gameObject.SetActive(false);
+
+        //ì˜¤ë¸Œì íŠ¸ ë§¤ë‹ˆì €ì—ì„œ ê°€ì ¸ì˜¬ ì˜ˆì • -> ìˆ˜ì • í•„ìš”
     }
 
     private void OnEnable()
@@ -50,7 +63,7 @@ public class NamedMonsterController : MonsterController
     {
         RotateNamedMonster();
         CheckMoveToOrigin();
-       // Debug.Log($"³×ÀÓµå ¸ó½ºÅÍ¿Í ÇÃ·¹ÀÌ¾î¿ÍÀÇ °Å¸® : {Vector3.Distance(transform.position, _target.transform.position)}");
+        // Debug.Log($"ë„¤ì„ë“œ ëª¬ìŠ¤í„°ì™€ í”Œë ˆì´ì–´ì™€ì˜ ê±°ë¦¬ : {Vector3.Distance(transform.position, _target.transform.position)}");
     }
 
     void RotateNamedMonster()
@@ -62,7 +75,7 @@ public class NamedMonsterController : MonsterController
         }
     }
 
-    //¿ø·¡ ÀÚ¸®·Î °¥Áö Á¤ÇÏ´Â ÇÔ¼ö
+    //ì›ë˜ ìë¦¬ë¡œ ê°ˆì§€ ì •í•˜ëŠ” í•¨ìˆ˜
     void CheckMoveToOrigin()
     {
         if (_isMoveToOrigin)
@@ -82,12 +95,12 @@ public class NamedMonsterController : MonsterController
 
     }
 
-    //moveRange ¹üÀ§ ¾È¿¡ ÀÖÀ» ¶§ ½ÇÇàµÇ´Â ÇÔ¼ö
-    //5~8¹üÀ§ ³»¿¡¼­´Â ÀÌµ¿
+    //moveRange ë²”ìœ„ ì•ˆì— ìˆì„ ë•Œ ì‹¤í–‰ë˜ëŠ” í•¨ìˆ˜
+    //5~8ë²”ìœ„ ë‚´ì—ì„œëŠ” ì´ë™
     void MoveToTarget()
     {
         float distance = Vector3.Distance(transform.position, _target.transform.position);
-        if(distance > _closeAttackLimit && distance <= _runtimeData.MoveRange)
+        if (distance > _closeAttackLimit && distance <= _runtimeData.MoveRange)
         {
             MoveToTarget(_target.transform.position);
         }
@@ -97,15 +110,15 @@ public class NamedMonsterController : MonsterController
         }
     }
 
-    //moveRange ¹üÀ§ ¹Û¿¡ ÀÖÀ» ¶§ ½ÇÇàµÇ´Â ÇÔ¼ö
+    //moveRange ë²”ìœ„ ë°–ì— ìˆì„ ë•Œ ì‹¤í–‰ë˜ëŠ” í•¨ìˆ˜
     void MoveToOrigin()
     {
-        if(_bulletSkillPrefab.activeSelf)
+        if (_bulletSkillPrefab.activeSelf)
             DeactiveLongAttack();
         _isMoveToOrigin = true;
     }
 
-    //°ø°İ ¹üÀ§ ³»¿¡ ÀÖÀ¸¸é °è¼Ó È£ÃâµÉ ÇÔ¼ö
+    //ê³µê²© ë²”ìœ„ ë‚´ì— ìˆìœ¼ë©´ ê³„ì† í˜¸ì¶œë  í•¨ìˆ˜
     public override void Attack()
     {
         float distance = Vector3.Distance(transform.position, _target.transform.position);
@@ -113,40 +126,40 @@ public class NamedMonsterController : MonsterController
         if (!_isMoveToOrigin)
         {
 
-            //0~3¹üÀ§ ³»¿¡¼­´Â ÀÌµ¿ÇÏÁö ¾Ê°í °ø°İ
+            //0~3ë²”ìœ„ ë‚´ì—ì„œëŠ” ì´ë™í•˜ì§€ ì•Šê³  ê³µê²©
             if (distance < _closeAttackLimit)
             {
                 _animator.SetTrigger(Define.CloseAttack);
                 DeactiveLongAttack();
             }
-            
+
             else if (distance > _runtimeData.MoveRange && distance < _runtimeData.AttackRange)
             {
-               _coolTime += Time.deltaTime;
-               if (_coolTime > 3f)
-               {
+                _coolTime += Time.deltaTime;
+                if (_coolTime > 3f)
+                {
                     _coolTime = 0;
                     ActiveLongAttack(distance);
-               }
+                }
             }
         }
     }
 
-    //¿ø°Å¸® °ø°İ È°¼ºÈ­
+    //ì›ê±°ë¦¬ ê³µê²© í™œì„±í™”
     void ActiveLongAttack(float distance)
     {
         _bulletSkillData.force = distance + 10;
         _animator.SetTrigger(Define.LongAttack);
-        _skill.ActivateSkill(_target.transform, transform.position + Vector3.up * 2);
+        _bulletSkill.ActivateSkill(_target.transform, transform.position + Vector3.up * 2);
     }
 
-    //¿ø°Å¸® °ø°İ ºñÈ°¼ºÈ­
+    //ì›ê±°ë¦¬ ê³µê²© ë¹„í™œì„±í™”
     void DeactiveLongAttack()
     {
 
     }
 
-    //¿ø°Å¸® °ø°İ ¹üÀ§¸¦ ¹ş¾î³ª¸é °ø°İ Á¾·á
+    //ì›ê±°ë¦¬ ê³µê²© ë²”ìœ„ë¥¼ ë²—ì–´ë‚˜ë©´ ê³µê²© ì¢…ë£Œ
     public override void EndAttack()
     {
         _animator.SetTrigger(Define.Idle);

@@ -14458,7 +14458,7 @@ GameObject:
   - component: {fileID: 2466467221731349085}
   - component: {fileID: 5723306646345941512}
   m_Layer: 0
-  m_Name: RedSlashEffect
+  m_Name: RedSlashHit
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

@@ -17,6 +17,6 @@ public class TargetSkill : ActiveSkill
         _direction = (target.position + new Vector3(0, 0.5f, 0) - transform.position).normalized;
         transform.rotation = Quaternion.LookRotation(_direction);
         transform.Rotate(new Vector3(0, 0, 90f));
-        OnSkillSet?.Invoke(_direction);
+        //OnSkillSet?.Invoke(_direction);
     }
 }

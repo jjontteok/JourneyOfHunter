@@ -19,9 +19,10 @@ MonoBehaviour:
   targetDistance: 0
   damage: 0
   speed: 0
-  force: 26.240295
+  force: 21.261818
+  angle: 0
   connectedSkillPrefab: {fileID: 4428409035099419300, guid: d62c02e58afcf98468f911fbf4c2c68b, type: 3}
-  hitEffectPrefab: {fileID: 2504214343621411470, guid: 3ed0d324122d7b24eaec75c55c74aafc, type: 3}
+  hitEffectPrefab: {fileID: 2504214343621411470, guid: 49fa13df8c065f844adbd5114be9b29e, type: 3}
   skillType: 0
   motionType: 0
   handlerType: 1
