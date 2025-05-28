@@ -24,16 +24,16 @@ public class CutSceneController : MonoBehaviour
 
     private void Start()
     {
-        PlayCutScene();
         _monsterAppearEffect = Instantiate(_monsterAppearEffectPrefab);
         _monsterAppearEffect.SetActive(false);
+        PlayCutScene();
     }
 
     void PlayCutScene()
     {
-        //´øÀü ¸Å´ÏÀú ½ºÅ©¸³Æ®¸¦ ¹Ş¾Æ¿À¸é
-        //Find·Î Ã£´Â °Ô ¾Æ´Ï¶ó ´øÀü ¸Å´ÏÀúÀÇ ÀÎ½ºÅÏ½º¿¡ ÀÖ´Â ³×ÀÓµå ¸ó½ºÅÍÀÇ ½ºÆù À§Ä¡¸¦ °¡Á®¿Í¼­
-        //»ç¿ëÇÒ ¿¹Á¤(¸Å°³º¯¼ö·Î) -> ÃßÈÄ º¯°æ ÇÊ¿ä
+        //ë˜ì „ ë§¤ë‹ˆì € ìŠ¤í¬ë¦½íŠ¸ë¥¼ ë°›ì•„ì˜¤ë©´
+        //Findë¡œ ì°¾ëŠ” ê²Œ ì•„ë‹ˆë¼ ë˜ì „ ë§¤ë‹ˆì €ì˜ ì¸ìŠ¤í„´ìŠ¤ì— ìˆëŠ” ë„¤ì„ë“œ ëª¬ìŠ¤í„°ì˜ ìŠ¤í° ìœ„ì¹˜ë¥¼ ê°€ì ¸ì™€ì„œ
+        //ì‚¬ìš©í•  ì˜ˆì •(ë§¤ê°œë³€ìˆ˜ë¡œ) -> ì¶”í›„ ë³€ê²½ í•„ìš”
         GameObject monster = GameObject.FindGameObjectWithTag(Define.MonsterTag);
         _monsterAppearEffect.transform.position = monster.transform.position;
         _monsterAppearEffect.SetActive(true);
@@ -41,7 +41,7 @@ public class CutSceneController : MonoBehaviour
         _playableDirector.Play();
     }
 
-    //ÄÆ½ÅÀÌ ³¡³ª¸é ÀÚµ¿À¸·Î È£ÃâµÉ ÇÔ¼ö
+    //ì»·ì‹ ì´ ëë‚˜ë©´ ìë™ìœ¼ë¡œ í˜¸ì¶œë  í•¨ìˆ˜
     void FinishCutScene(PlayableDirector pd)
     {
         Destroy(_monsterAppearEffect);
