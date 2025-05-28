@@ -1,4 +1,5 @@
 using UnityEngine;
+using extension;
 
 // * Monster Status 구조체
 //- Scriptable Object의 런타임 복사용으로 활용
@@ -18,7 +19,7 @@ public struct MonsterStatus
     {
         Name = monsterData.Name;
         Description = monsterData.Description;
-        Atk = monsterData.Atk;          
+        Atk = monsterData.Atk;
         Def = monsterData.Def;
         HP = monsterData.HP;
         Speed = monsterData.Speed;
@@ -81,10 +82,10 @@ public abstract class MonsterController : MonoBehaviour
     // 타겟 이동 메서드
     public virtual void MoveToTarget(Vector3 targetPos)
     {
-        if(!_animator.GetBool(Define.IsAttacking))
+        if (!_animator.GetBool(Define.IsAttacking))
         {
             //Debug.Log("걷는중");
-            
+
             Vector3 targetDir = (targetPos - transform.position).normalized;
             transform.position += targetDir * _runtimeData.Speed * Time.deltaTime;
             //transform.Translate(targetPos*Time.deltaTime);
@@ -105,7 +106,7 @@ public abstract class MonsterController : MonoBehaviour
     //- 추후 스킬 사용 몬스터 대비 가상함수로 구현
     public virtual void Attack()
     {
-        if(!_animator.GetBool(Define.IsAttacking))
+        if (!_animator.GetBool(Define.IsAttacking))
         {
             _animator.SetBool(Define.IsAttacking, true);
             _animator.SetTrigger(Define.Attack);
@@ -158,9 +159,9 @@ public abstract class MonsterController : MonoBehaviour
     //- stay로 처리했기에 피격 쿨타임을 적용 시켜 밸런스 조정 필요
     private void OnCollisionStay(Collision collision)
     {
-        if(_animator.GetBool(Define.IsAttacking))
+        if (_animator.GetBool(Define.IsAttacking))
         {
-            if(collision.gameObject.CompareTag(Define.PlayerTag))
+            if (collision.gameObject.CompareTag(Define.PlayerTag))
             {
                 // 공격 처리
                 // collision.gameObject.GetComponent<PlayerController>().피격메서드;
