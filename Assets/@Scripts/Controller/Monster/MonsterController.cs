@@ -2,7 +2,7 @@ using UnityEngine;
 
 // * Monster Status 구조체
 //- Scriptable Object의 런타임 복사용으로 활용
-struct MonsterStatus
+public struct MonsterStatus
 {
     public string Name;                 // 이름
     public string Description;          // 설명
@@ -35,11 +35,12 @@ public abstract class MonsterController : MonoBehaviour
     [SerializeField] protected MonsterData _monsterData;
     [SerializeField] protected GameObject _target;
 
-    private MonsterStatus _runtimeData;
-    private Animator _animator;
-    private AttackRangeController _attackRangeController;
+    protected MonsterStatus _runtimeData;
+    protected Animator _animator;
+    protected AttackRangeController _attackRangeController;
+    protected Rigidbody _rigidbody;
 
-    bool _isAttacking = false;
+    //bool _isAttacking = false;
 
     private void Awake()
     {
@@ -53,7 +54,7 @@ public abstract class MonsterController : MonoBehaviour
 
     private void Start()
     {
-        Spawned();
+        //Spawned();
     }
 
     // * 초기화 메서드
@@ -63,6 +64,7 @@ public abstract class MonsterController : MonoBehaviour
     {
         _runtimeData = new MonsterStatus(_monsterData);
         _animator = GetComponent<Animator>();
+        _rigidbody = GetComponent<Rigidbody>();
         _target = GameObject.Find(Define.PlayerTag);
 
         GameObject attackRange = new GameObject("AttackRange");
@@ -71,21 +73,31 @@ public abstract class MonsterController : MonoBehaviour
         _attackRangeController.Initialize(_runtimeData.AttackRange);
         _attackRangeController.OnAttack += Attack;
         _attackRangeController.OffAttack += EndAttack;
+
+        Physics.IgnoreLayerCollision(LayerMask.NameToLayer(Define.PlayerTag), LayerMask.NameToLayer(Define.PlayerSkillLayer));
+        Physics.IgnoreLayerCollision(LayerMask.NameToLayer(Define.MonsterTag), LayerMask.NameToLayer(Define.MonsterSkillLayer));
     }
 
     // 타겟 이동 메서드
-    public void MoveToTarget(Vector3 targetPos)
+    public virtual void MoveToTarget(Vector3 targetPos)
     {
-        if(!_isAttacking)
+        if(!_animator.GetBool(Define.IsAttacking))
         {
-            Debug.Log("걷는중");
+            //Debug.Log("걷는중");
+            
             Vector3 targetDir = (targetPos - transform.position).normalized;
-
             transform.position += targetDir * _runtimeData.Speed * Time.deltaTime;
-            transform.rotation = Quaternion.LookRotation(targetDir, Vector3.up);
+            //transform.Translate(targetPos*Time.deltaTime);
+            //Debug.Log($"transform local position : {transform.localPosition}, targetPos : {targetPos}, targetDir.y : {targetDir}");
+            Quaternion toRotation = Quaternion.LookRotation(targetDir, Vector3.up);
+            transform.rotation = Quaternion.Slerp(transform.rotation, toRotation, 10 * Time.deltaTime);
 
             _animator.SetFloat(Define.WalkSpeed, _runtimeData.Speed / 2);
             _animator.SetTrigger(Define.Walk);
+        }
+        else
+        {
+            _animator.SetFloat(Define.WalkSpeed, 0);
         }
     }
 
@@ -93,18 +105,21 @@ public abstract class MonsterController : MonoBehaviour
     //- 추후 스킬 사용 몬스터 대비 가상함수로 구현
     public virtual void Attack()
     {
-        _isAttacking = true;
-        _animator.SetTrigger(Define.Attack);
-        Debug.Log("공격 중");
+        if(!_animator.GetBool(Define.IsAttacking))
+        {
+            _animator.SetBool(Define.IsAttacking, true);
+            _animator.SetTrigger(Define.Attack);
+            //Debug.Log("공격 중");
+        }
     }
 
     // * 공격 종료 메서드
     //- 공격 플래그 false 및 종료 트리거 발생
     public virtual void EndAttack()
     {
-        _isAttacking = false;
+        _animator.SetBool(Define.IsAttacking, false);
         _animator.SetTrigger(Define.EndAttack);
-        Debug.Log("공격 종료");
+        //Debug.Log("공격 종료");
     }
 
     // * 방어력 미적용 데미지 계산 메서드
@@ -120,8 +135,8 @@ public abstract class MonsterController : MonoBehaviour
     {
         float finalDamage = damage - _runtimeData.Def > 0 ? damage - _runtimeData.Def : 0;
         _runtimeData.HP -= damage;
-        if (_runtimeData.HP <= 0)
-            Die();
+        //if (_runtimeData.HP <= 0)
+        //    Die();
     }
 
     // * 사망 메서드
@@ -143,7 +158,7 @@ public abstract class MonsterController : MonoBehaviour
     //- stay로 처리했기에 피격 쿨타임을 적용 시켜 밸런스 조정 필요
     private void OnCollisionStay(Collision collision)
     {
-        if(_isAttacking)
+        if(_animator.GetBool(Define.IsAttacking))
         {
             if(collision.gameObject.CompareTag(Define.PlayerTag))
             {

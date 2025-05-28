@@ -1,33 +1,28 @@
-using NUnit.Framework;
-using System.Collections;
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
-//ÇÃ·¹ÀÌ¾î¿¡ ºÎÂøÇÒ ½ºÅ©¸³Æ®
+//í”Œë ˆì´ì–´ì— ë¶€ì°©í•  ìŠ¤í¬ë¦½íŠ¸
 public class SkillSystem : MonoBehaviour
 {
-    //½ºÅ³ µ¥ÀÌÅÍ ¸®½ºÆ®
-    public List<SkillData> skillDataList;
+    //í”Œë ˆì´ì–´ì˜ ìŠ¤í‚¬ ë¦¬ìŠ¤íŠ¸ - ìŠ¤í‚¬ ìŠ¬ë¡¯
+    [SerializeField] List<Skill> _skillList = new List<Skill>();
 
-    //ÇÃ·¹ÀÌ¾îÀÇ ½ºÅ³ ¸®½ºÆ®
-    List<Skill> _skillList = new();
+    // ìŠ¤í‚¬ ìŠ¬ë¡¯ ë¦¬ìŠ¤íŠ¸ - ì•¡í‹°ë¸Œí˜• ìŠ¤í‚¬ ë³´ê´€ ìŠ¬ë¡¯
+    public List<SkillSlot> _slotList = new List<SkillSlot>();
 
-    private void Start()
+    public void InitializeSkillSystem()
     {
-        foreach(var data in skillDataList)
+        foreach(var skill in _skillList)
         {
-            if (data.skillPrefab != null)
-            {
-                //data¿¡ ÇØ´çÇÏ´Â ½ºÅ³ ÇÁ¸®ÆÕÀ» º¹Á¦
-                GameObject skillObject = Instantiate(data.skillPrefab, transform);
-                skillObject.SetActive(false);
-                Skill skillComponent = skillObject.GetComponent<Skill>();
-                if (skillComponent != null)
-                {
-                    skillComponent.Initialize(data);
-                    _skillList.Add(skillComponent);
-                }
-            }
+            // íŒ¨ì‹œë¸Œë©´ íš¨ê³¼ ì ìš©ë§Œ ì‹œí‚¤ê³ 
+            // ì•¡í‹°ë¸Œë©´ ìŠ¬ë¡¯ ë§Œë“¤ì–´ì„œ ì €ì¥ ë° ê´€ë¦¬
+            GameObject go = new GameObject(skill.name + " slot");
+            go.transform.SetParent(transform);
+            go.transform.localPosition = new Vector3(0, 0.5f, 0);
+            SkillSlot slot = go.AddComponent<SkillSlot>();
+            slot.SetSkill(skill);
+            _slotList.Add(slot);
         }
     }
 }

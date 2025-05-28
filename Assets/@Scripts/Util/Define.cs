@@ -1,23 +1,33 @@
 using UnityEngine;
 
-public class Define : MonoBehaviour
+public class Define
 {
+    public static string SkillDictionary = "SkillDictionary";
+
     #region Animator
+    public readonly static int Idle = Animator.StringToHash("Idle");
     public readonly static int Attack = Animator.StringToHash("Attack");
+    public readonly static int Spell = Animator.StringToHash("Spell");
     public readonly static int Speed = Animator.StringToHash("Speed");
     public readonly static int IsAttacking = Animator.StringToHash("IsAttacking");
+    public readonly static int Walk = Animator.StringToHash("Walk");
+
+    public readonly static int CloseAttack = Animator.StringToHash("CloseAttack");
+    public readonly static int LongAttack = Animator.StringToHash("LongAttack");
+
+    public const string EndAttack = "EndAttack";
+    public const string WalkSpeed = "WalkSpeed";
     #endregion
 
     #region Tag
     public const string PlayerTag = "Player";
-    public const string EnemyTag = "Enemy";
     public const string MonsterTag = "Monster";
+    public const string GroundTag = "Ground";
     #endregion
-    #region Animation
-    //public const string Attack = "Attack";
-    public const string EndAttack = "EndAttack";
-    public const string Walk = "Walk";
-    public const string WalkSpeed = "WalkSpeed";
+
+    #region Layer
+    public const string PlayerSkillLayer = "PlayerSkill";
+    public const string MonsterSkillLayer = "MonsterSkill";
     #endregion
 
     #region Path
@@ -29,14 +39,29 @@ public class Define : MonoBehaviour
     #endregion
 
 
-    #region Animator
-    //public readonly static int Attack = Animator.StringToHash("Attack");
-    public readonly static int Speed = Animator.StringToHash("Speed");
-    public readonly static int IsAttacking = Animator.StringToHash("IsAttacking");
-    #endregion
+    #region Enum
+    public enum SkillType
+    {
+        RigidbodyTarget,
+        TransformTarget,
+        AoENonTarget,
+        DirectionNonTarget,
+        Buff,
+    }
 
-    #region Tag
-   // public const string PlayerTag = "Player";
-    public const string EnemyTag = "Enemy";
+    public enum MotionType
+    {
+        None,
+        Sword,
+        Spell,
+    }
+
+    public enum HandlerType
+    {
+        Player,
+        Monster,
+        Skill,
+    }
+
     #endregion
 }
