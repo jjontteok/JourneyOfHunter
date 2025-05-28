@@ -62,5 +62,6 @@ public class Define
         Monster,
         Skill,
     }
+
     #endregion
 }
