@@ -1,4 +1,5 @@
 using System.Collections;
+using System.Runtime.InteropServices.WindowsRuntime;
 using UnityEngine;
 
 public abstract class Skill : MonoBehaviour
@@ -18,7 +19,7 @@ public abstract class Skill : MonoBehaviour
     //실제로 스킬 활성화
     public abstract void ActivateSkill(Transform target = null, Vector3 pos = default);
 
-    //스킬 시전 후 해당 스킬 비활성화
+
     protected IEnumerator DeActivateSkill()
     {
         yield return _skillDurationTime;
