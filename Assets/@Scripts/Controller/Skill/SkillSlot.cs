@@ -11,10 +11,13 @@ public class SkillSlot : MonoBehaviour
 {
     // 스킬 슬롯에는 액티브형 스킬만 저장
     public ActiveSkill _skill;
+
     PlayerController _player;
     Animator _animator;
     Transform _target;
     bool _isTargetExist;
+
+    static bool s_isAttacking;
 
     // 슬롯에 등록된 스킬의 사용 가능 여부
     public bool IsActivatePossible { get; set; }

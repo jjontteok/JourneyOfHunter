@@ -19,7 +19,7 @@ public class SkillSystem : MonoBehaviour
             // 액티브면 슬롯 만들어서 저장 및 관리
             GameObject go = new GameObject(skill.name + " slot");
             go.transform.SetParent(transform);
-            go.transform.localPosition = new Vector3(0, 0.5f, 0);
+            go.transform.localPosition = Vector3.up;
             SkillSlot slot = go.AddComponent<SkillSlot>();
             slot.SetSkill(skill);
             _slotList.Add(slot);

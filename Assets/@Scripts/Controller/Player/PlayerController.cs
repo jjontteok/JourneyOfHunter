@@ -1,5 +1,3 @@
-using System;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class PlayerController : MonoBehaviour
@@ -7,7 +5,12 @@ public class PlayerController : MonoBehaviour
     Animator _animator;
     Rigidbody _rigidbody;
     SkillSystem _skillSystem;
+
+    [SerializeField] PlayerData _playerData;
     [SerializeField] float _speed = 10f;
+
+    // 데이터는 getter만 되도록?
+    public PlayerData PlayerData {  get { return _playerData; } }
 
     void Start()
     {
@@ -28,6 +31,7 @@ public class PlayerController : MonoBehaviour
         _rigidbody = GetComponent<Rigidbody>();
         _skillSystem = GetComponent<SkillSystem>();
         _skillSystem.InitializeSkillSystem();
+
         foreach (var slot in _skillSystem._slotList)
         {
             if (slot._skill.SkillData.skillType == Define.SkillType.RigidbodyTarget || slot._skill.SkillData.skillType == Define.SkillType.TransformTarget)
@@ -54,7 +58,7 @@ public class PlayerController : MonoBehaviour
 
             Vector3 newPos = transform.position;
             newPos.x = Mathf.Clamp(transform.position.x, -23, 23);
-            newPos.z = Mathf.Clamp(transform.position.z, 3, 115f);
+            newPos.z = Mathf.Clamp(transform.position.z, 3, 115);
             transform.position = newPos;
             _animator.SetFloat(Define.Speed, movement.magnitude);
             transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(movement), _speed * Time.deltaTime);
@@ -77,5 +81,15 @@ public class PlayerController : MonoBehaviour
     public void Rotate(Vector3 direction)
     {
         transform.rotation = Quaternion.LookRotation(direction);
+    }
+
+    // * 방어력 적용 데미지 계산 메서드
+    public void GetDamaged(float damage)
+    {
+        float finalDamage = damage / _playerData.Def;
+        _playerData.HP -= finalDamage;
+        Debug.Log($"{name} Damaged: {finalDamage}");
+        //if (_runtimeData.HP <= 0)
+        //    Die();
     }
 }

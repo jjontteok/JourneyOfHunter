@@ -49723,6 +49723,42 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 6701805657714433735, guid: 93503a21174f5d345a804c39bfa48549, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -0.09
+      objectReference: {fileID: 0}
+    - target: {fileID: 6701805657714433735, guid: 93503a21174f5d345a804c39bfa48549, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6701805657714433735, guid: 93503a21174f5d345a804c39bfa48549, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0.48
+      objectReference: {fileID: 0}
+    - target: {fileID: 6701805657714433735, guid: 93503a21174f5d345a804c39bfa48549, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 0.41893986
+      objectReference: {fileID: 0}
+    - target: {fileID: 6701805657714433735, guid: 93503a21174f5d345a804c39bfa48549, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0.8984195
+      objectReference: {fileID: 0}
+    - target: {fileID: 6701805657714433735, guid: 93503a21174f5d345a804c39bfa48549, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0.11931619
+      objectReference: {fileID: 0}
+    - target: {fileID: 6701805657714433735, guid: 93503a21174f5d345a804c39bfa48549, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0.05563805
+      objectReference: {fileID: 0}
+    - target: {fileID: 6701805657714433735, guid: 93503a21174f5d345a804c39bfa48549, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: -130
+      objectReference: {fileID: 0}
+    - target: {fileID: 6701805657714433735, guid: 93503a21174f5d345a804c39bfa48549, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 15.13
+      objectReference: {fileID: 0}
     - target: {fileID: 6774960330786072494, guid: 93503a21174f5d345a804c39bfa48549, type: 3}
       propertyPath: m_IsActive
       value: 1
@@ -49782,6 +49818,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 28f1c29d84f643d4b964504d8392cb12, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _playerData: {fileID: 11400000, guid: 1c54fc02f80dc6f4d9dcc63c5ea6fa47, type: 2}
   _speed: 5
 --- !u!54 &1413979702
 Rigidbody:
@@ -49848,7 +49885,8 @@ MonoBehaviour:
   _skillList:
   - {fileID: 6946743902046210975, guid: 87a957abb03352844ae19c523551ca9f, type: 3}
   - {fileID: -1100704787368900728, guid: d92b0f3e717f551429647b92bfbd6b45, type: 3}
-  - {fileID: 4190966776816026882, guid: fb350613044aeee4dbdce2c44f1758e6, type: 3}
+  - {fileID: 6288289875448804122, guid: e13f201a580a1df43861bc2e9a4ec172, type: 3}
+  - {fileID: 3037770751573809165, guid: 685177b2dc74274498114e497948d1af, type: 3}
   _slotList: []
 --- !u!1 &1422206901
 GameObject:

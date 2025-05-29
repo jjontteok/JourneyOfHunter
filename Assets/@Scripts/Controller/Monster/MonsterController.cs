@@ -134,8 +134,9 @@ public abstract class MonsterController : MonoBehaviour
     // * 방어력 적용 데미지 계산 메서드
     public void GetDamaged(float damage)
     {
-        float finalDamage = damage - _runtimeData.Def > 0 ? damage - _runtimeData.Def : 0;
-        _runtimeData.HP -= damage;
+        float finalDamage = damage / _runtimeData.Def;
+        _runtimeData.HP -= finalDamage;
+        Debug.Log($"{name} Damaged: {finalDamage}");
         //if (_runtimeData.HP <= 0)
         //    Die();
     }

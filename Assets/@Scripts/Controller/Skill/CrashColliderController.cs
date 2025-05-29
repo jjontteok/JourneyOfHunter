@@ -4,12 +4,12 @@ using UnityEngine;
 public class CrashColliderController : MonoBehaviour
 {
     float _damage;
+    float _atk;
     GameObject _effect;
-    //GameObject _connectedSkillPrefab;
     ActiveSkill _connectedSkill;
     ParticleSystem _particle;
 
-    public void SetColliderInfo(float damage, GameObject connectedSkillPrefab, GameObject effect)
+    public void SetColliderInfo(float damage, float atk, GameObject connectedSkillPrefab, GameObject effect)
     {
         _damage = damage;
         if (connectedSkillPrefab != null)
@@ -17,6 +17,7 @@ public class CrashColliderController : MonoBehaviour
             _connectedSkill=Instantiate(connectedSkillPrefab).GetComponent<ActiveSkill>();
             _connectedSkill.gameObject.SetActive(false);
         }
+        _atk = atk;
         _effect = effect;
         _particle = GetComponent<ParticleSystem>();
     }
@@ -59,14 +60,14 @@ public class CrashColliderController : MonoBehaviour
     {
         if (other.CompareTag(Define.PlayerTag))
         {
-            //other.GetComponent<PlayerController>().GetDamaged(_damage);
+            //other.GetComponent<PlayerController>().GetDamaged(_damage * _atk * _atk);
 
             InstantiateHitEffect(other);
             //InstantiateConnectedSkill();
         }
         if (other.CompareTag(Define.MonsterTag))
         {
-            other.GetComponent<MonsterController>().GetDamaged(_damage);
+            other.GetComponent<MonsterController>().GetDamaged(_damage * _atk * _atk);
 
             InstantiateHitEffect(other);
             InstantiateConnectedSkill();

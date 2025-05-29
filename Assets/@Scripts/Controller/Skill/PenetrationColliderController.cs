@@ -4,14 +4,20 @@ using UnityEngine;
 public class PenetrationColliderController : MonoBehaviour
 {
     float _damage;
-    GameObject _connectedSkill;
+    float _atk;
     GameObject _effect;
+    ActiveSkill _connectedSkill;
     ParticleSystem _particle;
 
-    public void SetColliderInfo(float damage, GameObject connectedSkill, GameObject effect)
+    public void SetColliderInfo(float damage, float atk, GameObject connectedSkillPrefab, GameObject effect)
     {
         _damage = damage;
-        _connectedSkill = connectedSkill;
+        if (connectedSkillPrefab != null)
+        {
+            _connectedSkill = Instantiate(connectedSkillPrefab).GetComponent<ActiveSkill>();
+            _connectedSkill.gameObject.SetActive(false);
+        }
+        _atk = atk;
         _effect = effect;
         _particle = GetComponent<ParticleSystem>();
     }
@@ -22,7 +28,7 @@ public class PenetrationColliderController : MonoBehaviour
         {
             GameObject connectedSkill = Instantiate(_connectedSkill);
             connectedSkill.transform.position = transform.position;
-        }            
+        }
     }
 
     void InstantiateHitEffect(Collider other)
@@ -53,13 +59,13 @@ public class PenetrationColliderController : MonoBehaviour
         if (other.CompareTag(Define.PlayerTag))
         {
             //other.GetComponent<PlayerController>().GetDamaged(_damage);
-            
+
             InstantiateHitEffect(other);
             //InstantiateConnectedSkill();
         }
         if (other.CompareTag(Define.MonsterTag))
         {
-            other.GetComponent<MonsterController>().GetDamaged(_damage);
+            other.GetComponent<MonsterController>().GetDamaged(_damage * _atk * _atk);
 
             InstantiateHitEffect(other);
             InstantiateConnectedSkill();

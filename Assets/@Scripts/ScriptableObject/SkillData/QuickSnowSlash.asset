@@ -10,18 +10,18 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: e807fb188ff3a544ba349f772e49f4cc, type: 3}
-  m_Name: RedSlash
+  m_Name: QuickSnowSlash
   m_EditorClassIdentifier: 
-  skillName: RedSlash
-  coolTime: 7
-  durationTime: 2
-  targetDistance: 15
-  damage: 10
-  speed: 20
+  skillName: QuickSnowSlash
+  coolTime: 3
+  durationTime: 1
+  targetDistance: 6
+  damage: 5
+  speed: 0
   force: 0
-  angle: 0
+  angle: 180
   connectedSkillPrefab: {fileID: 0}
-  hitEffectPrefab: {fileID: 5880797563127281583, guid: 9fdefb0a3da64f3438b1a44b600c3cad, type: 3}
-  skillType: 1
+  hitEffectPrefab: {fileID: 6823302871133167919, guid: cd974dacb07f86b4ebe991d1822d05ea, type: 3}
+  skillType: 3
   motionType: 1
   handlerType: 0
