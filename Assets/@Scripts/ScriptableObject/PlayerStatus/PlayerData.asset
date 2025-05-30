@@ -17,6 +17,7 @@ MonoBehaviour:
   Exp: 0
   Atk: 10
   Def: 10
+  Damage: 0
   HP: 100
   HPRecoveryPerSec: 1
   MP: 100

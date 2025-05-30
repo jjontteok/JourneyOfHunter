@@ -22,7 +22,7 @@ public class CrashColliderController : MonoBehaviour
         _particle = GetComponent<ParticleSystem>();
     }
 
-    void InstantiateConnectedSkill()
+    void ActivateConnectedSkill()
     {
         if (_connectedSkill != null)
         {
@@ -60,22 +60,22 @@ public class CrashColliderController : MonoBehaviour
     {
         if (other.CompareTag(Define.PlayerTag))
         {
-            //other.GetComponent<PlayerController>().GetDamaged(_damage * _atk * _atk);
+            other.GetComponent<PlayerController>().GetDamaged(_damage * _atk * _atk);
 
             InstantiateHitEffect(other);
-            //InstantiateConnectedSkill();
+            //ActivateConnectedSkill();
         }
         if (other.CompareTag(Define.MonsterTag))
         {
             other.GetComponent<MonsterController>().GetDamaged(_damage * _atk * _atk);
 
             InstantiateHitEffect(other);
-            InstantiateConnectedSkill();
+            ActivateConnectedSkill();
         }
         // Activate when collide with Ground
         if (other.CompareTag(Define.GroundTag))
         {
-            InstantiateConnectedSkill();
+            ActivateConnectedSkill();
         }
     }
 }

@@ -12,6 +12,15 @@ public class PlayerController : MonoBehaviour
     // 데이터는 getter만 되도록?
     public PlayerData PlayerData {  get { return _playerData; } }
 
+    float _mp;
+    float _hp;
+
+    public float MP
+    {
+        get { return _mp; }
+        set { _mp = value; }
+    }
+
     void Start()
     {
         Initialize();
@@ -21,12 +30,17 @@ public class PlayerController : MonoBehaviour
     {
         Move();
         Attack();
+        Recover();
     }
 
     void Initialize()
     {
+        // Layer 설정
         Physics.IgnoreLayerCollision(LayerMask.NameToLayer(Define.PlayerTag), LayerMask.NameToLayer(Define.PlayerSkillLayer));
         Physics.IgnoreLayerCollision(LayerMask.NameToLayer(Define.MonsterTag), LayerMask.NameToLayer(Define.MonsterSkillLayer));
+
+        _hp = _playerData.HP;
+        _mp = _playerData.MP;
         _animator = GetComponent<Animator>();
         _rigidbody = GetComponent<Rigidbody>();
         _skillSystem = GetComponent<SkillSystem>();
@@ -70,6 +84,20 @@ public class PlayerController : MonoBehaviour
         }
     }
 
+    void Recover()
+    {
+        _hp += _playerData.HPRecoveryPerSec * Time.deltaTime;
+        if(_hp > _playerData.HP)
+        {
+            _hp = _playerData.HP;
+        }
+        _mp += _playerData.MPRecoveryPerSec * Time.deltaTime;
+        if(_mp> _playerData.MP)
+        {
+            _mp = _playerData.MP;
+        }
+    }
+
     public void Attack()
     {
         if (!_animator.GetBool(Define.IsAttacking) && Input.GetMouseButtonDown(0))
@@ -87,8 +115,8 @@ public class PlayerController : MonoBehaviour
     public void GetDamaged(float damage)
     {
         float finalDamage = damage / _playerData.Def;
-        _playerData.HP -= finalDamage;
-        Debug.Log($"{name} Damaged: {finalDamage}");
+        _hp -= finalDamage;
+        Debug.Log($"Damaged: {finalDamage}, Current Player HP: {_hp}");
         //if (_runtimeData.HP <= 0)
         //    Die();
     }

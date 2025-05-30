@@ -16,13 +16,23 @@ public class SkillSystem : MonoBehaviour
         foreach(var skill in _skillList)
         {
             // 패시브면 효과 적용만 시키고
-            // 액티브면 슬롯 만들어서 저장 및 관리
+            // 나중에 추가
             GameObject go = new GameObject(skill.name + " slot");
             go.transform.SetParent(transform);
             go.transform.localPosition = Vector3.up;
-            SkillSlot slot = go.AddComponent<SkillSlot>();
-            slot.SetSkill(skill);
-            _slotList.Add(slot);
+            // 기본 공격이면 기본공격 슬롯 따로 만들어서 저장 및 관리
+            if(skill.SkillData.name== "PlayerBasicAttack")
+            {
+                BasicSkillSlot slot = go.AddComponent<BasicSkillSlot>();
+                slot.SetSkill(skill);
+            }
+                // 액티브면 슬롯 만들어서 저장 및 관리
+            else
+            {
+                SkillSlot slot = go.AddComponent<SkillSlot>();
+                slot.SetSkill(skill);
+                _slotList.Add(slot);
+            }
         }
     }
 }

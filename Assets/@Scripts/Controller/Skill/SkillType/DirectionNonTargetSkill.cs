@@ -20,6 +20,11 @@ public class DirectionNonTargetSkill : NonTargetSkill
     // 스킬 발동 순간, 그 앞의 범위 내에 있는 적들에게 대미지
     public override void ActivateSkill(Transform target = null, Vector3 pos = default)
     {
+        // test
+        if(_skillData.name == "PlayerBasicAttack")
+        {
+            Debug.Log("기본 공격");
+        }
         base.ActivateSkill(null, pos);
 
         // 현재 플레이어가 바라보는 방향 == 스킬 발동 방향

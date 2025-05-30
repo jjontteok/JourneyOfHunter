@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 // 충돌 시 관통 or 유지되어야 하는 스킬의 콜라이더 - TransformTargetSkill, AoENonTargetSkill
@@ -8,6 +9,7 @@ public class PenetrationColliderController : MonoBehaviour
     GameObject _effect;
     ActiveSkill _connectedSkill;
     ParticleSystem _particle;
+    HashSet<GameObject> _damagedObjects = new HashSet<GameObject>();
 
     public void SetColliderInfo(float damage, float atk, GameObject connectedSkillPrefab, GameObject effect)
     {
@@ -22,12 +24,11 @@ public class PenetrationColliderController : MonoBehaviour
         _particle = GetComponent<ParticleSystem>();
     }
 
-    void InstantiateConnectedSkill()
+    void ActivateConnectedSkill()
     {
         if (_connectedSkill != null)
         {
-            GameObject connectedSkill = Instantiate(_connectedSkill);
-            connectedSkill.transform.position = transform.position;
+            _connectedSkill.ActivateSkill(null, transform.position);
         }
     }
 
@@ -56,24 +57,35 @@ public class PenetrationColliderController : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.CompareTag(Define.PlayerTag))
+        if(!_damagedObjects.Contains(other.gameObject))
         {
-            //other.GetComponent<PlayerController>().GetDamaged(_damage);
+            if (other.CompareTag(Define.PlayerTag))
+            {
+                _damagedObjects.Add(other.gameObject);
+                other.GetComponent<PlayerController>().GetDamaged(_damage * _atk * _atk);
 
-            InstantiateHitEffect(other);
-            //InstantiateConnectedSkill();
-        }
-        if (other.CompareTag(Define.MonsterTag))
-        {
-            other.GetComponent<MonsterController>().GetDamaged(_damage * _atk * _atk);
+                InstantiateHitEffect(other);
+                //ActivateConnectedSkill();
+            }
+            if (other.CompareTag(Define.MonsterTag))
+            {
+                _damagedObjects.Add(other.gameObject);
+                other.GetComponent<MonsterController>().GetDamaged(_damage * _atk * _atk);
 
-            InstantiateHitEffect(other);
-            InstantiateConnectedSkill();
+                InstantiateHitEffect(other);
+                ActivateConnectedSkill();
+            }
         }
+        
         // Activate on Ground
-        if (other.CompareTag(Define.GroundTag))
-        {
-            InstantiateConnectedSkill();
-        }
+        //if (other.CompareTag(Define.GroundTag))
+        //{
+        //    ActivateConnectedSkill();
+        //}
+    }
+
+    private void OnDisable()
+    {
+        _damagedObjects.Clear();
     }
 }

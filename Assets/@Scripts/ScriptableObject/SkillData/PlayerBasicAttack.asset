@@ -16,10 +16,11 @@ MonoBehaviour:
   coolTime: 1.5
   durationTime: 1
   targetDistance: 3
-  damage: 10
+  damage: 5
   speed: 0
   force: 0
   angle: 180
+  MP: 0
   connectedSkillPrefab: {fileID: 0}
   hitEffectPrefab: {fileID: 4553287630450876385, guid: f5f7cfb700e6b3e419c0e156473bee3e, type: 3}
   skillType: 3

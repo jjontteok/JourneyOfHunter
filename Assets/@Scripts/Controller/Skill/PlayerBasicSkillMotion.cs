@@ -4,7 +4,7 @@ public class PlayerBasicSkillMotion : MonoBehaviour
 {
     Animator _animator;
 
-    void Start()
+    void Awake()
     {
         Initialize();
     }

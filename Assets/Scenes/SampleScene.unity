@@ -28498,6 +28498,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: CutScene
       objectReference: {fileID: 0}
+    - target: {fileID: 1908923592912387839, guid: 7859966a1d45ff54988aa02672fa9977, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 3918863107682864955, guid: 7859966a1d45ff54988aa02672fa9977, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -49819,7 +49823,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _playerData: {fileID: 11400000, guid: 1c54fc02f80dc6f4d9dcc63c5ea6fa47, type: 2}
-  _speed: 5
+  _speed: 10
 --- !u!54 &1413979702
 Rigidbody:
   m_ObjectHideFlags: 0

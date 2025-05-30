@@ -10,8 +10,8 @@ public class NamedMonsterController : MonsterController
     [SerializeField] private float _closeAttackLimit = 5f;
     [SerializeField] private bool _isMoveToOrigin;
     [SerializeField] private Vector3 _originPos;
-    [SerializeField] private SkillData _explosionSkillData;
-    [SerializeField] private SkillData _bulletSkillData;
+    //[SerializeField] private SkillData _explosionSkillData;
+    //[SerializeField] private SkillData _bulletSkillData;
     [SerializeField] private GameObject _bulletSkillPrefab;
     [SerializeField] private GameObject _explosionSkillPrefab;
 
@@ -21,7 +21,7 @@ public class NamedMonsterController : MonsterController
 
     private RigidbodyTargetSkill _bulletSkill;
 
-    private AoENonTargetSkill _explosionSkill;
+    //private AoENonTargetSkill _explosionSkill;
 
 
     private void Awake()
@@ -44,9 +44,9 @@ public class NamedMonsterController : MonsterController
         _bulletSkill.Initialize();
         _bulletSkill.gameObject.SetActive(false);
 
-        _explosionSkill = Instantiate(_explosionSkillPrefab).GetComponent<AoENonTargetSkill>();
-        _explosionSkill.Initialize();
-        _explosionSkill.gameObject.SetActive(false);
+        //_explosionSkill = Instantiate(_explosionSkillPrefab).GetComponent<AoENonTargetSkill>();
+        //_explosionSkill.Initialize();
+        //_explosionSkill.gameObject.SetActive(false);
 
         //오브젝트 매니저에서 가져올 예정 -> 수정 필요
     }
@@ -148,7 +148,7 @@ public class NamedMonsterController : MonsterController
     //원거리 공격 활성화
     void ActiveLongAttack(float distance)
     {
-        _bulletSkillData.force = distance + 10;
+        //_bulletSkillData.force = distance + 10;
         _animator.SetTrigger(Define.LongAttack);
         _bulletSkill.ActivateSkill(_target.transform, transform.position + Vector3.up * 2);
     }

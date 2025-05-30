@@ -4,7 +4,7 @@ public class AoENonTargetSkill : NonTargetSkill
 {
     PenetrationColliderController _coll;
 
-    void Start()
+    void Awake()
     {
         Initialize();
     }
