@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.UI;
 
 public class PlayerController : MonoBehaviour
 {
@@ -7,10 +8,11 @@ public class PlayerController : MonoBehaviour
     SkillSystem _skillSystem;
 
     [SerializeField] PlayerData _playerData;
-    [SerializeField] float _speed = 10f;
+    [SerializeField] float _speed;
+    [SerializeField] Image _playerMpBar;
 
     // 데이터는 getter만 되도록?
-    public PlayerData PlayerData {  get { return _playerData; } }
+    public PlayerData PlayerData { get { return _playerData; } }
 
     float _mp;
     float _hp;
@@ -18,7 +20,11 @@ public class PlayerController : MonoBehaviour
     public float MP
     {
         get { return _mp; }
-        set { _mp = value; }
+        set
+        {
+            _mp = value;
+            _playerMpBar.fillAmount = _mp / _playerData.MP;
+        }
     }
 
     void Start()
@@ -28,9 +34,15 @@ public class PlayerController : MonoBehaviour
 
     void Update()
     {
-        Move();
-        Attack();
+        //Move();
+        //Attack();
         Recover();
+    }
+
+    private void FixedUpdate()
+    {
+        Move();
+        ClampPosition();
     }
 
     void Initialize()
@@ -43,16 +55,23 @@ public class PlayerController : MonoBehaviour
         _mp = _playerData.MP;
         _animator = GetComponent<Animator>();
         _rigidbody = GetComponent<Rigidbody>();
-        _skillSystem = GetComponent<SkillSystem>();
-        _skillSystem.InitializeSkillSystem();
 
-        foreach (var slot in _skillSystem._slotList)
+        // 기본 공격을 TransformTargetSkill로 쓸 경우 test
+        _skillSystem = GetComponent<SkillSystem>();
+        if(_skillSystem.BasicSkillSlot.Skill.SkillData.skillType==Define.SkillType.TransformTarget)
         {
-            if (slot._skill.SkillData.skillType == Define.SkillType.RigidbodyTarget || slot._skill.SkillData.skillType == Define.SkillType.TransformTarget)
-            {
-                slot._skill.GetComponent<TargetSkill>().OnSkillSet += Rotate;
-            }
+            _skillSystem.BasicSkillSlot.Skill.GetComponent<TargetSkill>().OnSkillSet += Rotate;
         }
+
+        //_skillSystem.InitializeSkillSystem();
+
+        //foreach (var slot in _skillSystem._activeSkillSlotList)
+        //{
+        //    if (slot.SkillData.skillType == Define.SkillType.RigidbodyTarget || slot.SkillData.skillType == Define.SkillType.TransformTarget)
+        //    {
+        //        slot.GetComponent<TargetSkill>().OnSkillSet += Rotate;
+        //    }
+        //}
     }
 
     void Move()
@@ -68,12 +87,8 @@ public class PlayerController : MonoBehaviour
             float h = Input.GetAxis("Horizontal");
             float v = Input.GetAxis("Vertical");
             Vector3 movement = new Vector3(h, 0, v);
-            _rigidbody.MovePosition(_rigidbody.position + movement.normalized * _speed * Time.deltaTime);
-
-            Vector3 newPos = transform.position;
-            newPos.x = Mathf.Clamp(transform.position.x, -23, 23);
-            newPos.z = Mathf.Clamp(transform.position.z, 3, 115);
-            transform.position = newPos;
+            _rigidbody.MovePosition(_rigidbody.position + movement.normalized * _speed * Time.fixedDeltaTime);
+            
             _animator.SetFloat(Define.Speed, movement.magnitude);
             transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(movement), _speed * Time.deltaTime);
         }
@@ -84,17 +99,25 @@ public class PlayerController : MonoBehaviour
         }
     }
 
+    void ClampPosition()
+    {
+        Vector3 newPos = _rigidbody.position;
+        newPos.x = Mathf.Clamp(newPos.x, -23, 23);
+        newPos.z = Mathf.Clamp(newPos.z, 3, 115);
+        _rigidbody.position = newPos;
+    }
+
     void Recover()
     {
         _hp += _playerData.HPRecoveryPerSec * Time.deltaTime;
-        if(_hp > _playerData.HP)
+        if (_hp > _playerData.HP)
         {
             _hp = _playerData.HP;
         }
-        _mp += _playerData.MPRecoveryPerSec * Time.deltaTime;
-        if(_mp> _playerData.MP)
+        MP += _playerData.MPRecoveryPerSec * Time.deltaTime;
+        if (MP > _playerData.MP)
         {
-            _mp = _playerData.MP;
+            MP = _playerData.MP;
         }
     }
 

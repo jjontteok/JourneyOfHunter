@@ -2,31 +2,30 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
-using UnityEngine.Animations;
 
 /// SkillSlot
-/// Target형 스킬들을 보관 및 스킬 쿨타임 관리하는 슬롯
-/// NonTarget형 스킬들은 쿨되면 알아서 발동되므로 필요없을듯(일단은)
 public class SkillSlot : MonoBehaviour
 {
     // 스킬 슬롯에는 액티브형 스킬만 저장
-    public ActiveSkill _skill;
+    protected ActiveSkill _skill;
+    protected PlayerController _player;
 
-    PlayerController _player;
     Transform _target;
     bool _isTargetExist;
-    bool _isBasicSkill;
-
-    static bool s_isAttacking;
 
     // 슬롯에 등록된 스킬의 사용 가능 여부
     public bool IsActivatePossible { get; set; }
+
+    public SkillData SkillData
+    {
+        get { return _skill.SkillData; }
+    }
 
     private void Awake()
     {
         Initialize();
     }
-    protected virtual void Initialize()
+    void Initialize()
     {
         // 나중에 게임매니저에서 가져오든지 할 예정
         _player = FindAnyObjectByType<PlayerController>();
@@ -36,8 +35,9 @@ public class SkillSlot : MonoBehaviour
     // 처음 슬롯 생성 시 스킬 등록
     public void SetSkill(Skill skill)
     {
-        // 맨 처음엔 사용 가능한 상태
-        IsActivatePossible = true;
+        // 맨 처음에 약간의 딜레이 제공
+        StartCoroutine(CoStartCoolTime(0.5f));
+
         _skill = Instantiate(skill).GetComponent<ActiveSkill>();
 
         // 타겟이 필요한 스킬인지 아닌지 체크
@@ -49,72 +49,81 @@ public class SkillSlot : MonoBehaviour
         {
             _isTargetExist = false;
         }
-        if (_skill.SkillData.name == "PlayerBasicAttack")
-        {
-            _isBasicSkill = true;
-        }
-        else
-        {
-            _isBasicSkill = false;
-        }
         _skill.Initialize();
         _skill.gameObject.SetActive(false);
     }
 
-    IEnumerator CoStartCoolTime()
+    protected IEnumerator CoStartCoolTime(float time = default)
     {
-        yield return new WaitForSeconds(_skill.SkillData.coolTime);
-        IsActivatePossible = true;
-        s_isAttacking = false;
-    }
-
-    private void Update()
-    {
-        // 기본 공격이 아닌, 스킬 슬롯인 경우
-        if (!_isBasicSkill)
+        if (time == default)
         {
-            // 쿨타임 초기화되어 스킬 사용 가능한지, 플레이어의 마나가 충분한지 체크
-            if (IsActivatePossible && _player.MP >= _skill.SkillData.MP)
-            {
-                // Target형 스킬인 경우
-                if (_isTargetExist)
-                {
-                    // 가장 가까운 타겟을 탐색하고, 있으면 스킬 발동
-                    _target = GetNearestTarget(_skill.SkillData.targetDistance)?.transform;
-                    if (_target != null)
-                    {
-                        ActivateSlotSkill(_target);
-                    }
-                }
-                // Target형 스킬이 아닌 경우
-                else
-                {
-                    ActivateSlotSkill();
-                }
-                _player.MP = Mathf.Max(_player.MP - _skill.SkillData.MP, 0);
-                Debug.Log($"Current Player MP: {_player.MP}");
-            }
+            yield return new WaitForSeconds(_skill.SkillData.coolTime);
         }
-        // 기본 공격 슬롯인 경우
         else
         {
-            // 기본 공격 중이지 않고, 다른 스킬들이 시전 중이지 않을 때
-            if (IsActivatePossible && !s_isAttacking)
-            {
-                ActivateSlotSkill();
-            }
+            yield return new WaitForSeconds(time);
         }
-
+        IsActivatePossible = true;
     }
 
-    void ActivateSlotSkill(Transform target = null)
+    //private void Update()
+    //{
+    //    // 쿨타임 초기화되어 스킬 사용 가능한지, 플레이어의 마나가 충분한지 체크
+    //    if (IsActivatePossible && _player.MP >= _skill.SkillData.MP)
+    //    {
+    //        // Target형 스킬인 경우
+    //        if (_isTargetExist)
+    //        {
+    //            // 가장 가까운 타겟을 탐색하고, 있으면 스킬 발동
+    //            _target = GetNearestTarget(_skill.SkillData.targetDistance)?.transform;
+    //            if (_target != null)
+    //            {
+    //                ActivateSlotSkill(_target);
+    //            }
+    //        }
+    //        // Target형 스킬이 아닌 경우
+    //        else
+    //        {
+    //            ActivateSlotSkill();
+    //        }
+    //        _player.MP = Mathf.Max(_player.MP - _skill.SkillData.MP, 0);
+    //        Debug.Log($"Skill Name: {_skill.name}Current Player MP: {_player.MP}");
+    //    }
+    //}
+
+    public virtual void ActivateSlotSkill()
     {
+        if (IsActivatePossible && _player.MP >= _skill.SkillData.MP)
+        {
+            // Target형 스킬인 경우
+            if (_isTargetExist)
+            {
+                // 가장 가까운 타겟을 탐색하고, 있으면 스킬 발동
+                _target = GetNearestTarget(_skill.SkillData.targetDistance)?.transform;
+                if (_target != null)
+                {
+                    ProcessSkill(_target);
+                }
+            }
+            // Target형 스킬이 아닌 경우
+            else
+            {
+                ProcessSkill();
+            }
+        }
+    }
+
+    // 스킬 발동 & 마나 계산 & 쿨타임 시작
+    void ProcessSkill(Transform target = null)
+    {
+        _skill.ActivateSkill(_target, transform.position);
+        _player.MP = Mathf.Max(_player.MP - _skill.SkillData.MP, 0);
+        //Debug.Log($"Skill Name: {_skill.name} Current Player MP: {_player.MP}");
         IsActivatePossible = false;
-        _skill.ActivateSkill(target, transform.position);
         StartCoroutine(CoStartCoolTime());
     }
 
-    GameObject GetNearestTarget(float distance)
+    protected GameObject GetNearestTarget(float distance)
     {
         if (_player == null)
             _player = FindAnyObjectByType<PlayerController>();

@@ -14,9 +14,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   skillName: QuickSnowSlash
   coolTime: 3
-  durationTime: 1
+  durationTime: 0.9
   targetDistance: 6
-  damage: 5
+  damage: 3
   speed: 0
   force: 0
   angle: 180

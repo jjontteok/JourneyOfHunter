@@ -6,12 +6,13 @@ public class PenetrationColliderController : MonoBehaviour
 {
     float _damage;
     float _atk;
+    float _angle;
     GameObject _effect;
     ActiveSkill _connectedSkill;
     ParticleSystem _particle;
     HashSet<GameObject> _damagedObjects = new HashSet<GameObject>();
 
-    public void SetColliderInfo(float damage, float atk, GameObject connectedSkillPrefab, GameObject effect)
+    public void SetColliderInfo(float damage, float atk, GameObject connectedSkillPrefab, GameObject effect, float angle = default)
     {
         _damage = damage;
         if (connectedSkillPrefab != null)
@@ -22,6 +23,7 @@ public class PenetrationColliderController : MonoBehaviour
         _atk = atk;
         _effect = effect;
         _particle = GetComponent<ParticleSystem>();
+        _angle = angle;
     }
 
     void ActivateConnectedSkill()
@@ -46,6 +48,57 @@ public class PenetrationColliderController : MonoBehaviour
         Destroy(effect, 0.5f);
     }
 
+    private void OnTriggerEnter(Collider other)
+    {
+        if(!_damagedObjects.Contains(other.gameObject))
+        {
+            if (other.CompareTag(Define.PlayerTag))
+            {
+                // angle 값이 없거나, 있는데 콜라이더가 각도 내에 있을 경우 대미지
+                if (_angle == 0f || (_angle > 0 && IsColliderInRange(other)))
+                {
+                    _damagedObjects.Add(other.gameObject);
+                    other.GetComponent<PlayerController>().GetDamaged(_damage * _atk * _atk);
+
+                    InstantiateHitEffect(other);
+                    //ActivateConnectedSkill();
+                }
+            }
+            if (other.CompareTag(Define.MonsterTag))
+            {
+                if (_angle == 0f || (_angle > 0 && IsColliderInRange(other)))
+                {
+                    _damagedObjects.Add(other.gameObject);
+                    other.GetComponent<MonsterController>().GetDamaged(_damage * _atk * _atk);
+
+                    InstantiateHitEffect(other);
+                    ActivateConnectedSkill();
+                }                   
+            }
+        }
+        
+        // Activate on Ground
+        //if (other.CompareTag(Define.GroundTag))
+        //{
+        //    ActivateConnectedSkill();
+        //}
+    }
+
+    // 콜라이더가 부채꼴 내에 있는지 판별
+    bool IsColliderInRange(Collider collider)
+    {
+        Vector3 toMonster = (collider.transform.position - transform.position).normalized;
+        float degree = GetAngleBetweenDirections(toMonster, transform.forward);
+        if (degree <= _angle / 2)
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+    }
+
     Vector3 GetEffectPosition(Collider other)
     {
         float height = other.GetComponent<CapsuleCollider>().height;
@@ -55,33 +108,12 @@ public class PenetrationColliderController : MonoBehaviour
         return pos;
     }
 
-    private void OnTriggerEnter(Collider other)
+    // Get angle between two normalized vectors
+    float GetAngleBetweenDirections(Vector3 from, Vector3 to)
     {
-        if(!_damagedObjects.Contains(other.gameObject))
-        {
-            if (other.CompareTag(Define.PlayerTag))
-            {
-                _damagedObjects.Add(other.gameObject);
-                other.GetComponent<PlayerController>().GetDamaged(_damage * _atk * _atk);
-
-                InstantiateHitEffect(other);
-                //ActivateConnectedSkill();
-            }
-            if (other.CompareTag(Define.MonsterTag))
-            {
-                _damagedObjects.Add(other.gameObject);
-                other.GetComponent<MonsterController>().GetDamaged(_damage * _atk * _atk);
-
-                InstantiateHitEffect(other);
-                ActivateConnectedSkill();
-            }
-        }
-        
-        // Activate on Ground
-        //if (other.CompareTag(Define.GroundTag))
-        //{
-        //    ActivateConnectedSkill();
-        //}
+        float dot = Vector3.Dot(from, to);
+        float degree = Mathf.Acos(dot) * Mathf.Rad2Deg;
+        return degree;
     }
 
     private void OnDisable()
