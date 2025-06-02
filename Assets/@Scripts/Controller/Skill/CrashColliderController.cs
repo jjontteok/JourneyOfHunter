@@ -1,15 +1,16 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 // 충돌 시 사라져야 하는 스킬 오브젝트의 콜라이더 - RigidbodyTargetSkill
 public class CrashColliderController : MonoBehaviour
 {
     float _damage;
+    float _atk;
     GameObject _effect;
-    //GameObject _connectedSkillPrefab;
     ActiveSkill _connectedSkill;
     ParticleSystem _particle;
 
-    public void SetColliderInfo(float damage, GameObject connectedSkillPrefab, GameObject effect)
+    public void SetColliderInfo(float damage, float atk, GameObject connectedSkillPrefab, GameObject effect)
     {
         _damage = damage;
         if (connectedSkillPrefab != null)
@@ -17,11 +18,12 @@ public class CrashColliderController : MonoBehaviour
             _connectedSkill=Instantiate(connectedSkillPrefab).GetComponent<ActiveSkill>();
             _connectedSkill.gameObject.SetActive(false);
         }
+        _atk = atk;
         _effect = effect;
         _particle = GetComponent<ParticleSystem>();
     }
 
-    void InstantiateConnectedSkill()
+    void ActivateConnectedSkill()
     {
         if (_connectedSkill != null)
         {
@@ -59,22 +61,26 @@ public class CrashColliderController : MonoBehaviour
     {
         if (other.CompareTag(Define.PlayerTag))
         {
-            //other.GetComponent<PlayerController>().GetDamaged(_damage);
+            other.GetComponent<PlayerController>().GetDamaged(_damage);
 
             InstantiateHitEffect(other);
-            //InstantiateConnectedSkill();
+            //ActivateConnectedSkill();
+            Vector3 pos = other.transform.position + new Vector3(0, other.bounds.center.y * 2, 0);
+            DamageTextEvent.Invoke(pos, _damage, false);
         }
         if (other.CompareTag(Define.MonsterTag))
         {
             other.GetComponent<MonsterController>().GetDamaged(_damage);
 
             InstantiateHitEffect(other);
-            InstantiateConnectedSkill();
+            ActivateConnectedSkill();            
+            Vector3 pos = other.transform.position + new Vector3(0, other.bounds.center.y * 2, 0);
+            DamageTextEvent.Invoke(pos, _damage, false);
         }
         // Activate when collide with Ground
         if (other.CompareTag(Define.GroundTag))
         {
-            InstantiateConnectedSkill();
+            ActivateConnectedSkill();
         }
     }
 }

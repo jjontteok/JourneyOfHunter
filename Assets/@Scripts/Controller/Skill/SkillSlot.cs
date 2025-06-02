@@ -2,36 +2,42 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
-using UnityEngine.Animations;
 
 /// SkillSlot
-/// Target형 스킬들을 보관 및 스킬 쿨타임 관리하는 슬롯
-/// NonTarget형 스킬들은 쿨되면 알아서 발동되므로 필요없을듯(일단은)
 public class SkillSlot : MonoBehaviour
 {
     // 스킬 슬롯에는 액티브형 스킬만 저장
-    public ActiveSkill _skill;
-    PlayerController _player;
-    Animator _animator;
+    protected ActiveSkill _skill;
+    protected PlayerController _player;
+
     Transform _target;
     bool _isTargetExist;
 
     // 슬롯에 등록된 스킬의 사용 가능 여부
     public bool IsActivatePossible { get; set; }
 
+    public SkillData SkillData
+    {
+        get { return _skill.SkillData; }
+    }
+
     private void Awake()
+    {
+        Initialize();
+    }
+    void Initialize()
     {
         // 나중에 게임매니저에서 가져오든지 할 예정
         _player = FindAnyObjectByType<PlayerController>();
-        _animator = _player.GetComponent<Animator>();
         IsActivatePossible = false;
     }
 
     // 처음 슬롯 생성 시 스킬 등록
     public void SetSkill(Skill skill)
     {
-        // 맨 처음엔 사용 가능한 상태
-        IsActivatePossible = true;
+        // 맨 처음에 약간의 딜레이 제공
+        StartCoroutine(CoStartCoolTime(0.5f));
+
         _skill = Instantiate(skill).GetComponent<ActiveSkill>();
 
         // 타겟이 필요한 스킬인지 아닌지 체크
@@ -45,20 +51,49 @@ public class SkillSlot : MonoBehaviour
         }
         _skill.Initialize();
         _skill.gameObject.SetActive(false);
-        // 스킬 오브젝트 생성되면 활성화
+    }
+
+    protected IEnumerator CoStartCoolTime(float time = default)
+    {
+        if (time == default)
+        {
+            yield return new WaitForSeconds(_skill.SkillData.coolTime);
+        }
+        else
+        {
+            yield return new WaitForSeconds(time);
+        }
         IsActivatePossible = true;
     }
 
-    public IEnumerator CoStartCoolTime()
-    {
-        yield return new WaitForSeconds(_skill.SkillData.coolTime);
-        IsActivatePossible = true;
-    }
+    //private void Update()
+    //{
+    //    // 쿨타임 초기화되어 스킬 사용 가능한지, 플레이어의 마나가 충분한지 체크
+    //    if (IsActivatePossible && _player.MP >= _skill.SkillData.MP)
+    //    {
+    //        // Target형 스킬인 경우
+    //        if (_isTargetExist)
+    //        {
+    //            // 가장 가까운 타겟을 탐색하고, 있으면 스킬 발동
+    //            _target = GetNearestTarget(_skill.SkillData.targetDistance)?.transform;
+    //            if (_target != null)
+    //            {
+    //                ActivateSlotSkill(_target);
+    //            }
+    //        }
+    //        // Target형 스킬이 아닌 경우
+    //        else
+    //        {
+    //            ActivateSlotSkill();
+    //        }
+    //        _player.MP = Mathf.Max(_player.MP - _skill.SkillData.MP, 0);
+    //        Debug.Log($"Skill Name: {_skill.name}Current Player MP: {_player.MP}");
+    //    }
+    //}
 
-    private void Update()
+    public virtual void ActivateSlotSkill()
     {
-        // 쿨타임 초기화되어 스킬 사용 가능한 경우
-        if (IsActivatePossible)
+        if (IsActivatePossible && _player.MP >= _skill.SkillData.MP)
         {
             // Target형 스킬인 경우
             if (_isTargetExist)
@@ -67,46 +102,28 @@ public class SkillSlot : MonoBehaviour
                 _target = GetNearestTarget(_skill.SkillData.targetDistance)?.transform;
                 if (_target != null)
                 {
-                    IsActivatePossible = false;
-                    _skill.ActivateSkill(_target, transform.position);
-                    //SetAnimator(_bulletSkill.SkillData.motionType);
-                    StartCoroutine(CoStartCoolTime());
+                    ProcessSkill(_target);
                 }
             }
             // Target형 스킬이 아닌 경우
             else
             {
-                IsActivatePossible = false;
-                _skill.ActivateSkill(null, transform.position);
-                //SetAnimator(_bulletSkill.SkillData.motionType);
-                StartCoroutine(CoStartCoolTime());
+                ProcessSkill();
             }
         }
     }
 
-    void SetAnimator(Define.MotionType motionType)
+    // 스킬 발동 & 마나 계산 & 쿨타임 시작
+    void ProcessSkill(Transform target = null)
     {
-        switch (motionType)
-        {
-            case Define.MotionType.Sword:
-                // 공격 모션 중일 경우 모션은 생략
-                if (!_animator.GetBool(Define.IsAttacking))
-                {
-                    _animator.SetTrigger(Define.Attack);
-                }
-                break;
-            case Define.MotionType.Spell:
-                if (!_animator.GetBool(Define.IsAttacking))
-                {
-                    _animator.SetTrigger(Define.Spell);
-                }
-                break;
-            default:
-                break;
-        }
+        _skill.ActivateSkill(_target, transform.position);
+        _player.MP = Mathf.Max(_player.MP - _skill.SkillData.MP, 0);
+        //Debug.Log($"Skill Name: {_skill.name} Current Player MP: {_player.MP}");
+        IsActivatePossible = false;
+        StartCoroutine(CoStartCoolTime());
     }
 
-    GameObject GetNearestTarget(float distance)
+    protected GameObject GetNearestTarget(float distance)
     {
         if (_player == null)
             _player = FindAnyObjectByType<PlayerController>();

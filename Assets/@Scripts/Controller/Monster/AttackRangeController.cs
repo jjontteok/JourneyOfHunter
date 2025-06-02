@@ -28,7 +28,7 @@ public class AttackRangeController : MonoBehaviour
         //Debug.Log($"충돌 발생: {other.name}, 태그: {other.tag}, 기대 태그: {Define.PlayerTag}");
         if(other.CompareTag(Define.PlayerTag))
         {
-            Debug.Log("충돌");
+            //Debug.Log("충돌");
             OnAttack.Invoke();
         }
     }

@@ -7,6 +7,7 @@ public abstract class Skill : MonoBehaviour
     [SerializeField] protected SkillData _skillData;
     protected WaitForSeconds _skillCoolTime;
     protected WaitForSeconds _skillDurationTime;
+    protected PlayerController _playerController;
 
     public SkillData SkillData {  get { return _skillData; } }
 
@@ -14,6 +15,7 @@ public abstract class Skill : MonoBehaviour
     {
         _skillCoolTime = new WaitForSeconds(_skillData.coolTime);
         _skillDurationTime = new WaitForSeconds(_skillData.durationTime);
+        _playerController = FindAnyObjectByType<PlayerController>();
     }
 
     //실제로 스킬 활성화
