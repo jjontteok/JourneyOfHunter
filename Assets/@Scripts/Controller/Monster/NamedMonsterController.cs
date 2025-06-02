@@ -37,7 +37,7 @@ public class NamedMonsterController : MonsterController
 
     private void Start()
     {
-        _bulletSkill = Instantiate(ObjectManager.Instance.MonsterSkillResourceList[_bulletSkillData.name]).
+        _bulletSkill = Instantiate(ObjectManager.Instance.MonsterSkillResourceList[_bulletSkillData.skillName]).
             GetComponent<RigidbodyTargetSkill>();
         _bulletSkill.Initialize();
         _bulletSkill.gameObject.SetActive(false);

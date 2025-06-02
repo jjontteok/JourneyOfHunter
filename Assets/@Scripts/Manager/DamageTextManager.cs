@@ -2,7 +2,7 @@ using NUnit.Framework;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class DamageTextManager : Singleton<DamageTextManager>
+public class DamageTextManager : Singleton<DamageTextManager>, IEventSubscriber, IDeactivateObject
 {
     private Dictionary<string, GameObject> _damageTextList;
     [SerializeField] private Canvas _canvas;
@@ -10,6 +10,7 @@ public class DamageTextManager : Singleton<DamageTextManager>
     protected override void Initialize()
     {
         _damageTextList = new Dictionary<string, GameObject>();
+        _canvas = GameObject.Find("UI_Game").GetComponent<Canvas>();
     }
 
     public void Subscribe()
