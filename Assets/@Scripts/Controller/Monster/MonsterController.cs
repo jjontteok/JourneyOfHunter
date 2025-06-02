@@ -69,14 +69,12 @@ public abstract class MonsterController : MonoBehaviour
         _target = GameObject.Find(Define.PlayerTag);
 
         GameObject attackRange = new GameObject("AttackRange");
+        attackRange.layer = LayerMask.NameToLayer(Define.MonsterAttackRangeLayer);
         attackRange.transform.parent = this.gameObject.transform;
         _attackRangeController = attackRange.GetOrAddComponent<AttackRangeController>();
         _attackRangeController.Initialize(_runtimeData.AttackRange);
         _attackRangeController.OnAttack += Attack;
         _attackRangeController.OffAttack += EndAttack;
-
-        Physics.IgnoreLayerCollision(LayerMask.NameToLayer(Define.PlayerTag), LayerMask.NameToLayer(Define.PlayerSkillLayer));
-        Physics.IgnoreLayerCollision(LayerMask.NameToLayer(Define.MonsterTag), LayerMask.NameToLayer(Define.MonsterSkillLayer));
     }
 
     // 타겟 이동 메서드
@@ -134,10 +132,16 @@ public abstract class MonsterController : MonoBehaviour
     // * 방어력 적용 데미지 계산 메서드
     public void GetDamaged(float damage)
     {
-        float finalDamage = damage - _runtimeData.Def > 0 ? damage - _runtimeData.Def : 0;
-        _runtimeData.HP -= damage;
+        float finalDamage = CalculateFinalDamage(damage, _runtimeData.Def);
+        _runtimeData.HP -= finalDamage;
+        Debug.Log($"{name} Damaged: {finalDamage}");
         //if (_runtimeData.HP <= 0)
         //    Die();
+    }
+
+    float CalculateFinalDamage(float damage, float def)
+    {
+        return damage * (1 - def / Define.MaxDef);
     }
 
     // * 사망 메서드

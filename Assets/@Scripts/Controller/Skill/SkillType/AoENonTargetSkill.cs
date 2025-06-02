@@ -4,7 +4,7 @@ public class AoENonTargetSkill : NonTargetSkill
 {
     PenetrationColliderController _coll;
 
-    void Start()
+    void Awake()
     {
         Initialize();
     }
@@ -13,6 +13,6 @@ public class AoENonTargetSkill : NonTargetSkill
     {
         base.Initialize();
         _coll = GetComponentInChildren<PenetrationColliderController>();
-        _coll.SetColliderInfo(_skillData.damage, _skillData.connectedSkillPrefab, _skillData.hitEffectPrefab);
+        _coll.SetColliderInfo(_skillData.damage, _playerController.PlayerData.Atk, _skillData.connectedSkillPrefab, _skillData.hitEffectPrefab);
     }
 }
