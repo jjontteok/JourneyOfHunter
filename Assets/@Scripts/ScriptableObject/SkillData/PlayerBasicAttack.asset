@@ -16,7 +16,7 @@ MonoBehaviour:
   coolTime: 1.5
   durationTime: 1
   targetDistance: 3
-  damage: 1
+  damage: 3
   speed: 0
   force: 0
   angle: 180

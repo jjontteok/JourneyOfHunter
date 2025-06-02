@@ -7,7 +7,7 @@ using UnityEngine;
 public class SkillSystem : MonoBehaviour
 {
     //플레이어의 스킬 리스트 - 스킬 슬롯
-    [SerializeField] List<Skill> _skillList = new List<Skill>();
+    List<Skill> _skillList = new List<Skill>();
 
     // 스킬 슬롯 리스트 - 액티브형 스킬 보관 슬롯
     List<SkillSlot> _activeSkillSlotList = new List<SkillSlot>();
@@ -21,12 +21,18 @@ public class SkillSystem : MonoBehaviour
 
     private void Awake()
     {
-        InitializeSkillSystem();
+        //InitializeSkillSystem();
     }
 
-    void InitializeSkillSystem()
+    public void InitializeSkillSystem()
     {
         _player = FindAnyObjectByType<PlayerController>();
+
+        Dictionary<string, GameObject> skillList = ObjectManager.Instance.PlayerSkillResourceList;
+        foreach (var skillObject in skillList)
+        {
+            _skillList.Add(skillObject.Value.GetComponent<Skill>());
+        }
 
         foreach (var skill in _skillList)
         {

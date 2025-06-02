@@ -33,7 +33,7 @@ public class DirectionNonTargetSkill : NonTargetSkill
             Debug.Log(collider.name);
             if (IsColliderInRange(collider))
             {
-                collider.GetComponent<MonsterController>().GetDamaged(_skillData.damage * _playerController.PlayerData.Atk * _playerController.PlayerData.Atk);
+                collider.GetComponent<MonsterController>().GetDamaged(_skillData.damage);
                 GameObject effect = Instantiate(_skillData.hitEffectPrefab, GetEffectPosition(collider), Quaternion.identity);
                 Destroy(effect, 0.5f);
             }

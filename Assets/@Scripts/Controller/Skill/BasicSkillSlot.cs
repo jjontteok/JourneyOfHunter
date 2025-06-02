@@ -15,6 +15,10 @@ public class BasicSkillSlot : SkillSlot
                 if (target != null)
                 {
                     _skill.ActivateSkill(target, transform.position);
+
+                    Debug.Log("기본 공격 발동");
+                    IsActivatePossible = false;
+                    StartCoroutine(CoStartCoolTime());
                 }
             }
 
@@ -22,11 +26,11 @@ public class BasicSkillSlot : SkillSlot
             else if (_skill.SkillData.skillType == Define.SkillType.DirectionNonTarget)
             {
                 _skill.ActivateSkill(null, transform.position);
-            }
 
-            Debug.Log("기본 공격 발동");
-            IsActivatePossible = false;
-            StartCoroutine(CoStartCoolTime());
+                Debug.Log("기본 공격 발동");
+                IsActivatePossible = false;
+                StartCoroutine(CoStartCoolTime());
+            }
         }
     }
 

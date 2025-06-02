@@ -9,6 +9,7 @@ public class PlayerController : MonoBehaviour
 
     [SerializeField] PlayerData _playerData;
     [SerializeField] float _speed;
+
     [SerializeField] Image _playerMpBar;
 
     // 데이터는 getter만 되도록?
@@ -47,10 +48,6 @@ public class PlayerController : MonoBehaviour
 
     void Initialize()
     {
-        // Layer 설정
-        Physics.IgnoreLayerCollision(LayerMask.NameToLayer(Define.PlayerTag), LayerMask.NameToLayer(Define.PlayerSkillLayer));
-        Physics.IgnoreLayerCollision(LayerMask.NameToLayer(Define.MonsterTag), LayerMask.NameToLayer(Define.MonsterSkillLayer));
-
         _hp = _playerData.HP;
         _mp = _playerData.MP;
         _animator = GetComponent<Animator>();
@@ -58,6 +55,7 @@ public class PlayerController : MonoBehaviour
 
         // 기본 공격을 TransformTargetSkill로 쓸 경우 test
         _skillSystem = GetComponent<SkillSystem>();
+        _skillSystem.InitializeSkillSystem();
         if(_skillSystem.BasicSkillSlot.Skill.SkillData.skillType==Define.SkillType.TransformTarget)
         {
             _skillSystem.BasicSkillSlot.Skill.GetComponent<TargetSkill>().OnSkillSet += Rotate;
@@ -137,10 +135,15 @@ public class PlayerController : MonoBehaviour
     // * 방어력 적용 데미지 계산 메서드
     public void GetDamaged(float damage)
     {
-        float finalDamage = damage / _playerData.Def;
+        float finalDamage = CalculateFinalDamage(damage, _playerData.Def);
         _hp -= finalDamage;
         Debug.Log($"Damaged: {finalDamage}, Current Player HP: {_hp}");
         //if (_runtimeData.HP <= 0)
         //    Die();
+    }
+
+    float CalculateFinalDamage(float damage, float def)
+    {
+        return damage * (1 - def / Define.MaxDef);
     }
 }

@@ -41,10 +41,10 @@ public class PenetrationColliderController : MonoBehaviour
 
         effect.transform.position = GetEffectPosition(other);
 
-        if (_particle != null)
-        {
-            _particle.Play();
-        }
+        //if (_particle != null)
+        //{
+        //    _particle.Play();
+        //}
         Destroy(effect, 0.5f);
     }
 
@@ -58,10 +58,12 @@ public class PenetrationColliderController : MonoBehaviour
                 if (_angle == 0f || (_angle > 0 && IsColliderInRange(other)))
                 {
                     _damagedObjects.Add(other.gameObject);
-                    other.GetComponent<PlayerController>().GetDamaged(_damage * _atk * _atk);
+                    other.GetComponent<PlayerController>().GetDamaged(_damage);
 
                     InstantiateHitEffect(other);
                     //ActivateConnectedSkill();
+                    Vector3 pos = other.transform.position + new Vector3(0, other.bounds.center.y * 2, 0);
+                    DamageTextEvent.Invoke(pos, _damage, false);
                 }
             }
             if (other.CompareTag(Define.MonsterTag))
@@ -69,10 +71,12 @@ public class PenetrationColliderController : MonoBehaviour
                 if (_angle == 0f || (_angle > 0 && IsColliderInRange(other)))
                 {
                     _damagedObjects.Add(other.gameObject);
-                    other.GetComponent<MonsterController>().GetDamaged(_damage * _atk * _atk);
+                    other.GetComponent<MonsterController>().GetDamaged(_damage);
 
                     InstantiateHitEffect(other);
                     ActivateConnectedSkill();
+                    Vector3 pos = other.transform.position + new Vector3(0, other.bounds.center.y * 2, 0);
+                    DamageTextEvent.Invoke(pos, _damage, false);
                 }                   
             }
         }

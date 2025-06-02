@@ -46,6 +46,6 @@ public class CutSceneController : MonoBehaviour
     {
         Destroy(_monsterAppearEffect);
         _virtualCamera.SetActive(false);
-        _mainCamera.transform.rotation = Quaternion.Euler(new Vector3(14, 0, 0));
+        _mainCamera.transform.rotation = Quaternion.Euler(new Vector3(15, 0, 0));
     }
 }

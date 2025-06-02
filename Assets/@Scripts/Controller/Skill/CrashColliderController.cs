@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 // 충돌 시 사라져야 하는 스킬 오브젝트의 콜라이더 - RigidbodyTargetSkill
@@ -60,17 +61,21 @@ public class CrashColliderController : MonoBehaviour
     {
         if (other.CompareTag(Define.PlayerTag))
         {
-            other.GetComponent<PlayerController>().GetDamaged(_damage * _atk * _atk);
+            other.GetComponent<PlayerController>().GetDamaged(_damage);
 
             InstantiateHitEffect(other);
             //ActivateConnectedSkill();
+            Vector3 pos = other.transform.position + new Vector3(0, other.bounds.center.y * 2, 0);
+            DamageTextEvent.Invoke(pos, _damage, false);
         }
         if (other.CompareTag(Define.MonsterTag))
         {
-            other.GetComponent<MonsterController>().GetDamaged(_damage * _atk * _atk);
+            other.GetComponent<MonsterController>().GetDamaged(_damage);
 
             InstantiateHitEffect(other);
-            ActivateConnectedSkill();
+            ActivateConnectedSkill();            
+            Vector3 pos = other.transform.position + new Vector3(0, other.bounds.center.y * 2, 0);
+            DamageTextEvent.Invoke(pos, _damage, false);
         }
         // Activate when collide with Ground
         if (other.CompareTag(Define.GroundTag))
