@@ -20,6 +20,7 @@ public class CutSceneController : MonoBehaviour
     {
         _playableDirector = GetComponent<PlayableDirector>();
         _playableDirector.stopped += FinishCutScene;
+        _mainCamera = Camera.main;
     }
 
     private void Start()
@@ -29,11 +30,8 @@ public class CutSceneController : MonoBehaviour
         PlayCutScene();
     }
 
-    void PlayCutScene()
+    public void PlayCutScene()
     {
-        //던전 매니저 스크립트를 받아오면
-        //Find로 찾는 게 아니라 던전 매니저의 인스턴스에 있는 네임드 몬스터의 스폰 위치를 가져와서
-        //사용할 예정(매개변수로) -> 추후 변경 필요
         GameObject monster = GameObject.FindGameObjectWithTag(Define.MonsterTag);
         _monsterAppearEffect.transform.position = monster.transform.position;
         _monsterAppearEffect.SetActive(true);
@@ -41,7 +39,6 @@ public class CutSceneController : MonoBehaviour
         _playableDirector.Play();
     }
 
-    //컷신이 끝나면 자동으로 호출될 함수
     void FinishCutScene(PlayableDirector pd)
     {
         Destroy(_monsterAppearEffect);
