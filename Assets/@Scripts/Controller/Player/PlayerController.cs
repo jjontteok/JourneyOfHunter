@@ -6,15 +6,12 @@ public class PlayerController : MonoBehaviour
 {
     Animator _animator;
     Rigidbody _rigidbody;
+    SkillSystem _skillSystem;
     [SerializeField] float _speed = 10f;
-    //public GameObject stepRayUpper;
-    //public GameObject stepRayLower;
-    float stepSmooth = 0.1f;
 
     void Start()
     {
-        _animator = GetComponent<Animator>();
-        _rigidbody = GetComponent<Rigidbody>();
+        Initialize();
     }
 
     void Update()
@@ -23,24 +20,42 @@ public class PlayerController : MonoBehaviour
         Attack();
     }
 
+    void Initialize()
+    {
+        Physics.IgnoreLayerCollision(LayerMask.NameToLayer(Define.PlayerTag), LayerMask.NameToLayer(Define.PlayerSkillLayer));
+        Physics.IgnoreLayerCollision(LayerMask.NameToLayer(Define.MonsterTag), LayerMask.NameToLayer(Define.MonsterSkillLayer));
+        _animator = GetComponent<Animator>();
+        _rigidbody = GetComponent<Rigidbody>();
+        _skillSystem = GetComponent<SkillSystem>();
+        _skillSystem.InitializeSkillSystem();
+        foreach (var slot in _skillSystem._slotList)
+        {
+            if (slot._skill.SkillData.skillType == Define.SkillType.RigidbodyTarget || slot._skill.SkillData.skillType == Define.SkillType.TransformTarget)
+            {
+                slot._skill.GetComponent<TargetSkill>().OnSkillSet += Rotate;
+            }
+        }
+    }
+
     void Move()
     {
-        if (transform.position.z >= 108.2)
+        if (transform.position.z >= 113.2)
         {
             Vector3 pos = transform.position;
             pos.z = 5;
             transform.position = pos;
         }
-        // 공격 중이 아니고 wasd 입력 시 이동
         if (!_animator.GetBool(Define.IsAttacking) && (Input.GetButton("Horizontal") || Input.GetButton("Vertical")))
         {
             float h = Input.GetAxis("Horizontal");
             float v = Input.GetAxis("Vertical");
             Vector3 movement = new Vector3(h, 0, v);
-            //transform.Translate(movement.normalized * _speed * Time.deltaTime, Space.World);
             _rigidbody.MovePosition(_rigidbody.position + movement.normalized * _speed * Time.deltaTime);
-           
 
+            Vector3 newPos = transform.position;
+            newPos.x = Mathf.Clamp(transform.position.x, -23, 23);
+            newPos.z = Mathf.Clamp(transform.position.z, 3, transform.position.z);
+            transform.position = newPos;
             _animator.SetFloat(Define.Speed, movement.magnitude);
             transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(movement), _speed * Time.deltaTime);
         }
@@ -49,7 +64,6 @@ public class PlayerController : MonoBehaviour
             _rigidbody.linearVelocity = new Vector3(0, _rigidbody.linearVelocity.y, 0);
             _animator.SetFloat(Define.Speed, 0);
         }
-        Debug.Log(_rigidbody.linearVelocity.y);
     }
 
     public void Attack()
@@ -57,58 +71,11 @@ public class PlayerController : MonoBehaviour
         if (!_animator.GetBool(Define.IsAttacking) && Input.GetMouseButtonDown(0))
         {
             _animator.SetTrigger(Define.Attack);
-            _animator.SetBool(Define.IsAttacking, true);
-        }
-    }
-    
-
-    /// 
-    /// 큐 + 딕셔너리 이용한 스킬 활용
-    /// 
-    #region Skill Queue
-    Queue<GameObject> _skillQueue = new Queue<GameObject>();
-    Dictionary<SkillTest, GameObject> _skillDictionary = new Dictionary<SkillTest, GameObject>();
-
-    [SerializeField] SkillTest[] skillList;
-    public static Action<GameObject> OnEnqueueSkill;
-    public static Action<SkillTest> OnSkillCoolTime;
-
-    void InitializeSkill()
-    {
-        OnEnqueueSkill += EnqueueSkill;
-        skillList = Resources.LoadAll<SkillTest>("");
-        for(int i=0;i<skillList.Length;i++)
-        {
-            _skillQueue.Enqueue(Instantiate(skillList[i]).gameObject);
         }
     }
 
-    // 쿨타임 초기화된, 사용 가능한 스킬을 큐에 넣기
-    void EnqueueSkill(GameObject skill)
+    public void Rotate(Vector3 direction)
     {
-        _skillQueue.Enqueue(skill);
+        transform.rotation = Quaternion.LookRotation(direction);
     }
-
-    // 큐에 스킬이 있고 공격 중이지 않으면 발사 - Update 함수에 추가
-    void SkillAttack()
-    {
-        if (_skillQueue.Count > 0 && !_animator.GetBool(Define.IsAttacking))
-        {
-            StartCoroutine(_skillQueue.Dequeue().GetComponent<SkillTest>().TurnOnSkill(transform.position));
-        }
-    }
-
-    // 쿨타임 대기 중인 셋에 스킬 추가
-    public void AddDictionary(GameObject skill)
-    {
-        _skillDictionary.Add(skill.GetComponent<SkillTest>(), skill);
-    }
-
-    // 쿨타임 끝난 스킬 제거하고 큐에 추가
-    public void RemoveDictionary(GameObject skill)
-    {
-        _skillDictionary.Remove(skill.GetComponent<SkillTest>());
-        _skillQueue.Enqueue(skill);
-    }
-    #endregion
 }

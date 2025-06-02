@@ -6,14 +6,15 @@ public class SkillData : ScriptableObject
     public string skillName;
     public float coolTime;
     public float durationTime;
+    public float castingTime;
     public float targetDistance;
     public float damage;
-    public GameObject skillPrefab;
-    public SkillType skillType;
-}
-
-public enum SkillType
-{
-    Target,
-    NonTarget
+    public float speed;
+    public float force;
+    public float angle;                   //DirectionNonTarget 각도
+    public GameObject connectedSkillPrefab;
+    public GameObject hitEffectPrefab;
+    public Define.SkillType skillType;
+    public Define.MotionType motionType;
+    public Define.HandlerType handlerType;
 }

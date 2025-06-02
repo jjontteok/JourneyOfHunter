@@ -5,35 +5,21 @@ using UnityEngine;
 public abstract class Skill : MonoBehaviour
 {
     [SerializeField] protected SkillData _skillData;
-    [SerializeField] protected WaitForSeconds _skillCoolTime;
-    [SerializeField] protected WaitForSeconds _skillDurationTime;
+    protected WaitForSeconds _skillCoolTime;
+    protected WaitForSeconds _skillDurationTime;
 
-    public virtual void Initialize(SkillData data)
+    public SkillData SkillData {  get { return _skillData; } }
+
+    public virtual void Initialize()
     {
-        _skillData = data;
-        _skillCoolTime = new WaitForSeconds(data.coolTime);
-        _skillDurationTime = new WaitForSeconds(data.durationTime);
-
-        StartCoroutine(SkillRoutine());
+        _skillCoolTime = new WaitForSeconds(_skillData.coolTime);
+        _skillDurationTime = new WaitForSeconds(_skillData.durationTime);
     }
 
-    //½ºÅ³ ÄðÅ¸ÀÓ ÄÚ·çÆ¾
-    IEnumerator SkillRoutine()
-    {
-        //¹«ÇÑ·çÇÁ
-        //³ªÁß¿¡ breakÇÒ °Å Á¤ÇØ¾ß ÇÔ
-        while (true)
-        {
-            yield return _skillCoolTime; //½ºÅ³ ÄðÅ¸ÀÓÀÌ ´Ù Â÷¸é
-            ActivateSkill(); //½ºÅ³ ¹ßµ¿
-        }
-    }
+    //ì‹¤ì œë¡œ ìŠ¤í‚¬ í™œì„±í™”
+    public abstract void ActivateSkill(Transform target = null, Vector3 pos = default);
 
 
-    //½ÇÁ¦·Î ½ºÅ³ È°¼ºÈ­
-    protected abstract void ActivateSkill();
-
-    //½ºÅ³ ½ÃÀü ÈÄ ÇØ´ç ½ºÅ³ ºñÈ°¼ºÈ­
     protected IEnumerator DeActivateSkill()
     {
         yield return _skillDurationTime;
