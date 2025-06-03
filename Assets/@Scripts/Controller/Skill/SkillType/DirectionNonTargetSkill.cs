@@ -1,22 +1,7 @@
 using UnityEngine;
 
-public class DirectionNonTargetSkill : NonTargetSkill
+public class DirectionNonTargetSkill : ActiveSkill
 {
-    ParticleSystem _particle;
-    //protected PlayerController _playerController;
-
-    void Start()
-    {
-        Initialize();
-    }
-
-    public override void Initialize()
-    {
-        base.Initialize();
-        _particle = GetComponentInChildren<ParticleSystem>();
-        //_playerController = FindAnyObjectByType<PlayerController>();
-    }
-
     // 스킬 발동 순간, 그 앞의 범위 내에 있는 적들에게 대미지
     public override void ActivateSkill(Transform target = null, Vector3 pos = default)
     {
@@ -30,10 +15,11 @@ public class DirectionNonTargetSkill : NonTargetSkill
         Collider[] targets = Physics.OverlapSphere(transform.position, _skillData.targetDistance, 1 << LayerMask.NameToLayer(Define.MonsterTag));
         foreach (Collider collider in targets)
         {
-            Debug.Log(collider.name);
+            //Debug.Log(collider.name);
             if (IsColliderInRange(collider))
             {
-                collider.GetComponent<MonsterController>().GetDamaged(_skillData.damage);
+                collider.GetComponent<IDamageable>().GetDamaged(_skillData.damage);
+                // hit effect 풀링 필요
                 GameObject effect = Instantiate(_skillData.hitEffectPrefab, GetEffectPosition(collider), Quaternion.identity);
                 Destroy(effect, 0.5f);
             }

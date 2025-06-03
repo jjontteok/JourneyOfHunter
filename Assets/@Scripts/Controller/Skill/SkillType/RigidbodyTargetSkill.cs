@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class RigidbodyTargetSkill : TargetSkill
+public class RigidbodyTargetSkill : ActiveSkill
 {
     CrashColliderController _coll;
     Rigidbody _rigidbody;
@@ -17,12 +17,13 @@ public class RigidbodyTargetSkill : TargetSkill
     {
         base.ActivateSkill(target, pos);
         _coll.gameObject.transform.localPosition = Vector3.zero;
+
         _rigidbody.linearVelocity = Vector3.zero;
         Vector3 difference = target.position - pos;
         Vector3 dir = difference.normalized;
         dir.y = _rigidbody.linearVelocity.y;
-        _skillData.force = difference.magnitude + 10;
-        _rigidbody.linearVelocity = dir * _skillData.force;
+        //_skillData.force = difference.magnitude + 10;
+        _rigidbody.linearVelocity = dir * (difference.magnitude + 10);
     }
 
 }

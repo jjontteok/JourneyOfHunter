@@ -33,18 +33,4 @@ public class BasicSkillSlot : SkillSlot
             }
         }
     }
-
-    bool IsTargetInRange(Transform target)
-    {
-        if (target == null)
-            return false;
-
-        Vector3 toTarget = (target.position - transform.position).normalized;
-        float dot = Vector3.Dot(toTarget, transform.forward);
-        float angle = Mathf.Acos(dot) * Mathf.Rad2Deg;
-        if (angle <= _skill.SkillData.angle / 2)
-            return true;
-        else
-            return false;
-    }
 }
