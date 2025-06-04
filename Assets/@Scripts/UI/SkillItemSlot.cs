@@ -8,8 +8,7 @@ using UnityEngine.UI;
 public class SkillItemSlot : MonoBehaviour
 {
     [SerializeField] Image _skillIconImage;
-    [SerializeField] TextMeshPro _skillName;
-    [SerializeField] TextMeshPro _skillDescription;
+    [SerializeField] TMP_Text _skillName;
     SkillData _skillData;
 
     // 마우스 클릭 시 스킬 설명 UI 등장
@@ -21,11 +20,18 @@ public class SkillItemSlot : MonoBehaviour
 
     public Action<SkillItemSlot> OnPostUpdate;
 
-    public void UpdateSlot(SkillData skillData)
+    public void UpdateSlot(SkillData skillData = null)
     {
+        bool isExist = skillData ? true : false;
         _skillData = skillData;
-        _skillIconImage.sprite = skillData.skillIcon;
-        _skillName.text = skillData.skillName;
-        _skillDescription.text = skillData.skillDescription;
+        _skillIconImage.sprite = isExist ? skillData.skillIcon : null;
+        _skillIconImage.color = isExist ? new Color(1, 1, 1, 1) : new Color(0, 0, 0, 0);
+        _skillName.text = isExist ? skillData.skillName : string.Empty;
+    }
+
+    private void Awake()
+    {
+        _skillIconImage.color = new Color(0, 0, 0, 0);
+        _skillName.text = string.Empty;
     }
 }

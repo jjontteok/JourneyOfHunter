@@ -22,6 +22,7 @@ public class CrashColliderController : SkillColliderController
         if (other.CompareTag(Define.GroundTag))
         {
             ActivateConnectedSkill();
+            transform.parent.gameObject.SetActive(false);
         }
     }
 }

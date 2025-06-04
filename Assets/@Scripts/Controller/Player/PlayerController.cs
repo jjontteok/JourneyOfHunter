@@ -11,6 +11,7 @@ public class PlayerController : MonoBehaviour, IDamageable
     [SerializeField] float _speed;
 
     [SerializeField] Image _playerMpBar;
+    [SerializeField] UI_SkillInventory _skillInventory;
 
     // 데이터는 getter만 되도록?
     public PlayerData PlayerData { get { return _playerData; } }
@@ -36,6 +37,22 @@ public class PlayerController : MonoBehaviour, IDamageable
     void Update()
     {
         Recover();
+        InventoryOnOff();
+    }
+
+    void InventoryOnOff()
+    {
+        if(Input.GetKeyDown(KeyCode.K))
+        {
+            if(_skillInventory.gameObject.activeSelf)
+            {
+                _skillInventory.gameObject.SetActive(false);
+            }
+            else
+            {
+                _skillInventory.gameObject.SetActive(true);
+            }
+        }
     }
 
     private void FixedUpdate()

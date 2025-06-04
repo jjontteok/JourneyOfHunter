@@ -14,6 +14,7 @@ public class SkillColliderController : MonoBehaviour
         if (connectedSkillPrefab != null)
         {
             _connectedSkill = Instantiate(connectedSkillPrefab).GetComponent<ActiveSkill>();
+            _connectedSkill.Initialize();
             _connectedSkill.gameObject.SetActive(false);
         }
         _atk = atk;

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.EventSystems;
+using UnityEngine.UI;
 
 public static class MouseData
 {
@@ -15,31 +16,21 @@ public static class MouseData
 public class UI_SkillInventory : MonoBehaviour
 {
     [SerializeField] GameObject _slot;
+    [SerializeField] GameObject _viewPort;
+    [SerializeField] Button _exitButton;
+    [SerializeField] SkillDescriptionPanel _skillDescriptionPanel;
 
-    Vector2 _inventorySize;
-    Vector2 _start = new Vector2(-110, 160);
-    Vector2 _slotSize = new Vector2(50, 50);
-    Vector2 _space = new Vector2(15, 15);
-    int _numOfColumn = 4;
-
-    SkillItemSlot[] _slots = new SkillItemSlot[20];
+    SkillItemSlot[] _slots = new SkillItemSlot[24];
 
     Dictionary<GameObject, SkillItemSlot> _slotUIs = new Dictionary<GameObject, SkillItemSlot>();
 
     public Action<SkillData> OnUseSkillItem;
 
-    Vector2 CalculatePosition(int idx)
-    {
-        float x = _start.x + ((_space.x + _slotSize.x) * (idx % _numOfColumn));
-        float y = _start.y + (-(_space.y + _slotSize.y) * (idx / _numOfColumn));
-        return new Vector2(x, y);
-    }
-
     #region Events
     void AddEvent(GameObject go, EventTriggerType type, UnityAction<BaseEventData> action)
     {
         var trigger = go.GetComponent<EventTrigger>();
-        if(!trigger) return;
+        if (!trigger) return;
         EventTrigger.Entry eventTrigger = new EventTrigger.Entry { eventID = type };
         eventTrigger.callback.AddListener(action);
         trigger.triggers.Add(eventTrigger);
@@ -61,7 +52,8 @@ public class UI_SkillInventory : MonoBehaviour
 
     public void OnLeftClick(SkillItemSlot slot)
     {
-
+        // 게임 설명 칸 등장
+        _skillDescriptionPanel.TurnOnDescription(slot.SkillData);
     }
 
     public void OnClick(GameObject go, PointerEventData data)
@@ -91,30 +83,43 @@ public class UI_SkillInventory : MonoBehaviour
     {
         for (int i = 0; i < _slots.Length; i++)
         {
-            GameObject go = Instantiate(_slot, transform);
+            GameObject go = Instantiate(_slot, _viewPort.transform);
 
-            go.GetComponent<RectTransform>().localPosition = CalculatePosition(i);
             go.AddComponent<EventTrigger>();
 
-            _slots[i]=go.GetComponent<SkillItemSlot>();
+            AddEvent(go, EventTriggerType.PointerClick, (data) => { OnClick(go, (PointerEventData)data); });
+            AddEvent(go, EventTriggerType.PointerEnter, delegate { OnEnterSlot(go); });
+            AddEvent(go, EventTriggerType.PointerExit, delegate { OnEnterSlot(go); });
+
+            _slots[i] = go.GetComponent<SkillItemSlot>();
 
             _slotUIs.Add(go, _slots[i]);
             go.name = "SkillItemSlot " + i;
         }
+        int j = 0;
+        foreach (var skillResource in ObjectManager.Instance.PlayerSkillResourceList)
+        {
+            Skill skill = skillResource.Value.GetComponent<Skill>();
+            if (skill.SkillData.skillName == "PlayerBasicAttack")
+                continue;
+            _slots[j++].UpdateSlot(skill.SkillData);
+        }
     }
 
-    void Initialize()
+    private void Start()
     {
-        _inventorySize = GetComponent<RectTransform>().sizeDelta;
-        _space.x = (_inventorySize.x - _slotSize.x * _numOfColumn) / (_numOfColumn + 1);
-        _space.y = _space.x;
-        _start.x = -_inventorySize.x / 2 + _space.x + _slotSize.x / 2;
-        _start.y = _inventorySize.y / 2 - _space.x - _slotSize.y / 2;
-    }
-
-    private void Awake()
-    {
-        Initialize();
         CreateSlot();
+        _exitButton.onClick.AddListener(OnExitButtonClick);
+        gameObject.SetActive(false);
+    }
+
+    private void OnDisable()
+    {
+        _skillDescriptionPanel.gameObject.SetActive(false);
+    }
+
+    void OnExitButtonClick()
+    {
+        gameObject.SetActive(false);
     }
 }

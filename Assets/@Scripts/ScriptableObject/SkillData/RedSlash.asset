@@ -12,7 +12,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e807fb188ff3a544ba349f772e49f4cc, type: 3}
   m_Name: RedSlash
   m_EditorClassIdentifier: 
-  skillName: RedSlash
+  skillName: "\uB2E8\uD608\uC12C"
+  skillDescription: "\uBC94\uC704 \uB0B4 \uAC00\uC7A5 \uAC00\uAE4C\uC6B4 \uC801\uC744
+    \uD5A5\uD574 \uBD89\uC740 \uAC80\uAE30\uB97C \uB0A0\uB9BD\uB2C8\uB2E4."
+  skillIcon: {fileID: 21300000, guid: 7524213df446b744dbdfb884ebaa3de5, type: 3}
   coolTime: 7
   durationTime: 2
   targetDistance: 15
