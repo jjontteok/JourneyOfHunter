@@ -78051,6 +78051,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: SkillIconSlot_1
       objectReference: {fileID: 0}
+    - target: {fileID: 9151535052370930303, guid: 0adb3684d7bf3db4889da423893cef6d, type: 3}
+      propertyPath: m_FillAmount
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []

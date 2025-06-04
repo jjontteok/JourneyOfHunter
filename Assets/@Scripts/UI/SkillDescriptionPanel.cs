@@ -1,3 +1,4 @@
+using System;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -11,6 +12,9 @@ public class SkillDescriptionPanel : MonoBehaviour
     [SerializeField] Button _releaseButton;
     [SerializeField] Button _exitButton;
     SkillData _skillData;
+
+    public Action<SkillData> OnEquipSkill;
+    public Action<SkillData> OnReleaseSkill;
 
     private void Awake()
     {
@@ -37,15 +41,15 @@ public class SkillDescriptionPanel : MonoBehaviour
     void OnEquipButtonClick()
     {
         // 현재 스킬 슬롯에 이미 있는 스킬이면 경고문?
-
         // 현재 스킬 슬롯에 없는 스킬이면 장착
+        OnEquipSkill?.Invoke(_skillData);
     }
 
     void OnReleaseButtonClick()
     {
         // 현재 스킬 슬롯에 있는 스킬이면 해제
-
         // 현재 스킬 슬롯에 없는 스킬이면 경고문?
+        OnReleaseSkill?.Invoke(_skillData);
     }
 
     void OnExitButtonClick()

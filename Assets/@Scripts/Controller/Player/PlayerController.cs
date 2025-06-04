@@ -71,6 +71,8 @@ public class PlayerController : MonoBehaviour, IDamageable
         _skillSystem = GetComponent<SkillSystem>();
         _skillSystem.InitializeSkillSystem();
         _skillSystem.BasicSkillSlot.Skill.GetComponent<TransformTargetSkill>().OnSkillSet += Rotate;
+
+        SkillManager.Instance.LockIconSlots(_playerData.UnlockedSkillSlotCount);
     }
 
     void Move()

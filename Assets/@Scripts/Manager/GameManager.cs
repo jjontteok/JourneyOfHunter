@@ -30,6 +30,8 @@ public class GameManager : Singleton<GameManager>
         SpawnManager.Instance.CreateManager();
         DamageTextManager.Instance.CreateManager();
         PoolManager.Instance.CreateManager();
+
+        SkillManager.Instance.CreateManager();
     }
 
     // * 이벤트 구독 메서드

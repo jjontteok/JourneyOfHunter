@@ -68,17 +68,6 @@ public class UI_SkillInventory : MonoBehaviour
     }
     #endregion
 
-    // 슬롯의 아이템 사용하기
-    public void UseItem(SkillItemSlot slot)
-    {
-        if (slot.SkillData == null)
-        {
-            return;
-        }
-        SkillData skillData = slot.SkillData;
-        OnUseSkillItem?.Invoke(skillData);
-    }
-
     void CreateSlot()
     {
         for (int i = 0; i < _slots.Length; i++)
@@ -110,6 +99,12 @@ public class UI_SkillInventory : MonoBehaviour
     {
         CreateSlot();
         _exitButton.onClick.AddListener(OnExitButtonClick);
+
+        // 스킬 장착 및 해제 이벤트 구독?
+        SkillSystem skillSystem = FindAnyObjectByType<SkillSystem>();
+        _skillDescriptionPanel.OnEquipSkill += skillSystem.AddSkill;
+        _skillDescriptionPanel.OnReleaseSkill += skillSystem.RemoveSkill;
+
         gameObject.SetActive(false);
     }
 

@@ -14,4 +14,5 @@ public class PlayerData : ScriptableObject
     public float MP;                //마나
     public float MPRecoveryPerSec;  //마나회복
     public float CoolTimeDecrease;  //쿨타임 감소
+    public int UnlockedSkillSlotCount;  //현재 오픈된 스킬 슬롯 개수
 }
