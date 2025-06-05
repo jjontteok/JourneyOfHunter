@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e807fb188ff3a544ba349f772e49f4cc, type: 3}
   m_Name: BulletSkillData
   m_EditorClassIdentifier: 
-  skillName: NamedMonsterBullet
+  skillName: OrcFireBall
   coolTime: 3
   durationTime: 2
   targetDistance: 0

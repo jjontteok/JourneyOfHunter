@@ -25,14 +25,12 @@ public class DungeonManager : Singleton<DungeonManager>, IEventSubscriber, IDeac
     }
 
     #region Action
-    private Action _onDungeonEnter;
-    private Action _onDungeonClear;
-    private Action _onDungeonFail;
-    private Action _onDungeonExit;
-    public Action OnDungeonEnter { get { return _onDungeonEnter; } }
-    public Action OnDungeonClear { get { return _onDungeonClear; } }
-    public Action OnDungeonFail { get { return _onDungeonFail; } }
-    public Action OnDungeonExit { get { return _onDungeonExit; } }
+    public Action OnDungeonEnter;
+    public Action OnDungeonClear;
+    public Action OnDungeonFail;
+    public Action OnDungeonExit;
+
+    public Action OnSpawnNamedMonster;
     #endregion
 
     #region Initialize
