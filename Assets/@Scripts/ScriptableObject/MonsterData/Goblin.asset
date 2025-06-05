@@ -19,7 +19,7 @@ MonoBehaviour:
   Atk: 10
   Def: 5
   Damage: 10
-  HP: 200
+  HP: 100
   Speed: 1
   AttackSpeed: 0
   MoveRange: 8

@@ -31,7 +31,7 @@ public struct MonsterStatus
 
 // * MonsterController 스크립트
 //- 이동, 공격, 충돌, 사망
-public abstract class MonsterController : MonoBehaviour
+public abstract class MonsterController : MonoBehaviour, IDamageable
 {
     [SerializeField] protected MonsterData _monsterData;
     [SerializeField] protected GameObject _target;
@@ -92,7 +92,6 @@ public abstract class MonsterController : MonoBehaviour
             transform.rotation = Quaternion.Slerp(transform.rotation, toRotation, 10 * Time.deltaTime);
 
             _animator.SetFloat(Define.WalkSpeed, _runtimeData.Speed / 2);
-            _animator.SetTrigger(Define.Walk);
         }
         else
         {
@@ -122,12 +121,12 @@ public abstract class MonsterController : MonoBehaviour
     }
 
     // * 방어력 미적용 데미지 계산 메서드
-    public void GetRealDamaged(float damage)
-    {
-        _runtimeData.HP -= damage;
-        if (_monsterData.HP <= 0)
-            Die();
-    }
+    //public void GetRealDamaged(float damage)
+    //{
+    //    _runtimeData.HP -= damage;
+    //    if (_monsterData.HP <= 0)
+    //        Die();
+    //}
 
     // * 방어력 적용 데미지 계산 메서드
     public void GetDamaged(float damage)
@@ -135,11 +134,11 @@ public abstract class MonsterController : MonoBehaviour
         float finalDamage = CalculateFinalDamage(damage, _runtimeData.Def);
         _runtimeData.HP -= finalDamage;
         Debug.Log($"{name} Damaged: {finalDamage}");
-        //if (_runtimeData.HP <= 0)
-        //    Die();
+        if (_runtimeData.HP <= 0)
+            Die();
     }
 
-    float CalculateFinalDamage(float damage, float def)
+    public float CalculateFinalDamage(float damage, float def)
     {
         return damage * (1 - def / Define.MaxDef);
     }
@@ -148,7 +147,7 @@ public abstract class MonsterController : MonoBehaviour
     //- 오브젝트 풀링 대비 비활성화 처리
     public virtual void Die()
     {
-        Instantiate(_monsterData.DeadEffect);
+        //Instantiate(_monsterData.DeadEffect);
         gameObject.SetActive(false);
     }
 

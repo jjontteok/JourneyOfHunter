@@ -19,11 +19,6 @@ public class SkillSystem : MonoBehaviour
         get { return _basicSkillSlot; }
     }
 
-    private void Awake()
-    {
-        //InitializeSkillSystem();
-    }
-
     public void InitializeSkillSystem()
     {
         _player = FindAnyObjectByType<PlayerController>();
@@ -36,25 +31,10 @@ public class SkillSystem : MonoBehaviour
 
         foreach (var skill in _skillList)
         {
-            // 패시브면 효과 적용만 시키고
-            // 나중에 추가
-            GameObject go = new GameObject(skill.name + " slot");
-            go.transform.SetParent(transform);
-            go.transform.localPosition = Vector3.up;
-            // 기본 공격이면 기본공격 슬롯 따로 만들어서 저장 및 관리
-            if (skill.SkillData.name == "PlayerBasicAttack")
-            {
-                _basicSkillSlot = go.AddComponent<BasicSkillSlot>();
-                _basicSkillSlot.SetSkill(skill);
-            }
-            // 액티브면 슬롯 만들어서 저장 및 관리
-            else
-            {
-                SkillSlot slot = go.AddComponent<SkillSlot>();
-                slot.SetSkill(skill);
-                _activeSkillSlotList.Add(slot);
-            }
+            AddSkill(skill.SkillData);
         }
+
+        //SkillManager.Instance.SetIconSlots(_activeSkillSlotList);
     }
 
     private void Update()
@@ -77,5 +57,61 @@ public class SkillSystem : MonoBehaviour
     {
         // 모든 스킬이 쿨타임 중이거나 마나 부족일 때
         return _activeSkillSlotList.All(slot => !slot.IsActivatePossible || _player.MP < slot.SkillData.MP);
+    }
+
+    public void AddSkill(SkillData data)
+    {
+        SkillSlot skillSlot = _activeSkillSlotList.Find((slot) => slot.SkillData == data);
+        if (skillSlot != null)
+        {
+            Debug.Log($"Skill named {data.skillName} already exists!!!");
+            return;
+        }
+
+        GameObject go = new GameObject(data.name + " slot");
+        go.transform.SetParent(transform);
+        go.transform.localPosition = Vector3.up;
+        // 기본 공격이면 기본공격 슬롯 따로 만들어서 저장 및 관리
+        if (data.name == "PlayerBasicAttack")
+        {
+            _basicSkillSlot = go.AddComponent<BasicSkillSlot>();
+            _basicSkillSlot.SetSkill(data);
+        }
+        // 패시브면 효과 적용만 시키고
+        // 나중에 추가
+        // 액티브면 슬롯 만들어서 저장 및 관리
+        else
+        {
+            SkillSlot slot = go.AddComponent<SkillSlot>();
+            // 비어있는 인덱스 있나 찾아보고
+            int idx = _activeSkillSlotList.FindIndex((slot) => slot == null);
+            if (idx >= _player.PlayerData.UnlockedSkillSlotCount)
+            {
+                Debug.Log("Slot list is already full!!!");
+            }
+            // 없으면 add
+            if (idx < 0)
+            {
+                _activeSkillSlotList.Add(slot);
+                SkillManager.Instance.SubscribeEvents(slot, _activeSkillSlotList.Count - 1);
+            }
+            else
+            {
+                _activeSkillSlotList[idx] = slot;
+                SkillManager.Instance.SubscribeEvents(slot, idx);
+            }
+            slot.SetSkill(data);
+        }
+    }
+
+    public void RemoveSkill(SkillData data)
+    {
+        SkillSlot slot = _activeSkillSlotList.Find((slot) => slot.SkillData == data);
+        if (slot == null)
+        {
+            Debug.Log("Cannot Find Skill with name " + data.skillName);
+            return;
+        }
+        slot.DestroySkillSlot();
     }
 }

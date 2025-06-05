@@ -23,11 +23,19 @@ public class GameManager : Singleton<GameManager>
         ObjectManager.Instance.CreateManager();
         ObjectManager.Instance.ResourceLoad();
 
+        PoolManager.Instance.CreateManager();
+
         DungeonManager.Instance.CreateManager();
 
         PopupUIManager.Instance.CreateManager();
 
         SpawnManager.Instance.CreateManager();
+
+        DamageTextManager.Instance.CreateManager();
+
+        EnvironmentManager.Instance.CreateManager();
+
+        SkillManager.Instance.CreateManager();
     }
 
     // * 이벤트 구독 메서드
@@ -35,7 +43,9 @@ public class GameManager : Singleton<GameManager>
     {
         DungeonManager.Instance.Subscribe();
         PopupUIManager.Instance.Subscribe();
+        DamageTextManager.Instance.Subscribe();
         SpawnManager.Instance.Subscribe();
+        DamageTextManager.Instance.Subscribe();
     }
 
     // * 오브젝트 비활성화 메서드
@@ -43,6 +53,8 @@ public class GameManager : Singleton<GameManager>
     {
         DungeonManager.Instance.Deactivate();
         PopupUIManager.Instance.Deactivate();
+        SpawnManager.Instance.Deactivate();
+        DamageTextManager.Instance.Deactivate();
     }
     
     private void Settings()

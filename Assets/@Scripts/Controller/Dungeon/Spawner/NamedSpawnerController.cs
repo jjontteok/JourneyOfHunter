@@ -2,15 +2,9 @@ using UnityEngine;
 
 public class NamedSpawnerController : MonoBehaviour
 {
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
-    {
-        
-    }
+    private Vector3 _spawnPos;
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
+    private string _monsterName;            // 스폰 될 몬스터 이름
+
+
 }

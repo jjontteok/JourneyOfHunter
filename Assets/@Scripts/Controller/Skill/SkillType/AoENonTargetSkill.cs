@@ -1,13 +1,8 @@
 using UnityEngine;
 
-public class AoENonTargetSkill : NonTargetSkill
+public class AoENonTargetSkill : ActiveSkill
 {
     PenetrationColliderController _coll;
-
-    void Awake()
-    {
-        Initialize();
-    }
 
     public override void Initialize()
     {
