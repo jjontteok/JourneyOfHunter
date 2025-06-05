@@ -31,7 +31,7 @@ public struct MonsterStatus
 
 // * MonsterController 스크립트
 //- 이동, 공격, 충돌, 사망
-public abstract class MonsterController : MonoBehaviour
+public abstract class MonsterController : MonoBehaviour, IDamageable
 {
     [SerializeField] protected MonsterData _monsterData;
     [SerializeField] protected GameObject _target;
@@ -121,12 +121,12 @@ public abstract class MonsterController : MonoBehaviour
     }
 
     // * 방어력 미적용 데미지 계산 메서드
-    public void GetRealDamaged(float damage)
-    {
-        _runtimeData.HP -= damage;
-        if (_monsterData.HP <= 0)
-            Die();
-    }
+    //public void GetRealDamaged(float damage)
+    //{
+    //    _runtimeData.HP -= damage;
+    //    if (_monsterData.HP <= 0)
+    //        Die();
+    //}
 
     // * 방어력 적용 데미지 계산 메서드
     public void GetDamaged(float damage)
@@ -138,7 +138,7 @@ public abstract class MonsterController : MonoBehaviour
             Die();
     }
 
-    float CalculateFinalDamage(float damage, float def)
+    public float CalculateFinalDamage(float damage, float def)
     {
         return damage * (1 - def / Define.MaxDef);
     }

@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class PlayerBasicSkillMotion : MonoBehaviour
 {
-    Animator _animator;
+    [SerializeField] Animator _animator;
 
     void Awake()
     {

@@ -1,7 +1,11 @@
+using System;
 using UnityEngine;
 
 public class ActiveSkill : Skill
 {
+
+    protected Vector3 _direction;
+
     // 스킬 오브젝트 활성화 + 모션 실행 + 비활성화 코루틴
     public override void ActivateSkill(Transform target = null, Vector3 pos = default)
     {
