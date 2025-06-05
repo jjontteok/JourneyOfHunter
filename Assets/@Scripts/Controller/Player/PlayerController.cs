@@ -11,7 +11,9 @@ public class PlayerController : MonoBehaviour, IDamageable
     [SerializeField] float _speed;
 
     [SerializeField] Image _playerMpBar;
-    [SerializeField] UI_SkillInventory _skillInventory;
+
+    // UI 껐다 켰다는 추후 따로 관리?
+    //GameObject _skillInventory;
 
     // 데이터는 getter만 되도록?
     public PlayerData PlayerData { get { return _playerData; } }
@@ -44,14 +46,7 @@ public class PlayerController : MonoBehaviour, IDamageable
     {
         if(Input.GetKeyDown(KeyCode.K))
         {
-            if(_skillInventory.gameObject.activeSelf)
-            {
-                _skillInventory.gameObject.SetActive(false);
-            }
-            else
-            {
-                _skillInventory.gameObject.SetActive(true);
-            }
+            PopupUIManager.Instance.ActivateSkillInventoryPanel();
         }
     }
 
@@ -73,6 +68,8 @@ public class PlayerController : MonoBehaviour, IDamageable
         _skillSystem.BasicSkillSlot.Skill.GetComponent<TransformTargetSkill>().OnSkillSet += Rotate;
 
         SkillManager.Instance.LockIconSlots(_playerData.UnlockedSkillSlotCount);
+
+        //_skillInventory = ObjectManager.Instance.PopupSkillInventory;
     }
 
     void Move()

@@ -347,7 +347,7 @@ GameObject:
   - component: {fileID: 6161547185711908410}
   - component: {fileID: 7058026396326839177}
   m_Layer: 5
-  m_Name: UI_SkillInventory
+  m_Name: UI_SkillInventory - Popup
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -362,8 +362,8 @@ RectTransform:
   m_GameObject: {fileID: 1630443464083505235}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
+  m_LocalScale: {x: 2, y: 2, z: 2}
+  m_ConstrainProportionsScale: 1
   m_Children:
   - {fileID: 529502014829975599}
   - {fileID: 8375041040904934425}
@@ -371,9 +371,9 @@ RectTransform:
   - {fileID: 1151231252024544502}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0.5}
-  m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -200, y: 0}
+  m_AnchorMin: {x: 0, y: 0.5}
+  m_AnchorMax: {x: 0, y: 0.5}
+  m_AnchoredPosition: {x: 350, y: 0}
   m_SizeDelta: {x: 350, y: 450}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &4994092439269345535

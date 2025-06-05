@@ -39,6 +39,7 @@ public class Define : MonoBehaviour
     public const string PopupUICanvasPath = "UI/PopupUI/Canvas - Popup";
     public const string PopupEnterDungeonPanelPath = "UI/PopupUI/Panel - Popup";
     public const string PopupStatusPanelPath = "UI/PopupUI/StatusPanel - Popup";
+    public const string PopupSkillInventoryPath = "UI/PopupUI/UI_SkillInventory - Popup";
 
     public const string GoblinKingCutScenePath = "CutScene/GoblinCutScene";
     #endregion
@@ -54,7 +55,7 @@ public class Define : MonoBehaviour
     public static Vector3 SpawnSpot1 = new Vector3(-10, 1, 45);
     public static Vector3 SpawnSpot2 = new Vector3(10, 1, 45);
     public static Vector3 SpawnSpot3 = new Vector3(-10, 1, 60);
-    public static Vector3 SpawnSpot4 = new Vector3(10, 1, 60);
+    public static Vector3 SpawnSpot4 = new Vector3(10, 3, 60);
     public static Vector3 SpawnSpot5 = new Vector3(-10, 1, 75);
     public static Vector3 SpawnSpot6 = new Vector3(10, 1, 75);
     public static Vector3 NamedMonsterSpawnSpot = new Vector3(0, 1, 80);
