@@ -8,7 +8,7 @@ public class SkillColliderController : MonoBehaviour
     protected GameObject _effect;
     protected ActiveSkill _connectedSkill;
 
-    public void SetColliderInfo(float damage, float atk, GameObject connectedSkillPrefab, GameObject effect)
+    public void SetColliderInfo(float damage, float atk, GameObject connectedSkillPrefab, GameObject effect, float angle = default)
     {
         _damage = damage;
         if (connectedSkillPrefab != null)
@@ -19,6 +19,7 @@ public class SkillColliderController : MonoBehaviour
         }
         _atk = atk;
         _effect = effect;
+        _angle = angle;
     }
 
     protected void ActivateConnectedSkill()

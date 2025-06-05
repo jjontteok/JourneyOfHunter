@@ -10,7 +10,7 @@ public class RigidbodyTargetSkill : ActiveSkill
         base.Initialize();
         _rigidbody = GetComponentInChildren<Rigidbody>();
         _coll = GetComponentInChildren<CrashColliderController>();
-        _coll.SetColliderInfo(_skillData.damage, _playerController.PlayerData.Atk, _skillData.connectedSkillPrefab, _skillData.hitEffectPrefab);
+        _coll.SetColliderInfo(_skillData.damage, _playerController.PlayerData.Atk, _skillData.connectedSkillPrefab, _skillData.hitEffectPrefab, _skillData.angle);
     }
 
     public override void ActivateSkill(Transform target, Vector3 pos = default)
