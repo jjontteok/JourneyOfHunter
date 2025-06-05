@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,6 +13,13 @@ public class SkillSlot : MonoBehaviour
 
     Transform _target;
     bool _isTargetExist;
+
+    // 스킬 슬롯 생성 시 스킬 아이콘 슬롯에 등록하는 이벤트
+    public Action<SkillData> OnGenerateSlot;
+    // 스킬 발동 시 스킬 아이콘 슬롯에 쿨타임 적용하는 이벤트
+    public Action OnActivateSkill;
+    // 스킬 제거 시 스킬 아이콘 슬롯에서 사라지게 적용하는 이벤트
+    public Action OnRemoveSkill;
 
     // 슬롯에 등록된 스킬의 사용 가능 여부
     public bool IsActivatePossible { get; set; }
@@ -33,10 +41,20 @@ public class SkillSlot : MonoBehaviour
     }
 
     // 처음 슬롯 생성 시 스킬 등록
-    public void SetSkill(Skill skill)
+    public void SetSkill(SkillData data)
     {
         // 맨 처음에 약간의 딜레이 제공
         StartCoroutine(CoStartCoolTime(0.5f));
+
+        // ObjectManager에서 skill resource를 찾아 떠나는 멀고도 험한 여정
+        Skill skill = ObjectManager.Instance.PlayerSkillResourceList.FirstOrDefault((resource) => 
+        resource.Value.GetComponent<Skill>().SkillData.skillName == data.skillName).Value?.GetComponent<Skill>();
+
+        if(skill==null)
+        {
+            Debug.Log("Cannot Find Skill Resource named "+data.skillName);
+            return;
+        }
 
         _skill = Instantiate(skill).GetComponent<ActiveSkill>();
 
@@ -51,6 +69,8 @@ public class SkillSlot : MonoBehaviour
         }
         _skill.Initialize();
         _skill.gameObject.SetActive(false);
+
+        OnGenerateSlot?.Invoke(data);
     }
 
     protected IEnumerator CoStartCoolTime(float time = default)
@@ -65,31 +85,6 @@ public class SkillSlot : MonoBehaviour
         }
         IsActivatePossible = true;
     }
-
-    //private void Update()
-    //{
-    //    // 쿨타임 초기화되어 스킬 사용 가능한지, 플레이어의 마나가 충분한지 체크
-    //    if (IsActivatePossible && _player.MP >= _skill.SkillData.MP)
-    //    {
-    //        // Target형 스킬인 경우
-    //        if (_isTargetExist)
-    //        {
-    //            // 가장 가까운 타겟을 탐색하고, 있으면 스킬 발동
-    //            _target = GetNearestTarget(_skill.SkillData.targetDistance)?.transform;
-    //            if (_target != null)
-    //            {
-    //                ActivateSlotSkill(_target);
-    //            }
-    //        }
-    //        // Target형 스킬이 아닌 경우
-    //        else
-    //        {
-    //            ActivateSlotSkill();
-    //        }
-    //        _player.MP = Mathf.Max(_player.MP - _skill.SkillData.MP, 0);
-    //        Debug.Log($"Skill Name: {_skill.name}Current Player MP: {_player.MP}");
-    //    }
-    //}
 
     public virtual void ActivateSlotSkill()
     {
@@ -121,8 +116,17 @@ public class SkillSlot : MonoBehaviour
         //Debug.Log($"Skill Name: {_skill.name} Current Player MP: {_player.MP}");
         IsActivatePossible = false;
         StartCoroutine(CoStartCoolTime());
+        OnActivateSkill?.Invoke();
     }
 
+    public void DestroySkillSlot()
+    {
+        OnRemoveSkill?.Invoke();
+        Destroy(_skill.gameObject);
+        Destroy(gameObject);
+    }
+
+    // distance 범위 내의 가장 가까운 적 탐지
     protected GameObject GetNearestTarget(float distance)
     {
         if (_player == null)

@@ -4,6 +4,8 @@ using UnityEngine;
 public class SkillData : ScriptableObject
 {
     public string skillName;
+    public string skillDescription;
+    public Sprite skillIcon;
     public float coolTime;
     public float durationTime;
     public float targetDistance;

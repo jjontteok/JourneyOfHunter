@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEngine.UI;
 
-public class PlayerController : MonoBehaviour
+public class PlayerController : MonoBehaviour, IDamageable
 {
     Animator _animator;
     Rigidbody _rigidbody;
@@ -11,6 +11,7 @@ public class PlayerController : MonoBehaviour
     [SerializeField] float _speed;
 
     [SerializeField] Image _playerMpBar;
+    [SerializeField] UI_SkillInventory _skillInventory;
 
     // 데이터는 getter만 되도록?
     public PlayerData PlayerData { get { return _playerData; } }
@@ -35,9 +36,23 @@ public class PlayerController : MonoBehaviour
 
     void Update()
     {
-        //Move();
-        //Attack();
         Recover();
+        InventoryOnOff();
+    }
+
+    void InventoryOnOff()
+    {
+        if(Input.GetKeyDown(KeyCode.K))
+        {
+            if(_skillInventory.gameObject.activeSelf)
+            {
+                _skillInventory.gameObject.SetActive(false);
+            }
+            else
+            {
+                _skillInventory.gameObject.SetActive(true);
+            }
+        }
     }
 
     private void FixedUpdate()
@@ -53,23 +68,11 @@ public class PlayerController : MonoBehaviour
         _animator = GetComponent<Animator>();
         _rigidbody = GetComponent<Rigidbody>();
 
-        // 기본 공격을 TransformTargetSkill로 쓸 경우 test
         _skillSystem = GetComponent<SkillSystem>();
         _skillSystem.InitializeSkillSystem();
-        if(_skillSystem.BasicSkillSlot.Skill.SkillData.skillType==Define.SkillType.TransformTarget)
-        {
-            _skillSystem.BasicSkillSlot.Skill.GetComponent<TargetSkill>().OnSkillSet += Rotate;
-        }
+        _skillSystem.BasicSkillSlot.Skill.GetComponent<TransformTargetSkill>().OnSkillSet += Rotate;
 
-        //_skillSystem.InitializeSkillSystem();
-
-        //foreach (var slot in _skillSystem._activeSkillSlotList)
-        //{
-        //    if (slot.SkillData.skillType == Define.SkillType.RigidbodyTarget || slot.SkillData.skillType == Define.SkillType.TransformTarget)
-        //    {
-        //        slot.GetComponent<TargetSkill>().OnSkillSet += Rotate;
-        //    }
-        //}
+        SkillManager.Instance.LockIconSlots(_playerData.UnlockedSkillSlotCount);
     }
 
     void Move()
@@ -86,7 +89,7 @@ public class PlayerController : MonoBehaviour
             float v = Input.GetAxis("Vertical");
             Vector3 movement = new Vector3(h, 0, v);
             _rigidbody.MovePosition(_rigidbody.position + movement.normalized * _speed * Time.fixedDeltaTime);
-            
+
             _animator.SetFloat(Define.Speed, movement.magnitude);
             transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(movement), _speed * Time.deltaTime);
         }
@@ -142,7 +145,7 @@ public class PlayerController : MonoBehaviour
         //    Die();
     }
 
-    float CalculateFinalDamage(float damage, float def)
+    public float CalculateFinalDamage(float damage, float def)
     {
         return damage * (1 - def / Define.MaxDef);
     }
