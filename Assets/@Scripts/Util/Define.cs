@@ -38,6 +38,7 @@ public class Define : MonoBehaviour
 
     public const string PopupUICanvasPath = "UI/PopupUI/Canvas - Popup";
     public const string PopupEnterDungeonPanelPath = "UI/PopupUI/Panel - Popup";
+    public const string PopupStatusPanelPath = "UI/PopupUI/StatusPanel - Popup";
 
     public const string GoblinKingCutScenePath = "CutScene/GoblinCutScene";
     #endregion
@@ -81,6 +82,16 @@ public class Define : MonoBehaviour
         Player,
         Monster,
         Skill,
+    }
+
+    public enum StatusType
+    {
+        Atk,
+        HP,
+        HPRecoveryPerSec,
+        Def,
+        MP,
+        MPRecoveryPerSec,
     }
     #endregion
 

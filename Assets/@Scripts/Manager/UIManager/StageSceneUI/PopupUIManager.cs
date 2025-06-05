@@ -9,6 +9,8 @@ public class PopupUIManager : Singleton<PopupUIManager>, IEventSubscriber, IDeac
 {
     private GameObject _canvasPopupUI;
     private GameObject _panelEnterDungeon;
+    private GameObject _panelStatus;
+    private GameObject _panelInventory;
 
     public Button ButtonEnterDungeon;
 
@@ -19,16 +21,19 @@ public class PopupUIManager : Singleton<PopupUIManager>, IEventSubscriber, IDeac
     {
         _canvasPopupUI = Instantiate(ObjectManager.Instance.PopupCanvas);
         _panelEnterDungeon = Instantiate(ObjectManager.Instance.PopupPanel, _canvasPopupUI.transform);
-
+        _panelStatus = Instantiate(ObjectManager.Instance.PopupStatusPanel, _canvasPopupUI.transform);
         ButtonEnterDungeon = _panelEnterDungeon.GetComponentInChildren<Button>();
+
+        _panelStatus.SetActive(false);
+        //_panelInventory.SetActive(false);
     }
     #endregion
+
 
     #region IEventSubscriber
     public void Subscribe()
     {
         ButtonEnterDungeon.onClick.AddListener(OnDungeonEnter);
-        //DungeonManager.Instance.DungeonPortal.GetOrAddComponent<DungeonPortalController>().OnPotalEnter += PopupUI;
     }
     #endregion
 
@@ -48,5 +53,15 @@ public class PopupUIManager : Singleton<PopupUIManager>, IEventSubscriber, IDeac
     {
         OnButtonDungeonEnterClick?.Invoke();
         _panelEnterDungeon.SetActive(false);
+    }
+
+    public void ActivateStatusPanel()
+    {
+        _panelStatus.SetActive(true);
+    }
+
+    public void ActivateInventoryPanel()
+    {
+        _panelInventory.SetActive(true);
     }
 }
