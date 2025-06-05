@@ -14,7 +14,7 @@ public class UI_Game : MonoBehaviour
 
     private void OnDisable()
     {
-        TimeManager.Instance.OnTimeChanged -= SetTimeText;
+        //TimeManager.Instance.OnTimeChanged -= SetTimeText;
     }
 
     void SetTimeText(float time)

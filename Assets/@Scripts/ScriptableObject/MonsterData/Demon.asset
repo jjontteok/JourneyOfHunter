@@ -19,8 +19,8 @@ MonoBehaviour:
   Atk: 5
   Def: 1
   Damage: 1
-  HP: 50
-  Speed: 1
+  HP: 10
+  Speed: 3
   AttackSpeed: 1
   MoveRange: 1
   AttackRange: 1.1

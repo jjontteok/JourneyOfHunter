@@ -92,7 +92,6 @@ public abstract class MonsterController : MonoBehaviour, IDamageable
             transform.rotation = Quaternion.Slerp(transform.rotation, toRotation, 10 * Time.deltaTime);
 
             _animator.SetFloat(Define.WalkSpeed, _runtimeData.Speed / 2);
-            _animator.SetTrigger(Define.Walk);
         }
         else
         {
@@ -135,8 +134,8 @@ public abstract class MonsterController : MonoBehaviour, IDamageable
         float finalDamage = CalculateFinalDamage(damage, _runtimeData.Def);
         _runtimeData.HP -= finalDamage;
         Debug.Log($"{name} Damaged: {finalDamage}");
-        //if (_runtimeData.HP <= 0)
-        //    Die();
+        if (_runtimeData.HP <= 0)
+            Die();
     }
 
     public float CalculateFinalDamage(float damage, float def)
@@ -148,7 +147,7 @@ public abstract class MonsterController : MonoBehaviour, IDamageable
     //- 오브젝트 풀링 대비 비활성화 처리
     public virtual void Die()
     {
-        Instantiate(_monsterData.DeadEffect);
+        //Instantiate(_monsterData.DeadEffect);
         gameObject.SetActive(false);
     }
 
