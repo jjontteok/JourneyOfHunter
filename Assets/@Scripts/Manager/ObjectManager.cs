@@ -26,6 +26,7 @@ public class ObjectManager : Singleton<ObjectManager>
     // * UI Object
     private GameObject _popupCanvas;
     private GameObject _popupPanel;
+    private GameObject _popupStatusPanel;
 
     // * CutScene
     private GameObject _goblinKingCutScene;
@@ -151,6 +152,16 @@ public class ObjectManager : Singleton<ObjectManager>
         }
     }
 
+    public GameObject PopupStatusPanel
+    {
+        get
+        {
+            if (NullCheck(_popupStatusPanel))
+                return null;
+            return _popupStatusPanel;
+        }
+    }
+
     public GameObject GoblinKingCutScene
     {
         get
@@ -247,6 +258,7 @@ public class ObjectManager : Singleton<ObjectManager>
     {
         _popupCanvas = Resources.Load<GameObject>(Define.PopupUICanvasPath);
         _popupPanel = Resources.Load<GameObject>(Define.PopupEnterDungeonPanelPath);
+        _popupStatusPanel = Resources.Load<GameObject>(Define.PopupStatusPanelPath);
     }
     // * 컷신 리소스 로드 메서드
     private void CutSceneResourceLoad()
