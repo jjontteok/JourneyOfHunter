@@ -1,6 +1,7 @@
 using UnityEngine;
 using UnityEngine.EventSystems;
 using extension;
+using System;
 
 public class UI_JoyStick : UI_Base, IPointerDownHandler, IDragHandler, IPointerUpHandler
 {
@@ -12,11 +13,16 @@ public class UI_JoyStick : UI_Base, IPointerDownHandler, IDragHandler, IPointerU
     private Vector2 _touchPos;
     private Vector2 _originPos;
 
+    public Action<Vector3> OnJoyStickMove;
+
 
     protected override void Initialize()
     {
         _originPos = _joyStick.transform.position;
         _radius = _joyStick.GetOrAddComponent<RectTransform>().sizeDelta.y / 3;
+
+        OnJoyStickMove += FindAnyObjectByType<PlayerController>().SetMoveDirection;
+
         SetActiveJoyStick(false);
     }
     public void OnPointerDown(PointerEventData eventData)
@@ -36,6 +42,8 @@ public class UI_JoyStick : UI_Base, IPointerDownHandler, IDragHandler, IPointerU
             _touchPos + (_moveDir * _radius);
         _handler.transform.position = newPos;
         //_moveDir을 플레이어의 움직이는 방향으로 만들기
+        Vector3 movement = new Vector3(_moveDir.x, 0, _moveDir.y);
+        OnJoyStickMove?.Invoke(movement);
     }
 
 
@@ -46,6 +54,7 @@ public class UI_JoyStick : UI_Base, IPointerDownHandler, IDragHandler, IPointerU
         _joyStick.transform.position = _originPos;
         SetActiveJoyStick(false);
         //_moveDir을 플레이어의 움직이는 방향으로 만들기
+        OnJoyStickMove?.Invoke(_moveDir);
     }
 
     void SetActiveJoyStick(bool isActive)
