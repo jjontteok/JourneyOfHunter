@@ -28,7 +28,10 @@ public class UI_Game : MonoBehaviour
         _autoToggle.onValueChanged.AddListener(OnAutoToggleClick);
         // _inventoryButton.onClick.AddListener(OnInventoryButtonClick);
 
-        OnAutoChanged += FindAnyObjectByType<PlayerController>().SetAuto;
+        PlayerController player = FindAnyObjectByType<PlayerController>();
+        //OnAutoChanged += player.SetAuto;
+        OnAutoChanged += (flag) => player.IsAuto = flag;
+        player.OnAutoOff += OnAutoToggleOff;
     }
 
     //private void OnEnable()
@@ -65,5 +68,10 @@ public class UI_Game : MonoBehaviour
     {
         Debug.Log($"Auto: {flag}");
         OnAutoChanged?.Invoke(flag);
+    }
+
+    void OnAutoToggleOff()
+    {
+        _autoToggle.isOn = false;
     }
 }

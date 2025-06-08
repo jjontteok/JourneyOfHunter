@@ -69,10 +69,7 @@ public class SkillSystem : MonoBehaviour
         else
         {
             // 기본 공격만 알아서 되도록
-            if (_player.Target != null && _player.Target.gameObject.activeSelf && Vector3.Distance(transform.position, _player.Target.position) <= _basicSkillSlot.SkillData.targetDistance)
-            {
-                _basicSkillSlot.ActivateSlotSkill();
-            }
+            _basicSkillSlot.ActivateSlotSkill();
         }
     }
 

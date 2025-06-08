@@ -1,4 +1,4 @@
-using System.Collections.Generic;
+using System;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -16,13 +16,53 @@ public class PlayerController : MonoBehaviour, IDamageable
     bool _isAuto;                   //자동 여부
     bool _isAutoMoving;             //자동일 때, 타겟 없을 시 다음 스테이지 이동 여부
 
+    bool _isKeyBoard;
+    bool _isJoyStick;
+
+    public Action OnAutoOff;
+
     public bool IsAuto
     {
         get { return _isAuto; }
         set
         {
+            // 자동 모드 꺼지면 타겟도 초기화
+            if(!value)
+            {
+                _target = null;
+            }
             _isAuto = value;
             _skillSystem.IsAuto = value;
+        }
+    }
+
+    public bool IsKeyBoard
+    {
+        get { return _isKeyBoard; }
+        set
+        {
+            // 자동 이동 중인데 키보드 입력할 경우 자동 이동 종료
+            if (IsAuto && value)
+            {
+                IsAuto = false;
+                OnAutoOff?.Invoke();
+            }
+            _isKeyBoard = value;
+        }
+    }
+
+    public bool IsJoyStick
+    {
+        get { return _isJoyStick; }
+        set
+        {
+            // 자동 이동 중인데 조이스틱 입력할 경우 자동 이동 종료
+            if (IsAuto && value)
+            {
+                IsAuto = false;
+                OnAutoOff?.Invoke();
+            }
+            _isJoyStick = value;
         }
     }
 
@@ -60,7 +100,7 @@ public class PlayerController : MonoBehaviour, IDamageable
 
     private void FixedUpdate()
     {
-        //GetMovementByKeyBoard();
+        SetMoveDirectionByKeyBoard();
         Move();
     }
 
@@ -163,15 +203,20 @@ public class PlayerController : MonoBehaviour, IDamageable
 
     void SetMoveDirectionByKeyBoard()
     {
+        // 조이스틱 이동 중엔 키보드 이동 불가
+        if (_isJoyStick)
+            return;
         Vector3 movement;
         if (Input.GetButton("Horizontal") || Input.GetButton("Vertical"))
         {
+            IsKeyBoard = true;
             float h = Input.GetAxis("Horizontal");
             float v = Input.GetAxis("Vertical");
             movement = new Vector3(h, 0, v);
         }
         else
         {
+            IsKeyBoard=false;
             movement = Vector3.zero;
         }
         _direction = movement;

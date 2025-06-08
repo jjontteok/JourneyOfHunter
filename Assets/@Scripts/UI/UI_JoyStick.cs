@@ -12,6 +12,7 @@ public class UI_JoyStick : UI_Base, IPointerDownHandler, IDragHandler, IPointerU
     private Vector2 _moveDir;
     private Vector2 _touchPos;
     private Vector2 _originPos;
+    private PlayerController _playerController;
 
     public Action<Vector3> OnJoyStickMove;
 
@@ -21,12 +22,16 @@ public class UI_JoyStick : UI_Base, IPointerDownHandler, IDragHandler, IPointerU
         _originPos = _joyStick.transform.position;
         _radius = _joyStick.GetOrAddComponent<RectTransform>().sizeDelta.y / 3;
 
-        OnJoyStickMove += FindAnyObjectByType<PlayerController>().SetMoveDirection;
+        _playerController = FindAnyObjectByType<PlayerController>();
+        OnJoyStickMove += _playerController.SetMoveDirection;
 
         SetActiveJoyStick(false);
     }
     public void OnPointerDown(PointerEventData eventData)
     {
+        if (_playerController.IsKeyBoard)
+            return;
+        _playerController.IsJoyStick = true;
         SetActiveJoyStick(true);
         _touchPos = Input.mousePosition;
         _joyStick.transform.position = Input.mousePosition;
@@ -49,6 +54,7 @@ public class UI_JoyStick : UI_Base, IPointerDownHandler, IDragHandler, IPointerU
 
     public void OnPointerUp(PointerEventData eventData)
     {
+        _playerController.IsJoyStick = false;
         _moveDir = Vector2.zero;
         _handler.transform.position = _originPos;
         _joyStick.transform.position = _originPos;
