@@ -13,16 +13,15 @@ MonoBehaviour:
   m_Name: PlayerBasicAttack
   m_EditorClassIdentifier: 
   skillName: PlayerBasicAttack
+  skillDescription: 
+  skillIcon: {fileID: 0}
   coolTime: 1.5
-  durationTime: 1
+  durationTime: 0.4
   targetDistance: 3
   damage: 3
   speed: 0
-  force: 0
   angle: 180
   MP: 0
   connectedSkillPrefab: {fileID: 0}
   hitEffectPrefab: {fileID: 4553287630450876385, guid: f5f7cfb700e6b3e419c0e156473bee3e, type: 3}
-  skillType: 1
-  motionType: 1
-  handlerType: 0
+  targetExistence: 1

@@ -9,6 +9,7 @@ public class PlayerController : MonoBehaviour, IDamageable
     SkillSystem _skillSystem;
     [SerializeField] Transform _target;
 
+    readonly Vector3 _partalOffset = Vector3.forward * 2;
     Vector3 _direction;
     float _mp;
     float _hp;
@@ -27,7 +28,7 @@ public class PlayerController : MonoBehaviour, IDamageable
         set
         {
             // 자동 모드 꺼지면 타겟도 초기화
-            if(!value)
+            if (!value)
             {
                 _target = null;
             }
@@ -71,7 +72,6 @@ public class PlayerController : MonoBehaviour, IDamageable
     [SerializeField] PlayerData _playerData;
     [SerializeField] float _speed;
 
-    [SerializeField] Image _playerMpBar;
 
     // 데이터는 getter만 되도록?
     public PlayerData PlayerData { get { return _playerData; } }
@@ -83,7 +83,6 @@ public class PlayerController : MonoBehaviour, IDamageable
         set
         {
             _mp = value;
-            _playerMpBar.fillAmount = _mp / _playerData.MP;
         }
     }
 
@@ -132,36 +131,37 @@ public class PlayerController : MonoBehaviour, IDamageable
         // 자동 모드일 때
         if (_isAuto)
         {
-            // 타겟 없으면
-            if (_target == null || !_target.gameObject.activeSelf)
+            // 던전 클리어해서 포탈 향해 가는 상황
+            if (_isAutoMoving)
             {
-                SetTarget();
-                // 찾았는데도 없으면 다음 스테이지 자동 이동?
-                if (_target == null)
+                if (!MoveToTarget(0.5f))
                 {
+                    // 다음 던전 시작되면 _isAutoMoving false시키고 target 초기화
+                    _isAutoMoving = false;
+                    Destroy(_target.gameObject);
+                    _target = null;
                     return;
                 }
-                Debug.Log($"Current Target: {_target.name}");
-            }
-            //타겟과 거리가 가까워지면 정지
-            if (Vector3.Distance(transform.position, _target.position) <= _shortestSkillDistance)
-            {
-                _direction = Vector3.zero;
-                _rigidbody.linearVelocity = new Vector3(0, _rigidbody.linearVelocity.y, 0);
-
-                _animator.SetFloat(Define.Speed, 0);
             }
             else
             {
-                _direction = _target.position - transform.position;
-                _rigidbody.MovePosition(_rigidbody.position + _direction.normalized * _speed * Time.fixedDeltaTime);
-
-
-                _animator.SetFloat(Define.Speed, _direction.magnitude);
-                //타겟 바라보게 회전
-                transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(_direction), _speed * Time.deltaTime);
+                // 타겟 없으면
+                if (_target == null || !_target.gameObject.activeSelf)
+                {
+                    // 타겟 찾고
+                    SetTarget();
+                    // 찾았는데도 없으면 다음 스테이지 자동 이동?
+                    if (_isAutoMoving)
+                    {
+                        return;
+                    }
+                    Debug.Log($"Current Target: {_target.name}");
+                }
+                MoveToTarget(_shortestSkillDistance);
             }
+
         }
+        // 수동 모드일 때
         else
         {
             if (!_animator.GetBool(Define.IsAttacking) && _direction != Vector3.zero)
@@ -178,6 +178,33 @@ public class PlayerController : MonoBehaviour, IDamageable
             }
         }
         ClampPosition();
+    }
+
+    // target과의 거리가 distance 이하가 될 때까지 움직임
+    bool MoveToTarget(float distance)
+    {
+        //if(_target.name== "TargetPoint")
+        //    Debug.Log()
+        //타겟과 거리가 가까워지면 정지
+        if (Vector3.Distance(transform.position, _target.position) <= distance)
+        {
+            _direction = Vector3.zero;
+            _rigidbody.linearVelocity = new Vector3(0, _rigidbody.linearVelocity.y, 0);
+
+            _animator.SetFloat(Define.Speed, 0);
+            return false;
+        }
+        else
+        {
+            _direction = _target.position - transform.position;
+            _rigidbody.MovePosition(_rigidbody.position + _direction.normalized * _speed * Time.fixedDeltaTime);
+
+
+            _animator.SetFloat(Define.Speed, _direction.magnitude);
+            //타겟 바라보게 회전
+            transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(_direction), _speed * Time.deltaTime);
+            return true;
+        }
     }
 
     void ClampPosition()
@@ -216,7 +243,7 @@ public class PlayerController : MonoBehaviour, IDamageable
         }
         else
         {
-            IsKeyBoard=false;
+            IsKeyBoard = false;
             movement = Vector3.zero;
         }
         _direction = movement;
@@ -249,10 +276,17 @@ public class PlayerController : MonoBehaviour, IDamageable
         if (_target == null || !_target.gameObject.activeSelf)
         {
             //쵸비상 몬스터 풀 어케 가져옴
-            _target = Util.GetNearestTarget(transform.position, 100f).transform;
+            _target = Util.GetNearestTarget(transform.position, 100f)?.transform;
             if (_target == null)
             {
                 Debug.Log("No target on field!!!");
+                _isAutoMoving = true;
+                _target = new GameObject("TargetPoint").transform;
+                _target.position = FindAnyObjectByType<DungeonPortalController>().transform.position;
+                Vector3 pos=_target.position;
+                pos.y = 0;
+                pos += _partalOffset;
+                _target.position = pos;
                 return;
             }
         }
@@ -284,7 +318,7 @@ public class PlayerController : MonoBehaviour, IDamageable
     {
         float finalDamage = CalculateFinalDamage(damage, _playerData.Def);
         _hp -= finalDamage;
-        Debug.Log($"Damaged: {finalDamage}, Current Player HP: {_hp}");
+        //Debug.Log($"Damaged: {finalDamage}, Current Player HP: {_hp}");
         //if (_runtimeData.HP <= 0)
         //    Die();
     }

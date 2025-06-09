@@ -66,6 +66,7 @@ public class Define : MonoBehaviour
     {
         RigidbodyTarget,
         TransformTarget,
+        AreaTarget,
         AoENonTarget,
         DirectionNonTarget,
         Buff,

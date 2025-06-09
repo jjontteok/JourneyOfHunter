@@ -21,6 +21,6 @@ MonoBehaviour:
   HP: 100
   HPRecoveryPerSec: 1
   MP: 100
-  MPRecoveryPerSec: 1
+  MPRecoveryPerSec: 10
   CoolTimeDecrease: 0
-  UnlockedSkillSlotCount: 3
+  UnlockedSkillSlotCount: 6

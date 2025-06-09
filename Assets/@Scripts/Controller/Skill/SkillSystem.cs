@@ -43,6 +43,8 @@ public class SkillSystem : MonoBehaviour
         foreach (var skill in _skillList)
         {
             AddSkill(skill.SkillData);
+            if (_activeSkillSlotList.Count == _player.PlayerData.UnlockedSkillSlotCount)
+                break;
         }
     }
 

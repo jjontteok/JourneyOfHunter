@@ -59,7 +59,7 @@ public class SkillSlot : MonoBehaviour
         _skill = Instantiate(skill).GetComponent<ActiveSkill>();
 
         // 타겟이 필요한 스킬인지 아닌지 체크
-        if (_skill.SkillData.skillType == Define.SkillType.RigidbodyTarget || _skill.SkillData.skillType == Define.SkillType.TransformTarget)
+        if (_skill.SkillData.targetExistence)
         {
             _isTargetExist = true;
         }

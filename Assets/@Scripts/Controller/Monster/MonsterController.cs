@@ -116,7 +116,6 @@ public abstract class MonsterController : MonoBehaviour, IDamageable
     public virtual void EndAttack()
     {
         _animator.SetBool(Define.IsAttacking, false);
-        _animator.SetTrigger(Define.EndAttack);
         //Debug.Log("공격 종료");
     }
 
