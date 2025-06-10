@@ -9,6 +9,9 @@ public class PlayerController : MonoBehaviour, IDamageable
     SkillSystem _skillSystem;
     [SerializeField] Transform _target;
 
+    public static Action<float, float> OnHPValueChanged;
+    public static Action<float, float> OnMPValueChanged;
+
     readonly Vector3 _partalOffset = Vector3.forward * 2;
     Vector3 _direction;
     float _mp;
@@ -76,6 +79,16 @@ public class PlayerController : MonoBehaviour, IDamageable
     // 데이터는 getter만 되도록?
     public PlayerData PlayerData { get { return _playerData; } }
 
+    public float HP
+    {
+        get { return _hp; }
+        set
+        {
+            _hp = value;
+            OnHPValueChanged?.Invoke(_hp, _playerData.HP);
+        }
+    }
+
 
     public float MP
     {
@@ -83,6 +96,7 @@ public class PlayerController : MonoBehaviour, IDamageable
         set
         {
             _mp = value;
+            OnMPValueChanged?.Invoke(_mp, _playerData.MP);
         }
     }
 
@@ -318,6 +332,7 @@ public class PlayerController : MonoBehaviour, IDamageable
     {
         float finalDamage = CalculateFinalDamage(damage, _playerData.Def);
         _hp -= finalDamage;
+        DamageTextEvent.Invoke(Util.GetDamageTextPosition(gameObject.GetComponent<Collider>()), finalDamage, false);
         //Debug.Log($"Damaged: {finalDamage}, Current Player HP: {_hp}");
         //if (_runtimeData.HP <= 0)
         //    Die();
