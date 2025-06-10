@@ -27,7 +27,11 @@ public class ObjectManager : Singleton<ObjectManager>
     private GameObject _popupCanvas;
     private GameObject _popupPanel;
     private GameObject _popupStatusPanel;
+    private GameObject _popupInventoryPanel;
     private GameObject _popupSkillInventory;
+    private GameObject _popupGainedRecordPanel;
+    private GameObject _playerVitalCanvas;
+    private GameObject _playerVitalResource;
 
     // * CutScene
     private GameObject _goblinKingCutScene;
@@ -163,6 +167,16 @@ public class ObjectManager : Singleton<ObjectManager>
         }
     }
 
+    public GameObject PopupInventoryPanel
+    {
+        get
+        {
+            if (NullCheck(_popupInventoryPanel))
+                return null;
+            return _popupInventoryPanel;
+        }
+    }
+
     public GameObject PopupSkillInventory
     {
         get
@@ -170,6 +184,38 @@ public class ObjectManager : Singleton<ObjectManager>
             if (NullCheck(_popupSkillInventory))
                 return null;
             return _popupSkillInventory;
+        }
+    }
+
+    public GameObject PopupGainedRecordPanel
+    {
+        get
+        {
+            if (NullCheck(_popupGainedRecordPanel))
+            {
+                return null;
+            }
+            return _popupGainedRecordPanel;
+        }
+    }
+
+    public GameObject PlayerVitalCanvas
+    {
+        get
+        {
+            if (NullCheck(_playerVitalCanvas))
+                return null;
+            return _playerVitalCanvas;
+        }
+    }
+
+    public GameObject PlayerVitalResource
+    {
+        get
+        {
+            if (NullCheck(_playerVitalResource))
+                return null;
+            return _playerVitalResource;
         }
     }
 
@@ -209,6 +255,7 @@ public class ObjectManager : Singleton<ObjectManager>
         MonsterResourceLoad();
         DamageTextResourceLoad();
         PopupUIResourceLoad();
+        PlayerVitalResourceLoad();
         CutSceneResourceLoad();
     }
 
@@ -270,8 +317,17 @@ public class ObjectManager : Singleton<ObjectManager>
         _popupCanvas = Resources.Load<GameObject>(Define.PopupUICanvasPath);
         _popupPanel = Resources.Load<GameObject>(Define.PopupEnterDungeonPanelPath);
         _popupStatusPanel = Resources.Load<GameObject>(Define.PopupStatusPanelPath);
+        _popupInventoryPanel = Resources.Load<GameObject>(Define.PopupInventoryPanelPath);
         _popupSkillInventory = Resources.Load<GameObject>(Define.PopupSkillInventoryPath);
+        _popupGainedRecordPanel = Resources.Load<GameObject>(Define.PopupGainedRecordPanelPath);
     }
+
+    private void PlayerVitalResourceLoad()
+    {
+        _playerVitalCanvas = Resources.Load<GameObject>(Define.PlayerVitalCanvasPath);
+        _playerVitalResource = Resources.Load<GameObject>(Define.PlayerVitalPath);
+    }
+
     // * 컷신 리소스 로드 메서드
     private void CutSceneResourceLoad()
     {

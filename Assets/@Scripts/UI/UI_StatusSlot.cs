@@ -1,56 +1,47 @@
 using extension;
+using System;
 using TMPro;
 using Unity.VisualScripting;
+using UnityEditor;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
 public class UI_StatusSlot : MonoBehaviour
 {
+    public Button upgradeButton;
+
     [SerializeField] StatusSlotData _statusSlotData;
     [SerializeField] TMP_Text _statusNameText;
     [SerializeField] TMP_Text _currentStatusText;
     [SerializeField] TMP_Text _upgradeCostText;
+
     EventTrigger _eventTrigger;
-    int _level;
+    PlayerData _playerData;
+    PlayerInventoryData _inventoryData;
 
     bool _isButtonDown = false;
-    public Button upgradeButton;
+    bool _isSilverCoinLack = false;
 
-    public StatusSlotData StatusSlotData
-    {
-        get => _statusSlotData; set => _statusSlotData = value;
-    }
-
-    public TMP_Text CurrentStatusText
-    {
-        get => _currentStatusText;
-        set
-        {
-            _currentStatusText = value;
-        }
-    }
-
-    public TMP_Text UpgradeCostText
-    {
-        get => _upgradeCostText;
-        set
-        {
-            _upgradeCostText = value;
-        }
-    }
-
-    public int Level
-    {
-        get => _level; set => _level = value;
-    }
+    float _time = 0;
+    float _delay = 0.3f;
 
     private void Awake()
+    {
+        SetButtonEventTrigger();
+    }
+    void SetButtonEventTrigger()
     {
         _eventTrigger = upgradeButton.GetOrAddComponent<EventTrigger>();
         EventTrigger.Entry entryPointerDown = new EventTrigger.Entry();
         entryPointerDown.eventID = EventTriggerType.PointerDown;
-        entryPointerDown.callback.AddListener((eventData) => { _isButtonDown = true; });
+        entryPointerDown.callback.AddListener((eventData) => 
+        { 
+            if (!_isSilverCoinLack)
+            {
+                _isButtonDown = true; UpgradeStatus();
+            }
+        });
 
         EventTrigger.Entry entryPointerUp = new EventTrigger.Entry();
         entryPointerUp.eventID = EventTriggerType.PointerUp;
@@ -60,33 +51,75 @@ public class UI_StatusSlot : MonoBehaviour
         _eventTrigger.triggers.Add(entryPointerUp);
     }
 
-    private void OnEnable()
+    public void Initialize(PlayerData playerData, PlayerInventoryData inventoryData)
     {
-        StatusSlotData.OnUpgradeStatus += UpgradeStatus;
+        _playerData = playerData;
+        _inventoryData = inventoryData;
+
+        _upgradeCostText.text = _statusSlotData.upgradeCost.ToString();
+        _currentStatusText.text = _statusSlotData.currentStatusCount.ToString();
     }
 
-    private void OnDisable()
-    {
-        StatusSlotData.OnUpgradeStatus -= UpgradeStatus;
-    }
 
     private void Update()
     {
         if (_isButtonDown)
         {
-            _level = ++_statusSlotData.level;
-            _upgradeCostText.text = (++_statusSlotData.upgradeCost).ToString();
-            _currentStatusText.text = (++_statusSlotData.currentStatusCount).ToString();
+            _time += Time.deltaTime;
+
+            if (_time > _delay)
+            {
+                UpgradeStatus();
+                _time = 0;
+                _delay = Mathf.Max(_delay * 0.9f, 0.05f);
+            }
+        }
+        else
+            _delay = 0.3f;
+    }
+
+    public void UpgradeStatus()
+    {
+        if (_inventoryData.UseSilverCoin(_statusSlotData.upgradeCost))
+        {
+            _statusSlotData.level++;
+            _statusSlotData.upgradeCost += 10 * _statusSlotData.level;
+            _statusSlotData.currentStatusCount += 5 + _statusSlotData.level;
+
+            _upgradeCostText.text = _statusSlotData.upgradeCost.ToString();
+            _currentStatusText.text = _statusSlotData.currentStatusCount.ToString();
+
+            ApplyUpgrade(_statusSlotData.statusType, _statusSlotData.currentStatusCount);
+            _isSilverCoinLack = false;
+        }
+        else
+        {
+            _isSilverCoinLack = true;
         }
     }
 
-    void UpgradeStatus(string statusName, int level)
+    void ApplyUpgrade(Define.StatusType type, int amount)
     {
-        if(statusName == _statusSlotData.name)
+        switch (type)
         {
-            _level = _statusSlotData.level;
-            _upgradeCostText.text = (++_statusSlotData.upgradeCost).ToString();
-            _currentStatusText.text = (++_statusSlotData.currentStatusCount).ToString();
+            case Define.StatusType.Atk:
+                _playerData.Atk = amount;
+                break;
+            case Define.StatusType.HP:
+                _playerData.HP = amount;
+                break;
+            case Define.StatusType.HPRecoveryPerSec:
+                _playerData.HPRecoveryPerSec = amount;
+                break;
+            case Define.StatusType.Def:
+                _playerData.Def = amount;
+                break;
+            case Define.StatusType.MP:
+                _playerData.MP = amount;
+                break;
+            case Define.StatusType.MPRecoveryPerSec:
+                _playerData.MPRecoveryPerSec = amount;
+                break;
         }
     }
 }

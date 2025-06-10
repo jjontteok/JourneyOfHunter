@@ -54,7 +54,6 @@ public class SkillColliderController : MonoBehaviour
         other.GetComponent<IDamageable>().GetDamaged(_damage);
         InstantiateHitEffect(other);
         //ActivateConnectedSkill();
-        DamageTextEvent.Invoke(GetDamageTextPosition(other), _damage, false);
     }
 
     Vector3 GetDamageTextPosition(Collider other)

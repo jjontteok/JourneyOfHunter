@@ -24,6 +24,8 @@ public class PlayerController : MonoBehaviour, IDamageable
     bool _isJoyStick;
 
     public Action OnAutoOff;
+     public static Action<float, float> OnHPValueChanged;
+    public static Action<float, float> OnMPValueChanged;
 
     public bool IsAuto
     {
@@ -90,15 +92,26 @@ public class PlayerController : MonoBehaviour, IDamageable
     }
 
 
-    public float MP
+    public float HP
     {
-        get { return _mp; }
-        set
-        {
-            _mp = value;
-            OnMPValueChanged?.Invoke(_mp, _playerData.MP);
+        get { return _hp; }
+        set 
+        { 
+            _hp = value;
+            OnHPValueChanged?.Invoke(_hp, _playerData.HP);
         }
     }
+
+
+public float MP
+{
+    get { return _mp; }
+    set
+    {
+        _mp = value;
+        OnMPValueChanged?.Invoke(_mp, _playerData.MP);
+    }
+}
 
     void Start()
     {

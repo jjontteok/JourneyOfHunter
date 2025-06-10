@@ -1,10 +1,11 @@
 using System;
 using UnityEngine;
+using UnityEngine.UI;
 
 [CreateAssetMenu(fileName = "StatusSlotData", menuName = "Scriptable Objects/StatusSlotData")]
 public class StatusSlotData : ScriptableObject
 {
-    public static Action<string, int> OnUpgradeStatus;
+    public Define.StatusType statusType;
     public int level;
     public string statusName;
     public int currentStatusCount;
@@ -12,10 +13,10 @@ public class StatusSlotData : ScriptableObject
 
     public int Level
     {
+        get => level;
         set
         {
             level = value;
-            OnUpgradeStatus?.Invoke(statusName, level);
         }
     }
 }
