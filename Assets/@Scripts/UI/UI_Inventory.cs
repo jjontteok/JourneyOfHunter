@@ -1,10 +1,17 @@
 using UnityEngine;
+using UnityEngine.UI;
 
 public class UI_Inventory : MonoBehaviour
 {
-    private int _silverCoin;
-    public int silverCoin
+    [SerializeField] Button _exitButton;
+
+    private void Awake()
     {
-        get => _silverCoin; set => _silverCoin = value;
+        _exitButton.onClick.AddListener(OnExitButtonClick);
+    }
+
+    void OnExitButtonClick()
+    {
+        gameObject.SetActive(false);
     }
 }

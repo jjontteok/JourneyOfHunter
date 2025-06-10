@@ -9,6 +9,7 @@ public class NormalSpawnerController : MonoBehaviour
 
     private string _monsterName;            // 스폰 될 몬스터 이름
     private WaitForSeconds _spawnInterval;  // 스폰 간격
+    private float _monsterInterval = 3f;
 
     public List<Vector3> SpawnPosList
     {
@@ -37,10 +38,11 @@ public class NormalSpawnerController : MonoBehaviour
     }
 
     // 스포너 설정 및 스폰 시작
-    public void SetSpawnerOn(string monsterName, float spawnInterval)
+    public void SetSpawnerOn(string monsterName, float spawnInterval, float monsterInterval)
     {
         _monsterName = monsterName;
         _spawnInterval = new WaitForSeconds(spawnInterval);
+        _monsterInterval = monsterInterval;
         StartCoroutine(StartSpawn());
     }
 
@@ -64,10 +66,10 @@ public class NormalSpawnerController : MonoBehaviour
         for(int i=0; i<_spawnPosList.Count; i++)
         {
             PoolManager.Instance.GetObjectFromPool<NormalMonsterController>(_spawnPosList[i], _monsterName);
-            PoolManager.Instance.GetObjectFromPool<NormalMonsterController>(_spawnPosList[i] + Vector3.right, _monsterName);
-            PoolManager.Instance.GetObjectFromPool<NormalMonsterController>(_spawnPosList[i] + Vector3.left, _monsterName);
-            PoolManager.Instance.GetObjectFromPool<NormalMonsterController>(_spawnPosList[i] + Vector3.forward, _monsterName);
-            PoolManager.Instance.GetObjectFromPool<NormalMonsterController>(_spawnPosList[i] + Vector3.back, _monsterName);
+            PoolManager.Instance.GetObjectFromPool<NormalMonsterController>(_spawnPosList[i] + _monsterInterval*Vector3.right, _monsterName);
+            PoolManager.Instance.GetObjectFromPool<NormalMonsterController>(_spawnPosList[i] + _monsterInterval * Vector3.left, _monsterName);
+            PoolManager.Instance.GetObjectFromPool<NormalMonsterController>(_spawnPosList[i] + _monsterInterval * Vector3.forward, _monsterName);
+            PoolManager.Instance.GetObjectFromPool<NormalMonsterController>(_spawnPosList[i] + _monsterInterval * Vector3.back, _monsterName);
         }
     }
 }

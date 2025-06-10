@@ -1,5 +1,6 @@
 using NUnit.Framework;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 
 public class DamageTextManager : Singleton<DamageTextManager>, IEventSubscriber, IDeactivateObject
@@ -10,7 +11,7 @@ public class DamageTextManager : Singleton<DamageTextManager>, IEventSubscriber,
     protected override void Initialize()
     {
         _damageTextList = new Dictionary<string, GameObject>();
-        _canvas = GameObject.Find("Canvas").GetComponent<Canvas>();
+        _canvas = GameObject.Find("UI_DamageText").GetComponent<Canvas>();
     }
 
     #region IEventSubscriber
@@ -34,6 +35,8 @@ public class DamageTextManager : Singleton<DamageTextManager>, IEventSubscriber,
         GameObject damageText = PoolManager.Instance.GetObjectFromPool<DamageTextController>
             (pos, isCritical ? "CriticalDamageText" : "NormalDamageText");
         damageText.GetComponent<DamageTextController>()._originPos = pos;
+        TMP_Text textMeshPro = damageText.GetComponent<TMP_Text>();
+        textMeshPro.text = damage.ToString();
         damageText.transform.SetParent(_canvas.transform, true);
     }
 }

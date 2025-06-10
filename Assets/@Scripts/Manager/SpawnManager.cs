@@ -8,6 +8,8 @@ public class SpawnManager : Singleton<SpawnManager>, IEventSubscriber, IDeactiva
 {
     private NormalSpawnerController _normalSpawner;
     private NamedSpawnerController _namedSpawner;
+    [SerializeField] float _spawnInterval = 5f;
+    [SerializeField] float _monsterInterval = 4f;
 
     public NormalSpawnerController NormalSpawner
     {
@@ -38,7 +40,7 @@ public class SpawnManager : Singleton<SpawnManager>, IEventSubscriber, IDeactiva
     {
         _normalSpawner = new GameObject("NormalMonsterSpawner").GetOrAddComponent<NormalSpawnerController>();
         _normalSpawner.SetSpawnerPos();
-        _normalSpawner.SetSpawnerOn("Demon", 5.0f);
+        _normalSpawner.SetSpawnerOn("Demon", _spawnInterval, _monsterInterval);
     }
     
     void SetNormalSpawnerOff()
