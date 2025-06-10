@@ -12,7 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2d6e6af76e2c69c4998a6772577ffa7d, type: 3}
   m_Name: AtkStatus
   m_EditorClassIdentifier: 
-  level: 104
+  statusType: 0
+  level: 1
   statusName: "\uACF5\uACA9\uB825"
-  currentStatusCount: 113
-  upgradeCost: 113
+  currentStatusCount: 10
+  upgradeCost: 15

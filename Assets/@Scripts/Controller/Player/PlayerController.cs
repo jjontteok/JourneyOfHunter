@@ -21,6 +21,8 @@ public class PlayerController : MonoBehaviour, IDamageable
     bool _isJoyStick;
 
     public Action OnAutoOff;
+     public static Action<float, float> OnHPValueChanged;
+    public static Action<float, float> OnMPValueChanged;
 
     public bool IsAuto
     {
@@ -77,14 +79,26 @@ public class PlayerController : MonoBehaviour, IDamageable
     public PlayerData PlayerData { get { return _playerData; } }
 
 
-    public float MP
+    public float HP
     {
-        get { return _mp; }
-        set
-        {
-            _mp = value;
+        get { return _hp; }
+        set 
+        { 
+            _hp = value;
+            OnHPValueChanged?.Invoke(_hp, _playerData.HP);
         }
     }
+
+
+public float MP
+{
+    get { return _mp; }
+    set
+    {
+        _mp = value;
+        OnMPValueChanged?.Invoke(_mp, _playerData.MP);
+    }
+}
 
     void Start()
     {
@@ -318,6 +332,7 @@ public class PlayerController : MonoBehaviour, IDamageable
     {
         float finalDamage = CalculateFinalDamage(damage, _playerData.Def);
         _hp -= finalDamage;
+        DamageTextEvent.Invoke(Util.GetDamageTextPosition(gameObject.GetComponent<Collider>()), finalDamage, false);
         //Debug.Log($"Damaged: {finalDamage}, Current Player HP: {_hp}");
         //if (_runtimeData.HP <= 0)
         //    Die();

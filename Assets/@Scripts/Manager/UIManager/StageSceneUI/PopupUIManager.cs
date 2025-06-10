@@ -12,6 +12,7 @@ public class PopupUIManager : Singleton<PopupUIManager>, IEventSubscriber, IDeac
     private GameObject _panelStatus;
     private GameObject _panelInventory;
     private GameObject _panelSkillInventory;
+    private GameObject _panelGainedRecord;
 
     public Button ButtonEnterDungeon;
 
@@ -23,12 +24,15 @@ public class PopupUIManager : Singleton<PopupUIManager>, IEventSubscriber, IDeac
         _canvasPopupUI = Instantiate(ObjectManager.Instance.PopupCanvas);
         _panelEnterDungeon = Instantiate(ObjectManager.Instance.PopupPanel, _canvasPopupUI.transform);
         _panelStatus = Instantiate(ObjectManager.Instance.PopupStatusPanel, _canvasPopupUI.transform);
+        _panelInventory = Instantiate(ObjectManager.Instance.PopupInventoryPanel, _canvasPopupUI.transform);
         _panelSkillInventory = Instantiate(ObjectManager.Instance.PopupSkillInventory, _canvasPopupUI.transform);
+        _panelGainedRecord = Instantiate(ObjectManager.Instance.PopupGainedRecordPanel, _canvasPopupUI.transform);
         ButtonEnterDungeon = _panelEnterDungeon.GetComponentInChildren<Button>();
 
         _panelStatus.SetActive(false);
+        _panelInventory.SetActive(false);
         _panelSkillInventory.SetActive(false);
-        //_panelInventory.SetActive(false);
+        _panelGainedRecord.SetActive(false);
     }
     #endregion
 
@@ -71,5 +75,10 @@ public class PopupUIManager : Singleton<PopupUIManager>, IEventSubscriber, IDeac
     public void ActivateSkillInventoryPanel()
     {
         _panelSkillInventory.SetActive(!_panelSkillInventory.activeSelf);
+    }
+
+    public void ActivateGainedRecordPanel()
+    {
+        _panelGainedRecord.SetActive(true);
     }
 }

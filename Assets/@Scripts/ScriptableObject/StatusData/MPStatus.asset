@@ -12,7 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2d6e6af76e2c69c4998a6772577ffa7d, type: 3}
   m_Name: MPStatus
   m_EditorClassIdentifier: 
-  level: 24
+  statusType: 4
+  level: 1
   statusName: "\uB9C8\uB098"
-  currentStatusCount: 24
-  upgradeCost: 33
+  currentStatusCount: 100
+  upgradeCost: 10
