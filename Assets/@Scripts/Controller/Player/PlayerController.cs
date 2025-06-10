@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -10,14 +11,26 @@ public class PlayerController : MonoBehaviour, IDamageable
     [SerializeField] PlayerData _playerData;
     [SerializeField] float _speed;
 
-    [SerializeField] Image _playerMpBar;
     [SerializeField] UI_SkillInventory _skillInventory;
 
+    public static Action<float, float> OnHPValueChanged;
+    public static Action<float, float> OnMPValueChanged;
     // 데이터는 getter만 되도록?
     public PlayerData PlayerData { get { return _playerData; } }
 
     float _mp;
     float _hp;
+
+    public float HP
+    {
+        get { return _hp; }
+        set 
+        { 
+            _hp = value;
+            OnHPValueChanged?.Invoke(_hp, _playerData.HP);
+        }
+    }
+
 
     public float MP
     {
@@ -25,7 +38,7 @@ public class PlayerController : MonoBehaviour, IDamageable
         set
         {
             _mp = value;
-            _playerMpBar.fillAmount = _mp / _playerData.MP;
+            OnMPValueChanged?.Invoke(_mp, _playerData.MP);
         }
     }
 
@@ -110,10 +123,10 @@ public class PlayerController : MonoBehaviour, IDamageable
 
     void Recover()
     {
-        _hp += _playerData.HPRecoveryPerSec * Time.deltaTime;
-        if (_hp > _playerData.HP)
+        HP += _playerData.HPRecoveryPerSec * Time.deltaTime;
+        if (HP > _playerData.HP)
         {
-            _hp = _playerData.HP;
+            HP = _playerData.HP;
         }
         MP += _playerData.MPRecoveryPerSec * Time.deltaTime;
         if (MP > _playerData.MP)
@@ -139,9 +152,9 @@ public class PlayerController : MonoBehaviour, IDamageable
     public void GetDamaged(float damage)
     {
         float finalDamage = CalculateFinalDamage(damage, _playerData.Def);
-        _hp -= finalDamage;
-        Debug.Log($"Damaged: {finalDamage}, Current Player HP: {_hp}");
-        //if (_runtimeData.HP <= 0)
+        HP -= finalDamage;
+        Debug.Log($"Damaged: {finalDamage}, Current Player HP: {HP}");
+        DamageTextEvent.Invoke(Util.GetDamageTextPosition(gameObject.GetComponent<Collider>()), finalDamage, false);
         //    Die();
     }
 

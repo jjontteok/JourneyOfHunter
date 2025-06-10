@@ -42,8 +42,7 @@ public class WeaponColliderController : MonoBehaviour
         }
         if (other.CompareTag(Define.MonsterTag))
         {
-            other.GetComponent<MonsterController>().GetDamaged(_damage);
-
+           other.GetComponent<MonsterController>().GetDamaged(_damage);
             InstantiateHitEffect(other);
         }
     }
