@@ -11,21 +11,17 @@ public class StageManager : Singleton<StageManager>, IEventSubscriber, IDeactiva
         _stageInfos = new List<StageInfo>();
     }
 
+    #region IEventSubscriber
     public void Subscribe()
     {
         throw new System.NotImplementedException();
     }
+    #endregion
+    #region IDeactivateObject
     public void Deactivate()
     {
         throw new System.NotImplementedException();
     }
+    #endregion
 
-}
-
-public struct StageInfo
-{
-    public string StageName;
-    public int StageCount;
-    public string NormalMonsterName;
-    public string NamedMonsterName;
 }

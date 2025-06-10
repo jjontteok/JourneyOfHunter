@@ -9,7 +9,7 @@ public class ObjectManager : Singleton<ObjectManager>
 {
     #region Resources
     // * Dictionary<이름, 프리팹 오브젝트>
-    private Dictionary<string, GameObject> _monsterResourceList;
+    private Dictionary<string, GameObject> _normalMonsterResourceList;
     private Dictionary<string, GameObject> _namedMonsterResourceList;
     private Dictionary<string, GameObject> _monsterSkillResourceList;
     private Dictionary<string, GameObject> _monsterSkillHitEffectResourceList;
@@ -22,6 +22,7 @@ public class ObjectManager : Singleton<ObjectManager>
     private GameObject _dungeonWallResource;
     private GameObject _dungeonPortalResource;
     private GameObject _shieldEffectResource;
+    private GameObject _monsterGateResource;
 
     // * UI Object
     private GameObject _popupCanvas;
@@ -37,13 +38,13 @@ public class ObjectManager : Singleton<ObjectManager>
     private GameObject _goblinKingCutScene;
 
     // * 프로퍼티
-    public Dictionary<string, GameObject> MonsterResourceList 
+    public Dictionary<string, GameObject> NormalMonsterResourceList 
     {
         get
         {
-            if (NullCheck(_monsterResourceList))
+            if (NullCheck(_normalMonsterResourceList))
                 return null;
-            return _monsterResourceList;
+            return _normalMonsterResourceList;
         }
     }
     public Dictionary<string, GameObject> NamedMonsterResourceList
@@ -135,6 +136,16 @@ public class ObjectManager : Singleton<ObjectManager>
             if (NullCheck(_shieldEffectResource))
                 return null;
             return _shieldEffectResource;
+        }
+    }
+
+    public GameObject MonsterGateResource
+    {
+        get
+        {
+            if (NullCheck(_monsterGateResource))
+                return null;
+            return _monsterGateResource;
         }
     }
 
@@ -235,7 +246,7 @@ public class ObjectManager : Singleton<ObjectManager>
     protected override void Initialize()
     {
         base.Initialize();
-        _monsterResourceList = new Dictionary<string, GameObject>();
+        _normalMonsterResourceList = new Dictionary<string, GameObject>();
         _namedMonsterResourceList = new Dictionary<string, GameObject>();
         _monsterSkillResourceList = new Dictionary<string, GameObject>();
         _monsterSkillHitEffectResourceList = new Dictionary<string, GameObject>();
@@ -270,6 +281,7 @@ public class ObjectManager : Singleton<ObjectManager>
         _shieldEffectResource = Resources.Load<GameObject>(Define.ShieldEffectPath);
         _dungeonWallResource = Resources.Load<GameObject>(Define.DungeonWallPath);
         _dungeonPortalResource = Resources.Load<GameObject>(Define.DungeonPortalPath);
+        _monsterGateResource = Resources.Load<GameObject>(Define.MonsterGatePath);
     }
     // * 스킬 리소스 로드 메서드
     private void SkillResourceLoad()
@@ -289,9 +301,9 @@ public class ObjectManager : Singleton<ObjectManager>
     // * 몬스터 리소스 로드 메서드
     private void MonsterResourceLoad()
     {
-        if (!NullCheck(_monsterResourceList, _namedMonsterResourceList))
+        if (!NullCheck(_normalMonsterResourceList, _namedMonsterResourceList))
         {
-            Resources.LoadAll<GameObject>(Define.MonsterPath).ToList(_monsterResourceList);
+            Resources.LoadAll<GameObject>(Define.MonsterPath).ToList(_normalMonsterResourceList);
             Resources.LoadAll<GameObject>(Define.NamedMonsterPath).ToList(_namedMonsterResourceList);
         }
         else
@@ -347,8 +359,14 @@ public class ObjectManager : Singleton<ObjectManager>
         }
         else if(type == typeof(NormalMonsterController))
         {
-            GameObject obj = Instantiate(MonsterResourceList[name], spawnPos, Quaternion.identity);
+            GameObject obj = Instantiate(NormalMonsterResourceList[name], spawnPos, Quaternion.identity);
             NormalMonsterController normalMonsterController = obj.GetOrAddComponent<NormalMonsterController>();
+            return obj;
+        }
+        else if(type == typeof(NamedMonsterController))
+        {
+            GameObject obj = Instantiate(NamedMonsterResourceList[name], spawnPos, Quaternion.identity);
+            NamedMonsterController namedMonsterController = obj.GetOrAddComponent<NamedMonsterController>();
             return obj;
         }
         else if(type == typeof(Skill))

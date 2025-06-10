@@ -11,6 +11,11 @@ public class NormalSpawnerController : MonoBehaviour
     private WaitForSeconds _spawnInterval;  // 스폰 간격
     private float _monsterInterval = 3f;
 
+    public List<Vector3> SpawnPosList
+    {
+        get { return _spawnPosList; }
+    }
+
     private void OnEnable()
     {
         Initialize();
@@ -29,7 +34,7 @@ public class NormalSpawnerController : MonoBehaviour
         _spawnPosList.Add(Define.SpawnSpot3);
         _spawnPosList.Add(Define.SpawnSpot4);
         _spawnPosList.Add(Define.SpawnSpot5);
-        _spawnPosList.Add(Define.SpawnSpot6);
+        //_spawnPosList.Add(Define.SpawnSpot6);
     }
 
     // 스포너 설정 및 스폰 시작

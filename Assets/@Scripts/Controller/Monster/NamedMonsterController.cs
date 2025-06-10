@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using Unity.VisualScripting;
 using UnityEngine;
@@ -7,6 +8,8 @@ using static UnityEngine.GraphicsBuffer;
 
 public class NamedMonsterController : MonsterController
 {
+    public static Action s_OnNamedMonsterDie;
+
     [SerializeField] private float _closeAttackLimit = 5f;
     [SerializeField] private bool _isMoveToOrigin;
     [SerializeField] private Vector3 _originPos;
@@ -141,5 +144,11 @@ public class NamedMonsterController : MonsterController
         //현재 위치가 원위치가 아니라면 원위치로 이동
         else
             _isMoveToOrigin = true;
+    }
+
+    public override void Die()
+    {
+        base.Die();
+        s_OnNamedMonsterDie?.Invoke();
     }
 }
