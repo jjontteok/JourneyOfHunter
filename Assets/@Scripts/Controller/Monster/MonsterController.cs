@@ -1,5 +1,6 @@
 using UnityEngine;
 using extension;
+using System;
 
 // * Monster Status 구조체
 //- Scriptable Object의 런타임 복사용으로 활용
@@ -35,6 +36,8 @@ public abstract class MonsterController : MonoBehaviour, IDamageable
 {
     [SerializeField] protected MonsterData _monsterData;
     [SerializeField] protected GameObject _target;
+
+    public static event Action OnMonsterDead;
 
     protected MonsterStatus _runtimeData;
     protected Animator _animator;
@@ -116,7 +119,6 @@ public abstract class MonsterController : MonoBehaviour, IDamageable
     public virtual void EndAttack()
     {
         _animator.SetBool(Define.IsAttacking, false);
-        _animator.SetTrigger(Define.EndAttack);
         //Debug.Log("공격 종료");
     }
 
@@ -133,6 +135,7 @@ public abstract class MonsterController : MonoBehaviour, IDamageable
     {
         float finalDamage = CalculateFinalDamage(damage, _runtimeData.Def);
         _runtimeData.HP -= finalDamage;
+        DamageTextEvent.Invoke(Util.GetDamageTextPosition(gameObject.GetComponent<Collider>()), finalDamage, false);
         Debug.Log($"{name} Damaged: {finalDamage}");
         if (_runtimeData.HP <= 0)
             Die();
@@ -148,6 +151,7 @@ public abstract class MonsterController : MonoBehaviour, IDamageable
     public virtual void Die()
     {
         //Instantiate(_monsterData.DeadEffect);
+        OnMonsterDead?.Invoke();
         gameObject.SetActive(false);
     }
 

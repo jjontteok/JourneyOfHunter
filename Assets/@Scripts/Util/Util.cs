@@ -11,4 +11,9 @@ public class Util
         }
         return false;
     }
+
+    static public Vector3 GetDamageTextPosition(Collider other)
+    {
+        return other.transform.position + new Vector3(0f, other.bounds.center.y * 2, 0f);
+    }
 }

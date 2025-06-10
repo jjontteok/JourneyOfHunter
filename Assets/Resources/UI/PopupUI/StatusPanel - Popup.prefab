@@ -290,7 +290,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 1.1B
+  m_text: 15
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 90d5069cf8ee8f342a57cbb798f0eb7e, type: 2}
   m_sharedMaterial: {fileID: -7867324468927197065, guid: 90d5069cf8ee8f342a57cbb798f0eb7e, type: 2}
@@ -562,7 +562,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 2,096
+  m_text: 1
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 6ac1efaa5923d7d4d95ad3ea62bccbff, type: 2}
   m_sharedMaterial: {fileID: -967654015226799882, guid: 6ac1efaa5923d7d4d95ad3ea62bccbff, type: 2}
@@ -910,7 +910,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 1.1B
+  m_text: 10
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 90d5069cf8ee8f342a57cbb798f0eb7e, type: 2}
   m_sharedMaterial: {fileID: -7867324468927197065, guid: 90d5069cf8ee8f342a57cbb798f0eb7e, type: 2}
@@ -1565,7 +1565,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 2,096
+  m_text: 1
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 6ac1efaa5923d7d4d95ad3ea62bccbff, type: 2}
   m_sharedMaterial: {fileID: -967654015226799882, guid: 6ac1efaa5923d7d4d95ad3ea62bccbff, type: 2}
@@ -1824,7 +1824,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 1.1B
+  m_text: 10
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 90d5069cf8ee8f342a57cbb798f0eb7e, type: 2}
   m_sharedMaterial: {fileID: -7867324468927197065, guid: 90d5069cf8ee8f342a57cbb798f0eb7e, type: 2}
@@ -1989,7 +1989,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e85bf885213e25b42a03d80c5ba5f047, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _silverCoinText: 
+  _inventoryData: {fileID: 11400000, guid: a0b437d6f65cfad4bacce1c386cf40bf, type: 2}
+  _silverCoinText: {fileID: 3818434975405146439}
   _statusList:
   - {fileID: 3466626251328218691}
   - {fileID: 4018031925325160317}
@@ -2275,7 +2276,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 1.1B
+  m_text: 10
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 90d5069cf8ee8f342a57cbb798f0eb7e, type: 2}
   m_sharedMaterial: {fileID: -7867324468927197065, guid: 90d5069cf8ee8f342a57cbb798f0eb7e, type: 2}
@@ -2411,7 +2412,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 1.1B
+  m_text: 15
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 90d5069cf8ee8f342a57cbb798f0eb7e, type: 2}
   m_sharedMaterial: {fileID: -7867324468927197065, guid: 90d5069cf8ee8f342a57cbb798f0eb7e, type: 2}
@@ -2695,11 +2696,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fb6cd785a1bc2cf4c95b8f4ef3336063, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  upgradeButton: {fileID: 2715558940132148648}
   _statusSlotData: {fileID: 11400000, guid: ce3a126533b847e4c952ef97fa7c613e, type: 2}
   _statusNameText: {fileID: 329001012003799144}
   _currentStatusText: {fileID: 6848507517850810689}
   _upgradeCostText: {fileID: 4841679749065171109}
-  upgradeButton: {fileID: 2715558940132148648}
 --- !u!1 &3020298570626412713
 GameObject:
   m_ObjectHideFlags: 0
@@ -3297,7 +3298,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 2,096
+  m_text: 100
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 6ac1efaa5923d7d4d95ad3ea62bccbff, type: 2}
   m_sharedMaterial: {fileID: -967654015226799882, guid: 6ac1efaa5923d7d4d95ad3ea62bccbff, type: 2}
@@ -3508,7 +3509,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 2,096
+  m_text: 100
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 6ac1efaa5923d7d4d95ad3ea62bccbff, type: 2}
   m_sharedMaterial: {fileID: -967654015226799882, guid: 6ac1efaa5923d7d4d95ad3ea62bccbff, type: 2}
@@ -4051,11 +4052,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fb6cd785a1bc2cf4c95b8f4ef3336063, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  upgradeButton: {fileID: 2340643485776911362}
   _statusSlotData: {fileID: 11400000, guid: 6908c0a4e1f796f41be0ced07e10a240, type: 2}
   _statusNameText: {fileID: 5156668104889203184}
   _currentStatusText: {fileID: 7028541704417142777}
   _upgradeCostText: {fileID: 151559535736583137}
-  upgradeButton: {fileID: 2340643485776911362}
 --- !u!1 &5164022476115554149
 GameObject:
   m_ObjectHideFlags: 0
@@ -4407,11 +4408,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fb6cd785a1bc2cf4c95b8f4ef3336063, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  upgradeButton: {fileID: 1293450117365364208}
   _statusSlotData: {fileID: 11400000, guid: 0f9938bc3b9d58e4c9af10f540e10052, type: 2}
   _statusNameText: {fileID: 2312723859210114232}
   _currentStatusText: {fileID: 6014817440543007254}
   _upgradeCostText: {fileID: 1868474972313270493}
-  upgradeButton: {fileID: 1293450117365364208}
 --- !u!1 &5888302830828162955
 GameObject:
   m_ObjectHideFlags: 0
@@ -5484,11 +5485,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fb6cd785a1bc2cf4c95b8f4ef3336063, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  upgradeButton: {fileID: 5477784783331402820}
   _statusSlotData: {fileID: 11400000, guid: 380329b14c312f94b9b0c7d173e5b83f, type: 2}
   _statusNameText: {fileID: 8457477544671631768}
   _currentStatusText: {fileID: 696148103896660411}
   _upgradeCostText: {fileID: 7412722226074450359}
-  upgradeButton: {fileID: 5477784783331402820}
 --- !u!1 &6991378489985677651
 GameObject:
   m_ObjectHideFlags: 0
@@ -6217,7 +6218,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 2,096
+  m_text: 10
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 6ac1efaa5923d7d4d95ad3ea62bccbff, type: 2}
   m_sharedMaterial: {fileID: -967654015226799882, guid: 6ac1efaa5923d7d4d95ad3ea62bccbff, type: 2}
@@ -6652,11 +6653,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fb6cd785a1bc2cf4c95b8f4ef3336063, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  upgradeButton: {fileID: 2476920966870415250}
   _statusSlotData: {fileID: 11400000, guid: 0d7111b286439d84e916b48171978644, type: 2}
   _statusNameText: {fileID: 8412374388175872686}
   _currentStatusText: {fileID: 6339451492130659662}
   _upgradeCostText: {fileID: 1662988784342904745}
-  upgradeButton: {fileID: 2476920966870415250}
 --- !u!1 &7780789280584283034
 GameObject:
   m_ObjectHideFlags: 0
@@ -6858,7 +6859,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 1.1B
+  m_text: 10
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 90d5069cf8ee8f342a57cbb798f0eb7e, type: 2}
   m_sharedMaterial: {fileID: -7867324468927197065, guid: 90d5069cf8ee8f342a57cbb798f0eb7e, type: 2}
@@ -7021,11 +7022,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fb6cd785a1bc2cf4c95b8f4ef3336063, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  upgradeButton: {fileID: 5677754253277865321}
   _statusSlotData: {fileID: 11400000, guid: b7e0a90bbd3617c41a217a58ca5d8449, type: 2}
   _statusNameText: {fileID: 5703146617045805430}
   _currentStatusText: {fileID: 7302233726478735656}
   _upgradeCostText: {fileID: 5236542808654263695}
-  upgradeButton: {fileID: 5677754253277865321}
 --- !u!1 &8366400030274634282
 GameObject:
   m_ObjectHideFlags: 0
@@ -7091,7 +7092,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 2,096
+  m_text: 10
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 6ac1efaa5923d7d4d95ad3ea62bccbff, type: 2}
   m_sharedMaterial: {fileID: -967654015226799882, guid: 6ac1efaa5923d7d4d95ad3ea62bccbff, type: 2}
