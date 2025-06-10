@@ -10,7 +10,7 @@ public class NamedMonsterController : MonsterController
 {
     public static Action s_OnNamedMonsterDie;
 
-    [SerializeField] private float _closeAttackLimit = 5f;
+    [SerializeField] private float _closeAttackLimit = 4f;
     [SerializeField] private bool _isMoveToOrigin;
     [SerializeField] private Vector3 _originPos;
     [SerializeField] private SkillData _bulletSkillData;
@@ -42,7 +42,7 @@ public class NamedMonsterController : MonsterController
     {
         _bulletSkill = Instantiate(ObjectManager.Instance.MonsterSkillResourceList[_bulletSkillData.skillName]).
             GetComponent<RigidbodyTargetSkill>();
-        _bulletSkill.Initialize();
+        _bulletSkill.Initialize(_monsterData);
         _bulletSkill.gameObject.SetActive(false);
     }
 

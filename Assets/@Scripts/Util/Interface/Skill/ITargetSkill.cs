@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public interface ITargetable
+public interface ITargetSkill
 {
     Transform Target { get;}
     void SetTarget();

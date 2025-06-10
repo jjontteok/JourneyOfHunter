@@ -3,21 +3,21 @@ using UnityEngine;
 public class SkillColliderController : MonoBehaviour
 {
     protected float _damage;
-    protected float _atk;
+    protected Status _status;
     protected float _angle;
     protected GameObject _effect;
     protected ActiveSkill _connectedSkill;
 
-    public void SetColliderInfo(float damage, float atk, GameObject connectedSkillPrefab, GameObject effect, float angle = default)
+    public void SetColliderInfo(float damage, Status status, GameObject connectedSkillPrefab, GameObject effect, float angle = default)
     {
         _damage = damage;
         if (connectedSkillPrefab != null)
         {
             _connectedSkill = Instantiate(connectedSkillPrefab).GetComponent<ActiveSkill>();
-            _connectedSkill.Initialize();
+            _connectedSkill.Initialize(status);
             _connectedSkill.gameObject.SetActive(false);
         }
-        _atk = atk;
+        _status = status;
         _effect = effect;
         _angle = angle;
     }
@@ -54,10 +54,5 @@ public class SkillColliderController : MonoBehaviour
         other.GetComponent<IDamageable>().GetDamaged(_damage);
         InstantiateHitEffect(other);
         //ActivateConnectedSkill();
-    }
-
-    Vector3 GetDamageTextPosition(Collider other)
-    {
-        return other.transform.position + new Vector3(0f, other.bounds.center.y * 2, 0f);
     }
 }

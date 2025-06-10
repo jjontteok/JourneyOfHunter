@@ -33,6 +33,8 @@ public class UI_Game : MonoBehaviour
 
     void Initialize()
     {
+        TimeManager.Instance.OnTimeChanged -= UpdateTimeText;
+        _inventoryData.OnValueChanged -= UpdateGoods;
         TimeManager.Instance.OnTimeChanged += UpdateTimeText;
         _inventoryData.OnValueChanged += UpdateGoods;
 
@@ -45,23 +47,8 @@ public class UI_Game : MonoBehaviour
         // _inventoryButton.onClick.AddListener(OnInventoryButtonClick);
 
         PlayerController player = FindAnyObjectByType<PlayerController>();
-        //OnAutoChanged += player.SetAuto;
         OnAutoChanged += (flag) => player.IsAuto = flag;
         player.OnAutoOff += OnAutoToggleOff;
-    }
-
-    //private void OnEnable()
-    //{
-    //    TimeManager.Instance.OnTimeChanged += SetTimeText;
-    //    _statusButton.onClick.AddListener(OnStatusButtonClick);
-    //    _autoToggle.onValueChanged.AddListener(OnAutoToggleClick);
-    //   // _inventoryButton.onClick.AddListener(OnInventoryButtonClick);
-    //}
-
-    private void OnDisable()
-    {
-        TimeManager.Instance.OnTimeChanged -= UpdateTimeText;
-        _inventoryData.OnValueChanged -= UpdateGoods;
     }
 
     private void Start()
