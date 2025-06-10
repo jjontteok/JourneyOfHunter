@@ -3,9 +3,9 @@ using UnityEngine;
 public class DirectionNonTargetSkill : ActiveSkill
 {
     // 스킬 발동 순간, 그 앞의 범위 내에 있는 적들에게 대미지
-    public override void ActivateSkill(Transform target = null, Vector3 pos = default)
+    public override bool ActivateSkill(Vector3 pos)
     {
-        base.ActivateSkill(null, pos);
+        base.ActivateSkill(pos);
 
         // 현재 플레이어가 바라보는 방향 == 스킬 발동 방향
         // 플레이어 객체를 받아오는 방법 강구 필요        
@@ -24,6 +24,8 @@ public class DirectionNonTargetSkill : ActiveSkill
                 Destroy(effect, 0.5f);
             }
         }
+
+        return true;
     }
 
     private void OnDrawGizmos()

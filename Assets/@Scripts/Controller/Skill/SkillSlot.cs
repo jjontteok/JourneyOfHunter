@@ -1,6 +1,5 @@
 using System;
 using System.Collections;
-using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
@@ -37,14 +36,15 @@ public class SkillSlot : MonoBehaviour
     {
         // 나중에 게임매니저에서 가져오든지 할 예정
         _player = FindAnyObjectByType<PlayerController>();
-        IsActivatePossible = false;
+        //IsActivatePossible = false;
     }
 
     // 처음 슬롯 생성 시 스킬 등록
     public void SetSkill(SkillData data)
     {
         // 맨 처음에 약간의 딜레이 제공
-        StartCoroutine(CoStartCoolTime(0.5f));
+        //StartCoroutine(CoStartCoolTime(0.5f));
+        IsActivatePossible = true;
 
         // ObjectManager에서 skill resource를 찾아 떠나는 멀고도 험한 여정
         Skill skill = ObjectManager.Instance.PlayerSkillResourceList.FirstOrDefault((resource) =>
@@ -55,8 +55,8 @@ public class SkillSlot : MonoBehaviour
             Debug.Log("Cannot Find Skill Resource named " + data.skillName);
             return;
         }
-
-        _skill = Instantiate(skill).GetComponent<ActiveSkill>();
+        _skill = Instantiate(skill) as ActiveSkill;
+        //_skill = Instantiate(skill).GetComponent<ActiveSkill>();
 
         // 타겟이 필요한 스킬인지 아닌지 체크
         if (_skill.SkillData.targetExistence)
@@ -111,12 +111,14 @@ public class SkillSlot : MonoBehaviour
     // 스킬 발동 & 마나 계산 & 쿨타임 시작
     void ProcessSkill(Transform target = null)
     {
-        _skill.ActivateSkill(_target, transform.position);
-        _player.MP = Mathf.Max(_player.MP - _skill.SkillData.MP, 0);
-        //Debug.Log($"Skill Name: {_skill.name} Current Player MP: {_player.MP}");
-        IsActivatePossible = false;
-        StartCoroutine(CoStartCoolTime());
-        OnActivateSkill?.Invoke();
+        if(_skill.ActivateSkill(transform.position))
+        {
+            _player.MP = Mathf.Max(_player.MP - _skill.SkillData.MP, 0);
+            IsActivatePossible = false;
+            StartCoroutine(CoStartCoolTime());
+            OnActivateSkill?.Invoke();
+        }
+        
     }
 
     public void DestroySkillSlot()

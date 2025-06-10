@@ -1,10 +1,11 @@
 using UnityEngine;
 
-public class RigidbodyTargetSkill : ActiveSkill
+public class RigidbodyTargetSkill : ActiveSkill, ITargetSkill
 {
     [SerializeField] Vector3 _offset = Vector3.up * 5f;
     CrashColliderController _coll;
     Rigidbody _rigidbody;
+    Transform _target;
 
     public override void Initialize(Status status)
     {
@@ -14,20 +15,28 @@ public class RigidbodyTargetSkill : ActiveSkill
         _coll.SetColliderInfo(_skillData.damage, status, _skillData.connectedSkillPrefab, _skillData.hitEffectPrefab, _skillData.angle);
     }
 
-    public override void ActivateSkill(Transform target, Vector3 pos = default)
+    public override bool ActivateSkill(Vector3 pos)
     {
-        pos += _offset;
-        base.ActivateSkill(target, pos);
-        _coll.gameObject.transform.localPosition = Vector3.zero;
+        if(IsTargetExist(pos))
+        {
+            base.ActivateSkill(_target.position + _offset);
+            _coll.gameObject.transform.localPosition = Vector3.zero;
 
-        _rigidbody.linearVelocity = Vector3.zero;
-        Vector3 difference = target.position - pos;
-        Vector3 dir = difference.normalized;
-        dir.y = _rigidbody.linearVelocity.y;
-        //dir.y /= 2f;
-        //_skillData.force = difference.magnitude + 10;
-        _rigidbody.linearVelocity = dir * (difference.magnitude + 10);
-        //_rigidbody.AddForce(dir * (difference.magnitude * 10));
+            _rigidbody.linearVelocity = Vector3.zero;
+            Vector3 difference = _target.position - pos;
+            Vector3 dir = difference.normalized;
+            dir.y = _rigidbody.linearVelocity.y;
+            _rigidbody.linearVelocity = dir * (difference.magnitude + 10);
+
+            return true;
+        }
+
+        return false;
     }
 
+    public bool IsTargetExist(Vector3 pos)
+    {
+        _target = Util.GetNearestTarget(pos, _skillData.targetDistance)?.transform;
+        return _target != null;
+    }
 }

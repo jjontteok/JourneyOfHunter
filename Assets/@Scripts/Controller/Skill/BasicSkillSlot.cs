@@ -8,14 +8,21 @@ public class BasicSkillSlot : SkillSlot
     {
         if (IsActivatePossible)
         {
-            Transform target = Util.GetNearestTarget(transform.position, _skill.SkillData.targetDistance)?.transform;
-            if (target != null)
+            if(_skill.ActivateSkill(transform.position))
             {
-                _skill.ActivateSkill(target, transform.position);
-
                 IsActivatePossible = false;
                 StartCoroutine(CoStartCoolTime());
+                OnActivateSkill?.Invoke();
             }
+            
+            //Transform target = Util.GetNearestTarget(transform.position, _skill.SkillData.targetDistance)?.transform;
+            //if (target != null)
+            //{
+            //    _skill.ActivateSkill(target, transform.position);
+
+            //    IsActivatePossible = false;
+            //    StartCoroutine(CoStartCoolTime());
+            //}
         }
     }
 }

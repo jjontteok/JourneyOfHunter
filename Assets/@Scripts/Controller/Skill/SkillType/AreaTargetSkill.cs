@@ -1,9 +1,10 @@
 using UnityEngine;
 
-public class AreaTargetSkill : ActiveSkill
+public class AreaTargetSkill : ActiveSkill, ITargetSkill
 {
     //PenetrationColliderController _coll;
     SkillColliderController _coll;
+    Transform _target;
     [SerializeField] Vector3 _offset;
 
     public override void Initialize(Status status)
@@ -15,11 +16,22 @@ public class AreaTargetSkill : ActiveSkill
     }
 
     // target받아서 그 위치에 생성
-    public override void ActivateSkill(Transform target, Vector3 pos = default)
+    public override bool ActivateSkill(Vector3 pos)
     {
-        base.ActivateSkill(target, pos);
-        _coll.transform.localPosition = Vector3.zero;
-        transform.position = target.position;
-        transform.position += _offset;
+        if(IsTargetExist(pos))
+        {
+            base.ActivateSkill(_target.position + _offset);
+            _coll.transform.localPosition = Vector3.zero;
+
+            return true;
+        }
+        
+        return false;
+    }
+
+    public bool IsTargetExist(Vector3 pos)
+    {
+        _target = Util.GetNearestTarget(pos, _skillData.targetDistance)?.transform;
+        return _target != null;
     }
 }

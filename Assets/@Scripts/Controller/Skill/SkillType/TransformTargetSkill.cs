@@ -6,12 +6,7 @@ public class TransformTargetSkill : ActiveSkill, ITargetSkill, IMovingSkill
     SkillColliderController _coll;
 
     Transform _target;
-    float _speed;
     Vector3 _direction;
-
-    public Transform Target => _target;
-
-    public float Speed { get => _speed; set => _speed = value; }
 
     public Vector3 Direction { get => _direction; }
 
@@ -25,14 +20,20 @@ public class TransformTargetSkill : ActiveSkill, ITargetSkill, IMovingSkill
     }
 
     // 방향 설정 + 타겟 설정
-    public override void ActivateSkill(Transform target, Vector3 pos = default)
+    public override bool ActivateSkill(Vector3 pos)
     {
-        base.ActivateSkill(target, pos);
-        _coll.transform.localPosition = Vector3.zero;
+        if (IsTargetExist(pos))
+        {
+            base.ActivateSkill(pos);
+            _coll.transform.localPosition = Vector3.zero;
+            SetDirection();
 
-        SetDirection();
+            OnSkillSet?.Invoke(_direction);
 
-        OnSkillSet?.Invoke(_direction);
+            return true;
+        }
+
+        return false;
     }
 
     private void Update()
@@ -40,9 +41,10 @@ public class TransformTargetSkill : ActiveSkill, ITargetSkill, IMovingSkill
         MoveSkillCollider();
     }
 
-    public void SetTarget()
+    public bool IsTargetExist(Vector3 pos)
     {
-        _target = Util.GetNearestTarget(transform.position, _skillData.targetDistance)?.transform;
+        _target = Util.GetNearestTarget(pos, _skillData.targetDistance)?.transform;
+        return _target != null;
     }
 
     public void MoveSkillCollider()

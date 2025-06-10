@@ -131,7 +131,7 @@ public class NamedMonsterController : MonsterController
     {
 
         _animator.SetTrigger(Define.LongAttack);
-        _bulletSkill.ActivateSkill(_target.transform, transform.position);
+        _bulletSkill.ActivateSkill(transform.position);
     }
 
 

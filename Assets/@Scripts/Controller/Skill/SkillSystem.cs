@@ -136,19 +136,44 @@ public class SkillSystem : MonoBehaviour
             return;
         }
         slot.DestroySkillSlot();
-        GetShortestSkillDistance();
+        Invoke("GetShortestSkillDistance", Time.deltaTime);
+        //GetShortestSkillDistance();
     }
 
     public float GetShortestSkillDistance()
     {
-        float min = _activeSkillSlotList[0].SkillData.targetDistance;
-        for (int i = 1; i < _activeSkillSlotList.Count; i++)
+        float min = -1;
+        foreach(var slot in _activeSkillSlotList)
         {
-            if (min > _activeSkillSlotList[i].SkillData.targetDistance)
-                min = _activeSkillSlotList[i].SkillData.targetDistance;
+            if (slot!=null)
+            {
+                if(min<0)
+                {
+                    min = slot.SkillData.targetDistance;
+                }
+                else
+                {
+                    min = Mathf.Min(min, slot.SkillData.targetDistance);
+                }
+            }
+        }
+        if(min < 0)
+        {
+            min = BasicSkillSlot.SkillData.targetDistance;
         }
 
+        Debug.Log("Current ShortestDistance: " + min);
         OnShortestSkillDistanceChanged?.Invoke(min);
         return min;
+
+
+        //float min = _activeSkillSlotList[0].SkillData.targetDistance;
+        //for (int i = 1; i < _activeSkillSlotList.Count; i++)
+        //{
+        //    if (min > _activeSkillSlotList[i].SkillData.targetDistance)
+        //        min = _activeSkillSlotList[i].SkillData.targetDistance;
+        //}
+                
+        //return min;
     }
 }

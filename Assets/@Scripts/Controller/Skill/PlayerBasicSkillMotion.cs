@@ -2,11 +2,12 @@ using UnityEngine;
 
 public class PlayerBasicSkillMotion : MonoBehaviour
 {
-    [SerializeField] Animator _animator;
+    Animator _animator;
 
     void Awake()
     {
         Initialize();
+        gameObject.SetActive(false);
     }
 
     private void OnEnable()

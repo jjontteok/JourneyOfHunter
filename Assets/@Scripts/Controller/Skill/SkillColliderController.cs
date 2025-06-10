@@ -26,7 +26,7 @@ public class SkillColliderController : MonoBehaviour
     {
         if (_connectedSkill != null)
         {
-            _connectedSkill.ActivateSkill(null, transform.position);
+            _connectedSkill.ActivateSkill(transform.position);
         }
     }
 
