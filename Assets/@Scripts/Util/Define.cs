@@ -34,6 +34,7 @@ public class Define : MonoBehaviour
     public const string ShieldEffectPath = "Dungeon/Object/ShieldEffect";
     public const string DungeonWallPath = "Dungeon/Object/DungeonWall";
     public const string DungeonPortalPath = "Dungeon/Object/DungeonPortal";
+    public const string MonsterGatePath = "Dungeon/Object/HellGate";
     public const string DamageTextPath = "UI/DamageText";
 
     public const string PopupUICanvasPath = "UI/PopupUI/Canvas - Popup";
@@ -48,16 +49,17 @@ public class Define : MonoBehaviour
     public static Vector3 DungeonEnterSpot = new Vector3(0, 5, 30);
     public static Vector3 DungeonExitSpot = new Vector3(0, 5, 100);
     public static Vector3 DungeonEnterPortalSpot = new Vector3(0, 2.5f, 29);
+    public static Vector3 DungeonExitPortalSpot = new Vector3(0, 2.5f, 99);
     #endregion
 
     #region SpawnSpots
-    public static Vector3 SpawnSpot1 = new Vector3(-10, 1, 45);
-    public static Vector3 SpawnSpot2 = new Vector3(10, 1, 45);
-    public static Vector3 SpawnSpot3 = new Vector3(-10, 1, 60);
-    public static Vector3 SpawnSpot4 = new Vector3(10, 1, 60);
-    public static Vector3 SpawnSpot5 = new Vector3(-10, 1, 75);
-    public static Vector3 SpawnSpot6 = new Vector3(10, 1, 75);
-    public static Vector3 NamedMonsterSpawnSpot = new Vector3(0, 1, 80);
+    public static Vector3 SpawnSpot1 = new Vector3(-10, 7, 80);
+    public static Vector3 SpawnSpot2 = new Vector3(10, 7, 80);
+    public static Vector3 SpawnSpot3 = new Vector3(-5, 7, 80);
+    public static Vector3 SpawnSpot4 = new Vector3(5, 7, 80);
+    public static Vector3 SpawnSpot5 = new Vector3(0, 7, 80);
+    //public static Vector3 SpawnSpot6 = new Vector3(10, 7, 70);
+    public static Vector3 NamedMonsterSpawnSpot = new Vector3(0, 3, 80);
     #endregion
 
     #region Enum

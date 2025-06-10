@@ -1,5 +1,6 @@
 using UnityEngine;
 
+// 이거 없애보자
 public class CutSceneManager : Singleton<CutSceneManager>, IDeactivateObject
 {
     private GameObject _cutScene;

@@ -9,6 +9,11 @@ public class SpawnManager : Singleton<SpawnManager>, IEventSubscriber, IDeactiva
     private NormalSpawnerController _normalSpawner;
     private NamedSpawnerController _namedSpawner;
 
+    public NormalSpawnerController NormalSpawner
+    {
+        get { return _normalSpawner; }
+    }    
+
     protected override void Initialize()
     {
         base.Initialize();
@@ -17,8 +22,9 @@ public class SpawnManager : Singleton<SpawnManager>, IEventSubscriber, IDeactiva
     #region IEventSubscriber
     public void Subscribe()
     {
-        DungeonManager.Instance.OnDungeonEnter += SetSpawner;
-        DungeonManager.Instance.OnDungeonExit += SetSpawnerOff;
+        DungeonManager.Instance.OnDungeonEnter += SetNormalSpawnerOn;
+        DungeonManager.Instance.OnSpawnNamedMonster += SetNormalSpawnerOff;
+        DungeonManager.Instance.OnSpawnNamedMonster += SetNamedSpawnerOn;
     }
     #endregion
     #region IDeactivateObject
@@ -28,16 +34,22 @@ public class SpawnManager : Singleton<SpawnManager>, IEventSubscriber, IDeactiva
     }
     #endregion
 
-    void SetSpawner()
+    void SetNormalSpawnerOn()
     {
         _normalSpawner = new GameObject("NormalMonsterSpawner").GetOrAddComponent<NormalSpawnerController>();
         _normalSpawner.SetSpawnerPos();
         _normalSpawner.SetSpawnerOn("Demon", 5.0f);
     }
     
-    void SetSpawnerOff()
+    void SetNormalSpawnerOff()
     {
         _normalSpawner.SetSpawnerOff();
     }
 
+    void SetNamedSpawnerOn()
+    {
+        _namedSpawner = new GameObject("NamedMonsterSpawner").GetOrAddComponent<NamedSpawnerController>();
+        _namedSpawner.SetSpawnerPos();
+        _namedSpawner.SetSpawnerOn("Goblin");
+    }
 }

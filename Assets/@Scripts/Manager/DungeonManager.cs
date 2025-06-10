@@ -2,15 +2,38 @@ using System;
 using UnityEngine;
 using extension;
 using System.Collections;
+using System.Collections.Generic;
+
+// 스테이지 정보 구조체...
+// 스테이지 정보를 불러온다 어떻게? 
+public struct StageInfo
+{
+    public int StageCount;
+    public int ClearCount;
+
+    public string NormalMonsterName;
+    public string NamedMonsterName;
+}
 
 public class DungeonManager : Singleton<DungeonManager>, IEventSubscriber, IDeactivateObject
 {
+    #region DungeonObject
     private GameObject _dungeonWallFront;
     private GameObject _dungeonWallBack;
     private GameObject _dungeonPortal;
+    private GameObject _monsterGate;
 
     private DungeonPortalController _portalController;
+    #endregion
 
+    #region StageInfo
+    private Dictionary<string, StageInfo> _stages;
+    private StageInfo _currentStage;    
+
+    private static int s_deathMonsterCount = 0;
+    #endregion
+
+    #region Property
     public GameObject DungeonWallFront
     {
         get { return _dungeonWallFront; }
@@ -23,6 +46,11 @@ public class DungeonManager : Singleton<DungeonManager>, IEventSubscriber, IDeac
     { 
         get { return _dungeonPortal; } 
     }
+    public GameObject MonsterGateList
+    {
+        get { return _monsterGate; }
+    }
+    #endregion
 
     #region Action
     public Action OnDungeonEnter;
@@ -30,6 +58,7 @@ public class DungeonManager : Singleton<DungeonManager>, IEventSubscriber, IDeac
     public Action OnDungeonFail;
     public Action OnDungeonExit;
 
+    public Action OnSpawnableNamedMonster;
     public Action OnSpawnNamedMonster;
     #endregion
 
@@ -39,8 +68,11 @@ public class DungeonManager : Singleton<DungeonManager>, IEventSubscriber, IDeac
         _dungeonWallFront = Instantiate(ObjectManager.Instance.DungeonWallResource);
         _dungeonWallBack = Instantiate(ObjectManager.Instance.DungeonWallResource);
         _dungeonPortal = Instantiate(ObjectManager.Instance.DungeonPortalResource);
+        _monsterGate = Instantiate(ObjectManager.Instance.MonsterGateResource, Define.SpawnSpot5 + Vector3.up , Quaternion.Euler(-135,0,0));
 
         _portalController = _dungeonPortal.GetComponent<DungeonPortalController>();
+
+        _stages = new Dictionary<string, StageInfo>();
     }
     #endregion
 
@@ -50,6 +82,9 @@ public class DungeonManager : Singleton<DungeonManager>, IEventSubscriber, IDeac
         //PopupUIManager.Instance.OnButtonDungeonEnterClick += EnterDungeon;
         _portalController.OnPotalEnter += EnterDungeon;
         _portalController.OnPotalClose += SetWallUp;
+
+        NormalMonsterController.s_OnNormalMonsterDie += CountMonsterDeath;
+        NamedMonsterController.s_OnNamedMonsterDie += SetClearPortalOn;
     }
     #endregion
 
@@ -59,6 +94,7 @@ public class DungeonManager : Singleton<DungeonManager>, IEventSubscriber, IDeac
         DungeonWallFront.SetActive(false);
         DungeonWallBack.SetActive(false);
         DungeonPortal.SetActive(false);
+        _monsterGate.SetActive(false);
 
         SetDungeon();
     }
@@ -80,13 +116,15 @@ public class DungeonManager : Singleton<DungeonManager>, IEventSubscriber, IDeac
     private void EnterDungeon()
     {
         SetWallDown();
+        SetMonsterGateOn();
         OnDungeonEnter?.Invoke();
     }
 
-
-    private void SetPortalOn()
+    // * 던전 오브젝트 관리 메서드
+    private void SetClearPortalOn()
     {
         _dungeonPortal.SetActive(true);
+        _dungeonPortal.transform.position = Define.DungeonExitPortalSpot;
     }
     private void SetWallDown()
     {
@@ -96,5 +134,19 @@ public class DungeonManager : Singleton<DungeonManager>, IEventSubscriber, IDeac
     private void SetWallUp()
     {
         _dungeonWallBack.SetActive(true);
+    }
+    private void SetMonsterGateOn()
+    {
+        _monsterGate.SetActive(true);
+    }
+
+    // * 던전 몬스터 관리 메서드
+    private void CountMonsterDeath()
+    {
+        s_deathMonsterCount++;
+        if(s_deathMonsterCount >= _currentStage.ClearCount)
+        {
+            OnSpawnableNamedMonster?.Invoke();
+        }
     }
 }
