@@ -26,6 +26,5 @@ MonoBehaviour:
   MP: 3
   connectedSkillPrefab: {fileID: 0}
   hitEffectPrefab: {fileID: 6823302871133167919, guid: cd974dacb07f86b4ebe991d1822d05ea, type: 3}
-  skillType: 3
-  motionType: 1
-  handlerType: 0
+  skillType: 4
+  targetExistence: 0

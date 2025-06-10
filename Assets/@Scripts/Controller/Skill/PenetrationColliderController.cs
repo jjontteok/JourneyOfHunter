@@ -5,6 +5,9 @@ using UnityEngine;
 public class PenetrationColliderController : SkillColliderController
 {
     HashSet<GameObject> _damagedObjects = new HashSet<GameObject>();
+    float _currentTime;
+    const float _tickInterval = 0.5f;
+
 
     private void OnTriggerEnter(Collider other)
     {
@@ -23,6 +26,23 @@ public class PenetrationColliderController : SkillColliderController
                     
             }
         }
+    }
+
+    private void OnTriggerStay(Collider other)
+    {
+        if(gameObject.activeSelf)
+        {
+            _currentTime += Time.deltaTime;
+            if (_currentTime >= _tickInterval)
+            {
+                if (other.CompareTag(Define.PlayerTag) || other.CompareTag(Define.MonsterTag))
+                {
+                    ProcessTrigger(other);
+                    Debug.Log($"Tick Damage by {name}");
+                }
+                _currentTime = 0f;
+            }
+        }        
     }
 
     // 콜라이더가 부채꼴 내에 있는지 판별

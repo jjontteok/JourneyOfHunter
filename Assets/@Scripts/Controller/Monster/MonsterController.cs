@@ -116,7 +116,6 @@ public abstract class MonsterController : MonoBehaviour, IDamageable
     public virtual void EndAttack()
     {
         _animator.SetBool(Define.IsAttacking, false);
-        _animator.SetTrigger(Define.EndAttack);
         //Debug.Log("공격 종료");
     }
 
@@ -133,7 +132,7 @@ public abstract class MonsterController : MonoBehaviour, IDamageable
     {
         float finalDamage = CalculateFinalDamage(damage, _runtimeData.Def);
         _runtimeData.HP -= finalDamage;
-        Debug.Log($"{name} Damaged: {finalDamage}");
+        //Debug.Log($"{name} Damaged: {finalDamage}");
         if (_runtimeData.HP <= 0)
             Die();
     }

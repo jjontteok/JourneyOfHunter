@@ -14,6 +14,16 @@ public class SkillSystem : MonoBehaviour
     BasicSkillSlot _basicSkillSlot;
     PlayerController _player;
 
+    bool _isAuto;
+
+    public bool IsAuto
+    {
+        get { return _isAuto; }
+        set { _isAuto = value; }
+    }
+
+    public Action<float> OnShortestSkillDistanceChanged;
+
     public BasicSkillSlot BasicSkillSlot
     {
         get { return _basicSkillSlot; }
@@ -22,6 +32,7 @@ public class SkillSystem : MonoBehaviour
     public void InitializeSkillSystem()
     {
         _player = FindAnyObjectByType<PlayerController>();
+        OnShortestSkillDistanceChanged += _player.SetShortestSkillDistance;
 
         Dictionary<string, GameObject> skillList = ObjectManager.Instance.PlayerSkillResourceList;
         foreach (var skillObject in skillList)
@@ -32,31 +43,42 @@ public class SkillSystem : MonoBehaviour
         foreach (var skill in _skillList)
         {
             AddSkill(skill.SkillData);
+            if (_activeSkillSlotList.Count == _player.PlayerData.UnlockedSkillSlotCount)
+                break;
         }
-
-        //SkillManager.Instance.SetIconSlots(_activeSkillSlotList);
     }
 
     private void Update()
     {
-        // 기본 공격할 타이밍인지 체크
-        if (IsBasicAttackPossible())
+        if (_isAuto)
         {
-            _basicSkillSlot.ActivateSlotSkill();
+            // 기본 공격할 타이밍인지 체크
+            if (IsBasicAttackPossible())
+            {
+                _basicSkillSlot.ActivateSlotSkill();
+            }
+            else
+            {
+                foreach (var slot in _activeSkillSlotList)
+                {
+                    if (slot != null)
+                    {
+                        slot.ActivateSlotSkill();
+                    }
+                }
+            }
         }
         else
         {
-            foreach (var slot in _activeSkillSlotList)
-            {
-                slot.ActivateSlotSkill();
-            }
+            // 기본 공격만 알아서 되도록
+            _basicSkillSlot.ActivateSlotSkill();
         }
     }
 
     bool IsBasicAttackPossible()
     {
         // 모든 스킬이 쿨타임 중이거나 마나 부족일 때
-        return _activeSkillSlotList.All(slot => !slot.IsActivatePossible || _player.MP < slot.SkillData.MP);
+        return _activeSkillSlotList.All(slot => !slot || !slot.IsActivatePossible || _player.MP < slot.SkillData.MP);
     }
 
     public void AddSkill(SkillData data)
@@ -101,6 +123,7 @@ public class SkillSystem : MonoBehaviour
                 SkillManager.Instance.SubscribeEvents(slot, idx);
             }
             slot.SetSkill(data);
+            GetShortestSkillDistance();
         }
     }
 
@@ -113,5 +136,19 @@ public class SkillSystem : MonoBehaviour
             return;
         }
         slot.DestroySkillSlot();
+        GetShortestSkillDistance();
+    }
+
+    public float GetShortestSkillDistance()
+    {
+        float min = _activeSkillSlotList[0].SkillData.targetDistance;
+        for (int i = 1; i < _activeSkillSlotList.Count; i++)
+        {
+            if (min > _activeSkillSlotList[i].SkillData.targetDistance)
+                min = _activeSkillSlotList[i].SkillData.targetDistance;
+        }
+
+        OnShortestSkillDistanceChanged?.Invoke(min);
+        return min;
     }
 }
