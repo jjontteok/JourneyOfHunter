@@ -59,7 +59,7 @@ public class Define : MonoBehaviour
     public static Vector3 SpawnSpot1 = new Vector3(-10, 1, 45);
     public static Vector3 SpawnSpot2 = new Vector3(10, 1, 45);
     public static Vector3 SpawnSpot3 = new Vector3(-10, 1, 60);
-    public static Vector3 SpawnSpot4 = new Vector3(10, 1, 60);
+    public static Vector3 SpawnSpot4 = new Vector3(10, 3, 60);
     public static Vector3 SpawnSpot5 = new Vector3(-10, 1, 75);
     public static Vector3 SpawnSpot6 = new Vector3(10, 1, 75);
     public static Vector3 NamedMonsterSpawnSpot = new Vector3(0, 1, 80);
@@ -70,6 +70,7 @@ public class Define : MonoBehaviour
     {
         RigidbodyTarget,
         TransformTarget,
+        AreaTarget,
         AoENonTarget,
         DirectionNonTarget,
         Buff,

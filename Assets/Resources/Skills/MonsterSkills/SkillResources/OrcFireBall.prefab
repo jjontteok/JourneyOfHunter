@@ -195,3 +195,4 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _skillData: {fileID: 11400000, guid: d3c44373888d12d4bafafede3aeb14cb, type: 2}
+  _offset: {x: 0, y: 2, z: 0}

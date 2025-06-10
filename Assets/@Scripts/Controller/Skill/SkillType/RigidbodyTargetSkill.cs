@@ -2,6 +2,7 @@ using UnityEngine;
 
 public class RigidbodyTargetSkill : ActiveSkill
 {
+    [SerializeField] Vector3 _offset = Vector3.up * 5f;
     CrashColliderController _coll;
     Rigidbody _rigidbody;
 
@@ -15,6 +16,7 @@ public class RigidbodyTargetSkill : ActiveSkill
 
     public override void ActivateSkill(Transform target, Vector3 pos = default)
     {
+        pos += _offset;
         base.ActivateSkill(target, pos);
         _coll.gameObject.transform.localPosition = Vector3.zero;
 
@@ -22,8 +24,10 @@ public class RigidbodyTargetSkill : ActiveSkill
         Vector3 difference = target.position - pos;
         Vector3 dir = difference.normalized;
         dir.y = _rigidbody.linearVelocity.y;
+        //dir.y /= 2f;
         //_skillData.force = difference.magnitude + 10;
         _rigidbody.linearVelocity = dir * (difference.magnitude + 10);
+        //_rigidbody.AddForce(dir * (difference.magnitude * 10));
     }
 
 }

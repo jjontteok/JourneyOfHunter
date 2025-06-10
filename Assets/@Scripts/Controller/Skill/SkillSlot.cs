@@ -47,19 +47,19 @@ public class SkillSlot : MonoBehaviour
         StartCoroutine(CoStartCoolTime(0.5f));
 
         // ObjectManager에서 skill resource를 찾아 떠나는 멀고도 험한 여정
-        Skill skill = ObjectManager.Instance.PlayerSkillResourceList.FirstOrDefault((resource) => 
+        Skill skill = ObjectManager.Instance.PlayerSkillResourceList.FirstOrDefault((resource) =>
         resource.Value.GetComponent<Skill>().SkillData.skillName == data.skillName).Value?.GetComponent<Skill>();
 
-        if(skill==null)
+        if (skill == null)
         {
-            Debug.Log("Cannot Find Skill Resource named "+data.skillName);
+            Debug.Log("Cannot Find Skill Resource named " + data.skillName);
             return;
         }
 
         _skill = Instantiate(skill).GetComponent<ActiveSkill>();
 
         // 타겟이 필요한 스킬인지 아닌지 체크
-        if (_skill.SkillData.skillType == Define.SkillType.RigidbodyTarget || _skill.SkillData.skillType == Define.SkillType.TransformTarget)
+        if (_skill.SkillData.targetExistence)
         {
             _isTargetExist = true;
         }
@@ -94,7 +94,7 @@ public class SkillSlot : MonoBehaviour
             if (_isTargetExist)
             {
                 // 가장 가까운 타겟을 탐색하고, 있으면 스킬 발동
-                _target = GetNearestTarget(_skill.SkillData.targetDistance)?.transform;
+                _target = Util.GetNearestTarget(transform.position, _skill.SkillData.targetDistance)?.transform;
                 if (_target != null)
                 {
                     ProcessSkill(_target);
@@ -124,24 +124,5 @@ public class SkillSlot : MonoBehaviour
         OnRemoveSkill?.Invoke();
         Destroy(_skill.gameObject);
         Destroy(gameObject);
-    }
-
-    // distance 범위 내의 가장 가까운 적 탐지
-    protected GameObject GetNearestTarget(float distance)
-    {
-        if (_player == null)
-            _player = FindAnyObjectByType<PlayerController>();
-        //거리 내의 monster collider 탐색
-        Collider[] targets = Physics.OverlapSphere(_player.transform.position, distance, 1 << LayerMask.NameToLayer(Define.MonsterTag));
-        if (targets == null)
-            return null;
-        HashSet<Collider> neighbors = new HashSet<Collider>(targets);
-
-        //거리 순으로 정렬하여 가장 가까운 적을 반환
-        var neighbor = neighbors.OrderBy(coll => (_player.transform.position - coll.transform.position).sqrMagnitude).FirstOrDefault();
-        if (neighbor == null)
-            return null;
-
-        return neighbor.gameObject;
     }
 }

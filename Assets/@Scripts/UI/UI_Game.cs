@@ -1,7 +1,7 @@
 using extension;
 using System.Collections.Generic;
+using System;
 using TMPro;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -12,6 +12,7 @@ public class UI_Game : MonoBehaviour
     [SerializeField] Button _gainedGoodsButton;
     [SerializeField] TMP_Text _silverCoinText;
     [SerializeField] TMP_Text _gemText;
+    [SerializeField] Toggle _autoToggle;
     [SerializeField] TMP_Text _timeText;
     [SerializeField] PlayerInventoryData _inventoryData;
 
@@ -27,8 +28,15 @@ public class UI_Game : MonoBehaviour
     {
         _playerVitalList = new List<UI_PlayerVital>();
     }
+    public Action<bool> OnAutoChanged;
 
-    private void OnEnable()
+
+    private void Start()
+    {
+        Initialize();
+    }
+
+    void Initialize()
     {
         TimeManager.Instance.OnTimeChanged += UpdateTimeText;
         _inventoryData.OnValueChanged += UpdateGoods;
@@ -38,7 +46,22 @@ public class UI_Game : MonoBehaviour
         _inventoryButton.onClick.AddListener(OnInventoryButtonClick);
         _gainedGoodsButton.onClick.AddListener(OnReceivedGoodsButtonClick);
         _silverCoinText.text = _inventoryData.silverCoin.ToString();
+        _autoToggle.onValueChanged.AddListener(OnAutoToggleClick);
+        // _inventoryButton.onClick.AddListener(OnInventoryButtonClick);
+
+        PlayerController player = FindAnyObjectByType<PlayerController>();
+        //OnAutoChanged += player.SetAuto;
+        OnAutoChanged += (flag) => player.IsAuto = flag;
+        player.OnAutoOff += OnAutoToggleOff;
     }
+
+    //private void OnEnable()
+    //{
+    //    TimeManager.Instance.OnTimeChanged += SetTimeText;
+    //    _statusButton.onClick.AddListener(OnStatusButtonClick);
+    //    _autoToggle.onValueChanged.AddListener(OnAutoToggleClick);
+    //   // _inventoryButton.onClick.AddListener(OnInventoryButtonClick);
+    //}
 
     private void OnDisable()
     {
@@ -104,5 +127,15 @@ public class UI_Game : MonoBehaviour
     void OnReceivedGoodsButtonClick()
     {
         PopupUIManager.Instance.ActivateGainedRecordPanel();
+    }
+    void OnAutoToggleClick(bool flag)
+    {
+        Debug.Log($"Auto: {flag}");
+        OnAutoChanged?.Invoke(flag);
+    }
+
+    void OnAutoToggleOff()
+    {
+        _autoToggle.isOn = false;
     }
 }

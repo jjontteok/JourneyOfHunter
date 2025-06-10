@@ -1,11 +1,17 @@
+using System;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
+[RequireComponent(typeof(EventTrigger))]
 public class SkillIconSlot : MonoBehaviour
 {
     [SerializeField] Image _skillIconImage;
     [SerializeField] Image _skillCoolTimeImage;
     [SerializeField] Sprite _lockImage;
+
+    // 스킬 아이콘 클릭 시 스킬 발동하는 이벤트
+    public Action OnClickSkillIcon;
 
     bool _isCoolTime = false;
     float _currentTime = 0f;
