@@ -6,7 +6,8 @@ using UnityEngine;
 public class TimeManager : Singleton<TimeManager>
 {
     public event Action<float> OnTimeChanged;
-    public event Action<float> OnGainedRecordTimeChanged;
+    //public event Action<float> OnGainedRecordTimeChanged;
+
     float _gainedRecordTime;
     float _monsterTime;
 

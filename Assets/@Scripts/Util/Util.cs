@@ -14,10 +14,6 @@ public class Util
         return false;
     }
 
-    static public Vector3 GetDamageTextPosition(Collider other)
-    {
-        return other.transform.position + new Vector3(0f, other.bounds.center.y * 2, 0f);
-    }
     public static GameObject GetNearestTarget(Vector3 origin,float distance)
     {
         //거리 내의 monster collider 탐색

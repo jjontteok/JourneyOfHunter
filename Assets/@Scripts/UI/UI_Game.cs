@@ -31,11 +31,6 @@ public class UI_Game : MonoBehaviour
     public Action<bool> OnAutoChanged;
 
 
-    private void Start()
-    {
-        Initialize();
-    }
-
     void Initialize()
     {
         TimeManager.Instance.OnTimeChanged += UpdateTimeText;
@@ -71,6 +66,7 @@ public class UI_Game : MonoBehaviour
 
     private void Start()
     {
+        Initialize();
         _playerVitalCanvas = Instantiate(ObjectManager.Instance.PlayerVitalCanvas);
         Canvas canvas = _playerVitalCanvas.GetOrAddComponent<Canvas>();
         
