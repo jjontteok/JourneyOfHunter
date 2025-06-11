@@ -23,8 +23,8 @@ public class ActiveSkill : Skill
         StartCoroutine(DeActivateSkill());
     }
 
-    public override void Initialize()
+    public override void Initialize(Status status)
     {
-        base.Initialize();
+        base.Initialize(status);
     }
 }

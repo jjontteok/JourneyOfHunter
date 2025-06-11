@@ -7,7 +7,6 @@ using UnityEngine.UI;
 
 public class UI_Status : MonoBehaviour
 {
-    [SerializeField] PlayerData _playerData;
     [SerializeField] PlayerInventoryData _inventoryData;
     [SerializeField] TMP_Text _silverCoinText;
     [SerializeField] List<UI_StatusSlot> _statusList;
@@ -29,10 +28,12 @@ public class UI_Status : MonoBehaviour
     }
 
     void Initialize() {
+        //임시 방편
+        PlayerController playerController = FindAnyObjectByType<PlayerController>();
         _silverCoinText.text = _inventoryData.silverCoin.ToString();
         foreach (var slot in _statusList)
         {
-            slot.Initialize(_playerData, _inventoryData);
+            slot.Initialize(playerController.PlayerData, _inventoryData);
         }
         _exitButton.onClick.AddListener(OnExitButtonClick);
      }

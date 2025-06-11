@@ -34,4 +34,10 @@ public class Util
     {
         return other.transform.position + new Vector3(0f, other.bounds.center.y * 2, 0f);
     }
+
+    static public bool Probability(double chance)
+    {
+        //0~1사이의 무작위 float 값을 반환함
+        return (UnityEngine.Random.value <= chance);
+    }
 }

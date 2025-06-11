@@ -67,7 +67,7 @@ public class SkillSlot : MonoBehaviour
         {
             _isTargetExist = false;
         }
-        _skill.Initialize();
+        _skill.Initialize(_player.PlayerData);
         _skill.gameObject.SetActive(false);
 
         OnGenerateSlot?.Invoke(data);

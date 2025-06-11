@@ -3,21 +3,21 @@ using UnityEngine;
 public class SkillColliderController : MonoBehaviour
 {
     protected float _damage;
-    protected float _atk;
+    protected Status _status;
     protected float _angle;
     protected GameObject _effect;
     protected ActiveSkill _connectedSkill;
 
-    public void SetColliderInfo(float damage, float atk, GameObject connectedSkillPrefab, GameObject effect, float angle = default)
+    public void SetColliderInfo(float damage, Status status, GameObject connectedSkillPrefab, GameObject effect, float angle = default)
     {
         _damage = damage;
         if (connectedSkillPrefab != null)
         {
             _connectedSkill = Instantiate(connectedSkillPrefab).GetComponent<ActiveSkill>();
-            _connectedSkill.Initialize();
+            _connectedSkill.Initialize(status);
             _connectedSkill.gameObject.SetActive(false);
         }
-        _atk = atk;
+        _status = status;
         _effect = effect;
         _angle = angle;
     }
@@ -51,7 +51,7 @@ public class SkillColliderController : MonoBehaviour
     // 트리거 충돌 시 메서드
     protected void ProcessTrigger(Collider other)
     {
-        other.GetComponent<IDamageable>().GetDamaged(_damage);
+        other.GetComponent<IDamageable>().GetDamaged(_damage + _status.Atk);
         InstantiateHitEffect(other);
         //ActivateConnectedSkill();
     }

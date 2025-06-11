@@ -18,6 +18,11 @@ public class PopupUIManager : Singleton<PopupUIManager>, IEventSubscriber, IDeac
 
     public event Action OnButtonDungeonEnterClick;
 
+    public GameObject PanelGainedRecord
+    {
+        get { return _panelGainedRecord; }
+    }
+
     #region Initialize
     protected override void Initialize()
     {
@@ -77,8 +82,14 @@ public class PopupUIManager : Singleton<PopupUIManager>, IEventSubscriber, IDeac
         _panelSkillInventory.SetActive(!_panelSkillInventory.activeSelf);
     }
 
-    public void ActivateGainedRecordPanel()
+    public void ActivateGainedRecordPanel(Define.GoodsType type, float amount)
     {
+        UpdateGainedRecord(type, amount);
         _panelGainedRecord.SetActive(true);
+    }
+
+    public void UpdateGainedRecord(Define.GoodsType type, float amount)
+    {
+        _panelGainedRecord.GetComponent<UI_GainRecord>().SetGoods(type, amount);
     }
 }

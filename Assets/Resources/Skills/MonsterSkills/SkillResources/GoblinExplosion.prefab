@@ -9682,7 +9682,7 @@ GameObject:
   - component: {fileID: 8061306091357942008}
   - component: {fileID: 8340335300620899106}
   m_Layer: 0
-  m_Name: OrcExplosion
+  m_Name: GoblinExplosion
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

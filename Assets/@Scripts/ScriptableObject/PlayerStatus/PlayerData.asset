@@ -12,11 +12,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 607570ebac24e4a45abeea4b538c7693, type: 3}
   m_Name: PlayerData
   m_EditorClassIdentifier: 
+  Atk: 10
+  Def: 10
   Name: YongJinNa
   Level: 1
   Exp: 0
-  Atk: 10
-  Def: 10
   Damage: 0
   HP: 100
   HPRecoveryPerSec: 1

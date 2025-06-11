@@ -6,12 +6,12 @@ public class RigidbodyTargetSkill : ActiveSkill
     CrashColliderController _coll;
     Rigidbody _rigidbody;
 
-    public override void Initialize()
+    public override void Initialize(Status status)
     {
-        base.Initialize();
+        base.Initialize(status);
         _rigidbody = GetComponentInChildren<Rigidbody>();
         _coll = GetComponentInChildren<CrashColliderController>();
-        _coll.SetColliderInfo(_skillData.damage, _playerController.PlayerData.Atk, _skillData.connectedSkillPrefab, _skillData.hitEffectPrefab, _skillData.angle);
+        _coll.SetColliderInfo(_skillData.damage, status, _skillData.connectedSkillPrefab, _skillData.hitEffectPrefab, _skillData.angle);
     }
 
     public override void ActivateSkill(Transform target, Vector3 pos = default)

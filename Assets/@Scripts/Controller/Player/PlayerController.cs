@@ -76,8 +76,14 @@ public class PlayerController : MonoBehaviour, IDamageable
     [SerializeField] float _speed;
 
 
-    // 데이터는 getter만 되도록?
-    public PlayerData PlayerData { get { return _playerData; } }
+    // 나영 : 수정
+    public PlayerData PlayerData { 
+        get { return _playerData; }
+        set 
+        { 
+            _playerData = value;
+        }
+    }
 
     public float HP
     {
@@ -97,6 +103,11 @@ public class PlayerController : MonoBehaviour, IDamageable
             _mp = value;
             OnMPValueChanged?.Invoke(_mp, _playerData.MP);
         }
+    }
+
+    void OnEnable()
+    {
+        
     }
 
     void Start()

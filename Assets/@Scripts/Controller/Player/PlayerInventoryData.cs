@@ -11,49 +11,31 @@ public class PlayerInventoryData : ScriptableObject
 
     public event Action<Define.GoodsType> OnValueChanged;
 
-
-    public bool UseSilverCoin(int useCoin)
+    public bool ModifyGoods(Define.GoodsType type, float amount)
     {
-        if (silverCoin >= useCoin)
+        switch (type)
         {
-            silverCoin -= useCoin;
-            OnValueChanged?.Invoke(Define.GoodsType.SilverCoin);
-            return true;
+            case Define.GoodsType.SilverCoin:
+                if (silverCoin + amount <= 0) return false;
+                silverCoin += (int)amount;
+                break;
+            case Define.GoodsType.Exp:
+                exp += amount;
+                if (exp >= 100)
+                {
+                    level++;
+                    exp -= 100;
+                }
+                break;
+            case Define.GoodsType.EnhancementStone:
+                if (enhancementStone + amount <= 0) return false;
+                enhancementStone += (int)amount;
+                break;
+            default:
+                return false;
         }
-        return false;
+        OnValueChanged?.Invoke(type);
+        return true;
     }
-
-    public void AddSilverCoin(int newSilverCoin)
-    {
-        silverCoin += newSilverCoin;
-        OnValueChanged?.Invoke(Define.GoodsType.SilverCoin);
-    }
-
-    public void AddExp(float newExp)
-    {
-        exp += newExp;
-        if (exp >= 100)
-        {
-            level++;
-            exp = 0;
-        }
-        OnValueChanged?.Invoke(Define.GoodsType.Exp);
-    }
-
-    public bool UseEnhancementStone(int useEnhancementStone)
-    {
-        if (enhancementStone >= useEnhancementStone)
-        {
-            enhancementStone -= useEnhancementStone;
-            OnValueChanged?.Invoke(Define.GoodsType.EnhancementStone);
-            return true;
-        }
-        return false;
-    }
-
-    public void AddEnhancementStone(int newEnhancementStone)
-    {
-        enhancementStone += newEnhancementStone;
-        OnValueChanged?.Invoke(Define.GoodsType.EnhancementStone);
-    }
+    
 }

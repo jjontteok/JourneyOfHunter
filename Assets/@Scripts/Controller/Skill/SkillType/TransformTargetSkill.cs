@@ -6,11 +6,11 @@ public class TransformTargetSkill : ActiveSkill
     PenetrationColliderController _coll;
     public event Action<Vector3> OnSkillSet;
 
-    public override void Initialize()
+    public override void Initialize(Status status)
     {
-        base.Initialize();
+        base.Initialize(status);
         _coll = GetComponentInChildren<PenetrationColliderController>();
-        _coll.SetColliderInfo(_skillData.damage, _playerController.PlayerData.Atk, _skillData.connectedSkillPrefab, _skillData.hitEffectPrefab, _skillData.angle);
+        _coll.SetColliderInfo(_skillData.damage, status, _skillData.connectedSkillPrefab, _skillData.hitEffectPrefab, _skillData.angle);
     }
 
     public override void ActivateSkill(Transform target, Vector3 pos = default)
