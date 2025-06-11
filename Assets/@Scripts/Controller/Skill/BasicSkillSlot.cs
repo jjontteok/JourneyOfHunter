@@ -14,15 +14,6 @@ public class BasicSkillSlot : SkillSlot
                 StartCoroutine(CoStartCoolTime());
                 OnActivateSkill?.Invoke();
             }
-            
-            //Transform target = Util.GetNearestTarget(transform.position, _skill.SkillData.targetDistance)?.transform;
-            //if (target != null)
-            //{
-            //    _skill.ActivateSkill(target, transform.position);
-
-            //    IsActivatePossible = false;
-            //    StartCoroutine(CoStartCoolTime());
-            //}
         }
     }
 }

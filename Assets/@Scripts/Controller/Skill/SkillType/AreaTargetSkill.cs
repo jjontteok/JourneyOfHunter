@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class AreaTargetSkill : ActiveSkill, ITargetSkill, IPositioningSkill
 {
-    SkillColliderController _coll;
+    protected SkillColliderController _coll;
     Rigidbody _rigidbody;
     Transform _target;
     Vector3 _offset;
