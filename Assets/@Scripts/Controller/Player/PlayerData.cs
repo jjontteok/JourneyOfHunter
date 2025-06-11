@@ -16,3 +16,4 @@ public class PlayerData : Status
     public float CoolTimeDecrease;  //쿨타임 감소
     public int UnlockedSkillSlotCount;  //현재 오픈된 스킬 슬롯 개수
 }
+

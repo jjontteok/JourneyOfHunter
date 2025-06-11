@@ -68,7 +68,8 @@ public class DungeonManager : Singleton<DungeonManager>, IEventSubscriber, IDeac
         _dungeonWallFront = Instantiate(ObjectManager.Instance.DungeonWallResource);
         _dungeonWallBack = Instantiate(ObjectManager.Instance.DungeonWallResource);
         _dungeonPortal = Instantiate(ObjectManager.Instance.DungeonPortalResource);
-        _monsterGate = Instantiate(ObjectManager.Instance.MonsterGateResource, Define.SpawnSpot5 + Vector3.up , Quaternion.Euler(-135,0,0));
+
+        _monsterGate = Instantiate(ObjectManager.Instance.MonsterGateResource, Define.SpawnSpot5 + Vector3.up *11 , Quaternion.Euler(-135,0,0));
 
         _portalController = _dungeonPortal.GetComponent<DungeonPortalController>();
 
