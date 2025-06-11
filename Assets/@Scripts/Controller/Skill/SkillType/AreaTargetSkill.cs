@@ -1,37 +1,44 @@
 using UnityEngine;
 
-public class AreaTargetSkill : ActiveSkill, ITargetSkill
+public class AreaTargetSkill : ActiveSkill, ITargetSkill, IPositioningSkill
 {
-    //PenetrationColliderController _coll;
     SkillColliderController _coll;
+    Rigidbody _rigidbody;
     Transform _target;
-    [SerializeField] Vector3 _offset;
+    Vector3 _offset;
 
     public override void Initialize(Status status)
     {
         base.Initialize(status);
-        //_coll = GetComponentInChildren<PenetrationColliderController>();
+        _rigidbody = GetComponentInChildren<Rigidbody>();
         _coll = GetComponentInChildren<SkillColliderController>();
-        _coll.SetColliderInfo(_skillData.damage, status, _skillData.connectedSkillPrefab, _skillData.hitEffectPrefab);
+        _coll.SetColliderInfo(status, _skillData);
+        _offset = SkillData.offset;
     }
 
     // target받아서 그 위치에 생성
     public override bool ActivateSkill(Vector3 pos)
     {
-        if(IsTargetExist(pos))
+        if(IsTargetExist(pos, SkillData.isPlayerSkill))
         {
-            base.ActivateSkill(_target.position + _offset);
+            base.ActivateSkill(GetCastPosition(_target.position));
             _coll.transform.localPosition = Vector3.zero;
 
+            _rigidbody.linearVelocity = Vector3.zero;
             return true;
         }
         
         return false;
     }
 
-    public bool IsTargetExist(Vector3 pos)
+    public bool IsTargetExist(Vector3 pos, bool isPlayerSkill)
     {
-        _target = Util.GetNearestTarget(pos, _skillData.targetDistance)?.transform;
+        _target = Util.GetNearestTarget(pos, _skillData.targetDistance, isPlayerSkill)?.transform;
         return _target != null;
+    }
+
+    public Vector3 GetCastPosition(Vector3 pos)
+    {
+        return pos + _offset;
     }
 }

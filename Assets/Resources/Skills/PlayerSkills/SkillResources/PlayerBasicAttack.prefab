@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1998120312572939500}
   - component: {fileID: 5112406292742529467}
-  - component: {fileID: 2113208124278692437}
+  - component: {fileID: 5339639067400928773}
   m_Layer: 8
   m_Name: HitBox
   m_TagString: Untagged
@@ -56,7 +56,7 @@ CapsuleCollider:
   m_Height: 6.3
   m_Direction: 1
   m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &2113208124278692437
+--- !u!114 &5339639067400928773
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -65,7 +65,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 3616851660202174092}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5114ada6216e0b04eb187bcacb8d26b0, type: 3}
+  m_Script: {fileID: 11500000, guid: 7f594452a9c7513438a406ec0a48ac39, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &7238407208248325976
@@ -78,7 +78,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7841491017529827514}
   - component: {fileID: -7435130579103987930}
-  - component: {fileID: -5519246652113832530}
+  - component: {fileID: -5143076058341156898}
   m_Layer: 0
   m_Name: PlayerBasicAttack
   m_TagString: Untagged
@@ -114,7 +114,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7bf496a2a975a064c94811e7c3dbe173, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &-5519246652113832530
+--- !u!114 &-5143076058341156898
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -123,7 +123,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 7238407208248325976}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6f2acc40d47701f498ca01a527d9cb19, type: 3}
+  m_Script: {fileID: 11500000, guid: 39cf53b5bd4c1b64eb6183b9735a1fd4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   _skillData: {fileID: 11400000, guid: fd5198dc4616eb641b608a206e87ff74, type: 2}

@@ -19,7 +19,7 @@ public class NamedMonsterController : MonsterController
 
     private MoveRangeController _moveRangeController;
 
-    private RigidbodyTargetSkill _bulletSkill;
+    private ActiveSkill _bulletSkill;
 
     public override void Initialize()
     {
@@ -41,7 +41,7 @@ public class NamedMonsterController : MonsterController
     private void Start()
     {
         _bulletSkill = Instantiate(ObjectManager.Instance.MonsterSkillResourceList[_bulletSkillData.skillName]).
-            GetComponent<RigidbodyTargetSkill>();
+            GetComponent<ActiveSkill>();
         _bulletSkill.Initialize(_monsterData);
         _bulletSkill.gameObject.SetActive(false);
     }
@@ -131,7 +131,8 @@ public class NamedMonsterController : MonsterController
     {
 
         _animator.SetTrigger(Define.LongAttack);
-        _bulletSkill.ActivateSkill(transform.position);
+        // offset = (0,0,3)
+        _bulletSkill.ActivateSkill(transform.position + Vector3.up * 3);
     }
 
 

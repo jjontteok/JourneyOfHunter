@@ -1,71 +1,28 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-// 충돌 시 관통 or 유지되어야 하는 스킬의 콜라이더 - TransformTargetSkill, AoENonTargetSkill
+// 충돌해도 사라지지 않는 스킬의 콜라이더
 public class PenetrationColliderController : SkillColliderController
 {
     HashSet<GameObject> _damagedObjects = new HashSet<GameObject>();
-    float _currentTime;
-    const float _tickInterval = 0.5f;
-
 
     private void OnTriggerEnter(Collider other)
     {
-        // 스킬 시전 후 대미지 중복 적용 방지
-        if(!_damagedObjects.Contains(other.gameObject))
+        if (other.CompareTag(Define.PlayerTag) || other.CompareTag(Define.MonsterTag))
         {
-            // angle 값이 없거나, 있는데 콜라이더가 각도 내에 있을 경우 대미지
-            if (_angle == 0f || (_angle > 0 && IsColliderInRange(other)))
+            // 스킬 시전 후 대미지 중복 적용 방지
+            if (!_damagedObjects.Contains(other.gameObject))
             {
-                if (other.CompareTag(Define.PlayerTag) || other.CompareTag(Define.MonsterTag))
-                {
-                    _damagedObjects.Add(other.gameObject);
-                    ActivateConnectedSkill();
-                    ProcessTrigger(other);
-                }
-                    
+                ProcessTrigger(other);
             }
         }
     }
 
-    private void OnTriggerStay(Collider other)
+    protected override void ProcessTrigger(Collider other)
     {
-        if(gameObject.activeSelf)
-        {
-            _currentTime += Time.deltaTime;
-            if (_currentTime >= _tickInterval)
-            {
-                if (other.CompareTag(Define.PlayerTag) || other.CompareTag(Define.MonsterTag))
-                {
-                    ProcessTrigger(other);
-                    Debug.Log($"Tick Damage by {name}");
-                }
-                _currentTime = 0f;
-            }
-        }        
-    }
-
-    // 콜라이더가 부채꼴 내에 있는지 판별
-    bool IsColliderInRange(Collider collider)
-    {
-        Vector3 toMonster = (collider.transform.position - transform.position).normalized;
-        float degree = GetAngleBetweenDirections(toMonster, transform.forward);
-        if (degree <= _angle / 2)
-        {
-            return true;
-        }
-        else
-        {
-            return false;
-        }
-    }    
-
-    // Get angle between two normalized vectors
-    float GetAngleBetweenDirections(Vector3 from, Vector3 to)
-    {
-        float dot = Vector3.Dot(from, to);
-        float degree = Mathf.Acos(dot) * Mathf.Rad2Deg;
-        return degree;
+        _damagedObjects.Add(other.gameObject);
+        ActivateConnectedSkill();
+        base.ProcessTrigger(other);
     }
 
     private void OnDisable()

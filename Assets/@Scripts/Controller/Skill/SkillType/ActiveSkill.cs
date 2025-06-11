@@ -11,13 +11,6 @@ public class ActiveSkill : Skill
         gameObject.SetActive(true);
         transform.position = pos;
 
-        // particle system인 경우
-        //ParticleSystem particleSystem = gameObject.GetComponent<ParticleSystem>();
-        //if (particleSystem != null)
-        //{
-        //    particleSystem.Play();
-        //}
-
         //스킬 시전 후 스킬 비활성화
         StartCoroutine(DeActivateSkill());
         return true;

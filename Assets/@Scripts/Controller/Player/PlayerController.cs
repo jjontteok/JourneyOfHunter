@@ -125,7 +125,7 @@ public class PlayerController : MonoBehaviour, IDamageable
 
         _skillSystem = GetComponent<SkillSystem>();
         _skillSystem.InitializeSkillSystem();
-        _skillSystem.BasicSkillSlot.Skill.GetComponent<TransformTargetSkill>().OnSkillSet += Rotate;
+        _skillSystem.BasicSkillSlot.Skill.GetComponent<IRotationSkill>().OnActivateSkill += Rotate;
 
         SkillManager.Instance.LockIconSlots(_playerData.UnlockedSkillSlotCount);
     }
@@ -238,6 +238,7 @@ public class PlayerController : MonoBehaviour, IDamageable
 
     public void Rotate(Vector3 direction)
     {
+        direction.y = transform.forward.y;
         transform.rotation = Quaternion.LookRotation(direction);
     }
 

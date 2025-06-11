@@ -24,5 +24,7 @@ MonoBehaviour:
   angle: 0
   MP: 20
   connectedSkillPrefab: {fileID: 0}
-  hitEffectPrefab: {fileID: 1662555619272377587, guid: cf87a416ee51b5b498fd95840816fd37, type: 3}
+  hitEffectPrefab: {fileID: 1928904326118327751, guid: 0670723db4923c84e95bdf2a5a43da80, type: 3}
   targetExistence: 1
+  isPlayerSkill: 1
+  offset: {x: 0, y: 10, z: 0}

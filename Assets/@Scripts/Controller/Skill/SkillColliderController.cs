@@ -2,24 +2,26 @@ using UnityEngine;
 
 public class SkillColliderController : MonoBehaviour
 {
-    protected float _damage;
     protected Status _status;
-    protected float _angle;
-    protected GameObject _effect;
+    protected SkillData _skillData;
+    // 틱뎀 장판의 경우 GetDamaged에 넣어줄 대미지 값이 다름
+    protected float _damage;
+
+    // 2차 스킬은 객체 생성해서 갖고 있어야함
     protected ActiveSkill _connectedSkill;
 
-    public void SetColliderInfo(float damage, Status status, GameObject connectedSkillPrefab, GameObject effect, float angle = default)
+    public virtual void SetColliderInfo(Status status, SkillData skillData)
     {
-        _damage = damage;
-        if (connectedSkillPrefab != null)
+        _skillData = skillData;
+        _status = status;
+        _damage = skillData.damage;
+
+        if (skillData.connectedSkillPrefab != null)
         {
-            _connectedSkill = Instantiate(connectedSkillPrefab).GetComponent<ActiveSkill>();
+            _connectedSkill = Instantiate(skillData.connectedSkillPrefab).GetComponent<ActiveSkill>();
             _connectedSkill.Initialize(status);
             _connectedSkill.gameObject.SetActive(false);
         }
-        _status = status;
-        _effect = effect;
-        _angle = angle;
     }
 
     protected void ActivateConnectedSkill()
@@ -32,24 +34,15 @@ public class SkillColliderController : MonoBehaviour
 
     protected virtual void InstantiateHitEffect(Collider other)
     {
-        GameObject effect = Instantiate(_effect);
-        effect.name = $"{_effect.name} effect";
+        GameObject effect = Instantiate(_skillData.hitEffectPrefab);
+        effect.name = $"{_skillData.hitEffectPrefab.name} effect";
 
-        effect.transform.position = GetEffectPosition(other);
+        effect.transform.position = Util.GetEffectPosition(other);
         Destroy(effect, 0.5f);
     }
 
-    Vector3 GetEffectPosition(Collider other)
-    {
-        float height = other.GetComponent<CapsuleCollider>().height;
-        height *= other.transform.lossyScale.y;
-        Vector3 pos = other.transform.position;
-        pos.y = height * 0.7f;
-        return pos;
-    }
-
     // 트리거 충돌 시 메서드
-    protected void ProcessTrigger(Collider other)
+    protected virtual void ProcessTrigger(Collider other)
     {
         other.GetComponent<IDamageable>().GetDamaged(_damage);
         InstantiateHitEffect(other);

@@ -121,21 +121,12 @@ public abstract class MonsterController : MonoBehaviour, IDamageable
         _animator.SetBool(Define.IsAttacking, false);
     }
 
-    // * 방어력 미적용 데미지 계산 메서드
-    //public void GetRealDamaged(float damage)
-    //{
-    //    _runtimeData.HP -= damage;
-    //    if (_monsterData.HP <= 0)
-    //        Die();
-    //}
-
     // * 방어력 적용 데미지 계산 메서드
     public void GetDamaged(float damage)
     {
         float finalDamage = CalculateFinalDamage(damage, _runtimeData.Def);
         _runtimeData.HP -= finalDamage;
         DamageTextEvent.Invoke(Util.GetDamageTextPosition(gameObject.GetComponent<Collider>()), finalDamage, false);
-        Debug.Log($"{name} Damaged: {finalDamage}");
         if (_runtimeData.HP <= 0)
             Die();
     }
