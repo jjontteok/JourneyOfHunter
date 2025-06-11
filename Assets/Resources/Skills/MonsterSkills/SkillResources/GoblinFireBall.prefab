@@ -160,7 +160,7 @@ GameObject:
   - component: {fileID: 4224175315550938106}
   - component: {fileID: 6909237056614686869}
   m_Layer: 0
-  m_Name: OrcFireBall
+  m_Name: GoblinFireBall
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

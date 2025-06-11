@@ -76,8 +76,14 @@ public class PlayerController : MonoBehaviour, IDamageable
     [SerializeField] float _speed;
 
 
-    // 데이터는 getter만 되도록?
-    public PlayerData PlayerData { get { return _playerData; } }
+    // 나영 : 수정
+    public PlayerData PlayerData { 
+        get { return _playerData; }
+        set 
+        { 
+            _playerData = value;
+        }
+    }
 
     public float HP
     {
@@ -97,6 +103,11 @@ public class PlayerController : MonoBehaviour, IDamageable
             _mp = value;
             OnMPValueChanged?.Invoke(_mp, _playerData.MP);
         }
+    }
+
+    void OnEnable()
+    {
+        
     }
 
     void Start()
@@ -330,7 +341,7 @@ public class PlayerController : MonoBehaviour, IDamageable
     public void GetDamaged(float damage)
     {
         float finalDamage = CalculateFinalDamage(damage, _playerData.Def);
-        _hp -= finalDamage;
+        HP -= finalDamage;
         DamageTextEvent.Invoke(Util.GetDamageTextPosition(gameObject.GetComponent<Collider>()), finalDamage, false);
         //Debug.Log($"Damaged: {finalDamage}, Current Player HP: {_hp}");
         //if (_runtimeData.HP <= 0)

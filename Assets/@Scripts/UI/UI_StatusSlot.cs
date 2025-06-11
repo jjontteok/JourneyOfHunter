@@ -78,9 +78,11 @@ public class UI_StatusSlot : MonoBehaviour
             _delay = 0.3f;
     }
 
+    //스탯 업그레이드
+    //근데 업글 비용과 스탯 수?를 정해야 한다
     public void UpgradeStatus()
     {
-        if (_inventoryData.UseSilverCoin(_statusSlotData.upgradeCost))
+        if (_inventoryData.ModifyGoods(Define.GoodsType.SilverCoin, _statusSlotData.upgradeCost))
         {
             _statusSlotData.level++;
             _statusSlotData.upgradeCost += 10 * _statusSlotData.level;

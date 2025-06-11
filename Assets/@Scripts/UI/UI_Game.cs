@@ -7,6 +7,7 @@ using UnityEngine.UI;
 
 public class UI_Game : MonoBehaviour
 {
+    [SerializeField] TMP_Text _playerLevelText;
     [SerializeField] Button _statusButton;
     [SerializeField] Button _inventoryButton;
     [SerializeField] Button _gainedGoodsButton;
@@ -24,6 +25,12 @@ public class UI_Game : MonoBehaviour
 
     private int _currentPlayers;
 
+    int _silverCoin;
+    float _exp;
+    int _enhancementStone;
+    int _gem;
+
+
     private void Awake()
     {
         _playerVitalList = new List<UI_PlayerVital>();
@@ -33,34 +40,29 @@ public class UI_Game : MonoBehaviour
 
     void Initialize()
     {
-        TimeManager.Instance.OnTimeChanged += UpdateTimeText;
+        TimeManager.Instance.OnGainedRecordTimeChanged += UpdateGainedGoodsTime;
+        TimeManager.Instance.OnNamedMonsterTimeChanged += UpdateNamedMonsterTime;
+        MonsterController.OnMonsterDead += GainGoods;
         _inventoryData.OnValueChanged += UpdateGoods;
 
 
         _statusButton.onClick.AddListener(OnStatusButtonClick);
         _inventoryButton.onClick.AddListener(OnInventoryButtonClick);
-        _gainedGoodsButton.onClick.AddListener(OnReceivedGoodsButtonClick);
+        _gainedGoodsButton.onClick.AddListener(OnGainedGoodsButtonClick);
         _silverCoinText.text = _inventoryData.silverCoin.ToString();
         _autoToggle.onValueChanged.AddListener(OnAutoToggleClick);
-        // _inventoryButton.onClick.AddListener(OnInventoryButtonClick);
+        _inventoryButton.onClick.AddListener(OnInventoryButtonClick);
 
         PlayerController player = FindAnyObjectByType<PlayerController>();
-        //OnAutoChanged += player.SetAuto;
         OnAutoChanged += (flag) => player.IsAuto = flag;
         player.OnAutoOff += OnAutoToggleOff;
     }
 
-    //private void OnEnable()
-    //{
-    //    TimeManager.Instance.OnTimeChanged += SetTimeText;
-    //    _statusButton.onClick.AddListener(OnStatusButtonClick);
-    //    _autoToggle.onValueChanged.AddListener(OnAutoToggleClick);
-    //   // _inventoryButton.onClick.AddListener(OnInventoryButtonClick);
-    //}
-
     private void OnDisable()
     {
-        TimeManager.Instance.OnTimeChanged -= UpdateTimeText;
+        TimeManager.Instance.OnGainedRecordTimeChanged -= UpdateGainedGoodsTime;
+        TimeManager.Instance.OnNamedMonsterTimeChanged -= UpdateNamedMonsterTime;
+        MonsterController.OnMonsterDead -= GainGoods;
         _inventoryData.OnValueChanged -= UpdateGoods;
     }
 
@@ -85,11 +87,43 @@ public class UI_Game : MonoBehaviour
         }
     }
 
-    void UpdateTimeText(float time)
+    void UpdateGainedGoodsTime(float time)
+    {
+
+    }
+
+    void UpdateNamedMonsterTime(float time)
     {
         _minute = (int)time / 60;
         _second = (int)time % 60;
         _timeText.text = _minute.ToString("00") + " : " + _second.ToString("00");
+    }
+
+    //얘도 몬스터 처치 시 재화를 얼만큼 획득할지 정해야 한당
+    void GainGoods()
+    {
+        Define.GoodsType type;
+        float amount;
+        //확률을 이렇게 하는 게 맞?나
+        if (Util.Probability(0.3f))
+        {
+            type = Define.GoodsType.SilverCoin;
+            amount = 100;
+        }
+        else if (Util.Probability(0.6f))
+        {
+            type = Define.GoodsType.Exp;
+            amount = 10;
+        }
+        else
+        {
+            type = Define.GoodsType.EnhancementStone;
+            amount = 5;
+        }
+        _inventoryData.ModifyGoods(type, amount);
+
+
+        PopupUIManager.Instance.UpdateGainedRecord(type, amount);
     }
 
     void UpdateGoods(Define.GoodsType type)
@@ -105,8 +139,6 @@ public class UI_Game : MonoBehaviour
                 break;
             case Define.GoodsType.Gem:
                 break;
-
-
         }
     }
 
@@ -120,9 +152,9 @@ public class UI_Game : MonoBehaviour
         PopupUIManager.Instance.ActivateInventoryPanel();
     }
 
-    void OnReceivedGoodsButtonClick()
+    void OnGainedGoodsButtonClick()
     {
-        PopupUIManager.Instance.ActivateGainedRecordPanel();
+        PopupUIManager.Instance.ActivateGainedRecordPanel(Define.GoodsType.None, 0);
     }
     void OnAutoToggleClick(bool flag)
     {

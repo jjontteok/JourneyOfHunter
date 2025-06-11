@@ -10,19 +10,18 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: e807fb188ff3a544ba349f772e49f4cc, type: 3}
-  m_Name: ExplosionSkillData
+  m_Name: GoblinFireBall
   m_EditorClassIdentifier: 
-  skillName: 
-  coolTime: 0
+  skillName: GoblinFireBall
+  skillDescription: 
+  skillIcon: {fileID: 0}
+  coolTime: 3
   durationTime: 2
   targetDistance: 0
-  damage: 5
+  damage: 10
   speed: 0
-  force: 0
   angle: 0
   MP: 0
-  connectedSkillPrefab: {fileID: 0}
+  connectedSkillPrefab: {fileID: 4428409035099419300, guid: d62c02e58afcf98468f911fbf4c2c68b, type: 3}
   hitEffectPrefab: {fileID: 2504214343621411470, guid: 49fa13df8c065f844adbd5114be9b29e, type: 3}
-  skillType: 2
-  motionType: 0
-  handlerType: 0
+  targetExistence: 1

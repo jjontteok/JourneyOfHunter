@@ -104,6 +104,7 @@ public class Define : MonoBehaviour
 
     public enum GoodsType
     {
+        None,
         SilverCoin,
         Exp,
         EnhancementStone,

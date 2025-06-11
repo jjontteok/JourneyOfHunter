@@ -6,12 +6,12 @@ public class AreaTargetSkill : ActiveSkill
     SkillColliderController _coll;
     [SerializeField] Vector3 _offset;
 
-    public override void Initialize()
+    public override void Initialize(Status status)
     {
-        base.Initialize();
+        base.Initialize(status);
         //_coll = GetComponentInChildren<PenetrationColliderController>();
         _coll = GetComponentInChildren<SkillColliderController>();
-        _coll.SetColliderInfo(_skillData.damage, _playerController.PlayerData.Atk, _skillData.connectedSkillPrefab, _skillData.hitEffectPrefab);
+        _coll.SetColliderInfo(_skillData.damage, status, _skillData.connectedSkillPrefab, _skillData.hitEffectPrefab);
     }
 
     // target받아서 그 위치에 생성

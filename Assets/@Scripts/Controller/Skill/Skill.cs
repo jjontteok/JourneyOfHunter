@@ -11,7 +11,7 @@ public abstract class Skill : MonoBehaviour
 
     public SkillData SkillData {  get { return _skillData; } }
 
-    public virtual void Initialize()
+    public virtual void Initialize(Status status)
     {
         _skillCoolTime = new WaitForSeconds(_skillData.coolTime);
         _skillDurationTime = new WaitForSeconds(_skillData.durationTime);

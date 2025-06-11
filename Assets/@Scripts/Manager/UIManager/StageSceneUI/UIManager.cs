@@ -6,4 +6,7 @@ public class UIManager : Singleton<UIManager>
     {
         base.Initialize();
     }
+
+
+
 }
