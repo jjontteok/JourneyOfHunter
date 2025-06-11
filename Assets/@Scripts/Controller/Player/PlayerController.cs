@@ -330,7 +330,7 @@ public class PlayerController : MonoBehaviour, IDamageable
     public void GetDamaged(float damage)
     {
         float finalDamage = CalculateFinalDamage(damage, _playerData.Def);
-        _hp -= finalDamage;
+        HP -= finalDamage;
         DamageTextEvent.Invoke(Util.GetDamageTextPosition(gameObject.GetComponent<Collider>()), finalDamage, false);
         //Debug.Log($"Damaged: {finalDamage}, Current Player HP: {_hp}");
         //if (_runtimeData.HP <= 0)
