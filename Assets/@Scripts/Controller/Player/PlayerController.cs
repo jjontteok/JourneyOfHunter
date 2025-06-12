@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -6,6 +7,7 @@ public class PlayerController : MonoBehaviour, IDamageable
 {
     Animator _animator;
     Rigidbody _rigidbody;
+    Collider _collider;
     SkillSystem _skillSystem;
     [SerializeField] Transform _target;
 
@@ -25,6 +27,10 @@ public class PlayerController : MonoBehaviour, IDamageable
 
     public Action OnAutoOff;
 
+    [SerializeField] PlayerData _playerData;
+    [SerializeField] float _speed;
+
+    #region Properties
     public bool IsAuto
     {
         get { return _isAuto; }
@@ -72,10 +78,6 @@ public class PlayerController : MonoBehaviour, IDamageable
 
     public Transform Target { get { return _target; } }
 
-    [SerializeField] PlayerData _playerData;
-    [SerializeField] float _speed;
-
-
     // 데이터는 getter만 되도록?
     public PlayerData PlayerData { get { return _playerData; } }
 
@@ -98,6 +100,7 @@ public class PlayerController : MonoBehaviour, IDamageable
             OnMPValueChanged?.Invoke(_mp, _playerData.MP);
         }
     }
+    #endregion
 
     void Start()
     {
@@ -122,6 +125,7 @@ public class PlayerController : MonoBehaviour, IDamageable
         _mp = _playerData.MP;
         _animator = GetComponent<Animator>();
         _rigidbody = GetComponent<Rigidbody>();
+        _collider = GetComponent<Collider>() as CapsuleCollider;
 
         _skillSystem = GetComponent<SkillSystem>();
         _skillSystem.InitializeSkillSystem();
@@ -210,6 +214,7 @@ public class PlayerController : MonoBehaviour, IDamageable
         else
         {
             _direction = _target.position - transform.position;
+            _direction.y = 0;
             _rigidbody.MovePosition(_rigidbody.position + _direction.normalized * _speed * Time.fixedDeltaTime);
 
 
@@ -323,6 +328,29 @@ public class PlayerController : MonoBehaviour, IDamageable
     public void SetShortestSkillDistance(float distance)
     {
         _shortestSkillDistance = distance;
+    }
+
+    void SetPlayerCollision(bool flag)
+    {
+        _rigidbody.isKinematic = !flag;
+        _collider.isTrigger = !flag;
+    }
+
+    IEnumerator CoSetPlayerCollision(float duration)
+    {
+        SetPlayerCollision(false);
+        yield return new WaitForSeconds(duration);
+        SetPlayerCollision(true);
+    }
+
+    public void ProcessPlayerCollision(float duration)
+    {
+        StartCoroutine(CoSetPlayerCollision(duration));
+    }
+
+    void ClampYPosition()
+    {
+
     }
     #endregion
 

@@ -6,12 +6,15 @@ using UnityEngine;
 //플레이어에 부착할 스크립트
 public class SkillSystem : MonoBehaviour
 {
-    //플레이어의 스킬 리스트 - 스킬 슬롯
+    //플레이어가 보유 중인 스킬 리소스들을 담은 리스트
     List<Skill> _skillList = new List<Skill>();
 
     // 스킬 슬롯 리스트 - 액티브형 스킬 보관 슬롯
     List<SkillSlot> _activeSkillSlotList = new List<SkillSlot>();
     BasicSkillSlot _basicSkillSlot;
+
+    Queue<SkillSlot> _skillQueue = new Queue<SkillSlot>();
+
     PlayerController _player;
 
     bool _isAuto;
@@ -35,9 +38,10 @@ public class SkillSystem : MonoBehaviour
         OnShortestSkillDistanceChanged += _player.SetShortestSkillDistance;
 
         Dictionary<string, GameObject> skillList = ObjectManager.Instance.PlayerSkillResourceList;
-        foreach (var skillObject in skillList)
+        SkillData[] skillDatas = _player.PlayerData.CurrentSkillData;
+        foreach (var skillData in skillDatas)
         {
-            _skillList.Add(skillObject.Value.GetComponent<Skill>());
+            _skillList.Add(skillList[skillData.name].GetComponent<Skill>());
         }
 
         foreach (var skill in _skillList)
@@ -68,11 +72,11 @@ public class SkillSystem : MonoBehaviour
                 }
             }
         }
-        else
-        {
-            // 기본 공격만 알아서 되도록
-            _basicSkillSlot.ActivateSlotSkill();
-        }
+        //else
+        //{
+        //    // 기본 공격만 알아서 되도록
+        //    _basicSkillSlot.ActivateSlotSkill();
+        //}
     }
 
     bool IsBasicAttackPossible()
@@ -98,6 +102,7 @@ public class SkillSystem : MonoBehaviour
         {
             _basicSkillSlot = go.AddComponent<BasicSkillSlot>();
             _basicSkillSlot.SetSkill(data);
+            OnShortestSkillDistanceChanged?.Invoke(data.targetDistance);
         }
         // 패시브면 효과 적용만 시키고
         // 나중에 추가
@@ -107,15 +112,22 @@ public class SkillSystem : MonoBehaviour
             SkillSlot slot = go.AddComponent<SkillSlot>();
             // 비어있는 인덱스 있나 찾아보고
             int idx = _activeSkillSlotList.FindIndex((slot) => slot == null);
-            if (idx >= _player.PlayerData.UnlockedSkillSlotCount)
-            {
-                Debug.Log("Slot list is already full!!!");
-            }
-            // 없으면 add
+
+            // 비어있는 인덱스 없는 경우(idx == -1)
             if (idx < 0)
             {
-                _activeSkillSlotList.Add(slot);
-                SkillManager.Instance.SubscribeEvents(slot, _activeSkillSlotList.Count - 1);
+                // 슬롯리스트 아직 덜 찼으면 add
+                if (_activeSkillSlotList.Count < _player.PlayerData.UnlockedSkillSlotCount)
+                {
+                    _activeSkillSlotList.Add(slot);
+                    SkillManager.Instance.SubscribeEvents(slot, _activeSkillSlotList.Count - 1);
+                }
+                // 슬롯리스드 꽉 찼으면 실행 x
+                else
+                {
+                    Debug.Log("Slot list is already full!!!");
+                    return;
+                }
             }
             else
             {
@@ -123,7 +135,7 @@ public class SkillSystem : MonoBehaviour
                 SkillManager.Instance.SubscribeEvents(slot, idx);
             }
             slot.SetSkill(data);
-            GetShortestSkillDistance();
+            //GetShortestSkillDistance();
         }
     }
 
@@ -136,17 +148,17 @@ public class SkillSystem : MonoBehaviour
             return;
         }
         slot.DestroySkillSlot();
-        Invoke("GetShortestSkillDistance", Time.deltaTime);
+        //Invoke("GetShortestSkillDistance", Time.deltaTime);
     }
 
     public float GetShortestSkillDistance()
     {
         float min = -1;
-        foreach(var slot in _activeSkillSlotList)
+        foreach (var slot in _activeSkillSlotList)
         {
-            if (slot!=null)
+            if (slot != null)
             {
-                if(min<0)
+                if (min < 0)
                 {
                     min = slot.SkillData.targetDistance;
                 }
@@ -156,7 +168,7 @@ public class SkillSystem : MonoBehaviour
                 }
             }
         }
-        if(min < 0)
+        if (min < 0)
         {
             min = BasicSkillSlot.SkillData.targetDistance;
         }

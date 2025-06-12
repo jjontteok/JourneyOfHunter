@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class TransformTargetSkill : ActiveSkill, ITargetSkill, IMovingSkill, IDirectionSkill
 {
-    SkillColliderController _coll;
+    protected SkillColliderController _coll;
     Transform _target;
     protected Vector3 _direction;
 
@@ -38,10 +38,11 @@ public class TransformTargetSkill : ActiveSkill, ITargetSkill, IMovingSkill, IDi
     public virtual bool IsTargetExist(Vector3 pos, bool isPlayerSkill)
     {
         _target = Util.GetNearestTarget(pos, _skillData.targetDistance, isPlayerSkill)?.transform;
+        Debug.Log($"Current Target: {_target.name}\npostion:{_target.position}");
         return _target != null;
     }
 
-    public void MoveSkillCollider()
+    public virtual void MoveSkillCollider()
     {
         if (Vector3.Distance(transform.position, _coll.transform.position) < _skillData.targetDistance)
         {

@@ -70,10 +70,8 @@ public class Util
     {
         Vector3 toMonster = (collider.transform.position -origin.position).normalized;
         float degree = GetAngleBetweenDirections(toMonster, origin.forward);
-        Debug.Log($"calculation forward: {origin.forward}");
         if (degree <= angle / 2)
         {
-            //Debug.Log($"{collider.name} is in angle {degree}");
             return true;
         }
         else

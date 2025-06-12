@@ -14597,7 +14597,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   radius: 10
-  force: 8
+  force: 0
   delay: 0
 --- !u!1 &2012644692490219787
 GameObject:

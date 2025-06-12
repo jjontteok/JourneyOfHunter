@@ -1,4 +1,5 @@
 using System.Collections;
+using UnityEditor;
 using UnityEngine;
 
 public class MeteorSkill : AreaTargetSkill, IDelayedDamageSkill
@@ -12,6 +13,7 @@ public class MeteorSkill : AreaTargetSkill, IDelayedDamageSkill
         yield return new WaitForSeconds(_delay);
         _meteorObject.SetActive(false);
         _coll.gameObject.SetActive(true);
+        //EditorApplication.isPaused = true;
     }
 
     public override bool ActivateSkill(Vector3 pos)
