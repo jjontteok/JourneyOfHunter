@@ -5,12 +5,14 @@ using UnityEngine;
 using UnityEngine.UI;
 
 
-public class UI_Status : MonoBehaviour
+public class PopupUI_Status : MonoBehaviour
 {
     [SerializeField] PlayerInventoryData _inventoryData;
     [SerializeField] TMP_Text _silverCoinText;
     [SerializeField] List<UI_StatusSlot> _statusList;
     [SerializeField] Button _exitButton;
+
+    public event Action OnExitButtonClicked;
 
     private void Awake()
     {
@@ -46,6 +48,6 @@ public class UI_Status : MonoBehaviour
 
     void OnExitButtonClick()
     {
-        gameObject.SetActive(false);
+        OnExitButtonClicked?.Invoke();
     }
 }

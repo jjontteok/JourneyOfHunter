@@ -1,9 +1,12 @@
+using System;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class UI_Inventory : MonoBehaviour
+public class PopupUI_Inventory : MonoBehaviour
 {
     [SerializeField] Button _exitButton;
+
+    public event Action OnExitButtonClicked;
 
     private void Awake()
     {
@@ -12,6 +15,6 @@ public class UI_Inventory : MonoBehaviour
 
     void OnExitButtonClick()
     {
-        gameObject.SetActive(false);
+        OnExitButtonClicked?.Invoke();
     }
 }

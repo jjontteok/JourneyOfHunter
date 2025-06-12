@@ -6,17 +6,18 @@ using UnityEngine;
 public class TimeManager : Singleton<TimeManager>
 {
     public event Action<float> OnNamedMonsterTimeChanged;
-    public event Action<float> OnGainedRecordTimeChanged;
+    public event Action OnGainedRecordTimeChanged;
 
     WaitForSeconds _time = new WaitForSeconds(1f);
 
-    float _gainedRecordTime;
     float _monsterTime;
+
+    //임시 플래그 변수
+    bool _isPlaying = true;
 
     private void OnEnable()
     {
         _monsterTime = 180;
-        _gainedRecordTime = 0;
         StartGainedRecord();
     }
 
@@ -32,9 +33,11 @@ public class TimeManager : Singleton<TimeManager>
 
     IEnumerator GainedRecordTimer()
     {
-        yield return _time;
-        _gainedRecordTime += 1;
-        OnGainedRecordTimeChanged?.Invoke(_gainedRecordTime);
+        while (_isPlaying)
+        {
+            yield return _time;
+            OnGainedRecordTimeChanged?.Invoke();
+        }
     }
 
     IEnumerator NamedMonsterTimer()

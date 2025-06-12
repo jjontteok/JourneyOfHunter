@@ -490,7 +490,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: "\uACE0\uBE14\uB9B0 \uC804\uC0AC"
+  m_text: "\uC624\uD081 \uC804\uC0AC"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 90d5069cf8ee8f342a57cbb798f0eb7e, type: 2}
   m_sharedMaterial: {fileID: -7867324468927197065, guid: 90d5069cf8ee8f342a57cbb798f0eb7e, type: 2}
@@ -859,8 +859,9 @@ GameObject:
   - component: {fileID: 7544035675905806453}
   - component: {fileID: 7257808810325861101}
   - component: {fileID: 3862037815750026960}
+  - component: {fileID: -2692723251395026387}
   m_Layer: 5
-  m_Name: Panel - NamedMonsterInfo
+  m_Name: NamedMonsterInfo - Popup
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -925,6 +926,20 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+--- !u!114 &-2692723251395026387
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5413482126154407909}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0a73d884a2564c04aa3c8db46d7a4351, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _monsterNameText: {fileID: 7840494290780044575}
+  _timeText: {fileID: 7517215172457610509}
 --- !u!1 &5558654528215533017
 GameObject:
   m_ObjectHideFlags: 0
