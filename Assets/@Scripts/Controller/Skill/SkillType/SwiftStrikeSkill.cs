@@ -1,5 +1,4 @@
 using System;
-using System.Collections;
 using UnityEngine;
 
 public class SwiftStrikeSkill : RotationTargetSkill, ICharacterMovingSkill
@@ -19,7 +18,9 @@ public class SwiftStrikeSkill : RotationTargetSkill, ICharacterMovingSkill
         if(base.ActivateSkill(pos))
         {
             _originPos = transform.position;
-            _fixedDirection = _direction;
+            Vector3 tmp = _direction;
+            tmp.y = 0f;
+            _fixedDirection = tmp;
             OnSkillActivated?.Invoke(SkillData.durationTime);
             return true;
         }
@@ -29,10 +30,18 @@ public class SwiftStrikeSkill : RotationTargetSkill, ICharacterMovingSkill
 
     public override void MoveSkillCollider()
     {
-        if (Vector3.Distance(transform.position, _originPos) < _skillData.targetDistance)
+        if (Vector3.Distance(_coll.transform.position, _originPos) < _skillData.targetDistance)
         {
-            _playerController.transform.Translate(_fixedDirection * _skillData.speed * Time.deltaTime);
+            _playerController.transform.Translate(_fixedDirection * _skillData.speed * Time.deltaTime, Space.World);
             _coll.transform.position = _playerController.transform.position;
         }
+    }
+
+    private void OnDrawGizmos()
+    {
+        Gizmos.color = Color.black;
+        Gizmos.DrawLine(transform.position + Vector3.up * 0.1f, transform.position + _direction * _skillData.targetDistance + Vector3.up * 0.1f);
+        Gizmos.color = Color.red;
+        Gizmos.DrawLine(transform.position, transform.position + _fixedDirection * _skillData.targetDistance);
     }
 }

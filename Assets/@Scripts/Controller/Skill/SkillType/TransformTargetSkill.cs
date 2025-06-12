@@ -38,7 +38,7 @@ public class TransformTargetSkill : ActiveSkill, ITargetSkill, IMovingSkill, IDi
     public virtual bool IsTargetExist(Vector3 pos, bool isPlayerSkill)
     {
         _target = Util.GetNearestTarget(pos, _skillData.targetDistance, isPlayerSkill)?.transform;
-        Debug.Log($"Current Target: {_target.name}\npostion:{_target.position}");
+        //Debug.Log($"Current Target: {_target.name}\npostion:{_target.position}");
         return _target != null;
     }
 

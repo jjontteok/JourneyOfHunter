@@ -21,6 +21,7 @@ public class PlayerController : MonoBehaviour, IDamageable
     float _shortestSkillDistance;   //자동일 때, 이동 멈추는 범위
     bool _isAuto;                   //자동 여부
     bool _isAutoMoving;             //자동일 때, 타겟 없을 시 다음 스테이지 이동 여부
+    bool _tmpAuto;                  //질풍참 사용 시 auto 여부 저장용으로 쓰임
 
     bool _isKeyBoard;
     bool _isJoyStick;
@@ -295,6 +296,7 @@ public class PlayerController : MonoBehaviour, IDamageable
         if (_target == null || !_target.gameObject.activeSelf)
         {
             //쵸비상 몬스터 풀 어케 가져옴
+            //stage info에서 현재 스테이지의 몬스터 정보를 받아와서 이름으로 
             _target = Util.GetNearestTarget(transform.position, 100f)?.transform;
             if (_target == null)
             {
@@ -338,9 +340,14 @@ public class PlayerController : MonoBehaviour, IDamageable
 
     IEnumerator CoSetPlayerCollision(float duration)
     {
+        _tmpAuto = IsAuto;
         SetPlayerCollision(false);
+        IsAuto = false;
         yield return new WaitForSeconds(duration);
         SetPlayerCollision(true);
+        IsAuto = _tmpAuto;
+
+        ClampYPosition();
     }
 
     public void ProcessPlayerCollision(float duration)
@@ -350,7 +357,11 @@ public class PlayerController : MonoBehaviour, IDamageable
 
     void ClampYPosition()
     {
-
+        RaycastHit hit;
+        Physics.Raycast(transform.position + Vector3.up * 5, Vector3.down, out hit, 10f);
+        Vector3 pos = transform.position; 
+           pos.y = hit.point.y;
+        transform.position = pos;
     }
     #endregion
 
