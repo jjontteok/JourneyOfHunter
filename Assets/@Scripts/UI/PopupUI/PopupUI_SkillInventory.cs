@@ -7,13 +7,13 @@ using UnityEngine.UI;
 
 public static class MouseData
 {
-    public static UI_SkillInventory MouseOverInventory; // 마우스가 올라간 인벤토리
+    public static PopupUI_SkillInventory MouseOverInventory; // 마우스가 올라간 인벤토리
     public static GameObject SlotHoveredOver;   // 마우스 커서가 위치한 슬롯
     public static GameObject DragImage;         // 드래그 중인 아이템 이미지
 }
 
 [RequireComponent(typeof(EventTrigger))]
-public class UI_SkillInventory : MonoBehaviour
+public class PopupUI_SkillInventory : MonoBehaviour
 {
     [SerializeField] GameObject _slot;
     [SerializeField] GameObject _viewPort;
@@ -25,6 +25,7 @@ public class UI_SkillInventory : MonoBehaviour
     Dictionary<GameObject, SkillItemSlot> _slotUIs = new Dictionary<GameObject, SkillItemSlot>();
 
     public Action<SkillData> OnUseSkillItem;
+    public event Action OnExitButtonClicked;
 
     #region Events
     void AddEvent(GameObject go, EventTriggerType type, UnityAction<BaseEventData> action)
@@ -37,7 +38,7 @@ public class UI_SkillInventory : MonoBehaviour
     }
     public virtual void OnEnterInterface(GameObject go)
     {
-        MouseData.MouseOverInventory = go.GetComponent<UI_SkillInventory>();
+        MouseData.MouseOverInventory = go.GetComponent<PopupUI_SkillInventory>();
     }
 
     public void OnExitInterface(GameObject go)
@@ -104,8 +105,6 @@ public class UI_SkillInventory : MonoBehaviour
         SkillSystem skillSystem = FindAnyObjectByType<SkillSystem>();
         _skillDescriptionPanel.OnEquipSkill += skillSystem.AddSkill;
         _skillDescriptionPanel.OnReleaseSkill += skillSystem.RemoveSkill;
-
-        gameObject.SetActive(false);
     }
 
     private void OnDisable()
@@ -115,6 +114,6 @@ public class UI_SkillInventory : MonoBehaviour
 
     void OnExitButtonClick()
     {
-        gameObject.SetActive(false);
+        OnExitButtonClicked?.Invoke();
     }
 }

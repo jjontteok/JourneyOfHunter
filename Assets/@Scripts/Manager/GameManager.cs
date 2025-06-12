@@ -23,6 +23,8 @@ public class GameManager : Singleton<GameManager>
         ObjectManager.Instance.CreateManager();
         ObjectManager.Instance.ResourceLoad();
 
+        UIManager.Instance.CreateManager();
+
         PoolManager.Instance.CreateManager();
 
         DungeonManager.Instance.CreateManager();
@@ -45,7 +47,6 @@ public class GameManager : Singleton<GameManager>
         PopupUIManager.Instance.Subscribe();
         DamageTextManager.Instance.Subscribe();
         SpawnManager.Instance.Subscribe();
-        DamageTextManager.Instance.Subscribe();
     }
 
     // * 오브젝트 비활성화 메서드

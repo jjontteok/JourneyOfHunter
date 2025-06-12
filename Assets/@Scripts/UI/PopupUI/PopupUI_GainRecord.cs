@@ -1,10 +1,11 @@
 using NUnit.Framework;
+using System;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class UI_GainRecord : MonoBehaviour
+public class PopupUI_GainRecord : MonoBehaviour
 {
     [SerializeField] List<TMP_Text> _goodsCountTextList;
 
@@ -19,6 +20,12 @@ public class UI_GainRecord : MonoBehaviour
     float _exp;
     int _enhancementStone;
 
+    float _time;
+    int _minute;
+    int _second;
+
+    public event Action OnExitButtonClicked;
+
     private void Awake()
     {
         _exitButton.onClick.AddListener(OnExitButtonClick);
@@ -27,7 +34,7 @@ public class UI_GainRecord : MonoBehaviour
 
     void OnExitButtonClick()
     {
-        gameObject.SetActive(false);
+        OnExitButtonClicked?.Invoke();
     }
 
     void OnResetButtonClick()
@@ -36,8 +43,18 @@ public class UI_GainRecord : MonoBehaviour
         _silverCoin = 0;
         _exp = 0;
         _enhancementStone = 0;
+        _time = -1;
 
+        SetTime();
         SetText();
+    }
+
+    public void SetTime()
+    {
+        _time += 1;
+        _minute = (int)_time / 60;
+        _second = (int)_time % 60;
+        _timerText.text = _minute.ToString("00") + " : " + _second.ToString("00");
     }
 
     public void SetGoods(Define.GoodsType type, float amount)
