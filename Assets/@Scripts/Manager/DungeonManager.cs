@@ -93,8 +93,6 @@ public class DungeonManager : Singleton<DungeonManager>, IEventSubscriber, IDeac
     #region IEventSubscriber
     public void Subscribe()
     {
-        PopupUIManager.Instance.OnButtonDungeonEnterClick += EnterDungeon;
-
         _portalEnterController.OnPotalEnter += EnterDungeon;
         _portalEnterController.OnPotalClose += SetWallUp;
 

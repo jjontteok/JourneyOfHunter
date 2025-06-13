@@ -418,8 +418,8 @@ public class ObjectManager : Singleton<ObjectManager>
     {
         _popupCanvas = Resources.Load<GameObject>(Define.PopupUICanvasPath);
         _popupPanel = Resources.Load<GameObject>(Define.PopupPanelPath);
-        _popupStageInfo = Resources.Load<GameObject>(Define.PopupStageInfoPath);
-        _popupNamedMonsterInfo = Resources.Load<GameObject>(Define.PopupNamedMonsterInfoPath);
+        _popupStageInfo = Resources.Load<GameObject>(Define.PopupStageInfoPanelPath);
+        _popupNamedMonsterInfo = Resources.Load<GameObject>(Define.PopupNamedMonsterInfoPanelPath);
         _popupStatusPanel = Resources.Load<GameObject>(Define.PopupStatusPanelPath);
         _popupInventoryPanel = Resources.Load<GameObject>(Define.PopupInventoryPanelPath);
         _popupSkillInventory = Resources.Load<GameObject>(Define.PopupSkillInventoryPath);

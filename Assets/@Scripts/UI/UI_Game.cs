@@ -33,8 +33,8 @@ public class UI_Game : MonoBehaviour
     void Initialize()
     {
         ReleaseEvent();
-        TimeManager.Instance.OnGainedRecordTimeChanged += UpdateGainedGoodsTime;
-        TimeManager.Instance.OnNamedMonsterTimeChanged += UpdateNamedMonsterTime;
+        //TimeManager.Instance.OnGainedRecordTimeChanged += UpdateGainedGoodsTime;
+        //TimeManager.Instance.OnNamedMonsterTimeChanged += UpdateNamedMonsterTime;
         MonsterController.OnMonsterDead += GainGoods;
         _inventoryData.OnValueChanged += UpdateGoods;
 

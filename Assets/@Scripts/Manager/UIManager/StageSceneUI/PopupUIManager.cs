@@ -15,7 +15,6 @@ public class PopupUIManager : Singleton<PopupUIManager>, IEventSubscriber, IDeac
     private GameObject _panelInventory;
     private GameObject _panelSkillInventory;
     private GameObject _panelGainedRecord;
-    private GameObject _panelStageInfo;
 
     private GameObject _activePopup;
     public GameObject PanelGainedRecord
@@ -137,7 +136,7 @@ public class PopupUIManager : Singleton<PopupUIManager>, IEventSubscriber, IDeac
 
     public void ActivateStageInfoPanel()
     {
-        _panelStageInfo.SetActive(true);
+        _popupStageInfo.SetActive(true);
     }
 
     public void UpdateGainedRecord(Define.GoodsType type, float amount)
@@ -159,6 +158,6 @@ public class PopupUIManager : Singleton<PopupUIManager>, IEventSubscriber, IDeac
 
     private void DeactivateStageInfoPanel()
     {
-        _panelStageInfo?.SetActive(false);
+        _popupStageInfo?.SetActive(false);
     }
 }
