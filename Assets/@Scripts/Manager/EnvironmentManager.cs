@@ -1,28 +1,75 @@
+using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
+using extension;
 
 public class EnvironmentManager : Singleton<EnvironmentManager>, IEventSubscriber
 {
-    private List<Material> _skyBoxList;
+    private Dictionary<string, Material> _skyBoxList;
+    private Dictionary<string, Color> _colorList;
+    private Dictionary<string, Color> _variationColorList;
+    private Dictionary<string, float> _variationLightList;
+    private Dictionary<string, float> _targetColorList;
     private Material _currentSkyBox;
 
     private Light _currentLight;
 
+    float _currenLightValue = 1;
+
+    //임시 방편
+    const string Morning = "MorningSkyBox";
+    const string Noon = "NoonSkyBox";
+    const string Evening = "EveningSkyBox";
+    const string Night = "NightSkyBox";
     protected override void Initialize()
     {
         base.Initialize();
-        _skyBoxList = new List<Material>();
-        _skyBoxList.Add(RenderSettings.skybox);
 
+        _skyBoxList = new Dictionary<string, Material>();
+
+        _skyBoxList = ObjectManager.Instance.SkyBoxResourceList;
         _currentLight = GameObject.Find("Directional Light").GetComponent<Light>();
 
-        _currentSkyBox = _skyBoxList[0];
+        _colorList = new Dictionary<string, Color>()
+        {
+            { Morning,  new Color(0.5f, 0.5f, 0.5f, 1) },
+            { Noon, new Color(0.5f, 0.5f, 0.5f, 1) },
+            { Evening, new Color(1f, 1f, 1f, 1) },
+            { Night, new Color(0.5f, 0.5f, 0.5f, 1) }
+        };
+
+        _variationColorList = new Dictionary<string, Color>()
+        {
+            { Morning, new Color(-0.001f, 0, 0, 0) },
+            { Noon, new Color(-0.0005f, -0.001f, -0.001f, 0) },
+            { Evening, new Color(-0.005f, -0.005f, -0.005f, 0) },
+            { Night, new Color(0.005f, 0.005f, 0.005f, 0) }
+        };
+
+        _variationLightList = new Dictionary<string, float>()
+        {
+            { Morning, 0.004f },
+            { Noon, -0.002f },
+            { Evening, -0.003f },
+            { Night, 0.005f }
+        };
+
+        _targetColorList = new Dictionary<string, float>()
+        {
+            { Morning, 0.35f },
+            { Noon, 0.35f },
+            { Evening, 0.3f },
+            { Night, 1f }
+        };
+
+        ChangeSkyBox(Noon);
     }
 
     #region IEventSubscriber
     public void Subscribe()
     {
-        throw new System.NotImplementedException();
+        TimeManager.Instance.OnDayTimeChanged += UpdateSky;
     }
     #endregion
 
@@ -31,31 +78,88 @@ public class EnvironmentManager : Singleton<EnvironmentManager>, IEventSubscribe
         RotateSkyBox();
     }
 
+    void OnDisable()
+    {
+        TimeManager.Instance.OnDayTimeChanged -= UpdateSky;
+    }
+
     void RotateSkyBox()
     {
-        _currentSkyBox.SetFloat("_Rotation", (Time.time * 5.0f) % 360);
+       _currentSkyBox.SetFloat("_Rotation", (Time.time * 5.0f) % 360);
     }
 
-    // 낮 -> 일몰
-    // exposer감소 및 skybox 변경 및 Light 정보 변경
-    void FromDayToSunset()
+
+    void UpdateSky(Define.TimeOfDayType type)
     {
-        Color targetColor = new Color(0.3f, 0.3f, 0.3f, 1);
-        _currentLight.color = Color.Lerp(_currentLight.color, targetColor, Time.deltaTime * 0.1f);
+        //이전 스카이박스
+        string from = GetSkyBoxKey(GetPreviousTimeOfDay(type));
+
+        //바꾸게 될 스카이박스
+        string to = GetSkyBoxKey(type);
+
+        StartCoroutine(LerpSkyBox(from, to));
     }
 
-    void FromSunsetToNight()
+    IEnumerator LerpSkyBox(string from, string to)
     {
+        Color originColor = _colorList[from];
+        
+        while (Extension.CheckSimilarColor(_colorList[from].r, _targetColorList[from]))
+        {
+            _currentSkyBox.SetColor("_Tint", _colorList[from]);
 
+            Color color = _colorList[from];
+            color += _variationColorList[from];
+            _colorList[from] = color;
+
+            LerpLight(from);
+            yield return null;
+        }
+
+        _colorList[from] = originColor;
+        ChangeSkyBox(to);
     }
 
-    void FromNightToSunrise()
+    void LerpLight(string from)
     {
-
+        _currentLight.color = new Color(_currenLightValue, _currenLightValue, _currenLightValue, 1);
+        _currenLightValue += _variationLightList[from];
     }
 
-    void FromSunriseToDay()
-    {
 
+    void ChangeSkyBox(string skyBox)
+    {
+        _currentSkyBox = _skyBoxList[skyBox];
+        _currentSkyBox.SetColor("_Tint", _colorList[skyBox]);
+        ChangeRenderSettings();
+    }
+
+    void ChangeRenderSettings()
+    {
+        RenderSettings.skybox = _currentSkyBox;
+    }
+
+    Define.TimeOfDayType GetPreviousTimeOfDay(Define.TimeOfDayType type)
+    {
+        return type switch
+        {
+            Define.TimeOfDayType.Morning => Define.TimeOfDayType.Night,
+            Define.TimeOfDayType.Noon => Define.TimeOfDayType.Morning,
+            Define.TimeOfDayType.Evening => Define.TimeOfDayType.Noon,
+            Define.TimeOfDayType.Night => Define.TimeOfDayType.Evening,
+            _ => Define.TimeOfDayType.Morning,
+        };
+    }
+
+    string GetSkyBoxKey(Define.TimeOfDayType type)
+    {
+        return type switch
+        {
+            Define.TimeOfDayType.Morning => Morning,
+            Define.TimeOfDayType.Noon => Noon,
+            Define.TimeOfDayType.Evening => Evening,
+            Define.TimeOfDayType.Night => Night,
+            _=> Noon,
+        };
     }
 }
