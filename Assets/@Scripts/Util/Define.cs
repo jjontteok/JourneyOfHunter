@@ -39,12 +39,15 @@ public class Define : MonoBehaviour
     public const string PlayerVitalCanvasPath = "UI/PlayerVital/UI_Vital";
     public const string PlayerVitalPath = "UI/PlayerVital/PlayerVital";
 
+    public const string UIGamePath = "UI/MainUI/UI_Game";
     public const string PopupUICanvasPath = "UI/PopupUI/Canvas - Popup";
-    public const string PopupEnterDungeonPanelPath = "UI/PopupUI/Panel - Popup";
+    public const string PopupPanelPath = "UI/PopupUI/Panel - Popup";
     public const string PopupStatusPanelPath = "UI/PopupUI/StatusPanel - Popup";
     public const string PopupInventoryPanelPath = "UI/PopupUI/InventoryPanel - Popup";
     public const string PopupSkillInventoryPath = "UI/PopupUI/UI_SkillInventory - Popup";
     public const string PopupGainedRecordPanelPath = "UI/PopupUI/GainedRecordPanel - Popup";
+    public const string PopupStageInfoPath = "UI/PopupUI/StageInfo - Popup";
+    public const string PopupNamedMonsterInfoPath = "UI/PopupUI/NamedMonsterInfo - Popup";
 
     public const string GoblinKingCutScenePath = "CutScene/GoblinCutScene";
     #endregion
@@ -104,6 +107,7 @@ public class Define : MonoBehaviour
 
     public enum GoodsType
     {
+        None,
         SilverCoin,
         Exp,
         EnhancementStone,

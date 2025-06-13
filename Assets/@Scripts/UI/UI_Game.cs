@@ -7,22 +7,20 @@ using UnityEngine.UI;
 
 public class UI_Game : MonoBehaviour
 {
+    [SerializeField] TMP_Text _playerLevelText;
     [SerializeField] Button _statusButton;
     [SerializeField] Button _inventoryButton;
     [SerializeField] Button _gainedGoodsButton;
     [SerializeField] TMP_Text _silverCoinText;
     [SerializeField] TMP_Text _gemText;
     [SerializeField] Toggle _autoToggle;
-    [SerializeField] TMP_Text _timeText;
     [SerializeField] PlayerInventoryData _inventoryData;
 
     private List<UI_PlayerVital> _playerVitalList; 
     private GameObject _playerVitalCanvas;
 
-    private int _minute;
-    private int _second;
-
     private int _currentPlayers;
+
 
     private void Awake()
     {
@@ -33,22 +31,26 @@ public class UI_Game : MonoBehaviour
 
     void Initialize()
     {
-        TimeManager.Instance.OnTimeChanged -= UpdateTimeText;
-        _inventoryData.OnValueChanged -= UpdateGoods;
-        TimeManager.Instance.OnTimeChanged += UpdateTimeText;
+        MonsterController.OnMonsterDead += GainGoods;
         _inventoryData.OnValueChanged += UpdateGoods;
-
 
         _statusButton.onClick.AddListener(OnStatusButtonClick);
         _inventoryButton.onClick.AddListener(OnInventoryButtonClick);
-        _gainedGoodsButton.onClick.AddListener(OnReceivedGoodsButtonClick);
+        _gainedGoodsButton.onClick.AddListener(OnGainedGoodsButtonClick);
         _silverCoinText.text = _inventoryData.silverCoin.ToString();
         _autoToggle.onValueChanged.AddListener(OnAutoToggleClick);
-        // _inventoryButton.onClick.AddListener(OnInventoryButtonClick);
+        _inventoryButton.onClick.AddListener(OnInventoryButtonClick);
 
         PlayerController player = FindAnyObjectByType<PlayerController>();
         OnAutoChanged += (flag) => player.IsAuto = flag;
         player.OnAutoOff += OnAutoToggleOff;
+    }
+
+    private void OnDisable()
+    {
+        MonsterController.OnMonsterDead -= GainGoods;
+        _inventoryData.OnValueChanged -= UpdateGoods;
+        _playerVitalCanvas.SetActive(false);
     }
 
     private void Start()
@@ -72,11 +74,30 @@ public class UI_Game : MonoBehaviour
         }
     }
 
-    void UpdateTimeText(float time)
+    //얘도 몬스터 처치 시 재화를 얼만큼 획득할지 정해야 한당
+    void GainGoods()
     {
-        _minute = (int)time / 60;
-        _second = (int)time % 60;
-        _timeText.text = _minute.ToString("00") + " : " + _second.ToString("00");
+        Define.GoodsType type;
+        float amount;
+        //확률을 이렇게 하는 게 맞?나
+        if (Util.Probability(0.3f))
+        {
+            type = Define.GoodsType.SilverCoin;
+            amount = 100;
+        }
+        else if (Util.Probability(0.6f))
+        {
+            type = Define.GoodsType.Exp;
+            amount = 10;
+        }
+        else
+        {
+            type = Define.GoodsType.EnhancementStone;
+            amount = 5;
+        }
+        _inventoryData.ModifyGoods(type, amount);
+
+        PopupUIManager.Instance.UpdateGainedRecord(type, amount);
     }
 
     void UpdateGoods(Define.GoodsType type)
@@ -92,8 +113,6 @@ public class UI_Game : MonoBehaviour
                 break;
             case Define.GoodsType.Gem:
                 break;
-
-
         }
     }
 
@@ -107,9 +126,9 @@ public class UI_Game : MonoBehaviour
         PopupUIManager.Instance.ActivateInventoryPanel();
     }
 
-    void OnReceivedGoodsButtonClick()
+    void OnGainedGoodsButtonClick()
     {
-        PopupUIManager.Instance.ActivateGainedRecordPanel();
+        PopupUIManager.Instance.ActivateGainedRecordPanel(Define.GoodsType.None, 0);
     }
     void OnAutoToggleClick(bool flag)
     {

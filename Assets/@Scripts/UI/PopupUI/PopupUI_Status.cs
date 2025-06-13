@@ -5,13 +5,14 @@ using UnityEngine;
 using UnityEngine.UI;
 
 
-public class UI_Status : MonoBehaviour
+public class PopupUI_Status : MonoBehaviour
 {
-    [SerializeField] PlayerData _playerData;
     [SerializeField] PlayerInventoryData _inventoryData;
     [SerializeField] TMP_Text _silverCoinText;
     [SerializeField] List<UI_StatusSlot> _statusList;
     [SerializeField] Button _exitButton;
+
+    public event Action OnExitButtonClicked;
 
     private void Awake()
     {
@@ -29,10 +30,12 @@ public class UI_Status : MonoBehaviour
     }
 
     void Initialize() {
+        //임시 방편
+        PlayerController playerController = FindAnyObjectByType<PlayerController>();
         _silverCoinText.text = _inventoryData.silverCoin.ToString();
         foreach (var slot in _statusList)
         {
-            slot.Initialize(_playerData, _inventoryData);
+            slot.Initialize(playerController.PlayerData, _inventoryData);
         }
         _exitButton.onClick.AddListener(OnExitButtonClick);
      }
@@ -45,6 +48,6 @@ public class UI_Status : MonoBehaviour
 
     void OnExitButtonClick()
     {
-        gameObject.SetActive(false);
+        OnExitButtonClicked?.Invoke();
     }
 }

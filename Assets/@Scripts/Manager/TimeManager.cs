@@ -5,29 +5,48 @@ using UnityEngine;
 
 public class TimeManager : Singleton<TimeManager>
 {
-    public event Action<float> OnTimeChanged;
-    //public event Action<float> OnGainedRecordTimeChanged;
+    public event Action<float> OnNamedMonsterTimeChanged;
+    public event Action OnGainedRecordTimeChanged;
 
-    float _gainedRecordTime;
+    WaitForSeconds _time = new WaitForSeconds(1f);
+
     float _monsterTime;
 
-
+    //임시 플래그 변수
+    bool _isPlaying = true;
 
     private void OnEnable()
     {
         _monsterTime = 180;
-        _gainedRecordTime = 0;
+        StartGainedRecord();
+    }
+
+    public void StartNamedMonsterStage()
+    {
         StartCoroutine(NamedMonsterTimer());
+    }
+
+    public void StartGainedRecord()
+    {
+        StartCoroutine(GainedRecordTimer());
+    }
+
+    IEnumerator GainedRecordTimer()
+    {
+        while (_isPlaying)
+        {
+            yield return _time;
+            OnGainedRecordTimeChanged?.Invoke();
+        }
     }
 
     IEnumerator NamedMonsterTimer()
     {
         while (_monsterTime > 0)
         {
-            yield return new WaitForSeconds(1f);
-            _gainedRecordTime += 1;
+            yield return _time;
             _monsterTime -= 1;
-            OnTimeChanged?.Invoke(_monsterTime);
+            OnNamedMonsterTimeChanged?.Invoke(_monsterTime);
         }
     }
 }
