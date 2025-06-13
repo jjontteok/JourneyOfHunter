@@ -16,9 +16,9 @@ MonoBehaviour:
   skillDescription: "\uC804\uBC29\uC73C\uB85C \uBE60\uB974\uAC8C \uB3CC\uC9C4\uD558\uBA70
     \uC801\uC5D0\uAC8C \uB300\uBBF8\uC9C0\uB97C \uC90D\uB2C8\uB2E4"
   skillIcon: {fileID: 21300000, guid: db54fb2c544d94546bb013a1b2072749, type: 3}
-  coolTime: 5
+  coolTime: 3
   durationTime: 0.6
-  targetDistance: 10
+  targetDistance: 7
   damage: 10
   speed: 100
   angle: 0
