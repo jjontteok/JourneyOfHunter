@@ -13,6 +13,7 @@ public class PopupUIManager : Singleton<PopupUIManager>, IEventSubscriber, IDeac
     private GameObject _panelInventory;
     private GameObject _panelSkillInventory;
     private GameObject _panelGainedRecord;
+    private GameObject _panelStageInfo;
 
     public Button ButtonEnterDungeon;
 
@@ -27,17 +28,15 @@ public class PopupUIManager : Singleton<PopupUIManager>, IEventSubscriber, IDeac
     protected override void Initialize()
     {
         _canvasPopupUI = Instantiate(ObjectManager.Instance.PopupCanvas);
+
         _panelEnterDungeon = Instantiate(ObjectManager.Instance.PopupPanel, _canvasPopupUI.transform);
         _panelStatus = Instantiate(ObjectManager.Instance.PopupStatusPanel, _canvasPopupUI.transform);
         _panelInventory = Instantiate(ObjectManager.Instance.PopupInventoryPanel, _canvasPopupUI.transform);
         _panelSkillInventory = Instantiate(ObjectManager.Instance.PopupSkillInventory, _canvasPopupUI.transform);
         _panelGainedRecord = Instantiate(ObjectManager.Instance.PopupGainedRecordPanel, _canvasPopupUI.transform);
-        ButtonEnterDungeon = _panelEnterDungeon.GetComponentInChildren<Button>();
+        _panelStageInfo = Instantiate(ObjectManager.Instance.PopupStageInfoPanel, _canvasPopupUI.transform);
 
-        _panelStatus.SetActive(false);
-        _panelInventory.SetActive(false);
-        _panelSkillInventory.SetActive(false);
-        _panelGainedRecord.SetActive(false);
+        ButtonEnterDungeon = _panelEnterDungeon.GetComponentInChildren<Button>();
     }
     #endregion
 
@@ -46,6 +45,9 @@ public class PopupUIManager : Singleton<PopupUIManager>, IEventSubscriber, IDeac
     public void Subscribe()
     {
         ButtonEnterDungeon.onClick.AddListener(OnDungeonEnter);
+        DungeonManager.Instance.OnDungeonEnter += ActivateStageInfoPanel;
+        DungeonManager.Instance.OnDungeonExit += DeactivateStageInfoPanel;
+        //DungeonManager.Instance.OnSpawnableNamedMonster += 
     }
     #endregion
 
@@ -53,6 +55,11 @@ public class PopupUIManager : Singleton<PopupUIManager>, IEventSubscriber, IDeac
     public void Deactivate()
     {
         _panelEnterDungeon.SetActive(false);
+        _panelStatus.SetActive(false);
+        _panelInventory.SetActive(false);
+        _panelSkillInventory.SetActive(false);
+        _panelGainedRecord.SetActive(false);
+        _panelStageInfo.SetActive(false);
     }
     #endregion
 
@@ -88,8 +95,18 @@ public class PopupUIManager : Singleton<PopupUIManager>, IEventSubscriber, IDeac
         _panelGainedRecord.SetActive(true);
     }
 
+    public void ActivateStageInfoPanel()
+    {
+        _panelStageInfo.SetActive(true);
+    }
+
     public void UpdateGainedRecord(Define.GoodsType type, float amount)
     {
         _panelGainedRecord.GetComponent<UI_GainRecord>().SetGoods(type, amount);
+    }
+
+    private void DeactivateStageInfoPanel()
+    {
+        _panelStageInfo?.SetActive(false);
     }
 }

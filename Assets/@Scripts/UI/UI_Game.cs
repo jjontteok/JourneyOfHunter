@@ -11,6 +11,7 @@ public class UI_Game : MonoBehaviour
     [SerializeField] Button _statusButton;
     [SerializeField] Button _inventoryButton;
     [SerializeField] Button _gainedGoodsButton;
+    [SerializeField] Button _createDungeonPortalButton;
     [SerializeField] TMP_Text _silverCoinText;
     [SerializeField] TMP_Text _gemText;
     [SerializeField] Toggle _autoToggle;
@@ -40,6 +41,7 @@ public class UI_Game : MonoBehaviour
 
     void Initialize()
     {
+        ReleaseEvent();
         TimeManager.Instance.OnGainedRecordTimeChanged += UpdateGainedGoodsTime;
         TimeManager.Instance.OnNamedMonsterTimeChanged += UpdateNamedMonsterTime;
         MonsterController.OnMonsterDead += GainGoods;
@@ -49,6 +51,7 @@ public class UI_Game : MonoBehaviour
         _statusButton.onClick.AddListener(OnStatusButtonClick);
         _inventoryButton.onClick.AddListener(OnInventoryButtonClick);
         _gainedGoodsButton.onClick.AddListener(OnGainedGoodsButtonClick);
+        _createDungeonPortalButton.onClick.AddListener(OnCreateDungeonButtonClick);
         _silverCoinText.text = _inventoryData.silverCoin.ToString();
         _autoToggle.onValueChanged.AddListener(OnAutoToggleClick);
         _inventoryButton.onClick.AddListener(OnInventoryButtonClick);
@@ -58,7 +61,7 @@ public class UI_Game : MonoBehaviour
         player.OnAutoOff += OnAutoToggleOff;
     }
 
-    private void OnDisable()
+    private void ReleaseEvent()
     {
         TimeManager.Instance.OnGainedRecordTimeChanged -= UpdateGainedGoodsTime;
         TimeManager.Instance.OnNamedMonsterTimeChanged -= UpdateNamedMonsterTime;
@@ -156,6 +159,14 @@ public class UI_Game : MonoBehaviour
     {
         PopupUIManager.Instance.ActivateGainedRecordPanel(Define.GoodsType.None, 0);
     }
+
+    void OnCreateDungeonButtonClick()
+    {
+        DungeonManager.Instance.CreateDungeon();
+        DungeonManager.Instance.OnDungeonExit += () => { _createDungeonPortalButton.gameObject.SetActive(true); };
+        _createDungeonPortalButton.gameObject.SetActive(false);
+    }
+
     void OnAutoToggleClick(bool flag)
     {
         Debug.Log($"Auto: {flag}");

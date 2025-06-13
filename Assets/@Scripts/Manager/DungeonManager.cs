@@ -4,33 +4,29 @@ using extension;
 using System.Collections;
 using System.Collections.Generic;
 
-// 스테이지 정보 구조체...
-// 스테이지 정보를 불러온다 어떻게? 
-public struct StageInfo
-{
-    public int StageCount;
-    public int ClearCount;
-
-    public string NormalMonsterName;
-    public string NamedMonsterName;
-}
-
 public class DungeonManager : Singleton<DungeonManager>, IEventSubscriber, IDeactivateObject
 {
     #region DungeonObject
     private GameObject _dungeonWallFront;
     private GameObject _dungeonWallBack;
-    private GameObject _dungeonPortal;
+    private GameObject _dungeonEnterPortal;
+    private GameObject _dungeonExitPortal;
     private GameObject _monsterGate;
 
-    private DungeonPortalController _portalController;
+    private DungeonPortalController _portalEnterController;
+    private DungeonPortalController _portalExitController;
     #endregion
 
     #region StageInfo
     private Dictionary<string, StageInfo> _stages;
     private StageInfo _currentStage;    
 
-    private static int s_deathMonsterCount = 0;
+    private int _deathMonsterCount = 0;
+    private bool _isOnSpawnableInvoked = false;
+    #endregion
+
+    #region Variables
+    private bool _isChallenge = false;
     #endregion
 
     #region Property
@@ -42,13 +38,27 @@ public class DungeonManager : Singleton<DungeonManager>, IEventSubscriber, IDeac
     {
         get { return _dungeonWallBack; }
     }
-    public GameObject DungeonPortal
+    public GameObject DungeonEnterPortal
     { 
-        get { return _dungeonPortal; } 
+        get { return _dungeonEnterPortal; } 
+    }
+    public GameObject DungeonExitPortal
+    {
+        get { return _dungeonExitPortal; }
     }
     public GameObject MonsterGateList
     {
         get { return _monsterGate; }
+    }
+    public bool IsChallenge
+    {
+        get { return _isChallenge; }
+        set 
+        {
+            if (value == true)
+                OnSpawnNamedMonster?.Invoke();
+            _isChallenge = value;
+        }
     }
     #endregion
 
@@ -58,6 +68,7 @@ public class DungeonManager : Singleton<DungeonManager>, IEventSubscriber, IDeac
     public Action OnDungeonFail;
     public Action OnDungeonExit;
 
+    public Action<float, float> OnNormalMonsterDead;
     public Action OnSpawnableNamedMonster;
     public Action OnSpawnNamedMonster;
     #endregion
@@ -67,11 +78,13 @@ public class DungeonManager : Singleton<DungeonManager>, IEventSubscriber, IDeac
     {
         _dungeonWallFront = Instantiate(ObjectManager.Instance.DungeonWallResource);
         _dungeonWallBack = Instantiate(ObjectManager.Instance.DungeonWallResource);
-        _dungeonPortal = Instantiate(ObjectManager.Instance.DungeonPortalResource);
+        _dungeonEnterPortal = Instantiate(ObjectManager.Instance.DungeonPortalResource);
+        _dungeonExitPortal = Instantiate(ObjectManager.Instance.DungeonPortalResource);
 
         _monsterGate = Instantiate(ObjectManager.Instance.MonsterGateResource, Define.SpawnSpot5 + Vector3.up *11 , Quaternion.Euler(-135,0,0));
 
-        _portalController = _dungeonPortal.GetComponent<DungeonPortalController>();
+        _portalEnterController = _dungeonEnterPortal.GetComponent<DungeonPortalController>();
+        _portalExitController = _dungeonExitPortal.GetComponent<DungeonPortalController>();
 
         _stages = new Dictionary<string, StageInfo>();
     }
@@ -80,12 +93,19 @@ public class DungeonManager : Singleton<DungeonManager>, IEventSubscriber, IDeac
     #region IEventSubscriber
     public void Subscribe()
     {
-        //PopupUIManager.Instance.OnButtonDungeonEnterClick += EnterDungeon;
-        _portalController.OnPotalEnter += EnterDungeon;
-        _portalController.OnPotalClose += SetWallUp;
+        PopupUIManager.Instance.OnButtonDungeonEnterClick += EnterDungeon;
+
+        _portalEnterController.OnPotalEnter += EnterDungeon;
+        _portalEnterController.OnPotalClose += SetWallUp;
+
+        _portalExitController.OnPotalEnter += SetWallDown;
+        _portalExitController.OnPotalClose += ExitDungeon;
 
         NormalMonsterController.s_OnNormalMonsterDie += CountMonsterDeath;
-        NamedMonsterController.s_OnNamedMonsterDie += SetClearPortalOn;
+        NamedMonsterController.s_OnNamedMonsterDie += ClearDungeon;
+
+        OnSpawnNamedMonster += SetMonsterGateOff;
+        OnSpawnNamedMonster += SetNormalMonsterOff;
     }
     #endregion
 
@@ -94,38 +114,65 @@ public class DungeonManager : Singleton<DungeonManager>, IEventSubscriber, IDeac
     {
         DungeonWallFront.SetActive(false);
         DungeonWallBack.SetActive(false);
-        DungeonPortal.SetActive(false);
+        DungeonEnterPortal.SetActive(false);
+        DungeonExitPortal.SetActive(false);
         _monsterGate.SetActive(false);
-
-        SetDungeon();
     }
     #endregion
 
-    // * 던전 생성 메서드
-    private void SetDungeon()
+    // * 스테이지 정보 로드
+    private void SetStageInfo()
     {
+
+    }
+
+    // * 던전 생성 메서드
+    public void CreateDungeon()
+    {
+        SetStageInfo();
         DungeonWallFront.SetActive(true);
         DungeonWallFront.transform.position = Define.DungeonEnterSpot;
         DungeonWallBack.SetActive(true);
         DungeonWallBack.transform.position = Define.DungeonExitSpot;
-        DungeonPortal.SetActive(true);
-        DungeonPortal.transform.position = Define.DungeonEnterPortalSpot;
+        DungeonEnterPortal.SetActive(true);
+        DungeonEnterPortal.transform.position = Define.DungeonEnterPortalSpot;
+    }
+
+    // * 던전 폐쇄 메서드
+    private void DestroyDungeon()
+    {
+
     }
 
     // * 포탈 입장 액션 구독 메서드
     //- 던전 입장 기능
     private void EnterDungeon()
     {
+        _isOnSpawnableInvoked = false;
+        _deathMonsterCount = 0;
         SetWallDown();
         SetMonsterGateOn();
         OnDungeonEnter?.Invoke();
     }
 
+    // * 네임드 몬스터 사망 액션 구독 메서드
+    //- 던전 클리어 후처리
+    private void ClearDungeon()
+    {
+        OnDungeonClear?.Invoke();
+        SetClearPortalOn();
+    }
+
+    private void ExitDungeon()
+    {
+        OnDungeonExit?.Invoke();
+    }
+
     // * 던전 오브젝트 관리 메서드
     private void SetClearPortalOn()
     {
-        _dungeonPortal.SetActive(true);
-        _dungeonPortal.transform.position = Define.DungeonExitPortalSpot;
+        _dungeonExitPortal.SetActive(true);
+        _dungeonExitPortal.transform.position = Define.DungeonExitPortalSpot;
     }
     private void SetWallDown()
     {
@@ -140,14 +187,30 @@ public class DungeonManager : Singleton<DungeonManager>, IEventSubscriber, IDeac
     {
         _monsterGate.SetActive(true);
     }
+    private void SetMonsterGateOff()
+    {
+        _monsterGate.GetComponent<MonsterGateController>().StartDestroyGate();
+    }
+    private void SetNormalMonsterOff()
+    {
+        List<GameObject> normalMonsterPool = PoolManager.Instance.PoolList["Demon"];
+        for (int i =0; i< normalMonsterPool.Count; i++)
+        {
+            normalMonsterPool[i].SetActive(false);
+        }
+    }
 
     // * 던전 몬스터 관리 메서드
     private void CountMonsterDeath()
     {
-        s_deathMonsterCount++;
-        if(s_deathMonsterCount >= _currentStage.ClearCount)
+        _deathMonsterCount++;
+        Debug.Log("몬스터 사망 : " + _deathMonsterCount);
+        OnNormalMonsterDead?.Invoke(_deathMonsterCount, 20);
+
+        if(_deathMonsterCount >= 20 && !_isOnSpawnableInvoked)
         {
-            OnSpawnableNamedMonster?.Invoke();
+            _isOnSpawnableInvoked = true;
+            OnSpawnableNamedMonster?.Invoke(); //도전 버튼 활성화해야함
         }
     }
 }

@@ -21,18 +21,17 @@ public class CutSceneController : MonoBehaviour
         _playableDirector = GetComponent<PlayableDirector>();
         _playableDirector.stopped += FinishCutScene;
         _mainCamera = Camera.main;
-    }
 
-    private void Start()
-    {
         _monsterAppearEffect = Instantiate(_monsterAppearEffectPrefab);
         _monsterAppearEffect.SetActive(false);
     }
 
     public void PlayCutScene()
     {
-        GameObject monster = GameObject.FindGameObjectWithTag(Define.MonsterTag);
-        _monsterAppearEffect.transform.position = monster.transform.position;
+        //GameObject monster = GameObject.FindGameObjectWithTag(Define.MonsterTag);
+        GameObject player = GameObject.Find("Player");
+        player.transform.position = gameObject.transform.position;
+        _monsterAppearEffect.transform.position = Define.NamedMonsterSpawnSpot - Vector3.up*3;
         _monsterAppearEffect.SetActive(true);
         _virtualCamera.SetActive(true);
         _playableDirector.Play();
@@ -40,7 +39,7 @@ public class CutSceneController : MonoBehaviour
 
     void FinishCutScene(PlayableDirector pd)
     {
-        Destroy(_monsterAppearEffect);
+        _monsterAppearEffect?.SetActive(false);
         _virtualCamera.SetActive(false);
         _mainCamera.transform.rotation = Quaternion.Euler(new Vector3(14, 0, 0));
     }

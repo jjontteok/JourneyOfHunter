@@ -1,12 +1,13 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+// * 새벽, 낮, 저녁, 밤
 public class EnvironmentManager : Singleton<EnvironmentManager>, IEventSubscriber
 {
     private List<Material> _skyBoxList;
     private Material _currentSkyBox;
 
-    private Light _currentLight;
+    [SerializeField] private Light _currentLight;
 
     protected override void Initialize()
     {
@@ -22,7 +23,7 @@ public class EnvironmentManager : Singleton<EnvironmentManager>, IEventSubscribe
     #region IEventSubscriber
     public void Subscribe()
     {
-        throw new System.NotImplementedException();
+        //DungeonManager.Instance.OnDungeonEnter += FromDayToSunset;
     }
     #endregion
 
@@ -33,7 +34,7 @@ public class EnvironmentManager : Singleton<EnvironmentManager>, IEventSubscribe
 
     void RotateSkyBox()
     {
-        _currentSkyBox.SetFloat("_Rotation", (Time.time * 5.0f) % 360);
+        _currentSkyBox.SetFloat("_Rotation", (Time.time * 2.0f) % 360);
     }
 
     // 낮 -> 일몰
@@ -41,7 +42,8 @@ public class EnvironmentManager : Singleton<EnvironmentManager>, IEventSubscribe
     void FromDayToSunset()
     {
         Color targetColor = new Color(0.3f, 0.3f, 0.3f, 1);
-        _currentLight.color = Color.Lerp(_currentLight.color, targetColor, Time.deltaTime * 0.1f);
+        _currentLight.color = targetColor;
+        //_currentLight.color = Color.Lerp(_currentLight.color, targetColor, Time.deltaTime * 0.1f);
     }
 
     void FromSunsetToNight()

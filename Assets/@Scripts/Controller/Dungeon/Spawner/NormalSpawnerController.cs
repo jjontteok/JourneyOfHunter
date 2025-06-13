@@ -11,6 +11,8 @@ public class NormalSpawnerController : MonoBehaviour
     private WaitForSeconds _spawnInterval;  // 스폰 간격
     private float _monsterInterval = 3f;
 
+    private Coroutine _spawnCoroutine;
+
     public List<Vector3> SpawnPosList
     {
         get { return _spawnPosList; }
@@ -43,13 +45,13 @@ public class NormalSpawnerController : MonoBehaviour
         _monsterName = monsterName;
         _spawnInterval = new WaitForSeconds(spawnInterval);
         _monsterInterval = monsterInterval;
-        StartCoroutine(StartSpawn());
+        _spawnCoroutine = StartCoroutine(StartSpawn());
     }
 
     // 스포너 해제
     public void SetSpawnerOff()
     {
-        StopCoroutine(StartSpawn());
+        StopCoroutine(_spawnCoroutine);
     }
 
     IEnumerator StartSpawn()

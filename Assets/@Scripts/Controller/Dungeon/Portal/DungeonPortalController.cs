@@ -12,6 +12,8 @@ public class DungeonPortalController : MonoBehaviour
 
     private BoxCollider _boxCollider;
 
+    public bool IsEnterPortal;
+
     private void Awake()
     {
         Initialize();
