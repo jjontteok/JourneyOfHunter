@@ -49,16 +49,16 @@ public class PopupUIManager : Singleton<PopupUIManager>, IEventSubscriber, IDeac
     }
     #endregion
 
-    void OnDisable()
-    {
-        //임시 방편
-        TimeManager.Instance.OnGainedRecordTimeChanged -= UpdateGainedRecordTime;
-        _popupPanel.GetComponent<PopupUI_Panel>().OnPopupPanelClicked -= DeactivatePopup;
-        _panelStatus.GetComponent<PopupUI_Status>().OnExitButtonClicked -= DeactivatePopup;
-        _panelInventory.GetComponent<PopupUI_Inventory>().OnExitButtonClicked -= DeactivatePopup;
-        _panelSkillInventory.GetComponent<PopupUI_SkillInventory>().OnExitButtonClicked -= DeactivatePopup;
-        _panelGainedRecord.GetComponent<PopupUI_GainRecord>().OnExitButtonClicked -= DeactivatePopup;
-    }
+    //void OnDisable()
+    //{
+    //    //임시 방편
+    //    TimeManager.Instance.OnGainedRecordTimeChanged -= UpdateGainedRecordTime;
+    //    _popupPanel.GetComponent<PopupUI_Panel>().OnPopupPanelClicked -= DeactivatePopup;
+    //    _panelStatus.GetComponent<PopupUI_Status>().OnExitButtonClicked -= DeactivatePopup;
+    //    _panelInventory.GetComponent<PopupUI_Inventory>().OnExitButtonClicked -= DeactivatePopup;
+    //    _panelSkillInventory.GetComponent<PopupUI_SkillInventory>().OnExitButtonClicked -= DeactivatePopup;
+    //    _panelGainedRecord.GetComponent<PopupUI_GainRecord>().OnExitButtonClicked -= DeactivatePopup;
+    //}
 
     #region IDeactivate
     public void Deactivate()

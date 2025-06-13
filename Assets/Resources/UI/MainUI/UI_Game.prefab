@@ -1214,7 +1214,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6904256297442344165}
   - component: {fileID: 875855336719146054}
-  - component: {fileID: 1336339059330633003}
+  - component: {fileID: 7699930597355868314}
   m_Layer: 5
   m_Name: Background
   m_TagString: Untagged
@@ -1250,7 +1250,7 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1731468910533020233}
   m_CullTransparentMesh: 1
---- !u!114 &1336339059330633003
+--- !u!114 &7699930597355868314
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -1259,11 +1259,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 1731468910533020233}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5f7201a12d95ffc409449d95f23cf332, type: 3}
+  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0, g: 0, b: 0, a: 0.972549}
+  m_Color: {r: 0, g: 0, b: 0, a: 0.9647059}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -4067,7 +4067,7 @@ MonoBehaviour:
     m_SelectedTrigger: Selected
     m_DisabledTrigger: Disabled
   m_Interactable: 1
-  m_TargetGraphic: {fileID: 1336339059330633003}
+  m_TargetGraphic: {fileID: 0}
   toggleTransition: 0
   graphic: {fileID: 2033691433256518202}
   m_Group: {fileID: 0}
