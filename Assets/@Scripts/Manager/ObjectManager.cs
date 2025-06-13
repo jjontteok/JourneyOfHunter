@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using static extension.Extension;
 
@@ -16,6 +17,7 @@ public class ObjectManager : Singleton<ObjectManager>
     private Dictionary<string, GameObject> _playerSkillResourceList;
     private Dictionary<string, GameObject> _playerSkillHitEffectResourceList;
     private Dictionary<string, GameObject> _damageTextResourceList;
+    private Dictionary<string, Material> _skyBoxResourceList;
 
     // * GameObject : 인게임 오브젝트
     private GameObject _playerResource;
@@ -40,6 +42,7 @@ public class ObjectManager : Singleton<ObjectManager>
 
     // * CutScene
     private GameObject _goblinKingCutScene;
+    
 
     // * 프로퍼티
     public Dictionary<string, GameObject> NormalMonsterResourceList 
@@ -103,6 +106,16 @@ public class ObjectManager : Singleton<ObjectManager>
             if (NullCheck(_damageTextResourceList))
                 return null;
             return _damageTextResourceList;
+        }
+    }
+
+    public Dictionary<string, Material> SkyBoxResourceList
+    {
+        get
+        {
+            if (NullCheck(_skyBoxResourceList))
+                return null;
+            return _skyBoxResourceList;
         }
     }
 
@@ -287,6 +300,7 @@ public class ObjectManager : Singleton<ObjectManager>
         _playerSkillResourceList = new Dictionary<string, GameObject>();
         _playerSkillHitEffectResourceList = new Dictionary<string, GameObject>();
         _damageTextResourceList = new Dictionary<string, GameObject>();
+        _skyBoxResourceList = new Dictionary<string, Material>();
     }
     #endregion
 
@@ -299,6 +313,7 @@ public class ObjectManager : Singleton<ObjectManager>
         SkillResourceLoad();
         MonsterResourceLoad();
         DamageTextResourceLoad();
+        SkyBoxResourceLoad();
         UIResourceLoad();
         PopupUIResourceLoad();
         PlayerVitalResourceLoad();
@@ -356,6 +371,18 @@ public class ObjectManager : Singleton<ObjectManager>
         else
         {
             Debug.Log("Can't Load because of DamageText list is null");
+        }
+    }
+
+    private void SkyBoxResourceLoad()
+    {
+        if (!NullCheck(_skyBoxResourceList))
+        {
+            Resources.LoadAll<Material>(Define.SkyBoxPath).ToList(_skyBoxResourceList);
+        }
+        else
+        {
+            Debug.Log("Can't Load because of skybox list is null");
         }
     }
 

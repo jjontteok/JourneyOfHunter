@@ -35,9 +35,11 @@ public class GameManager : Singleton<GameManager>
 
         DamageTextManager.Instance.CreateManager();
 
-        EnvironmentManager.Instance.CreateManager();
-
         SkillManager.Instance.CreateManager();
+
+        TimeManager.Instance.CreateManager();
+
+        EnvironmentManager.Instance.CreateManager();
     }
 
     // * 이벤트 구독 메서드
@@ -47,6 +49,7 @@ public class GameManager : Singleton<GameManager>
         PopupUIManager.Instance.Subscribe();
         DamageTextManager.Instance.Subscribe();
         SpawnManager.Instance.Subscribe();
+        EnvironmentManager.Instance.Subscribe();
     }
 
     // * 오브젝트 비활성화 메서드

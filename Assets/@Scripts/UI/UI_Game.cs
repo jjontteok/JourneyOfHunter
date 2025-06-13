@@ -48,9 +48,9 @@ public class UI_Game : MonoBehaviour
 
     private void OnDisable()
     {
-        MonsterController.OnMonsterDead -= GainGoods;
-        _inventoryData.OnValueChanged -= UpdateGoods;
-        _playerVitalCanvas.SetActive(false);
+        //MonsterController.OnMonsterDead -= GainGoods;
+        //_inventoryData.OnValueChanged -= UpdateGoods;
+        //_playerVitalCanvas.SetActive(false);
     }
 
     private void Start()
