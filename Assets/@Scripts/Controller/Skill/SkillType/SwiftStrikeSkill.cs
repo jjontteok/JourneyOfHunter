@@ -5,12 +5,14 @@ public class SwiftStrikeSkill : RotationTargetSkill, ICharacterMovingSkill
 {
     Vector3 _originPos;
     Vector3 _fixedDirection;
+    Rigidbody _playerRigidbody;
 
     public event Action<float> OnSkillActivated;
 
     public override void Initialize(Status status)
     {
         base.Initialize(status);
+        _playerRigidbody = _playerController.GetComponent<Rigidbody>();
     }
 
     public override bool ActivateSkill(Vector3 pos)
@@ -32,7 +34,8 @@ public class SwiftStrikeSkill : RotationTargetSkill, ICharacterMovingSkill
     {
         if (Vector3.Distance(_coll.transform.position, _originPos) < _skillData.targetDistance)
         {
-            _playerController.transform.Translate(_fixedDirection * _skillData.speed * Time.deltaTime, Space.World);
+            //_playerController.transform.Translate(_fixedDirection * _skillData.speed * Time.deltaTime, Space.World);
+            _playerRigidbody.MovePosition(_playerController.transform.position + _fixedDirection * _skillData.speed * Time.deltaTime);
             _coll.transform.position = _playerController.transform.position;
         }
     }

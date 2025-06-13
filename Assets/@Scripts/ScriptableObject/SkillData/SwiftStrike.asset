@@ -18,9 +18,9 @@ MonoBehaviour:
   skillIcon: {fileID: 21300000, guid: db54fb2c544d94546bb013a1b2072749, type: 3}
   coolTime: 5
   durationTime: 0.6
-  targetDistance: 20
+  targetDistance: 10
   damage: 10
-  speed: 40
+  speed: 100
   angle: 0
   MP: 10
   connectedSkillPrefab: {fileID: 0}

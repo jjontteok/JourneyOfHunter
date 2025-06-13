@@ -18,6 +18,8 @@ public class SkillSystem : MonoBehaviour
     PlayerController _player;
 
     bool _isAuto;
+    bool _isSkillInterval;
+    const float _skillInterval = 0.5f;
 
     public bool IsAuto
     {
@@ -122,7 +124,7 @@ public class SkillSystem : MonoBehaviour
                     _activeSkillSlotList.Add(slot);
                     SkillManager.Instance.SubscribeEvents(slot, _activeSkillSlotList.Count - 1);
                 }
-                // 슬롯리스드 꽉 찼으면 실행 x
+                // 슬롯리스트 꽉 찼으면 실행 x
                 else
                 {
                     Debug.Log("Slot list is already full!!!");
@@ -135,7 +137,6 @@ public class SkillSystem : MonoBehaviour
                 SkillManager.Instance.SubscribeEvents(slot, idx);
             }
             slot.SetSkill(data);
-            //GetShortestSkillDistance();
         }
     }
 
@@ -148,7 +149,6 @@ public class SkillSystem : MonoBehaviour
             return;
         }
         slot.DestroySkillSlot();
-        //Invoke("GetShortestSkillDistance", Time.deltaTime);
     }
 
     public float GetShortestSkillDistance()

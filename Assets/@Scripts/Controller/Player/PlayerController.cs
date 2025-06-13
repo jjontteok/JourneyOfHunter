@@ -20,7 +20,7 @@ public class PlayerController : MonoBehaviour, IDamageable
     float _hp;
     float _shortestSkillDistance;   //자동일 때, 이동 멈추는 범위
     bool _isAuto;                   //자동 여부
-    bool _isAutoMoving;             //자동일 때, 타겟 없을 시 다음 스테이지 이동 여부
+    [SerializeField] bool _isAutoMoving;             //자동일 때, 타겟 없을 시 다음 스테이지 이동 여부
     bool _tmpAuto;                  //질풍참 사용 시 auto 여부 저장용으로 쓰임
 
     bool _isKeyBoard;
@@ -41,6 +41,7 @@ public class PlayerController : MonoBehaviour, IDamageable
             if (!value)
             {
                 _target = null;
+                _isAutoMoving = false;
             }
             _isAuto = value;
             _skillSystem.IsAuto = value;
@@ -56,6 +57,7 @@ public class PlayerController : MonoBehaviour, IDamageable
             if (IsAuto && value)
             {
                 IsAuto = false;
+                _isAutoMoving = false;
                 OnAutoOff?.Invoke();
             }
             _isKeyBoard = value;
@@ -71,6 +73,7 @@ public class PlayerController : MonoBehaviour, IDamageable
             if (IsAuto && value)
             {
                 IsAuto = false;
+                _isAutoMoving = false;
                 OnAutoOff?.Invoke();
             }
             _isJoyStick = value;
@@ -334,8 +337,13 @@ public class PlayerController : MonoBehaviour, IDamageable
 
     void SetPlayerCollision(bool flag)
     {
-        _rigidbody.isKinematic = !flag;
-        _collider.isTrigger = !flag;
+        //if (flag)
+        //{
+        //    ClampYPosition();
+        //}
+        //_rigidbody.isKinematic = !flag;
+        Physics.IgnoreLayerCollision(LayerMask.NameToLayer(Define.PlayerTag), LayerMask.NameToLayer(Define.MonsterTag),!flag);
+        //_collider.isTrigger = !flag;
     }
 
     IEnumerator CoSetPlayerCollision(float duration)
@@ -347,7 +355,7 @@ public class PlayerController : MonoBehaviour, IDamageable
         SetPlayerCollision(true);
         IsAuto = _tmpAuto;
 
-        ClampYPosition();
+        //ClampYPosition();
     }
 
     public void ProcessPlayerCollision(float duration)
