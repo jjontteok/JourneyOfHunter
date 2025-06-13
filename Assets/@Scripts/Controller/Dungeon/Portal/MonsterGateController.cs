@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 
 public class MonsterGateController : MonoBehaviour
@@ -7,15 +8,36 @@ public class MonsterGateController : MonoBehaviour
     private void OnEnable()
     {
         transform.localScale = new Vector3(0.01f, 0.01f, 0.01f);
+        StartCoroutine(CreateGate());
     }
 
-    private void Update()
+    IEnumerator CreateGate()
     {
-        CreateGate();
+        Vector3 targetScale = new Vector3(8, 8, 8);
+        while (true)
+        {
+            yield return null;
+            transform.localScale = Vector3.Lerp(transform.localScale, targetScale, Time.deltaTime * 0.5f);
+            if (Vector3.Distance(transform.localScale, targetScale) <= 1f)
+                break;
+        }
     }
 
-    void CreateGate()
+    public void StartDestroyGate()
     {
-        transform.localScale = Vector3.Lerp(transform.localScale, new Vector3(8, 8, 8), Time.timeScale * 0.1f);
+        StartCoroutine(DestroyGate());
+    }
+
+    IEnumerator DestroyGate()
+    {
+        Vector3 targetScale = new Vector3(0.01f, 0.01f, 0.01f);
+        while(true)
+        {
+            yield return null;
+            transform.localScale = Vector3.Lerp(transform.localScale, targetScale, Time.deltaTime * 1f);
+            if(Vector3.Distance(transform.localScale, targetScale) <= 1f)
+                break;
+        }
+        gameObject.SetActive(false);
     }
 }

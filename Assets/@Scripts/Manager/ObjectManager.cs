@@ -37,6 +37,9 @@ public class ObjectManager : Singleton<ObjectManager>
     private GameObject _popupInventoryPanel;
     private GameObject _popupSkillInventory;
     private GameObject _popupGainedRecordPanel;
+    private GameObject _popupStageInfoPanel;
+    private GameObject _popupNamedMonsterInfoPanel;
+
     private GameObject _playerVitalCanvas;
     private GameObject _playerVitalResource;
 
@@ -224,7 +227,6 @@ public class ObjectManager : Singleton<ObjectManager>
             return _popupStatusPanel;
         }
     }
-
     public GameObject PopupInventoryPanel
     {
         get
@@ -234,7 +236,6 @@ public class ObjectManager : Singleton<ObjectManager>
             return _popupInventoryPanel;
         }
     }
-
     public GameObject PopupSkillInventory
     {
         get
@@ -244,7 +245,6 @@ public class ObjectManager : Singleton<ObjectManager>
             return _popupSkillInventory;
         }
     }
-
     public GameObject PopupGainedRecordPanel
     {
         get
@@ -254,6 +254,26 @@ public class ObjectManager : Singleton<ObjectManager>
                 return null;
             }
             return _popupGainedRecordPanel;
+        }
+    }
+    public GameObject PopupStageInfoPanel
+    {
+        get
+        {
+            if (NullCheck(_popupStageInfoPanel))
+            {
+                return null;
+            }
+            return _popupStageInfoPanel;
+        }
+    }
+    public GameObject PopupNamedMonsterInfoPanel
+    {
+        get
+        {
+            if (NullCheck(_popupNamedMonsterInfoPanel))
+                return null;
+            return _popupNamedMonsterInfoPanel;
         }
     }
 
@@ -404,6 +424,8 @@ public class ObjectManager : Singleton<ObjectManager>
         _popupInventoryPanel = Resources.Load<GameObject>(Define.PopupInventoryPanelPath);
         _popupSkillInventory = Resources.Load<GameObject>(Define.PopupSkillInventoryPath);
         _popupGainedRecordPanel = Resources.Load<GameObject>(Define.PopupGainedRecordPanelPath);
+        _popupStageInfoPanel = Resources.Load<GameObject>(Define.PopupStageInfoPanelPath);
+        _popupNamedMonsterInfoPanel = Resources.Load<GameObject>(Define.PopupNamedMonsterInfoPanelPath);
     }
 
     private void PlayerVitalResourceLoad()

@@ -8,6 +8,11 @@ public class PoolManager : Singleton<PoolManager>
     // 오브젝트 풀링 관리 변수
     Dictionary<string, GameObject> _parentObjectList;
 
+    public Dictionary<string, List<GameObject>> PoolList
+    {
+        get { return _poolList; }
+    }
+
     protected override void Initialize()
     {
         base.Initialize();

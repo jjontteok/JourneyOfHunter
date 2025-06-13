@@ -37,6 +37,9 @@ public class GameManager : Singleton<GameManager>
 
         SkillManager.Instance.CreateManager();
 
+        StageManager.Instance.CreateManager();
+
+        //CutSceneManager.Instance.CreateManager();
         TimeManager.Instance.CreateManager();
 
         EnvironmentManager.Instance.CreateManager();
@@ -49,6 +52,9 @@ public class GameManager : Singleton<GameManager>
         PopupUIManager.Instance.Subscribe();
         DamageTextManager.Instance.Subscribe();
         SpawnManager.Instance.Subscribe();
+        DamageTextManager.Instance.Subscribe();
+        StageManager.Instance.Subscribe();
+        //CutSceneManager.Instance.Subscribe();
         EnvironmentManager.Instance.Subscribe();
     }
 
@@ -59,6 +65,7 @@ public class GameManager : Singleton<GameManager>
         PopupUIManager.Instance.Deactivate();
         SpawnManager.Instance.Deactivate();
         DamageTextManager.Instance.Deactivate();
+        //CutSceneManager.Instance.Deactivate();
     }
     
     private void Settings()

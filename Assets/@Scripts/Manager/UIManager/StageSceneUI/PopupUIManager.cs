@@ -15,6 +15,7 @@ public class PopupUIManager : Singleton<PopupUIManager>, IEventSubscriber, IDeac
     private GameObject _panelInventory;
     private GameObject _panelSkillInventory;
     private GameObject _panelGainedRecord;
+    private GameObject _panelStageInfo;
 
     private GameObject _activePopup;
     public GameObject PanelGainedRecord
@@ -40,6 +41,9 @@ public class PopupUIManager : Singleton<PopupUIManager>, IEventSubscriber, IDeac
     #region IEventSubscriber
     public void Subscribe()
     {
+        DungeonManager.Instance.OnDungeonEnter += ActivateStageInfoPanel;
+        DungeonManager.Instance.OnDungeonExit += DeactivateStageInfoPanel;
+        //DungeonManager.Instance.OnSpawnableNamedMonster += 
         TimeManager.Instance.OnGainedRecordTimeChanged += UpdateGainedRecordTime;
         _popupPanel.GetComponent<PopupUI_Panel>().OnPopupPanelClicked += DeactivatePopup;
         _panelStatus.GetComponent<PopupUI_Status>().OnExitButtonClicked += DeactivatePopup;
@@ -64,7 +68,7 @@ public class PopupUIManager : Singleton<PopupUIManager>, IEventSubscriber, IDeac
     public void Deactivate()
     {
         _popupPanel.SetActive(false);
-        //_popupStageInfo.SetActive(false);
+        _popupStageInfo.SetActive(false);
         _popupNamedMonsterInfo.SetActive(false);
         _panelStatus.SetActive(false);
         _panelInventory.SetActive(false);
@@ -131,6 +135,11 @@ public class PopupUIManager : Singleton<PopupUIManager>, IEventSubscriber, IDeac
     }
     #endregion
 
+    public void ActivateStageInfoPanel()
+    {
+        _panelStageInfo.SetActive(true);
+    }
+
     public void UpdateGainedRecord(Define.GoodsType type, float amount)
     {
         _panelGainedRecord.GetComponent<PopupUI_GainRecord>().SetGoods(type, amount);
@@ -146,5 +155,10 @@ public class PopupUIManager : Singleton<PopupUIManager>, IEventSubscriber, IDeac
         _activePopup.SetActive(false);
         _popupPanel.SetActive(false);
         _activePopup = null;
+    }
+
+    private void DeactivateStageInfoPanel()
+    {
+        _panelStageInfo?.SetActive(false);
     }
 }
