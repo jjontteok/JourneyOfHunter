@@ -35,6 +35,7 @@ public class Define : MonoBehaviour
     public const string DungeonWallPath = "Dungeon/Object/DungeonWall";
     public const string DungeonPortalPath = "Dungeon/Object/DungeonPortal";
     public const string MonsterGatePath = "Dungeon/Object/HellGate";
+    public const string SkyBoxPath = "SkyBox";
     public const string DamageTextPath = "UI/DamageText";
     public const string PlayerVitalCanvasPath = "UI/PlayerVital/UI_Vital";
     public const string PlayerVitalPath = "UI/PlayerVital/PlayerVital";
@@ -112,6 +113,14 @@ public class Define : MonoBehaviour
         Exp,
         EnhancementStone,
         Gem,
+    }
+
+    public enum TimeOfDayType
+    {
+        Morning,
+        Noon,
+        Evening,
+        Night,
     }
     #endregion
 
