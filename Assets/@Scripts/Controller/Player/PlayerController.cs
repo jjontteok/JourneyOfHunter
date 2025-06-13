@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -6,6 +7,7 @@ public class PlayerController : MonoBehaviour, IDamageable
 {
     Animator _animator;
     Rigidbody _rigidbody;
+    Collider _collider;
     SkillSystem _skillSystem;
     [SerializeField] Transform _target;
 
@@ -18,13 +20,18 @@ public class PlayerController : MonoBehaviour, IDamageable
     float _hp;
     float _shortestSkillDistance;   //자동일 때, 이동 멈추는 범위
     bool _isAuto;                   //자동 여부
-    bool _isAutoMoving;             //자동일 때, 타겟 없을 시 다음 스테이지 이동 여부
+    [SerializeField] bool _isAutoMoving;             //자동일 때, 타겟 없을 시 다음 스테이지 이동 여부
+    bool _tmpAuto;                  //질풍참 사용 시 auto 여부 저장용으로 쓰임
 
     bool _isKeyBoard;
     bool _isJoyStick;
 
     public Action OnAutoOff;
 
+    [SerializeField] PlayerData _playerData;
+    [SerializeField] float _speed;
+
+    #region Properties
     public bool IsAuto
     {
         get { return _isAuto; }
@@ -34,6 +41,7 @@ public class PlayerController : MonoBehaviour, IDamageable
             if (!value)
             {
                 _target = null;
+                _isAutoMoving = false;
             }
             _isAuto = value;
             _skillSystem.IsAuto = value;
@@ -49,6 +57,7 @@ public class PlayerController : MonoBehaviour, IDamageable
             if (IsAuto && value)
             {
                 IsAuto = false;
+                _isAutoMoving = false;
                 OnAutoOff?.Invoke();
             }
             _isKeyBoard = value;
@@ -64,6 +73,7 @@ public class PlayerController : MonoBehaviour, IDamageable
             if (IsAuto && value)
             {
                 IsAuto = false;
+                _isAutoMoving = false;
                 OnAutoOff?.Invoke();
             }
             _isJoyStick = value;
@@ -72,18 +82,8 @@ public class PlayerController : MonoBehaviour, IDamageable
 
     public Transform Target { get { return _target; } }
 
-    [SerializeField] PlayerData _playerData;
-    [SerializeField] float _speed;
-
-
-    // 나영 : 수정
-    public PlayerData PlayerData { 
-        get { return _playerData; }
-        set 
-        { 
-            _playerData = value;
-        }
-    }
+    // 데이터는 getter만 되도록?
+    public PlayerData PlayerData { get { return _playerData; } }
 
     public float HP
     {
@@ -104,11 +104,7 @@ public class PlayerController : MonoBehaviour, IDamageable
             OnMPValueChanged?.Invoke(_mp, _playerData.MP);
         }
     }
-
-    void OnEnable()
-    {
-        
-    }
+    #endregion
 
     void Start()
     {
@@ -133,10 +129,11 @@ public class PlayerController : MonoBehaviour, IDamageable
         _mp = _playerData.MP;
         _animator = GetComponent<Animator>();
         _rigidbody = GetComponent<Rigidbody>();
+        _collider = GetComponent<Collider>() as CapsuleCollider;
 
         _skillSystem = GetComponent<SkillSystem>();
         _skillSystem.InitializeSkillSystem();
-        _skillSystem.BasicSkillSlot.Skill.GetComponent<TransformTargetSkill>().OnSkillSet += Rotate;
+        _skillSystem.BasicSkillSlot.Skill.GetComponent<IRotationSkill>().OnActivateSkill += Rotate;
 
         SkillManager.Instance.LockIconSlots(_playerData.UnlockedSkillSlotCount);
     }
@@ -221,6 +218,7 @@ public class PlayerController : MonoBehaviour, IDamageable
         else
         {
             _direction = _target.position - transform.position;
+            _direction.y = 0;
             _rigidbody.MovePosition(_rigidbody.position + _direction.normalized * _speed * Time.fixedDeltaTime);
 
 
@@ -249,6 +247,7 @@ public class PlayerController : MonoBehaviour, IDamageable
 
     public void Rotate(Vector3 direction)
     {
+        direction.y = transform.forward.y;
         transform.rotation = Quaternion.LookRotation(direction);
     }
 
@@ -300,6 +299,7 @@ public class PlayerController : MonoBehaviour, IDamageable
         if (_target == null || !_target.gameObject.activeSelf)
         {
             //쵸비상 몬스터 풀 어케 가져옴
+            //stage info에서 현재 스테이지의 몬스터 정보를 받아와서 이름으로 
             _target = Util.GetNearestTarget(transform.position, 100f)?.transform;
             if (_target == null)
             {
@@ -333,6 +333,43 @@ public class PlayerController : MonoBehaviour, IDamageable
     public void SetShortestSkillDistance(float distance)
     {
         _shortestSkillDistance = distance;
+    }
+
+    void SetPlayerCollision(bool flag)
+    {
+        //if (flag)
+        //{
+        //    ClampYPosition();
+        //}
+        //_rigidbody.isKinematic = !flag;
+        Physics.IgnoreLayerCollision(LayerMask.NameToLayer(Define.PlayerTag), LayerMask.NameToLayer(Define.MonsterTag),!flag);
+        //_collider.isTrigger = !flag;
+    }
+
+    IEnumerator CoSetPlayerCollision(float duration)
+    {
+        _tmpAuto = IsAuto;
+        SetPlayerCollision(false);
+        IsAuto = false;
+        yield return new WaitForSeconds(duration);
+        SetPlayerCollision(true);
+        IsAuto = _tmpAuto;
+
+        //ClampYPosition();
+    }
+
+    public void ProcessPlayerCollision(float duration)
+    {
+        StartCoroutine(CoSetPlayerCollision(duration));
+    }
+
+    void ClampYPosition()
+    {
+        RaycastHit hit;
+        Physics.Raycast(transform.position + Vector3.up * 5, Vector3.down, out hit, 10f);
+        Vector3 pos = transform.position; 
+           pos.y = hit.point.y;
+        transform.position = pos;
     }
     #endregion
 

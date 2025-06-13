@@ -10,7 +10,7 @@ public class NamedMonsterController : MonsterController
 {
     public static Action s_OnNamedMonsterDie;
 
-    [SerializeField] private float _closeAttackLimit = 5f;
+    [SerializeField] private float _closeAttackLimit = 4f;
     [SerializeField] private bool _isMoveToOrigin;
     [SerializeField] private Vector3 _originPos;
     [SerializeField] private SkillData _bulletSkillData;
@@ -19,7 +19,7 @@ public class NamedMonsterController : MonsterController
 
     private MoveRangeController _moveRangeController;
 
-    private RigidbodyTargetSkill _bulletSkill;
+    private ActiveSkill _bulletSkill;
 
     public override void Initialize()
     {
@@ -41,7 +41,7 @@ public class NamedMonsterController : MonsterController
     private void Start()
     {
         _bulletSkill = Instantiate(ObjectManager.Instance.MonsterSkillResourceList[_bulletSkillData.skillName]).
-            GetComponent<RigidbodyTargetSkill>();
+            GetComponent<ActiveSkill>();
         _bulletSkill.Initialize(_monsterData);
         _bulletSkill.gameObject.SetActive(false);
     }
@@ -131,7 +131,8 @@ public class NamedMonsterController : MonsterController
     {
 
         _animator.SetTrigger(Define.LongAttack);
-        _bulletSkill.ActivateSkill(_target.transform, transform.position);
+        // offset = (0,0,3)
+        _bulletSkill.ActivateSkill(transform.position + Vector3.up * 3);
     }
 
 

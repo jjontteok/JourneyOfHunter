@@ -2,13 +2,13 @@ using UnityEngine;
 
 public class BuffSkill : Skill
 {
-    public override void ActivateSkill(Transform target, Vector3 pos = default)
+    public override bool ActivateSkill(Vector3 pos)
     {
-        throw new System.NotImplementedException();
+        return true;
     }
 
-    void Start()
+    public override void Initialize(Status status)
     {
-        
+        base.Initialize(status);
     }
 }

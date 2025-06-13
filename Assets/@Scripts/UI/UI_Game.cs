@@ -15,21 +15,12 @@ public class UI_Game : MonoBehaviour
     [SerializeField] TMP_Text _silverCoinText;
     [SerializeField] TMP_Text _gemText;
     [SerializeField] Toggle _autoToggle;
-    [SerializeField] TMP_Text _timeText;
     [SerializeField] PlayerInventoryData _inventoryData;
 
     private List<UI_PlayerVital> _playerVitalList; 
     private GameObject _playerVitalCanvas;
 
-    private int _minute;
-    private int _second;
-
     private int _currentPlayers;
-
-    int _silverCoin;
-    float _exp;
-    int _enhancementStone;
-    int _gem;
 
 
     private void Awake()
@@ -47,7 +38,6 @@ public class UI_Game : MonoBehaviour
         MonsterController.OnMonsterDead += GainGoods;
         _inventoryData.OnValueChanged += UpdateGoods;
 
-
         _statusButton.onClick.AddListener(OnStatusButtonClick);
         _inventoryButton.onClick.AddListener(OnInventoryButtonClick);
         _gainedGoodsButton.onClick.AddListener(OnGainedGoodsButtonClick);
@@ -63,10 +53,9 @@ public class UI_Game : MonoBehaviour
 
     private void ReleaseEvent()
     {
-        TimeManager.Instance.OnGainedRecordTimeChanged -= UpdateGainedGoodsTime;
-        TimeManager.Instance.OnNamedMonsterTimeChanged -= UpdateNamedMonsterTime;
-        MonsterController.OnMonsterDead -= GainGoods;
-        _inventoryData.OnValueChanged -= UpdateGoods;
+        //MonsterController.OnMonsterDead -= GainGoods;
+        //_inventoryData.OnValueChanged -= UpdateGoods;
+        //_playerVitalCanvas.SetActive(false);
     }
 
     private void Start()
@@ -88,18 +77,6 @@ public class UI_Game : MonoBehaviour
             uiPlayerVital.Initialize(players[i].transform);
             _playerVitalList.Add(uiPlayerVital);
         }
-    }
-
-    void UpdateGainedGoodsTime(float time)
-    {
-
-    }
-
-    void UpdateNamedMonsterTime(float time)
-    {
-        _minute = (int)time / 60;
-        _second = (int)time % 60;
-        _timeText.text = _minute.ToString("00") + " : " + _second.ToString("00");
     }
 
     //얘도 몬스터 처치 시 재화를 얼만큼 획득할지 정해야 한당
@@ -124,7 +101,6 @@ public class UI_Game : MonoBehaviour
             amount = 5;
         }
         _inventoryData.ModifyGoods(type, amount);
-
 
         PopupUIManager.Instance.UpdateGainedRecord(type, amount);
     }

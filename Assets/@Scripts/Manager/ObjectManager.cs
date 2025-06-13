@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using static extension.Extension;
 
@@ -16,6 +17,7 @@ public class ObjectManager : Singleton<ObjectManager>
     private Dictionary<string, GameObject> _playerSkillResourceList;
     private Dictionary<string, GameObject> _playerSkillHitEffectResourceList;
     private Dictionary<string, GameObject> _damageTextResourceList;
+    private Dictionary<string, Material> _skyBoxResourceList;
 
     // * GameObject : 인게임 오브젝트
     private GameObject _playerResource;
@@ -25,8 +27,12 @@ public class ObjectManager : Singleton<ObjectManager>
     private GameObject _monsterGateResource;
 
     // * UI Object
+    private GameObject _uiGame;
+
     private GameObject _popupCanvas;
     private GameObject _popupPanel;
+    private GameObject _popupStageInfo;
+    private GameObject _popupNamedMonsterInfo;
     private GameObject _popupStatusPanel;
     private GameObject _popupInventoryPanel;
     private GameObject _popupSkillInventory;
@@ -39,6 +45,7 @@ public class ObjectManager : Singleton<ObjectManager>
 
     // * CutScene
     private GameObject _goblinKingCutScene;
+    
 
     // * 프로퍼티
     public Dictionary<string, GameObject> NormalMonsterResourceList 
@@ -105,6 +112,16 @@ public class ObjectManager : Singleton<ObjectManager>
         }
     }
 
+    public Dictionary<string, Material> SkyBoxResourceList
+    {
+        get
+        {
+            if (NullCheck(_skyBoxResourceList))
+                return null;
+            return _skyBoxResourceList;
+        }
+    }
+
     public GameObject PlayerResource 
     { 
         get 
@@ -152,6 +169,16 @@ public class ObjectManager : Singleton<ObjectManager>
         }
     }
 
+    public GameObject UIGame
+    {
+        get
+        {
+            if (NullCheck(_uiGame))
+                return null;
+            return _uiGame;
+        }
+    }
+
     public GameObject PopupCanvas
     {
         get
@@ -170,6 +197,27 @@ public class ObjectManager : Singleton<ObjectManager>
             return _popupPanel;
         }
     }
+
+    public GameObject PopupStageInfo
+    {
+        get
+        {
+            if (NullCheck(_popupStageInfo))
+                return null;
+            return _popupStageInfo;
+        }
+    }
+
+    public GameObject PopupNamedMonsterInfo
+    {
+        get
+        {
+            if (NullCheck(_popupNamedMonsterInfo))
+                return null;
+            return _popupNamedMonsterInfo;
+        }
+    }
+
     public GameObject PopupStatusPanel
     {
         get
@@ -272,6 +320,7 @@ public class ObjectManager : Singleton<ObjectManager>
         _playerSkillResourceList = new Dictionary<string, GameObject>();
         _playerSkillHitEffectResourceList = new Dictionary<string, GameObject>();
         _damageTextResourceList = new Dictionary<string, GameObject>();
+        _skyBoxResourceList = new Dictionary<string, Material>();
     }
     #endregion
 
@@ -284,6 +333,8 @@ public class ObjectManager : Singleton<ObjectManager>
         SkillResourceLoad();
         MonsterResourceLoad();
         DamageTextResourceLoad();
+        SkyBoxResourceLoad();
+        UIResourceLoad();
         PopupUIResourceLoad();
         PlayerVitalResourceLoad();
         CutSceneResourceLoad();
@@ -342,11 +393,33 @@ public class ObjectManager : Singleton<ObjectManager>
             Debug.Log("Can't Load because of DamageText list is null");
         }
     }
+
+    private void SkyBoxResourceLoad()
+    {
+        if (!NullCheck(_skyBoxResourceList))
+        {
+            Resources.LoadAll<Material>(Define.SkyBoxPath).ToList(_skyBoxResourceList);
+        }
+        else
+        {
+            Debug.Log("Can't Load because of skybox list is null");
+        }
+    }
+
+    // * UI 리소스 로드 메서드
+    private void UIResourceLoad()
+    {
+        _uiGame = Resources.Load<GameObject>(Define.UIGamePath);
+    }
+
+
     // * 팝업 UI 리소스 로드 메서드
     private void PopupUIResourceLoad()
     {
         _popupCanvas = Resources.Load<GameObject>(Define.PopupUICanvasPath);
-        _popupPanel = Resources.Load<GameObject>(Define.PopupEnterDungeonPanelPath);
+        _popupPanel = Resources.Load<GameObject>(Define.PopupPanelPath);
+        _popupStageInfo = Resources.Load<GameObject>(Define.PopupStageInfoPath);
+        _popupNamedMonsterInfo = Resources.Load<GameObject>(Define.PopupNamedMonsterInfoPath);
         _popupStatusPanel = Resources.Load<GameObject>(Define.PopupStatusPanelPath);
         _popupInventoryPanel = Resources.Load<GameObject>(Define.PopupInventoryPanelPath);
         _popupSkillInventory = Resources.Load<GameObject>(Define.PopupSkillInventoryPath);

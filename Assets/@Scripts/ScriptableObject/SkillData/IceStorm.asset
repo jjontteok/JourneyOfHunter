@@ -21,10 +21,9 @@ MonoBehaviour:
   targetDistance: 6
   damage: 10
   speed: 0
-  force: 0
   angle: 0
   MP: 5
   connectedSkillPrefab: {fileID: 0}
   hitEffectPrefab: {fileID: 5112403345868107898, guid: 76bd86df99b0e3946bef8e28b75c9925, type: 3}
-  skillType: 3
   targetExistence: 0
+  isPlayerSkill: 1

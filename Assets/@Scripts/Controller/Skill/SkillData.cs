@@ -16,8 +16,7 @@ public class SkillData : ScriptableObject
     public float MP;
     public GameObject connectedSkillPrefab;
     public GameObject hitEffectPrefab;
-    //public Define.SkillType skillType;
     public bool targetExistence;
-    //public Define.MotionType motionType;
-    //public Define.HandlerType handlerType;
+    public bool isPlayerSkill;
+    public Vector3 offset;
 }

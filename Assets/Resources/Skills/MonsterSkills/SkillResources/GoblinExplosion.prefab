@@ -24456,7 +24456,7 @@ GameObject:
   - component: {fileID: 7166558239045390213}
   - component: {fileID: 6433196516210635648}
   - component: {fileID: 6441277341324222483}
-  - component: {fileID: 2585410766863617647}
+  - component: {fileID: 926163129602398183}
   m_Layer: 9
   m_Name: HitBox
   m_TagString: Untagged
@@ -29385,7 +29385,7 @@ SphereCollider:
   serializedVersion: 3
   m_Radius: 1.8
   m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &2585410766863617647
+--- !u!114 &926163129602398183
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -29394,7 +29394,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 7678075489310253341}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5114ada6216e0b04eb187bcacb8d26b0, type: 3}
+  m_Script: {fileID: 11500000, guid: 1ace4fd8c699657488b09aad6130efcd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &8542387255021087166
