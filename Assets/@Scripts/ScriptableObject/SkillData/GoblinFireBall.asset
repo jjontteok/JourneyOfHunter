@@ -16,12 +16,14 @@ MonoBehaviour:
   skillDescription: 
   skillIcon: {fileID: 0}
   coolTime: 3
-  durationTime: 2
-  targetDistance: 0
+  durationTime: 10
+  targetDistance: 1000
   damage: 10
-  speed: 0
+  speed: 15
   angle: 0
   MP: 0
   connectedSkillPrefab: {fileID: 4428409035099419300, guid: d62c02e58afcf98468f911fbf4c2c68b, type: 3}
   hitEffectPrefab: {fileID: 2504214343621411470, guid: 49fa13df8c065f844adbd5114be9b29e, type: 3}
   targetExistence: 1
+  isPlayerSkill: 0
+  offset: {x: 0, y: 0, z: 0}

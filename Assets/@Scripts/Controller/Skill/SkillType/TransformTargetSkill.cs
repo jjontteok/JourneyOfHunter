@@ -1,36 +1,60 @@
-using System;
 using UnityEngine;
 
-public class TransformTargetSkill : ActiveSkill
+public class TransformTargetSkill : ActiveSkill, ITargetSkill, IMovingSkill, IDirectionSkill
 {
-    PenetrationColliderController _coll;
-    public event Action<Vector3> OnSkillSet;
+    protected SkillColliderController _coll;
+    Transform _target;
+    protected Vector3 _direction;
+
+    public Vector3 Direction { get => _direction; }
 
     public override void Initialize(Status status)
     {
         base.Initialize(status);
-        _coll = GetComponentInChildren<PenetrationColliderController>();
-        _coll.SetColliderInfo(_skillData.damage, status, _skillData.connectedSkillPrefab, _skillData.hitEffectPrefab, _skillData.angle);
+        _coll = GetComponentInChildren<SkillColliderController>();
+        _coll.SetColliderInfo(status, _skillData);
     }
 
-    public override void ActivateSkill(Transform target, Vector3 pos = default)
+    // 방향 설정 + 타겟 설정
+    public override bool ActivateSkill(Vector3 pos)
     {
-        base.ActivateSkill(target, pos);
-        _coll.transform.localPosition = Vector3.zero;
+        if (IsTargetExist(pos, SkillData.isPlayerSkill))
+        {
+            base.ActivateSkill(pos);
+            _coll.transform.localPosition = Vector3.zero;
+            SetDirection();
 
-        //타겟 방향으로 스킬 방향 설정
-        //스킬이 땅으로 박히지 않도록 높이 맞춰주기
-        _direction = (target.position + Vector3.up - transform.position).normalized;
-        transform.rotation = Quaternion.LookRotation(_direction);
+            return true;
+        }
 
-        OnSkillSet?.Invoke(_direction);
+        return false;
     }
 
     private void Update()
+    {
+        MoveSkillCollider();
+    }
+
+    public virtual bool IsTargetExist(Vector3 pos, bool isPlayerSkill)
+    {
+        _target = Util.GetNearestTarget(pos, _skillData.targetDistance, isPlayerSkill)?.transform;
+        //Debug.Log($"Current Target: {_target.name}\npostion:{_target.position}");
+        return _target != null;
+    }
+
+    public virtual void MoveSkillCollider()
     {
         if (Vector3.Distance(transform.position, _coll.transform.position) < _skillData.targetDistance)
         {
             _coll.transform.Translate(_direction * _skillData.speed * Time.deltaTime, Space.World);
         }
+    }
+
+    public void SetDirection()
+    {
+        //타겟 방향으로 스킬 방향 설정
+        //스킬이 땅으로 박히지 않도록 높이 맞춰주기
+        _direction = (_target.position + Vector3.up - transform.position).normalized;
+        transform.rotation = Quaternion.LookRotation(_direction);
     }
 }

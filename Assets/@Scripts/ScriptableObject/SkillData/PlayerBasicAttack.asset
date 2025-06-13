@@ -15,7 +15,7 @@ MonoBehaviour:
   skillName: PlayerBasicAttack
   skillDescription: 
   skillIcon: {fileID: 0}
-  coolTime: 1.5
+  coolTime: 0.75
   durationTime: 0.4
   targetDistance: 3
   damage: 3
@@ -25,3 +25,5 @@ MonoBehaviour:
   connectedSkillPrefab: {fileID: 0}
   hitEffectPrefab: {fileID: 4553287630450876385, guid: f5f7cfb700e6b3e419c0e156473bee3e, type: 3}
   targetExistence: 1
+  isPlayerSkill: 1
+  offset: {x: 0, y: 0, z: 0}

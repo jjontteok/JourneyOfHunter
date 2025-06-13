@@ -1,6 +1,6 @@
 using UnityEngine;
 
-// 충돌 시 사라져야 하는 스킬 오브젝트의 콜라이더 - RigidbodyTargetSkill
+// 충돌 시 사라져야 하는 스킬의 콜라이더
 public class CrashColliderController : SkillColliderController
 {
     protected override void InstantiateHitEffect(Collider other)

@@ -17,14 +17,14 @@ MonoBehaviour:
     \uADFC\uAC70\uB9AC \uACF5\uACA9\uC744 \uD569\uB2C8\uB2E4."
   skillIcon: {fileID: 21300000, guid: b2199029c8a0ad0499a0c73a889dbefd, type: 3}
   coolTime: 3
-  durationTime: 0.9
+  durationTime: 0.3
   targetDistance: 6
   damage: 5
   speed: 0
-  force: 0
   angle: 180
   MP: 3
   connectedSkillPrefab: {fileID: 0}
   hitEffectPrefab: {fileID: 6823302871133167919, guid: cd974dacb07f86b4ebe991d1822d05ea, type: 3}
-  skillType: 4
   targetExistence: 0
+  isPlayerSkill: 1
+  offset: {x: 0, y: 0, z: 0}
