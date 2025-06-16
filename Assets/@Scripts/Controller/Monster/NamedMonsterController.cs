@@ -61,6 +61,7 @@ public class NamedMonsterController : MonsterController
         if (!_isMoveToOrigin)
         {
             Vector3 dir = _target.transform.position - transform.position;
+            dir.y = 0;
             transform.rotation = Quaternion.LookRotation(dir, Vector3.up);
         }
     }

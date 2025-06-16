@@ -12,7 +12,7 @@ public class GravityColliderController : DamageOverTimeColliderController, IGrav
     public void ProcessGravityEffect(Collider other)
     {
         // 틱 대미지에 끌어당기는 효과도 추가
-        other.GetComponent<Rigidbody>().AddExplosionForce(-1000f, transform.position, _worldRadius);
+        other.GetComponent<Rigidbody>().AddExplosionForce(-700f, transform.position, _worldRadius);
     }
 
     public override void TickDamage(Collider other)
