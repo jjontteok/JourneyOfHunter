@@ -6,6 +6,12 @@ public class MeteorSkill : AreaTargetSkill, IDelayedDamageSkill
     [SerializeField] GameObject _meteorObject;
     [SerializeField] float _delay;
 
+    public override void Initialize(Status status)
+    {
+        base.Initialize(status);
+        _coll.OnOffHitEffect(false);
+    }
+
     public IEnumerator CoActivateDelayedCollider()
     {
         // 딜레이 타임 후 콜라이더 활성화 -> 대미지
@@ -18,8 +24,9 @@ public class MeteorSkill : AreaTargetSkill, IDelayedDamageSkill
         effect.name = $"{_skillData.hitEffectPrefab.name} effect";
 
         RaycastHit ray;
-        Physics.Raycast(Vector3.up * 5, Vector3.down, out ray, 5f);
+        Physics.Raycast(transform.position + Vector3.up * 5, Vector3.down, out ray, SkillData.offset.y);
         effect.transform.position = ray.point;
+        Debug.Log(ray.point);
         Destroy(effect, 0.5f);
     }
 

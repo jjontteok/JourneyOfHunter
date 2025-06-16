@@ -26,6 +26,7 @@ public class PlayerController : MonoBehaviour, IDamageable
     bool _isJoyStick;
 
     public Action OnAutoOff;
+    public Action OnAutoTeleport;
 
     [SerializeField] PlayerData _playerData;
     [SerializeField] float _speed;
@@ -36,14 +37,22 @@ public class PlayerController : MonoBehaviour, IDamageable
         get { return _isAuto; }
         set
         {
+            _isAuto = value;
+            _skillSystem.IsAuto = value;
             // 자동 모드 꺼지면 타겟도 초기화
             if (!value)
             {
                 _target = null;
                 _isAutoMoving = false;
             }
-            _isAuto = value;
-            _skillSystem.IsAuto = value;
+            // 던전 생성 버튼이 활성화되어있는데 자동 모드 켜질때
+            else
+            {
+                if(!DungeonManager.Instance.IsDungeonExist&&StageManager.Instance.StageActionStatus==Define.StageActionStatus.NotChallenge)
+                {
+                    OnAutoTeleport?.Invoke();
+                }
+            }
         }
     }
 
@@ -145,6 +154,7 @@ public class PlayerController : MonoBehaviour, IDamageable
             Vector3 pos = transform.position;
             pos.z = 5;
             transform.position = pos;
+            OnAutoTeleport?.Invoke();
         }
 
         // 자동 모드일 때
@@ -212,7 +222,11 @@ public class PlayerController : MonoBehaviour, IDamageable
         //if(_target.name== "TargetPoint")
         //    Debug.Log()
         //타겟과 거리가 가까워지면 정지
-        if (Vector3.Distance(transform.position, _target.position) <= distance)
+        Vector3 targetPos = _target.position;
+        targetPos.y = 0;
+        Vector3 playerPos = transform.position;
+        playerPos.y = 0;
+        if (Vector3.Distance(targetPos, playerPos) <= distance)
         {
             _direction = Vector3.zero;
             _rigidbody.linearVelocity = new Vector3(0, _rigidbody.linearVelocity.y, 0);

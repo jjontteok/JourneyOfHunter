@@ -53,7 +53,7 @@ public class SkillSystem : MonoBehaviour
         if (IsAuto)
         {
             // 기본 공격할 타이밍인지 체크
-            if (!SkillManager.Instance.IsSkillInterval && IsBasicAttackPossible())
+            if (IsBasicAttackPossible())
             {
                 _basicSkillSlot.ActivateSlotSkill();
             }
@@ -77,8 +77,9 @@ public class SkillSystem : MonoBehaviour
 
     bool IsBasicAttackPossible()
     {
+        // skill interval이거나
         // 모든 스킬이 쿨타임 중이거나 마나 부족일 때
-        return _activeSkillSlotList.All(slot => !slot || !slot.IsActivatePossible || _player.MP < slot.SkillData.MP);
+        return SkillManager.Instance.IsSkillInterval || _activeSkillSlotList.All(slot => !slot || !slot.IsActivatePossible || _player.MP < slot.SkillData.MP);
     }
 
     public void AddSkill(SkillData data)
