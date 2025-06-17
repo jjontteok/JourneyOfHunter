@@ -116,7 +116,7 @@ public class EnvironmentManager : Singleton<EnvironmentManager>, IEventSubscribe
         {
             { Morning, 0},
             { Noon, 60},
-            { Evening, 120 },
+            { Evening, 110 },
             { Night, 60 }
         };
 
