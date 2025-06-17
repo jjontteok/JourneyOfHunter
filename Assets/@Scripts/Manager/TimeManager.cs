@@ -1,10 +1,9 @@
-
 using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class TimeManager : Singleton<TimeManager>
+public class TimeManager : Singleton<TimeManager>, IEventSubscriber
 {
     public event Action<float> OnNamedMonsterTimeChanged;
     public event Action OnGainedRecordTimeChanged;
@@ -34,13 +33,20 @@ public class TimeManager : Singleton<TimeManager>
 
     private void OnEnable()
     {
-        _monsterTime = 180;
         StartGainedRecord();
         StartDay();
     }
 
+    #region IEventSubscriber
+    public void Subscribe()
+    {
+        DungeonManager.Instance.OnSpawnNamedMonster += StartNamedMonsterStage;
+    }
+    #endregion
+
     public void StartNamedMonsterStage()
     {
+        _monsterTime = 100;
         StartCoroutine(NamedMonsterTimer());
     }
 
@@ -87,6 +93,8 @@ public class TimeManager : Singleton<TimeManager>
         {
             yield return _time;
             _monsterTime -= 1;
+            if(_monsterTime <= 0)
+                break;
             OnNamedMonsterTimeChanged?.Invoke(_monsterTime);
         }
     }

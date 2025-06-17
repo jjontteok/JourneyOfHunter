@@ -10,7 +10,8 @@ public struct MonsterStatus
     public string Description;          // 설명
     public float Atk;                   // 공격력
     public float Def;                   // 방어력
-    public float HP;                    // 체력
+    public float MaxHP;                 // 최대 체력
+    public float CurrentHP;             // 현재 체력
     public float Speed;                 // 이동 속도
     public float AttackSpeed;           // 공격 속도
     public float MoveRange;             // 이동 범위
@@ -22,7 +23,8 @@ public struct MonsterStatus
         Description = monsterData.Description;
         Atk = monsterData.Atk;
         Def = monsterData.Def;
-        HP = monsterData.HP;
+        MaxHP = monsterData.HP;
+        CurrentHP = monsterData.HP;
         Speed = monsterData.Speed;
         AttackSpeed = monsterData.AttackSpeed;
         MoveRange = monsterData.MoveRange;
@@ -59,6 +61,11 @@ public abstract class MonsterController : MonoBehaviour, IDamageable
     private void Start()
     {
         //Spawned();
+    }
+
+    protected virtual void OnEnable()
+    {
+        _runtimeData = new MonsterStatus(_monsterData);
     }
 
     // * 초기화 메서드
@@ -122,12 +129,12 @@ public abstract class MonsterController : MonoBehaviour, IDamageable
     }
 
     // * 방어력 적용 데미지 계산 메서드
-    public void GetDamaged(float damage)
+    public virtual void GetDamage(float damage)
     {
         float finalDamage = CalculateFinalDamage(damage, _runtimeData.Def);
-        _runtimeData.HP -= finalDamage;
+        _runtimeData.CurrentHP -= finalDamage;
         DamageTextEvent.Invoke(Util.GetDamageTextPosition(gameObject.GetComponent<Collider>()), finalDamage, false);
-        if (_runtimeData.HP <= 0)
+        if (_runtimeData.CurrentHP <= 0)
             Die();
     }
 

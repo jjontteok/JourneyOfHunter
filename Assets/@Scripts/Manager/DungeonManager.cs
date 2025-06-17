@@ -6,12 +6,13 @@ using System.Collections.Generic;
 
 public class DungeonManager : Singleton<DungeonManager>, IEventSubscriber, IDeactivateObject
 {
+    public Vector3 DungeonOffSet;
+
     #region DungeonObject
     private GameObject _dungeonWallFront;
     private GameObject _dungeonWallBack;
     private GameObject _dungeonEnterPortal;
     private GameObject _dungeonExitPortal;
-    private GameObject _monsterGate;
 
     private DungeonPortalController _portalEnterController;
     private DungeonPortalController _portalExitController;
@@ -46,10 +47,10 @@ public class DungeonManager : Singleton<DungeonManager>, IEventSubscriber, IDeac
     {
         get { return _dungeonExitPortal; }
     }
-    public GameObject MonsterGateList
-    {
-        get { return _monsterGate; }
-    }
+    //public GameObject MonsterGateList
+    //{
+    //    get { return _monsterGate; }
+    //}
     public bool IsChallenge
     {
         get { return _isChallenge; }
@@ -81,8 +82,6 @@ public class DungeonManager : Singleton<DungeonManager>, IEventSubscriber, IDeac
         _dungeonEnterPortal = Instantiate(ObjectManager.Instance.DungeonPortalResource);
         _dungeonExitPortal = Instantiate(ObjectManager.Instance.DungeonPortalResource);
 
-        _monsterGate = Instantiate(ObjectManager.Instance.MonsterGateResource, Define.SpawnSpot5 + Vector3.up *11 , Quaternion.Euler(-135,0,0));
-
         _portalEnterController = _dungeonEnterPortal.GetComponent<DungeonPortalController>();
         _portalExitController = _dungeonExitPortal.GetComponent<DungeonPortalController>();
 
@@ -102,7 +101,6 @@ public class DungeonManager : Singleton<DungeonManager>, IEventSubscriber, IDeac
         NormalMonsterController.s_OnNormalMonsterDie += CountMonsterDeath;
         NamedMonsterController.s_OnNamedMonsterDie += ClearDungeon;
 
-        OnSpawnNamedMonster += SetMonsterGateOff;
         OnSpawnNamedMonster += SetNormalMonsterOff;
     }
     #endregion
@@ -114,7 +112,6 @@ public class DungeonManager : Singleton<DungeonManager>, IEventSubscriber, IDeac
         DungeonWallBack.SetActive(false);
         DungeonEnterPortal.SetActive(false);
         DungeonExitPortal.SetActive(false);
-        _monsterGate.SetActive(false);
     }
     #endregion
 
@@ -127,13 +124,16 @@ public class DungeonManager : Singleton<DungeonManager>, IEventSubscriber, IDeac
     // * 던전 생성 메서드
     public void CreateDungeon()
     {
+        DungeonOffSet = new Vector3(0, 0, PlayerManager.Instance.Player.transform.position.z);
+
         SetStageInfo();
-        DungeonWallFront.SetActive(true);
-        DungeonWallFront.transform.position = Define.DungeonEnterSpot;
-        DungeonWallBack.SetActive(true);
-        DungeonWallBack.transform.position = Define.DungeonExitSpot;
+
         DungeonEnterPortal.SetActive(true);
-        DungeonEnterPortal.transform.position = Define.DungeonEnterPortalSpot;
+        DungeonEnterPortal.transform.position = Define.DungeonEnterPortalSpot + DungeonOffSet;
+        DungeonWallFront.SetActive(true);
+        DungeonWallFront.transform.position = Define.DungeonEnterSpot + DungeonOffSet;
+        DungeonWallBack.SetActive(true);
+        DungeonWallBack.transform.position = Define.DungeonExitSpot + DungeonOffSet;
     }
 
     // * 던전 폐쇄 메서드
@@ -149,7 +149,6 @@ public class DungeonManager : Singleton<DungeonManager>, IEventSubscriber, IDeac
         _isOnSpawnableInvoked = false;
         _deathMonsterCount = 0;
         SetWallDown();
-        SetMonsterGateOn();
         OnDungeonEnter?.Invoke();
     }
 
@@ -180,14 +179,6 @@ public class DungeonManager : Singleton<DungeonManager>, IEventSubscriber, IDeac
     private void SetWallUp()
     {
         _dungeonWallBack.SetActive(true);
-    }
-    private void SetMonsterGateOn()
-    {
-        _monsterGate.SetActive(true);
-    }
-    private void SetMonsterGateOff()
-    {
-        _monsterGate.GetComponent<MonsterGateController>().StartDestroyGate();
     }
     private void SetNormalMonsterOff()
     {

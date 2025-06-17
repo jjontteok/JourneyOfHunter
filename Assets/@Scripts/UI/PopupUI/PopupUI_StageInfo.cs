@@ -38,6 +38,8 @@ public class PopupUI_StageInfo : MonoBehaviour
     private void SetMonsterCountBar(float currentDeathCount, float clearDeathCount)
     {
         _monsterCountBarImage.fillAmount = currentDeathCount / clearDeathCount;
+        int stageProgress = (int)(currentDeathCount / clearDeathCount * 100);
+        _monsterCountText.text = $"{ (stageProgress >= 100 ? 100 : stageProgress) } %";
     }
 
     // * 버튼 클릭 이벤트 연결 메서드

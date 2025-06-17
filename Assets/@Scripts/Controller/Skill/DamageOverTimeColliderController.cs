@@ -39,6 +39,6 @@ public class DamageOverTimeColliderController : PenetrationColliderController, I
 
     public void TickDamage(Collider other)
     {
-        other.GetComponent<IDamageable>().GetDamaged(_damage);
+        other.GetComponent<IDamageable>().GetDamage(_damage);
     }
 }

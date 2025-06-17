@@ -233,7 +233,7 @@ public class PlayerController : MonoBehaviour, IDamageable
     {
         Vector3 newPos = _rigidbody.position;
         newPos.x = Mathf.Clamp(newPos.x, -23, 23);
-        newPos.z = Mathf.Clamp(newPos.z, 3, 115);
+        newPos.z = Mathf.Clamp(newPos.z, -100, 115);
         _rigidbody.position = newPos;
     }
 
@@ -375,7 +375,7 @@ public class PlayerController : MonoBehaviour, IDamageable
 
     #region IDamageable Methods
     // * 방어력 적용 데미지 계산 메서드
-    public void GetDamaged(float damage)
+    public void GetDamage(float damage)
     {
         float finalDamage = CalculateFinalDamage(damage, _playerData.Def);
         HP -= finalDamage;

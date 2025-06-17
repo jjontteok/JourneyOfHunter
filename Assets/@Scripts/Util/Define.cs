@@ -55,20 +55,20 @@ public class Define : MonoBehaviour
 
     #region DungeonSpots
     public static Vector3 FirstEnterSpot = new Vector3(0, 3, 0);
-    public static Vector3 DungeonEnterSpot = new Vector3(0, 5, 30);
-    public static Vector3 DungeonExitSpot = new Vector3(0, 5, 100);
-    public static Vector3 DungeonEnterPortalSpot = new Vector3(0, 2.5f, 29);
-    public static Vector3 DungeonExitPortalSpot = new Vector3(0, 2.5f, 99);
+    public static Vector3 DungeonEnterSpot = new Vector3(0, 5, -35);
+    public static Vector3 DungeonExitSpot = new Vector3(0, 5, 35);
+    public static Vector3 DungeonEnterPortalSpot = new Vector3(0, 2.5f, 5);
+    public static Vector3 DungeonExitPortalSpot = new Vector3(0, 2.5f, 34f);
     #endregion
 
     #region SpawnSpots
-    public static Vector3 SpawnSpot1 = new Vector3(-10, 7, 80);
-    public static Vector3 SpawnSpot2 = new Vector3(10, 7, 80);
-    public static Vector3 SpawnSpot3 = new Vector3(-5, 7, 80);
-    public static Vector3 SpawnSpot4 = new Vector3(5, 7, 80);
-    public static Vector3 SpawnSpot5 = new Vector3(0, 7, 80);
-    //public static Vector3 SpawnSpot6 = new Vector3(10, 7, 70);
-    public static Vector3 NamedMonsterSpawnSpot = new Vector3(0, 3, 80);
+    public static Vector3 SpawnSpot1 = new Vector3(-7, 7, 0);
+    public static Vector3 SpawnSpot2 = new Vector3(7, 7, 0);
+    public static Vector3 SpawnSpot3 = new Vector3(-7, 7, 20);
+    public static Vector3 SpawnSpot4 = new Vector3(7, 7, 20);
+    public static Vector3 SpawnSpot5 = new Vector3(-7, 7, -20);
+    public static Vector3 SpawnSpot6 = new Vector3(7, 7, -20);
+    public static Vector3 NamedMonsterSpawnSpot = new Vector3(0, 3, 30);
     #endregion
 
     #region Enum

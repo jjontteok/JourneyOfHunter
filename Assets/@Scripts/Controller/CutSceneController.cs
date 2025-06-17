@@ -24,6 +24,7 @@ public class CutSceneController : MonoBehaviour
 
         _monsterAppearEffect = Instantiate(_monsterAppearEffectPrefab);
         _monsterAppearEffect.SetActive(false);
+        //_virtualCamera.transform.position = GameObject.Find(Define.PlayerTag).transform.position;
     }
 
     public void PlayCutScene()

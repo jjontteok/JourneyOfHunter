@@ -139,6 +139,7 @@ public class UI_Game : MonoBehaviour
     void OnCreateDungeonButtonClick()
     {
         DungeonManager.Instance.CreateDungeon();
+        DungeonManager.Instance.OnDungeonExit -= () => { _createDungeonPortalButton.gameObject.SetActive(true); };
         DungeonManager.Instance.OnDungeonExit += () => { _createDungeonPortalButton.gameObject.SetActive(true); };
         _createDungeonPortalButton.gameObject.SetActive(false);
     }

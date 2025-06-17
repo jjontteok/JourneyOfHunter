@@ -85,7 +85,7 @@ public class EnvironmentManager : Singleton<EnvironmentManager>, IEventSubscribe
 
     void RotateSkyBox()
     {
-       _currentSkyBox.SetFloat("_Rotation", (Time.time * 5.0f) % 360);
+       _currentSkyBox.SetFloat("_Rotation", (Time.time * 0.5f) % 360);
     }
 
 
