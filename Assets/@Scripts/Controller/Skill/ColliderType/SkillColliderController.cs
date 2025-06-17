@@ -49,7 +49,7 @@ public class SkillColliderController : MonoBehaviour
     // 트리거 충돌 시 메서드
     protected virtual void ProcessTrigger(Collider other)
     {
-        other.GetComponent<IDamageable>().GetDamaged(_damage);
+        other.GetComponent<IDamageable>().GetDamage(_damage);
         InstantiateHitEffect(other);
         //ActivateConnectedSkill();
     }

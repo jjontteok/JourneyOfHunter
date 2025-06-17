@@ -42,7 +42,10 @@ public class PopupUIManager : Singleton<PopupUIManager>, IEventSubscriber, IDeac
     {
         DungeonManager.Instance.OnDungeonEnter += ActivateStageInfoPanel;
         DungeonManager.Instance.OnDungeonExit += DeactivateStageInfoPanel;
-        //DungeonManager.Instance.OnSpawnableNamedMonster += 
+        DungeonManager.Instance.OnSpawnNamedMonster += DeactivateStageInfoPanel;
+        DungeonManager.Instance.OnSpawnNamedMonster += ActivateNamedMonsterInfoPanel;
+        DungeonManager.Instance.OnDungeonClear += DeactivateNamedMonsterInfo;
+
         TimeManager.Instance.OnGainedRecordTimeChanged += UpdateGainedRecordTime;
         _popupPanel.GetComponent<PopupUI_Panel>().OnPopupPanelClicked += DeactivatePopup;
         _panelStatus.GetComponent<PopupUI_Status>().OnExitButtonClicked += DeactivatePopup;
@@ -82,16 +85,6 @@ public class PopupUIManager : Singleton<PopupUIManager>, IEventSubscriber, IDeac
         _popupPanel.SetActive(true);
     }
 
-    public void ActivateStageInfo()
-    {
-        _popupStageInfo.SetActive(true);
-    }
-
-    public void ActivateNamedMonsterInfo()
-    {
-        _popupNamedMonsterInfo.SetActive(true);
-    }
-
     public void ActivateStatusPanel()
     {
         ActivatePopupPanel();
@@ -120,35 +113,19 @@ public class PopupUIManager : Singleton<PopupUIManager>, IEventSubscriber, IDeac
         UpdateGainedRecord(type, amount);
         _panelGainedRecord.SetActive(true);
     }
-    #endregion
-
-    #region Deactivate UI
-    public void DeactivateStageInfo()
-    {
-        _popupStageInfo.SetActive(false);
-    }
-
-    public void DeactivateNamedMonsterInfo()
-    {
-        _popupNamedMonsterInfo.SetActive(false);
-    }
-    #endregion
 
     public void ActivateStageInfoPanel()
     {
         _popupStageInfo.SetActive(true);
     }
 
-    public void UpdateGainedRecord(Define.GoodsType type, float amount)
+    public void ActivateNamedMonsterInfoPanel()
     {
-        _panelGainedRecord.GetComponent<PopupUI_GainRecord>().SetGoods(type, amount);
+        _popupNamedMonsterInfo.SetActive(true);
     }
+    #endregion
 
-    public void UpdateGainedRecordTime()
-    {
-        _panelGainedRecord.GetComponent<PopupUI_GainRecord>().SetTime();
-    }
-
+    #region Deactivate UI
     void DeactivatePopup()
     {
         _activePopup.SetActive(false);
@@ -159,5 +136,21 @@ public class PopupUIManager : Singleton<PopupUIManager>, IEventSubscriber, IDeac
     private void DeactivateStageInfoPanel()
     {
         _popupStageInfo?.SetActive(false);
+    }
+
+    public void DeactivateNamedMonsterInfo()
+    {
+        _popupNamedMonsterInfo.SetActive(false);
+    }
+    #endregion
+
+    public void UpdateGainedRecord(Define.GoodsType type, float amount)
+    {
+        _panelGainedRecord.GetComponent<PopupUI_GainRecord>().SetGoods(type, amount);
+    }
+
+    public void UpdateGainedRecordTime()
+    {
+        _panelGainedRecord.GetComponent<PopupUI_GainRecord>().SetTime();
     }
 }

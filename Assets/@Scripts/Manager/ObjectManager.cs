@@ -473,6 +473,11 @@ public class ObjectManager : Singleton<ObjectManager>
             GameObject obj = Instantiate(DamageTextResourceList[name], spawnPos, Quaternion.identity);
             return obj;
         }
+        else if(type == typeof(MonsterGateController))
+        {
+            GameObject obj = Instantiate(MonsterGateResource, spawnPos, Quaternion.AngleAxis(-135f, Vector3.right));
+            return obj;
+        }
         return null;
     }
     #endregion

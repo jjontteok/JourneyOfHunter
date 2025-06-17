@@ -8,8 +8,8 @@ public class SpawnManager : Singleton<SpawnManager>, IEventSubscriber, IDeactiva
 {
     private NormalSpawnerController _normalSpawner;
     private NamedSpawnerController _namedSpawner;
-    [SerializeField] float _spawnInterval = 5f;
-    [SerializeField] float _monsterInterval = 4f;
+    [SerializeField] float _spawnInterval = 3f;
+    [SerializeField] float _monsterInterval = 2f;
 
     public NormalSpawnerController NormalSpawner
     {
@@ -19,6 +19,8 @@ public class SpawnManager : Singleton<SpawnManager>, IEventSubscriber, IDeactiva
     protected override void Initialize()
     {
         base.Initialize();
+        GenerateNormalSpawner();
+        GenerateNamedSpawner();
     }
 
     #region IEventSubscriber
@@ -27,31 +29,49 @@ public class SpawnManager : Singleton<SpawnManager>, IEventSubscriber, IDeactiva
         DungeonManager.Instance.OnDungeonEnter += SetNormalSpawnerOn;
         DungeonManager.Instance.OnSpawnNamedMonster += SetNormalSpawnerOff;
         DungeonManager.Instance.OnSpawnNamedMonster += SetNamedSpawnerOn;
+        DungeonManager.Instance.OnDungeonExit += SetNamedSpawnerOff;
     }
     #endregion
     #region IDeactivateObject
     public void Deactivate()
     {
-        //SetSpawnerOff();
+        _namedSpawner.gameObject.SetActive(false);
+        _normalSpawner.gameObject.SetActive(false);
     }
     #endregion
 
-    void SetNormalSpawnerOn()
+    void GenerateNormalSpawner()
     {
         _normalSpawner = new GameObject("NormalMonsterSpawner").GetOrAddComponent<NormalSpawnerController>();
-        _normalSpawner.SetSpawnerPos();
+    }
+    void GenerateNamedSpawner()
+    {
+        _namedSpawner = new GameObject("NamedMonsterSpawner").GetOrAddComponent<NamedSpawnerController>();
+    }
+
+    void SetNormalSpawnerOn()
+    {
+        _normalSpawner.gameObject.SetActive(true);
+        _normalSpawner.SetSpawnerPos(DungeonManager.Instance.DungeonOffSet);
         _normalSpawner.SetSpawnerOn("Demon", _spawnInterval, _monsterInterval);
     }
     
     void SetNormalSpawnerOff()
     {
+        _normalSpawner.gameObject.SetActive(false);
         _normalSpawner.SetSpawnerOff();
     }
 
     void SetNamedSpawnerOn()
     {
-        _namedSpawner = new GameObject("NamedMonsterSpawner").GetOrAddComponent<NamedSpawnerController>();
-        _namedSpawner.SetSpawnerPos();
+        _namedSpawner.gameObject.SetActive(true);
+        _namedSpawner.SetSpawnerPos(DungeonManager.Instance.DungeonOffSet);
         _namedSpawner.SetSpawnerOn("Goblin");
+    }
+
+    void SetNamedSpawnerOff()
+    {
+        _namedSpawner.gameObject.SetActive(false);
+        _namedSpawner.SetSpawnerOff();
     }
 }

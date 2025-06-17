@@ -6,9 +6,9 @@ public class NamedSpawnerController : MonoBehaviour
 
     private string _monsterName;            // 스폰 될 몬스터 이름
 
-    public void SetSpawnerPos()
+    public void SetSpawnerPos(Vector3 offset)
     {
-        _spawnPos = Define.NamedMonsterSpawnSpot;
+        _spawnPos = Define.NamedMonsterSpawnSpot + offset;
     }
 
     public void SetSpawnerOn(string monsterName)
@@ -20,5 +20,10 @@ public class NamedSpawnerController : MonoBehaviour
     private void SpawnNamedMonster()
     {
         PoolManager.Instance.GetObjectFromPool<NamedMonsterController>(_spawnPos, _monsterName);
+    }
+
+    public void SetSpawnerOff()
+    {
+
     }
 }

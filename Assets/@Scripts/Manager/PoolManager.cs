@@ -3,10 +3,12 @@ using UnityEngine;
 
 public class PoolManager : Singleton<PoolManager>
 {
+    // 풀링 개체 수 제한
+    private int _limitOfNormalMonsterCount = 80;
     // 오브젝트 풀링 리스트 (List의 탐색 시간을 낮춰보자)
-    Dictionary<string, List<GameObject>> _poolList;
+    private Dictionary<string, List<GameObject>> _poolList;
     // 오브젝트 풀링 관리 변수
-    Dictionary<string, GameObject> _parentObjectList;
+    private Dictionary<string, GameObject> _parentObjectList;
 
     public Dictionary<string, List<GameObject>> PoolList
     {
@@ -37,7 +39,10 @@ public class PoolManager : Singleton<PoolManager>
                     return _poolList[name][i];
                 }
             }
-            // 존재하지 않으므로 오브젝트 매니저의 Spawn 메서드로 동적 생성 및 풀 리스트 등록
+            // 존재하지 않을 때 일반 몬스터인지 검사 후 일반 몬스터는 개체 수 제한
+            if (_poolList[name][0].GetComponent<NormalMonsterController>() != null && _poolList[name].Count >= _limitOfNormalMonsterCount)
+                return null;
+            // 오브젝트 매니저의 Spawn 메서드로 동적 생성 및 풀 리스트 등록
             GameObject obj = ObjectManager.Instance.GetObject<T>(spawnPos, name);
             obj.transform.SetParent(_parentObjectList[name].transform, false);
             _poolList[name].Add(obj);
