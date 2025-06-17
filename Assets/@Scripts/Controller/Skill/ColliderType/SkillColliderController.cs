@@ -9,12 +9,14 @@ public class SkillColliderController : MonoBehaviour
 
     // 2차 스킬은 객체 생성해서 갖고 있어야함
     protected ActiveSkill _connectedSkill;
+    protected GameObject _hitEffect;
 
     public virtual void SetColliderInfo(Status status, SkillData skillData)
     {
         _skillData = skillData;
         _status = status;
         _damage = skillData.damage;
+        _hitEffect = skillData.hitEffectPrefab;
 
         if (skillData.connectedSkillPrefab != null)
         {
@@ -34,11 +36,14 @@ public class SkillColliderController : MonoBehaviour
 
     protected virtual void InstantiateHitEffect(Collider other)
     {
-        GameObject effect = Instantiate(_skillData.hitEffectPrefab);
-        effect.name = $"{_skillData.hitEffectPrefab.name} effect";
+        if (_hitEffect!=null)
+        {
+            GameObject effect = Instantiate(_hitEffect);
+            effect.name = $"{_hitEffect.name} effect";
 
-        effect.transform.position = Util.GetEffectPosition(other);
-        Destroy(effect, 0.5f);
+            effect.transform.position = Util.GetEffectPosition(other);
+            Destroy(effect, 0.5f);
+        }        
     }
 
     // 트리거 충돌 시 메서드
@@ -47,5 +52,10 @@ public class SkillColliderController : MonoBehaviour
         other.GetComponent<IDamageable>().GetDamaged(_damage);
         InstantiateHitEffect(other);
         //ActivateConnectedSkill();
+    }
+
+    public void OnOffHitEffect(bool flag)
+    {
+        _hitEffect = flag ? _skillData.hitEffectPrefab : null;
     }
 }

@@ -23,6 +23,7 @@ public class DungeonManager : Singleton<DungeonManager>, IEventSubscriber, IDeac
 
     private int _deathMonsterCount = 0;
     private bool _isOnSpawnableInvoked = false;
+    private bool _isDungeonExist = false;
     #endregion
 
     #region Variables
@@ -59,6 +60,12 @@ public class DungeonManager : Singleton<DungeonManager>, IEventSubscriber, IDeac
                 OnSpawnNamedMonster?.Invoke();
             _isChallenge = value;
         }
+    }
+
+    public bool IsDungeonExist 
+    { 
+        get { return _isDungeonExist; }
+        set { _isDungeonExist = value; } 
     }
     #endregion
 
@@ -104,6 +111,9 @@ public class DungeonManager : Singleton<DungeonManager>, IEventSubscriber, IDeac
 
         OnSpawnNamedMonster += SetMonsterGateOff;
         OnSpawnNamedMonster += SetNormalMonsterOff;
+
+        OnDungeonEnter += () => IsDungeonExist = true;
+        OnDungeonExit+= () => IsDungeonExist = false;
     }
     #endregion
 

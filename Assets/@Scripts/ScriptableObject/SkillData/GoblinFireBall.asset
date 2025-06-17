@@ -16,7 +16,7 @@ MonoBehaviour:
   skillDescription: 
   skillIcon: {fileID: 0}
   coolTime: 3
-  durationTime: 10
+  durationTime: 5
   targetDistance: 1000
   damage: 10
   speed: 15

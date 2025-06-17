@@ -757,7 +757,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &8738963844170026270
 RectTransform:
   m_ObjectHideFlags: 0
@@ -831,6 +831,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _skillIconImage: {fileID: 3748543109807587737}
   _skillCoolTimeImage: {fileID: 8456431483409617221}
+  _skillIntervalTimeImage: {fileID: 0}
   _lockImage: {fileID: 21300000, guid: 9b45df6f5d7b4514096000c44b6b4703, type: 3}
 --- !u!114 &1788160593322996597
 MonoBehaviour:
@@ -2562,7 +2563,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &2399293402058013258
 RectTransform:
   m_ObjectHideFlags: 0
@@ -2636,6 +2637,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _skillIconImage: {fileID: 3358263941201869513}
   _skillCoolTimeImage: {fileID: 1146256753371673931}
+  _skillIntervalTimeImage: {fileID: 0}
   _lockImage: {fileID: 21300000, guid: 9b45df6f5d7b4514096000c44b6b4703, type: 3}
 --- !u!114 &7992387339101570548
 MonoBehaviour:
@@ -2898,7 +2900,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &98448558397472358
 RectTransform:
   m_ObjectHideFlags: 0
@@ -2972,6 +2974,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _skillIconImage: {fileID: 3977909027526970250}
   _skillCoolTimeImage: {fileID: 2451221289826578111}
+  _skillIntervalTimeImage: {fileID: 0}
   _lockImage: {fileID: 21300000, guid: 9b45df6f5d7b4514096000c44b6b4703, type: 3}
 --- !u!114 &810031529521256553
 MonoBehaviour:
@@ -3292,7 +3295,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &2624246933605797168
 RectTransform:
   m_ObjectHideFlags: 0
@@ -3366,6 +3369,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _skillIconImage: {fileID: 9185903399819297637}
   _skillCoolTimeImage: {fileID: 5990673549528783875}
+  _skillIntervalTimeImage: {fileID: 0}
   _lockImage: {fileID: 21300000, guid: 9b45df6f5d7b4514096000c44b6b4703, type: 3}
 --- !u!114 &6549930661649692998
 MonoBehaviour:
@@ -3846,6 +3850,7 @@ GameObject:
   - component: {fileID: 3271056372356441613}
   - component: {fileID: 77304077296668746}
   - component: {fileID: 1628003729250942229}
+  - component: {fileID: 4396822276410088698}
   m_Layer: 5
   m_Name: Panel - SkillSlot
   m_TagString: Untagged
@@ -3916,6 +3921,19 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+--- !u!114 &4396822276410088698
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6127660438341295897}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bc36f36abc8f52f46872b316633ce83c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _skillIconSlot: {fileID: 4110326737881420490, guid: 0adb3684d7bf3db4889da423893cef6d, type: 3}
 --- !u!1 &6230457393690843013
 GameObject:
   m_ObjectHideFlags: 0
@@ -5669,7 +5687,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &8872744955138114597
 RectTransform:
   m_ObjectHideFlags: 0
@@ -5743,6 +5761,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _skillIconImage: {fileID: 5388976429057757579}
   _skillCoolTimeImage: {fileID: 751683885781660832}
+  _skillIntervalTimeImage: {fileID: 0}
   _lockImage: {fileID: 21300000, guid: 9b45df6f5d7b4514096000c44b6b4703, type: 3}
 --- !u!114 &3295715614771011462
 MonoBehaviour:
@@ -6304,7 +6323,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &5310390578926176903
 RectTransform:
   m_ObjectHideFlags: 0
@@ -6378,6 +6397,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _skillIconImage: {fileID: 1061019112113406177}
   _skillCoolTimeImage: {fileID: 3687125917431449588}
+  _skillIntervalTimeImage: {fileID: 0}
   _lockImage: {fileID: 21300000, guid: 9b45df6f5d7b4514096000c44b6b4703, type: 3}
 --- !u!114 &6470076051338326081
 MonoBehaviour:

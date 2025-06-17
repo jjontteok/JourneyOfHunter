@@ -1,4 +1,6 @@
+using Palmmedia.ReportGenerator.Core.Reporting.Builders;
 using System;
+using System.Collections;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
@@ -8,6 +10,7 @@ public class SkillIconSlot : MonoBehaviour
 {
     [SerializeField] Image _skillIconImage;
     [SerializeField] Image _skillCoolTimeImage;
+    [SerializeField] Image _skillIntervalTimeImage;
     [SerializeField] Sprite _lockImage;
 
     // 스킬 아이콘 클릭 시 스킬 발동하는 이벤트
@@ -17,6 +20,9 @@ public class SkillIconSlot : MonoBehaviour
     float _currentTime = 0f;
     float _coolTime;
 
+    readonly Color _coolTimeColor = new Color(0, 0, 0, 150f / 255);
+    readonly Color _intervalColor = new Color(0, 0, 150f / 255, 150f / 255);
+
     private void Awake()
     {
         ReleaseIconSlot();
@@ -24,13 +30,13 @@ public class SkillIconSlot : MonoBehaviour
 
     void Update()
     {
-        if(_isCoolTime)
+        if (_isCoolTime)
         {
             _currentTime -= Time.deltaTime;
             _skillCoolTimeImage.fillAmount = _currentTime / _coolTime;
             if (_currentTime <= 0f)
             {
-                _skillCoolTimeImage.color = new Color(0, 0, 0, 0);
+                _skillCoolTimeImage.color = Color.clear;
                 _isCoolTime = false;
             }
         }
@@ -38,7 +44,7 @@ public class SkillIconSlot : MonoBehaviour
 
     public void StartIconCoolTime()
     {
-        _skillCoolTimeImage.color = new Color(0, 0, 0, 150f / 255);
+        _skillCoolTimeImage.color = _coolTimeColor;
         _currentTime = _coolTime;
         _isCoolTime = true;
     }
@@ -57,6 +63,7 @@ public class SkillIconSlot : MonoBehaviour
         _skillIconImage.sprite = null;
         _skillIconImage.color = Color.clear;
         _skillCoolTimeImage.color = Color.clear;
+        _skillIntervalTimeImage.color = Color.clear;
     }
 
     public void LockIconSlot()
@@ -64,5 +71,10 @@ public class SkillIconSlot : MonoBehaviour
         _skillIconImage.sprite = _lockImage;
         _skillIconImage.color = Color.white;
         _skillCoolTimeImage.color = Color.clear;
+    }
+
+    public void OnOffSkillIntervalImage(bool flag)
+    {
+        _skillIntervalTimeImage.color = flag ? _intervalColor : Color.clear;
     }
 }

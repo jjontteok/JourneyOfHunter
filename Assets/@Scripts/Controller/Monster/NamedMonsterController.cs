@@ -23,7 +23,10 @@ public class NamedMonsterController : MonsterController
 
     public override void Initialize()
     {
-        _originPos = transform.position;
+        RaycastHit hit;
+        Physics.Raycast(transform.position, Vector3.down, out hit, 10f);
+        _originPos = hit.point;
+
         base.Initialize();
         GameObject moveRange = new GameObject("MoveRange");
         moveRange.transform.parent = this.gameObject.transform;
@@ -58,6 +61,7 @@ public class NamedMonsterController : MonsterController
         if (!_isMoveToOrigin)
         {
             Vector3 dir = _target.transform.position - transform.position;
+            dir.y = 0;
             transform.rotation = Quaternion.LookRotation(dir, Vector3.up);
         }
     }
@@ -132,7 +136,7 @@ public class NamedMonsterController : MonsterController
 
         _animator.SetTrigger(Define.LongAttack);
         // offset = (0,0,3)
-        _bulletSkill.ActivateSkill(transform.position + Vector3.up * 3);
+        _bulletSkill.ActivateSkill(transform.position + Vector3.up * 2f);
     }
 
 
