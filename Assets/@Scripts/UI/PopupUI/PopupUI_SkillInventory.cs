@@ -102,7 +102,7 @@ public class PopupUI_SkillInventory : MonoBehaviour
         _exitButton.onClick.AddListener(OnExitButtonClick);
 
         // 스킬 장착 및 해제 이벤트 구독?
-        SkillSystem skillSystem = FindAnyObjectByType<SkillSystem>();
+        SkillSystem skillSystem = PlayerManager.Instance.SkillSystem;
         _skillDescriptionPanel.OnEquipSkill += skillSystem.AddSkill;
         _skillDescriptionPanel.OnReleaseSkill += skillSystem.RemoveSkill;
     }

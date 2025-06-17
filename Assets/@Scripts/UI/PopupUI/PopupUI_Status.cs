@@ -31,7 +31,7 @@ public class PopupUI_Status : MonoBehaviour
 
     void Initialize() {
         //임시 방편
-        PlayerController playerController = FindAnyObjectByType<PlayerController>();
+        PlayerController playerController = PlayerManager.Instance.Player;
         _silverCoinText.text = _inventoryData.silverCoin.ToString();
         foreach (var slot in _statusList)
         {

@@ -29,7 +29,7 @@ public class SkillSystem : MonoBehaviour
 
     public void InitializeSkillSystem()
     {
-        _player = FindAnyObjectByType<PlayerController>();
+        _player = PlayerManager.Instance.Player;
         OnShortestSkillDistanceChanged += _player.SetShortestSkillDistance;
 
         Dictionary<string, GameObject> skillList = ObjectManager.Instance.PlayerSkillResourceList;
@@ -38,13 +38,6 @@ public class SkillSystem : MonoBehaviour
         foreach (var skillData in skillDatas)
         {
             _skillList.Add(skillList[skillData.name].GetComponent<Skill>());
-        }
-
-        foreach (var skill in _skillList)
-        {
-            AddSkill(skill.SkillData);
-            if (_activeSkillSlotList.Count == _player.PlayerData.UnlockedSkillSlotCount)
-                break;
         }
     }
 
@@ -80,6 +73,18 @@ public class SkillSystem : MonoBehaviour
         // skill interval이거나
         // 모든 스킬이 쿨타임 중이거나 마나 부족일 때
         return SkillManager.Instance.IsSkillInterval || _activeSkillSlotList.All(slot => !slot || !slot.IsActivatePossible || _player.MP < slot.SkillData.MP);
+    }
+
+    public void SetSkillSlotList()
+    {
+        foreach (var skill in _skillList)
+        {
+            AddSkill(skill.SkillData);
+            if (_activeSkillSlotList.Count == _player.PlayerData.UnlockedSkillSlotCount)
+                break;
+        }
+
+        //BasicSkillSlot.Skill.GetComponent<IRotationSkill>().OnActivateSkill += _player.Rotate;
     }
 
     public void AddSkill(SkillData data)

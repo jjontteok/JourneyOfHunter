@@ -7,7 +7,7 @@ public class PlayerController : MonoBehaviour, IDamageable
 {
     Animator _animator;
     Rigidbody _rigidbody;
-    SkillSystem _skillSystem;
+    //SkillSystem _skillSystem;
     [SerializeField] Transform _target;
 
     public static Action<float, float> OnHPValueChanged;
@@ -18,8 +18,8 @@ public class PlayerController : MonoBehaviour, IDamageable
     float _mp;
     float _hp;
     [SerializeField] float _shortestSkillDistance;   //자동일 때, 이동 멈추는 범위
-    bool _isAuto;                   //자동 여부
-    [SerializeField] bool _isAutoMoving;             //자동일 때, 타겟 없을 시 다음 스테이지 이동 여부
+    //bool _isAuto;                   //자동 여부
+    //[SerializeField] bool _isAutoMoving;             //자동일 때, 타겟 없을 시 다음 스테이지 이동 여부
     bool _tmpAuto;                  //질풍참 사용 시 auto 여부 저장용으로 쓰임
 
     bool _isKeyBoard;
@@ -32,29 +32,29 @@ public class PlayerController : MonoBehaviour, IDamageable
     [SerializeField] float _speed;
 
     #region Properties
-    public bool IsAuto
-    {
-        get { return _isAuto; }
-        set
-        {
-            _isAuto = value;
-            _skillSystem.IsAuto = value;
-            // 자동 모드 꺼지면 타겟도 초기화
-            if (!value)
-            {
-                _target = null;
-                _isAutoMoving = false;
-            }
-            // 던전 생성 버튼이 활성화되어있는데 자동 모드 켜질때
-            else
-            {
-                if(!DungeonManager.Instance.IsDungeonExist&&StageManager.Instance.StageActionStatus==Define.StageActionStatus.NotChallenge)
-                {
-                    OnAutoTeleport?.Invoke();
-                }
-            }
-        }
-    }
+    //public bool IsAuto
+    //{
+    //    get { return _isAuto; }
+    //    set
+    //    {
+    //        _isAuto = value;
+    //        _skillSystem.IsAuto = value;
+    //        // 자동 모드 꺼지면 타겟도 초기화
+    //        if (!value)
+    //        {
+    //            _target = null;
+    //            _isAutoMoving = false;
+    //        }
+    //        // 던전 생성 버튼이 활성화되어있는데 자동 모드 켜질때
+    //        else
+    //        {
+    //            if(!DungeonManager.Instance.IsDungeonExist&&StageManager.Instance.StageActionStatus==Define.StageActionStatus.NotChallenge)
+    //            {
+    //                OnAutoTeleport?.Invoke();
+    //            }
+    //        }
+    //    }
+    //}
 
     public bool IsKeyBoard
     {
@@ -62,10 +62,10 @@ public class PlayerController : MonoBehaviour, IDamageable
         set
         {
             // 자동 이동 중인데 키보드 입력할 경우 자동 이동 종료
-            if (IsAuto && value)
+            if (PlayerManager.Instance.IsAuto && value)
             {
-                IsAuto = false;
-                _isAutoMoving = false;
+                PlayerManager.Instance.IsAuto = false;
+                PlayerManager.Instance.IsAutoMoving = false;
                 OnAutoOff?.Invoke();
             }
             _isKeyBoard = value;
@@ -78,17 +78,21 @@ public class PlayerController : MonoBehaviour, IDamageable
         set
         {
             // 자동 이동 중인데 조이스틱 입력할 경우 자동 이동 종료
-            if (IsAuto && value)
+            if (PlayerManager.Instance.IsAuto && value)
             {
-                IsAuto = false;
-                _isAutoMoving = false;
+                PlayerManager.Instance.IsAuto = false;
+                PlayerManager.Instance.IsAutoMoving = false;
                 OnAutoOff?.Invoke();
             }
             _isJoyStick = value;
         }
     }
 
-    public Transform Target { get { return _target; } }
+    public Transform Target
+    {
+        get { return _target; }
+        set { _target = value; }
+    }
 
     // 데이터는 getter만 되도록?
     public PlayerData PlayerData { get { return _playerData; } }
@@ -138,11 +142,11 @@ public class PlayerController : MonoBehaviour, IDamageable
         _animator = GetComponent<Animator>();
         _rigidbody = GetComponent<Rigidbody>();
 
-        _skillSystem = GetComponent<SkillSystem>();
-        _skillSystem.InitializeSkillSystem();
-        _skillSystem.BasicSkillSlot.Skill.GetComponent<IRotationSkill>().OnActivateSkill += Rotate;
+        //_skillSystem = GetComponent<SkillSystem>();
+        //_skillSystem.InitializeSkillSystem();
+        //_skillSystem.BasicSkillSlot.Skill.GetComponent<IRotationSkill>().OnActivateSkill += Rotate;
 
-        SkillManager.Instance.LockIconSlots(_playerData.UnlockedSkillSlotCount);
+        //SkillManager.Instance.LockIconSlots(_playerData.UnlockedSkillSlotCount);
     }
 
     #region Player Moving
@@ -158,10 +162,10 @@ public class PlayerController : MonoBehaviour, IDamageable
         }
 
         // 자동 모드일 때
-        if (_isAuto)
+        if (PlayerManager.Instance.IsAuto)
         {
             // 던전 클리어해서 포탈 향해 가는 상황
-            if (_isAutoMoving)
+            if (PlayerManager.Instance.IsAutoMoving)
             {
                 //if (!MoveToTarget(0.5f))
                 //{
@@ -176,7 +180,7 @@ public class PlayerController : MonoBehaviour, IDamageable
                 SetTarget();
                 if (_target != null)
                 {
-                    _isAutoMoving = false;
+                    PlayerManager.Instance.IsAutoMoving = false;
                 }
             }
             else
@@ -187,7 +191,7 @@ public class PlayerController : MonoBehaviour, IDamageable
                     // 타겟 찾고
                     SetTarget();
                     // 찾았는데도 없으면 다음 스테이지 자동 이동?
-                    if (_isAutoMoving)
+                    if (PlayerManager.Instance.IsAutoMoving)
                     {
                         return;
                     }
@@ -339,7 +343,7 @@ public class PlayerController : MonoBehaviour, IDamageable
             if (_target == null)
             {
                 Debug.Log("No target on field!!!");
-                _isAutoMoving = true;
+                PlayerManager.Instance.IsAutoMoving = true;
                 //_target = new GameObject("TargetPoint").transform;
                 //_target.position = FindAnyObjectByType<DungeonPortalController>().transform.position;
                 //Vector3 pos=_target.position;
@@ -361,7 +365,7 @@ public class PlayerController : MonoBehaviour, IDamageable
 
     public void SetAuto(bool flag)
     {
-        IsAuto = flag;
+        PlayerManager.Instance.IsAuto = flag;
         _direction = Vector3.zero;
     }
 
@@ -377,12 +381,12 @@ public class PlayerController : MonoBehaviour, IDamageable
 
     IEnumerator CoSetPlayerCollision(float duration)
     {
-        _tmpAuto = IsAuto;
+        _tmpAuto = PlayerManager.Instance.IsAuto;
         SetPlayerCollision(false);
-        IsAuto = false;
+        PlayerManager.Instance.IsAuto = false;
         yield return new WaitForSeconds(duration);
         SetPlayerCollision(true);
-        IsAuto = _tmpAuto;
+        PlayerManager.Instance.IsAuto = _tmpAuto;
 
         //ClampYPosition();
     }

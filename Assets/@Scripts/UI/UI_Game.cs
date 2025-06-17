@@ -47,12 +47,13 @@ public class UI_Game : MonoBehaviour
         _autoToggle.onValueChanged.AddListener(OnAutoToggleClick);
         _inventoryButton.onClick.AddListener(OnInventoryButtonClick);
 
-        _player = FindAnyObjectByType<PlayerController>();
-        OnAutoChanged += (flag) => _player.IsAuto = flag;
+        //_player = FindAnyObjectByType<PlayerController>();
+        _player = PlayerManager.Instance.Player;
+        OnAutoChanged += (flag) => PlayerManager.Instance.IsAuto = flag;
         _player.OnAutoOff += OnAutoToggleOff;
         _player.OnAutoTeleport += () =>
         {
-            if (_player.IsAuto)
+            if (PlayerManager.Instance.IsAuto)
             {
                 OnCreateDungeonButtonClick();
             }
@@ -167,7 +168,7 @@ public class UI_Game : MonoBehaviour
 
     void ActivateDungeonPortalButton()
     {
-        if(!_player.IsAuto)
+        if(!PlayerManager.Instance.IsAuto)
         {
             _createDungeonPortalButton.gameObject.SetActive(true);
         }

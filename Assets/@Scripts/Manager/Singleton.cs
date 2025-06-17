@@ -15,21 +15,21 @@ public class Singleton<T> : MonoBehaviour where T: MonoBehaviour
         {
             if (_instance == null)
             {
-                GameObject manager = GameObject.Find("@Managers");
-                if (manager == null)
-                {
-                    manager = new GameObject("@Managers");
-                    DontDestroyOnLoad(manager);
-                }
-                _instance = FindAnyObjectByType<T>();
-                if (_instance == null)
-                {
-                    GameObject obj = new GameObject(typeof(T).Name);
-                    T component = obj.AddComponent<T>();
+                //GameObject manager = GameObject.Find("@Managers");
+                //if (manager == null)
+                //{
+                //    manager = new GameObject("@Managers");
+                //    DontDestroyOnLoad(manager);
+                //}
+                //_instance = FindAnyObjectByType<T>();
+                //if (_instance == null)
+                //{
+                //    GameObject obj = new GameObject(typeof(T).Name);
+                //    T component = obj.AddComponent<T>();
 
-                    obj.transform.parent = manager.transform;
-                    _instance = component;
-                }
+                //    obj.transform.parent = manager.transform;
+                //    _instance = component;
+                //}
             }
             return _instance;
         }

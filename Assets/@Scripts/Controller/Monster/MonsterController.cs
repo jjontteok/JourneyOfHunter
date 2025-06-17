@@ -76,7 +76,7 @@ public abstract class MonsterController : MonoBehaviour, IDamageable
         _runtimeData = new MonsterStatus(_monsterData);
         _animator = GetComponent<Animator>();
         _rigidbody = GetComponent<Rigidbody>();
-        _target = GameObject.Find(Define.PlayerTag);
+        _target = PlayerManager.Instance.Player.gameObject;
 
         GameObject attackRange = new GameObject("AttackRange");
         attackRange.layer = LayerMask.NameToLayer(Define.MonsterAttackRangeLayer);
@@ -95,6 +95,7 @@ public abstract class MonsterController : MonoBehaviour, IDamageable
             //Debug.Log("걷는중");
 
             Vector3 targetDir = (targetPos - transform.position).normalized;
+            targetDir.y = 0;
             transform.position += targetDir * _runtimeData.Speed * Time.deltaTime;
             //transform.Translate(targetPos*Time.deltaTime);
             //Debug.Log($"transform local position : {transform.localPosition}, targetPos : {targetPos}, targetDir.y : {targetDir}");
