@@ -23,7 +23,10 @@ public class NamedMonsterController : MonsterController
 
     public override void Initialize()
     {
-        _originPos = transform.position;
+        RaycastHit hit;
+        Physics.Raycast(transform.position, Vector3.down, out hit, 10f);
+        _originPos = hit.point;
+
         base.Initialize();
         GameObject moveRange = new GameObject("MoveRange");
         moveRange.transform.parent = this.gameObject.transform;

@@ -25,6 +25,7 @@ public class ObjectManager : Singleton<ObjectManager>
     private GameObject _dungeonPortalResource;
     private GameObject _shieldEffectResource;
     private GameObject _monsterGateResource;
+    private GameObject _backgroundResource;
 
     // * UI Object
     private GameObject _uiGame;
@@ -166,6 +167,16 @@ public class ObjectManager : Singleton<ObjectManager>
             if (NullCheck(_monsterGateResource))
                 return null;
             return _monsterGateResource;
+        }
+    }
+
+    public GameObject BackgroundResource
+    {
+        get
+        {
+            if (NullCheck(_backgroundResource))
+                return null;
+            return _backgroundResource;
         }
     }
 
@@ -334,6 +345,7 @@ public class ObjectManager : Singleton<ObjectManager>
         MonsterResourceLoad();
         DamageTextResourceLoad();
         SkyBoxResourceLoad();
+        EnvironmentResourceLoad();
         UIResourceLoad();
         PopupUIResourceLoad();
         PlayerVitalResourceLoad();
@@ -404,6 +416,11 @@ public class ObjectManager : Singleton<ObjectManager>
         {
             Debug.Log("Can't Load because of skybox list is null");
         }
+    }
+
+    private void EnvironmentResourceLoad()
+    {
+        _backgroundResource = Resources.Load<GameObject>(Define.BackgroundPath);
     }
 
     // * UI 리소스 로드 메서드

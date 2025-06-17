@@ -36,6 +36,7 @@ public class Define : MonoBehaviour
     public const string DungeonPortalPath = "Dungeon/Object/DungeonPortal";
     public const string MonsterGatePath = "Dungeon/Object/HellGate";
     public const string SkyBoxPath = "SkyBox";
+    public const string BackgroundPath = "Environment/Background";
     public const string DamageTextPath = "UI/DamageText";
     public const string PlayerVitalCanvasPath = "UI/PlayerVital/UI_Vital";
     public const string PlayerVitalPath = "UI/PlayerVital/PlayerVital";
