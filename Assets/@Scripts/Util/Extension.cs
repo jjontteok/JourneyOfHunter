@@ -14,6 +14,8 @@ namespace extension
             return component;
         }
 
+      
+
         // * GameObject 배열을 주어진 리스트에 복사 (주의 : 기존 데이터는 삭제)
         public static void ToList<T>(this T[] goArr, Dictionary<string, T> list) where T : UnityEngine.Object
         {
@@ -37,7 +39,7 @@ namespace extension
             return false;
         }
 
-        //public static bool CheckSimilarColor(Color color1, Color color2, float threshold = 0.35f)
+        //public static bool CheckTwoValues(Color color1, Color color2, float threshold = 0.35f)
         //{
         //    Vector3 vec1 = new Vector3(color1.r, color1.g, color1.b);
         //    Vector3 vec2 = new Vector3(color2.r, color2.g, color2.b);
@@ -47,9 +49,9 @@ namespace extension
         //    return true;
         //}
 
-        public static bool CheckSimilarColor(float color1, float color2, float threshold = 0.001f)
+        public static bool CheckTwoValues(float value1, float value2, float threshold = 0.001f)
         {
-            if (Mathf.Abs(color1 - color2) < 0.001f)
+            if (Mathf.Abs(value1 - value2) < threshold)
                 return false;
             return true;
         }
