@@ -4,7 +4,7 @@ using UnityEngine;
 // 충돌해도 사라지지 않는 스킬의 콜라이더
 public class PenetrationColliderController : SkillColliderController
 {
-    HashSet<GameObject> _damagedObjects = new HashSet<GameObject>();
+    protected HashSet<GameObject> _damagedObjects = new HashSet<GameObject>();
 
     private void OnTriggerEnter(Collider other)
     {

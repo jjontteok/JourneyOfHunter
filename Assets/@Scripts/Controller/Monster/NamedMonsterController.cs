@@ -9,6 +9,8 @@ using static UnityEngine.GraphicsBuffer;
 public class NamedMonsterController : MonsterController
 {
     public static Action s_OnNamedMonsterDie;
+    public static Action<float, float> s_OnNamedMonsterGetDamage;
+    public static Action<float, float> s_OnNamedMonsterSet;
 
     [SerializeField] private float _closeAttackLimit = 4f;
     [SerializeField] private bool _isMoveToOrigin;
@@ -23,22 +25,22 @@ public class NamedMonsterController : MonsterController
 
     public override void Initialize()
     {
-        RaycastHit hit;
-        Physics.Raycast(transform.position, Vector3.down, out hit, 10f);
-        _originPos = hit.point;
-
+        SetOriginPos();
         base.Initialize();
         GameObject moveRange = new GameObject("MoveRange");
         moveRange.transform.parent = this.gameObject.transform;
         _moveRangeController = moveRange.GetOrAddComponent<MoveRangeController>();
         _moveRangeController.Intiailize(_runtimeData.MoveRange);
     }
-    private void OnEnable()
+    protected override void OnEnable()
     {
+        SetOriginPos();
+        base.OnEnable();
         _isMoveToOrigin = false;
         _moveRangeController.OnMoveToTarget += OnMoveToTarget;
         _moveRangeController.OnMoveToOrigin += StopMove;
         _attackRangeController.OffAttack += EndAttack;
+        s_OnNamedMonsterSet?.Invoke(_runtimeData.CurrentHP, _runtimeData.MaxHP);
     }
 
     private void Start()
@@ -56,11 +58,19 @@ public class NamedMonsterController : MonsterController
         CheckMoveToOrigin();
     }
 
+    void SetOriginPos()
+    {
+        RaycastHit hit;
+        Physics.Raycast(transform.position, Vector3.down, out hit, 10f);
+        _originPos = hit.point;
+    }
+
     void RotateNamedMonster()
     {
         if (!_isMoveToOrigin)
         {
             Vector3 dir = _target.transform.position - transform.position;
+            dir.y = 0;
             transform.rotation = Quaternion.LookRotation(dir, Vector3.up);
         }
     }
@@ -73,7 +83,7 @@ public class NamedMonsterController : MonsterController
         {
             //원래 자리로 움직인다.
             MoveToTarget(_originPos);
-            if ((transform.position - _originPos).sqrMagnitude < 0.1 ||
+            if ((transform.position - _originPos).sqrMagnitude < 0.1f ||
                 Vector3.Distance(transform.position, _target.transform.position) < _runtimeData.MoveRange)
             {
                 StopMove();
@@ -135,7 +145,7 @@ public class NamedMonsterController : MonsterController
 
         _animator.SetTrigger(Define.LongAttack);
         // offset = (0,0,3)
-        _bulletSkill.ActivateSkill(transform.position + Vector3.up * 3);
+        _bulletSkill.ActivateSkill(transform.position + Vector3.up * 2f);
     }
 
 
@@ -148,6 +158,12 @@ public class NamedMonsterController : MonsterController
         //현재 위치가 원위치가 아니라면 원위치로 이동
         else
             _isMoveToOrigin = true;
+    }
+
+    public override void GetDamage(float damage)
+    {
+        base.GetDamage(damage);
+        s_OnNamedMonsterGetDamage?.Invoke(_runtimeData.CurrentHP, _runtimeData.MaxHP);
     }
 
     public override void Die()

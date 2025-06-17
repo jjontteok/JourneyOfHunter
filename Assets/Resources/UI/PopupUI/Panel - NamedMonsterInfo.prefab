@@ -861,7 +861,7 @@ GameObject:
   - component: {fileID: 3862037815750026960}
   - component: {fileID: -2692723251395026387}
   m_Layer: 5
-  m_Name: NamedMonsterInfo - Popup
+  m_Name: Panel - NamedMonsterInfo
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -940,6 +940,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _monsterNameText: {fileID: 7840494290780044575}
   _timeText: {fileID: 7517215172457610509}
+  _hpText: {fileID: 5479355896672628383}
+  _hpBar: {fileID: 4204582334319478426}
+  _timeBar: {fileID: 2814340765909252005}
 --- !u!1 &5558654528215533017
 GameObject:
   m_ObjectHideFlags: 0

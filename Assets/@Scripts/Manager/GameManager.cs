@@ -23,6 +23,8 @@ public class GameManager : Singleton<GameManager>
         ObjectManager.Instance.CreateManager();
         ObjectManager.Instance.ResourceLoad();
 
+        PlayerManager.Instance.CreateManager();
+
         UIManager.Instance.CreateManager();
 
         PoolManager.Instance.CreateManager();
@@ -55,6 +57,7 @@ public class GameManager : Singleton<GameManager>
         DamageTextManager.Instance.Subscribe();
         StageManager.Instance.Subscribe();
         //CutSceneManager.Instance.Subscribe();
+        TimeManager.Instance.Subscribe();
         EnvironmentManager.Instance.Subscribe();
     }
 

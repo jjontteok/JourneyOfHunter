@@ -7,18 +7,17 @@ public class PlayerController : MonoBehaviour, IDamageable
 {
     Animator _animator;
     Rigidbody _rigidbody;
-    Collider _collider;
     SkillSystem _skillSystem;
     [SerializeField] Transform _target;
 
     public static Action<float, float> OnHPValueChanged;
     public static Action<float, float> OnMPValueChanged;
 
-    readonly Vector3 _partalOffset = Vector3.forward * 2;
+    readonly Vector3 _portalOffset = Vector3.forward * 2;
     Vector3 _direction;
     float _mp;
     float _hp;
-    float _shortestSkillDistance;   //자동일 때, 이동 멈추는 범위
+    [SerializeField] float _shortestSkillDistance;   //자동일 때, 이동 멈추는 범위
     bool _isAuto;                   //자동 여부
     [SerializeField] bool _isAutoMoving;             //자동일 때, 타겟 없을 시 다음 스테이지 이동 여부
     bool _tmpAuto;                  //질풍참 사용 시 auto 여부 저장용으로 쓰임
@@ -27,6 +26,7 @@ public class PlayerController : MonoBehaviour, IDamageable
     bool _isJoyStick;
 
     public Action OnAutoOff;
+    public Action OnAutoTeleport;
 
     [SerializeField] PlayerData _playerData;
     [SerializeField] float _speed;
@@ -37,14 +37,22 @@ public class PlayerController : MonoBehaviour, IDamageable
         get { return _isAuto; }
         set
         {
+            _isAuto = value;
+            _skillSystem.IsAuto = value;
             // 자동 모드 꺼지면 타겟도 초기화
             if (!value)
             {
                 _target = null;
                 _isAutoMoving = false;
             }
-            _isAuto = value;
-            _skillSystem.IsAuto = value;
+            // 던전 생성 버튼이 활성화되어있는데 자동 모드 켜질때
+            else
+            {
+                if(!DungeonManager.Instance.IsDungeonExist&&StageManager.Instance.StageActionStatus==Define.StageActionStatus.NotChallenge)
+                {
+                    OnAutoTeleport?.Invoke();
+                }
+            }
         }
     }
 
@@ -129,7 +137,6 @@ public class PlayerController : MonoBehaviour, IDamageable
         _mp = _playerData.MP;
         _animator = GetComponent<Animator>();
         _rigidbody = GetComponent<Rigidbody>();
-        _collider = GetComponent<Collider>() as CapsuleCollider;
 
         _skillSystem = GetComponent<SkillSystem>();
         _skillSystem.InitializeSkillSystem();
@@ -147,6 +154,7 @@ public class PlayerController : MonoBehaviour, IDamageable
             Vector3 pos = transform.position;
             pos.z = 5;
             transform.position = pos;
+            OnAutoTeleport?.Invoke();
         }
 
         // 자동 모드일 때
@@ -155,13 +163,20 @@ public class PlayerController : MonoBehaviour, IDamageable
             // 던전 클리어해서 포탈 향해 가는 상황
             if (_isAutoMoving)
             {
-                if (!MoveToTarget(0.5f))
+                //if (!MoveToTarget(0.5f))
+                //{
+                //    // 아무것도 없으면 중앙 길따라 앞으로 전진
+                //    // 다음 던전 시작되면 _isAutoMoving false시키고 target 초기화
+                //    _isAutoMoving = false;
+                //    Destroy(_target.gameObject);
+                //    _target = null;
+                //    return;
+                //}
+                MoveAlongRoad();
+                SetTarget();
+                if (_target != null)
                 {
-                    // 다음 던전 시작되면 _isAutoMoving false시키고 target 초기화
                     _isAutoMoving = false;
-                    Destroy(_target.gameObject);
-                    _target = null;
-                    return;
                 }
             }
             else
@@ -207,7 +222,11 @@ public class PlayerController : MonoBehaviour, IDamageable
         //if(_target.name== "TargetPoint")
         //    Debug.Log()
         //타겟과 거리가 가까워지면 정지
-        if (Vector3.Distance(transform.position, _target.position) <= distance)
+        Vector3 targetPos = _target.position;
+        targetPos.y = 0;
+        Vector3 playerPos = transform.position;
+        playerPos.y = 0;
+        if (Vector3.Distance(targetPos, playerPos) <= distance)
         {
             _direction = Vector3.zero;
             _rigidbody.linearVelocity = new Vector3(0, _rigidbody.linearVelocity.y, 0);
@@ -229,11 +248,27 @@ public class PlayerController : MonoBehaviour, IDamageable
         }
     }
 
+    void MoveAlongRoad()
+    {
+        if (Mathf.Abs(_rigidbody.position.x) > 0.1f)
+        {
+            _direction = new Vector3(-_rigidbody.position.x, 0, 1).normalized;
+        }
+        else
+        {
+            _direction = Vector3.forward;
+        }
+        _rigidbody.MovePosition(_rigidbody.position + _direction.normalized * _speed * Time.fixedDeltaTime);
+        _animator.SetFloat(Define.Speed, _direction.magnitude);
+        //타겟 바라보게 회전
+        transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(_direction), _speed * Time.deltaTime);
+    }
+
     void ClampPosition()
     {
         Vector3 newPos = _rigidbody.position;
         newPos.x = Mathf.Clamp(newPos.x, -23, 23);
-        newPos.z = Mathf.Clamp(newPos.z, 3, 115);
+        newPos.z = Mathf.Clamp(newPos.z, -100, 115);
         _rigidbody.position = newPos;
     }
 
@@ -305,12 +340,12 @@ public class PlayerController : MonoBehaviour, IDamageable
             {
                 Debug.Log("No target on field!!!");
                 _isAutoMoving = true;
-                _target = new GameObject("TargetPoint").transform;
-                _target.position = FindAnyObjectByType<DungeonPortalController>().transform.position;
-                Vector3 pos=_target.position;
-                pos.y = 0;
-                pos += _partalOffset;
-                _target.position = pos;
+                //_target = new GameObject("TargetPoint").transform;
+                //_target.position = FindAnyObjectByType<DungeonPortalController>().transform.position;
+                //Vector3 pos=_target.position;
+                //pos.y = 0;
+                //pos += _partalOffset;
+                //_target.position = pos;
                 return;
             }
         }
@@ -337,13 +372,7 @@ public class PlayerController : MonoBehaviour, IDamageable
 
     void SetPlayerCollision(bool flag)
     {
-        //if (flag)
-        //{
-        //    ClampYPosition();
-        //}
-        //_rigidbody.isKinematic = !flag;
-        Physics.IgnoreLayerCollision(LayerMask.NameToLayer(Define.PlayerTag), LayerMask.NameToLayer(Define.MonsterTag),!flag);
-        //_collider.isTrigger = !flag;
+        Physics.IgnoreLayerCollision(LayerMask.NameToLayer(Define.PlayerTag), LayerMask.NameToLayer(Define.MonsterTag), !flag);
     }
 
     IEnumerator CoSetPlayerCollision(float duration)
@@ -363,19 +392,11 @@ public class PlayerController : MonoBehaviour, IDamageable
         StartCoroutine(CoSetPlayerCollision(duration));
     }
 
-    void ClampYPosition()
-    {
-        RaycastHit hit;
-        Physics.Raycast(transform.position + Vector3.up * 5, Vector3.down, out hit, 10f);
-        Vector3 pos = transform.position; 
-           pos.y = hit.point.y;
-        transform.position = pos;
-    }
     #endregion
 
     #region IDamageable Methods
     // * 방어력 적용 데미지 계산 메서드
-    public void GetDamaged(float damage)
+    public void GetDamage(float damage)
     {
         float finalDamage = CalculateFinalDamage(damage, _playerData.Def);
         HP -= finalDamage;

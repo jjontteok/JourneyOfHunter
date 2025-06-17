@@ -19,6 +19,12 @@ public class DungeonPortalController : MonoBehaviour
         Initialize();
     }
 
+    private void OnEnable()
+    {
+        transform.localScale = Vector3.zero;
+        StartCoroutine(ActiveTrueSelf());
+    }
+
     void Initialize()
     {
         _boxCollider = gameObject.GetOrAddComponent<BoxCollider>();
@@ -39,9 +45,21 @@ public class DungeonPortalController : MonoBehaviour
 
     IEnumerator ActiveFalseSelf()
     {
-        yield return new WaitForSeconds(2.0f);
+        yield return new WaitForSeconds(1.0f);
         
         gameObject.SetActive(false);
         OnPotalClose?.Invoke();
+    }
+
+    IEnumerator ActiveTrueSelf()
+    {
+        Vector3 targetScale = new Vector3(4.0f, 4.0f, 4.0f);
+        while(true)
+        {
+            yield return null;
+            transform.localScale = Vector3.Lerp(transform.localScale, targetScale, Time.deltaTime * 0.4f);
+            if (Vector3.Distance(transform.localScale, targetScale) <= 1f)
+                break;
+        }
     }
 }

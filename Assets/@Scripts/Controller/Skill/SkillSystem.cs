@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -13,19 +14,11 @@ public class SkillSystem : MonoBehaviour
     List<SkillSlot> _activeSkillSlotList = new List<SkillSlot>();
     BasicSkillSlot _basicSkillSlot;
 
-    Queue<SkillSlot> _skillQueue = new Queue<SkillSlot>();
+    //Queue<SkillSlot> _skillQueue = new Queue<SkillSlot>();
 
     PlayerController _player;
 
-    bool _isAuto;
-    bool _isSkillInterval;
-    const float _skillInterval = 0.5f;
-
-    public bool IsAuto
-    {
-        get { return _isAuto; }
-        set { _isAuto = value; }
-    }
+    public bool IsAuto { get; set; }
 
     public Action<float> OnShortestSkillDistanceChanged;
 
@@ -40,6 +33,7 @@ public class SkillSystem : MonoBehaviour
         OnShortestSkillDistanceChanged += _player.SetShortestSkillDistance;
 
         Dictionary<string, GameObject> skillList = ObjectManager.Instance.PlayerSkillResourceList;
+        // 플레이어가 현재 보유 중인 스킬 중에서 열린 슬롯 개수만큼 가져와야함
         SkillData[] skillDatas = _player.PlayerData.CurrentSkillData;
         foreach (var skillData in skillDatas)
         {
@@ -56,7 +50,7 @@ public class SkillSystem : MonoBehaviour
 
     private void Update()
     {
-        if (_isAuto)
+        if (IsAuto)
         {
             // 기본 공격할 타이밍인지 체크
             if (IsBasicAttackPossible())
@@ -67,7 +61,7 @@ public class SkillSystem : MonoBehaviour
             {
                 foreach (var slot in _activeSkillSlotList)
                 {
-                    if (slot != null)
+                    if (!SkillManager.Instance.IsSkillInterval && slot != null)
                     {
                         slot.ActivateSlotSkill();
                     }
@@ -83,8 +77,9 @@ public class SkillSystem : MonoBehaviour
 
     bool IsBasicAttackPossible()
     {
+        // skill interval이거나
         // 모든 스킬이 쿨타임 중이거나 마나 부족일 때
-        return _activeSkillSlotList.All(slot => !slot || !slot.IsActivatePossible || _player.MP < slot.SkillData.MP);
+        return SkillManager.Instance.IsSkillInterval || _activeSkillSlotList.All(slot => !slot || !slot.IsActivatePossible || _player.MP < slot.SkillData.MP);
     }
 
     public void AddSkill(SkillData data)
@@ -123,6 +118,7 @@ public class SkillSystem : MonoBehaviour
                 {
                     _activeSkillSlotList.Add(slot);
                     SkillManager.Instance.SubscribeEvents(slot, _activeSkillSlotList.Count - 1);
+                    slot.OnActivateSkill += StartSkillInterval;
                 }
                 // 슬롯리스트 꽉 찼으면 실행 x
                 else
@@ -135,6 +131,7 @@ public class SkillSystem : MonoBehaviour
             {
                 _activeSkillSlotList[idx] = slot;
                 SkillManager.Instance.SubscribeEvents(slot, idx);
+                slot.OnActivateSkill += StartSkillInterval;
             }
             slot.SetSkill(data);
         }
@@ -175,5 +172,17 @@ public class SkillSystem : MonoBehaviour
 
         OnShortestSkillDistanceChanged?.Invoke(min);
         return min;
+    }
+
+    void StartSkillInterval()
+    {
+        StartCoroutine(CoSkillInterval());
+    }
+
+    IEnumerator CoSkillInterval()
+    {
+        SkillManager.Instance.IsSkillInterval = true;
+        yield return new WaitForSeconds(Define.SkillInterval);
+        SkillManager.Instance.IsSkillInterval = false;
     }
 }
