@@ -19,6 +19,7 @@ public class UI_Game : MonoBehaviour
 
     private List<UI_PlayerVital> _playerVitalList; 
     private GameObject _playerVitalCanvas;
+    private PlayerController _player;
 
     private int _currentPlayers;
 
@@ -46,9 +47,16 @@ public class UI_Game : MonoBehaviour
         _autoToggle.onValueChanged.AddListener(OnAutoToggleClick);
         _inventoryButton.onClick.AddListener(OnInventoryButtonClick);
 
-        PlayerController player = FindAnyObjectByType<PlayerController>();
-        OnAutoChanged += (flag) => player.IsAuto = flag;
-        player.OnAutoOff += OnAutoToggleOff;
+        _player = FindAnyObjectByType<PlayerController>();
+        OnAutoChanged += (flag) => _player.IsAuto = flag;
+        _player.OnAutoOff += OnAutoToggleOff;
+        _player.OnAutoTeleport += () =>
+        {
+            if (_player.IsAuto)
+            {
+                OnCreateDungeonButtonClick();
+            }
+        };
     }
 
     private void ReleaseEvent()
@@ -139,8 +147,10 @@ public class UI_Game : MonoBehaviour
     void OnCreateDungeonButtonClick()
     {
         DungeonManager.Instance.CreateDungeon();
-        DungeonManager.Instance.OnDungeonExit -= () => { _createDungeonPortalButton.gameObject.SetActive(true); };
-        DungeonManager.Instance.OnDungeonExit += () => { _createDungeonPortalButton.gameObject.SetActive(true); };
+        //DungeonManager.Instance.OnDungeonExit -= () => { _createDungeonPortalButton.gameObject.SetActive(true); };
+        //DungeonManager.Instance.OnDungeonExit += () => { _createDungeonPortalButton.gameObject.SetActive(true); };
+        DungeonManager.Instance.OnDungeonExit -= ActivateDungeonPortalButton;
+        DungeonManager.Instance.OnDungeonExit += ActivateDungeonPortalButton;
         _createDungeonPortalButton.gameObject.SetActive(false);
     }
 
@@ -153,5 +163,13 @@ public class UI_Game : MonoBehaviour
     void OnAutoToggleOff()
     {
         _autoToggle.isOn = false;
+    }
+
+    void ActivateDungeonPortalButton()
+    {
+        if(!_player.IsAuto)
+        {
+            _createDungeonPortalButton.gameObject.SetActive(true);
+        }
     }
 }

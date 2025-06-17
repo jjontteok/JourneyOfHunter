@@ -1,5 +1,12 @@
 fileFormatVersion: 2
 guid: 20f9ac8a1040d4b418ee63403be05c6b
+AssetOrigin:
+  serializedVersion: 1
+  productId: 313145
+  packageName: Demons army - Devil
+  packageVersion: 1.0
+  assetPath: Assets/SimpleAssets/Demons/Devil/Animations/Devil_HIT.fbx
+  uploadId: 738394
 ModelImporter:
   serializedVersion: 22200
   internalIDToNameTable: []
@@ -16,8 +23,6 @@ ModelImporter:
     optimizeGameObjects: 0
     removeConstantScaleCurves: 0
     motionNodeName: 
-    rigImportErrors: 
-    rigImportWarnings: 
     animationImportErrors: 
     animationImportWarnings: 
     animationRetargetingWarnings: 
@@ -91,15 +96,15 @@ ModelImporter:
     legStretch: 0.05
     feetSpacing: 0
     globalScale: 1
-    rootMotionBoneName: 
+    rootMotionBoneName: Armature
     hasTranslationDoF: 0
     hasExtraRoot: 0
     skeletonHasParents: 1
-  lastHumanDescriptionAvatarSource: {instanceID: 0}
+  lastHumanDescriptionAvatarSource: {fileID: 9000000, guid: 519e9dd93615cae4697d172c53b345b8, type: 3}
   autoGenerateAvatarMappingIfUnspecified: 1
   animationType: 2
   humanoidOversampling: 1
-  avatarSetup: 0
+  avatarSetup: 2
   addHumanoidExtraRootOnlyWhenUsingAvatar: 1
   importBlendShapeDeformPercent: 1
   remapMaterialsIfMaterialImportModeIsNone: 0
@@ -107,10 +112,3 @@ ModelImporter:
   userData: 
   assetBundleName: 
   assetBundleVariant: 
-AssetOrigin:
-  serializedVersion: 1
-  productId: 313145
-  packageName: Demons army - Devil
-  packageVersion: 1.0
-  assetPath: Assets/SimpleAssets/Demons/Devil/Animations/Devil_HIT.fbx
-  uploadId: 738394

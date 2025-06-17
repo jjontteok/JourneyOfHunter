@@ -19,15 +19,18 @@ public class AreaTargetSkill : ActiveSkill, ITargetSkill, IPositioningSkill
     // target받아서 그 위치에 생성
     public override bool ActivateSkill(Vector3 pos)
     {
-        if(IsTargetExist(pos, SkillData.isPlayerSkill))
+        if (IsTargetExist(pos, SkillData.isPlayerSkill))
         {
             base.ActivateSkill(GetCastPosition(_target.position));
             _coll.transform.localPosition = Vector3.zero;
 
-            _rigidbody.linearVelocity = Vector3.zero;
+            if (_rigidbody)
+            {
+                _rigidbody.linearVelocity = Vector3.zero;
+            }
             return true;
         }
-        
+
         return false;
     }
 
@@ -39,6 +42,10 @@ public class AreaTargetSkill : ActiveSkill, ITargetSkill, IPositioningSkill
 
     public Vector3 GetCastPosition(Vector3 pos)
     {
+        if (pos.y > 0.5f)
+        {
+            pos.y = 0.2f;
+        }
         return pos + _offset;
     }
 }

@@ -37,7 +37,7 @@ public class DamageOverTimeColliderController : PenetrationColliderController, I
         _currentTime += Time.fixedDeltaTime;
     }
 
-    public void TickDamage(Collider other)
+    public virtual void TickDamage(Collider other)
     {
         other.GetComponent<IDamageable>().GetDamage(_damage);
     }

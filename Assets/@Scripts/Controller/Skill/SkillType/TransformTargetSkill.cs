@@ -54,7 +54,10 @@ public class TransformTargetSkill : ActiveSkill, ITargetSkill, IMovingSkill, IDi
     {
         //타겟 방향으로 스킬 방향 설정
         //스킬이 땅으로 박히지 않도록 높이 맞춰주기
-        _direction = (_target.position + Vector3.up - transform.position).normalized;
+        Vector3 dir = _target.position - transform.position;
+        dir.y = 0;
+        _direction = dir.normalized;
+        //_direction = (_target.position + Vector3.up - transform.position).normalized;
         transform.rotation = Quaternion.LookRotation(_direction);
     }
 }

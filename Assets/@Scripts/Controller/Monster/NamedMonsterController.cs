@@ -70,6 +70,7 @@ public class NamedMonsterController : MonsterController
         if (!_isMoveToOrigin)
         {
             Vector3 dir = _target.transform.position - transform.position;
+            dir.y = 0;
             transform.rotation = Quaternion.LookRotation(dir, Vector3.up);
         }
     }
@@ -144,7 +145,7 @@ public class NamedMonsterController : MonsterController
 
         _animator.SetTrigger(Define.LongAttack);
         // offset = (0,0,3)
-        _bulletSkill.ActivateSkill(transform.position + Vector3.up * 3);
+        _bulletSkill.ActivateSkill(transform.position + Vector3.up * 2f);
     }
 
 
