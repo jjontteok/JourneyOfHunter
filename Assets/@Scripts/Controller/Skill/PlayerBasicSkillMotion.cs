@@ -17,6 +17,6 @@ public class PlayerBasicSkillMotion : MonoBehaviour
 
     void Initialize()
     {
-        _animator = FindAnyObjectByType<PlayerController>().GetComponent<Animator>();
+        _animator = PlayerManager.Instance.Player.GetComponent<Animator>();
     }
 }

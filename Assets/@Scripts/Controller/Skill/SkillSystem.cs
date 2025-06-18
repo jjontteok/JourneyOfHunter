@@ -29,7 +29,7 @@ public class SkillSystem : MonoBehaviour
 
     public void InitializeSkillSystem()
     {
-        _player = FindAnyObjectByType<PlayerController>();
+        _player = PlayerManager.Instance.Player;
         OnShortestSkillDistanceChanged += _player.SetShortestSkillDistance;
 
         Dictionary<string, GameObject> skillList = ObjectManager.Instance.PlayerSkillResourceList;
@@ -38,13 +38,6 @@ public class SkillSystem : MonoBehaviour
         foreach (var skillData in skillDatas)
         {
             _skillList.Add(skillList[skillData.name].GetComponent<Skill>());
-        }
-
-        foreach (var skill in _skillList)
-        {
-            AddSkill(skill.SkillData);
-            if (_activeSkillSlotList.Count == _player.PlayerData.UnlockedSkillSlotCount)
-                break;
         }
     }
 
@@ -82,6 +75,16 @@ public class SkillSystem : MonoBehaviour
         return SkillManager.Instance.IsSkillInterval || _activeSkillSlotList.All(slot => !slot || !slot.IsActivatePossible || _player.MP < slot.SkillData.MP);
     }
 
+    public void SetSkillSlotList()
+    {
+        foreach (var skill in _skillList)
+        {
+            AddSkill(skill.SkillData);
+            if (_activeSkillSlotList.Count == _player.PlayerData.UnlockedSkillSlotCount)
+                break;
+        }
+    }
+
     public void AddSkill(SkillData data)
     {
         SkillSlot skillSlot = _activeSkillSlotList.Find((slot) => slot.SkillData == data);
@@ -102,7 +105,10 @@ public class SkillSystem : MonoBehaviour
             OnShortestSkillDistanceChanged?.Invoke(data.targetDistance);
         }
         // 패시브면 효과 적용만 시키고
-        // 나중에 추가
+        else if (ObjectManager.Instance.PlayerSkillResourceList[data.name].GetComponent<PassiveSkill>() != null)
+        {
+
+        }
         // 액티브면 슬롯 만들어서 저장 및 관리
         else
         {

@@ -2,12 +2,13 @@ using UnityEngine;
 
 public class CameraController : MonoBehaviour
 {
-    [SerializeField] Transform player;
+    Transform player;
 
     Vector3 _offset = new Vector3(0f, 6f, -20f);
 
     private void Start()
     {
+        player = PlayerManager.Instance.Player.transform;
         transform.rotation = Quaternion.Euler(new Vector3(10, 0, 0));
     }
     void Update()

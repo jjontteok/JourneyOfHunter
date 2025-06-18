@@ -13,7 +13,7 @@ public abstract class Skill : MonoBehaviour
     {
         _skillCoolTime = new WaitForSeconds(_skillData.coolTime);
         _skillDurationTime = new WaitForSeconds(_skillData.durationTime);
-        _playerController = FindAnyObjectByType<PlayerController>();
+        _playerController = PlayerManager.Instance.Player;
     }
 
     //실제로 스킬 활성화
