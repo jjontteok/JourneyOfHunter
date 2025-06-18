@@ -52,6 +52,7 @@ public class Define : MonoBehaviour
     public const string PopupNamedMonsterInfoPanelPath = "UI/PopupUI/Panel - NamedMonsterInfo";
 
     public const string GoblinKingCutScenePath = "CutScene/GoblinCutScene";
+    public const string FollowCameraPath = "Camera/FollowPlayerCamera";
     #endregion
 
     #region DungeonSpots

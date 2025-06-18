@@ -1,0 +1,45 @@
+using extension;
+using System.Collections.Generic;
+using Unity.Cinemachine;
+using Unity.VisualScripting;
+using UnityEngine;
+
+public class CameraManager : Singleton<CameraManager>
+{
+    CinemachineBrain _cinemachineBrain;
+    private Camera _mainCamera;
+
+    GameObject _followCam;
+    GameObject _cutSceneCam;
+
+    int highPriority = 20;
+    int lowPriority = 10;
+
+    const string followPlayerCamera = "FollowPlayerCamera";
+
+    protected override void Initialize()
+    {
+        base.Initialize();
+        _followCam = Instantiate(ObjectManager.Instance.FollowCam);
+        _cutSceneCam = CutSceneManager.Instance.CutScene;
+        _mainCamera = Camera.main;
+
+        Transform playerTransform = FindAnyObjectByType<PlayerController>().transform;
+        _cinemachineBrain = _mainCamera.GetOrAddComponent<CinemachineBrain>();
+        _followCam.GetComponent<CinemachineCamera>().Follow = playerTransform;
+        _followCam.GetComponent<CinemachineCamera>().LookAt = playerTransform;
+        SetFollowPlayerCam();
+    }
+
+    public void SetFollowPlayerCam()
+    {
+        _cutSceneCam.GetComponentInChildren<CinemachineCamera>().Priority = lowPriority;
+        _followCam.GetComponent<CinemachineCamera>().Priority = highPriority;
+    }
+
+    public void SetCutSceneCam()
+    {
+        _cutSceneCam.GetComponentInChildren<CinemachineCamera>().Priority = highPriority;
+        _followCam.GetComponent<CinemachineCamera>().Priority = lowPriority;
+    }
+}

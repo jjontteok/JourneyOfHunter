@@ -114,8 +114,8 @@ public class EnvironmentManager : Singleton<EnvironmentManager>, IEventSubscribe
 
         _rotateLightList = new Dictionary<string, float>()
         {
-            { Morning, 0},
-            { Noon, 60},
+            { Morning, 0 },
+            { Noon, 60 },
             { Evening, 100 },
             { Night, 60 }
         };
