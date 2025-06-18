@@ -28,7 +28,7 @@ public class CutSceneManager : Singleton<CutSceneManager>,IEventSubscriber ,IDea
     public void PlayCutScene()
     {
         _cutScene?.SetActive(true);
-        _cutScene.GetComponentInChildren<CutSceneController>().PlayCutScene();
+        //_cutScene.GetComponentInChildren<CutSceneController>().PlayCutScene();
     }
 
 }

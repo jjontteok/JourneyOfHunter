@@ -1,14 +1,29 @@
+using System;
 using System.Collections;
 using UnityEngine;
 
 public class MonsterGateController : MonoBehaviour
 {
     ParticleSystem _particleSystem;
+    public Action<int> OnGateOpen;
+    private int _index;
 
     private void OnEnable()
     {
+        //float randomAngle = Random.Range(-150, -120);
+        //transform.rotation = Quaternion.AngleAxis(randomAngle, Vector3.right);
         transform.localScale = new Vector3(0.01f, 0.01f, 0.01f);
         StartCoroutine(SetGate());
+    }
+
+    public void SetRotation(Vector3 dir)
+    {
+        transform.rotation = Quaternion.LookRotation(dir - transform.position, Vector3.down);
+    }
+
+    public void SetIndex(int index)
+    {
+        _index = index;
     }
 
     //IEnumerator CreateGate()
@@ -38,6 +53,7 @@ public class MonsterGateController : MonoBehaviour
             if(Vector3.Distance(transform.localScale, targetScale) <= 1f)
                 break;
         }
+        OnGateOpen?.Invoke(_index);
         targetScale = new Vector3(0.01f, 0.01f, 0.01f);
         while (true)
         {

@@ -60,22 +60,41 @@ public class NormalSpawnerController : MonoBehaviour
     {
         while(true)
         {
-            SpawnMonsters();
-            SpawnMonsters();
+            SpawnGate();
+            yield return new WaitForSeconds(0.5f);
+            SpawnGate();
             yield return _spawnInterval;
         }
     }
 
-    void SpawnMonsters()
+    void SpawnGate()
     {
         int index = Random.Range(0, _spawnPosList.Count);
 
-        GameObject monsterGate = PoolManager.Instance.GetObjectFromPool<MonsterGateController>(_spawnPosList[index] + Vector3.up * 2, "HellGate");
+        // 이거 수정해야함
+        _spawnPosList[index] = GetRandomSpawnPos();
 
+        GameObject monsterGate = PoolManager.Instance.GetObjectFromPool<MonsterGateController>(_spawnPosList[index] + Vector3.up * 2, "HellGate");
+        MonsterGateController monsterGateController = monsterGate.GetComponent<MonsterGateController>();
+        monsterGateController.SetRotation(_offset);
+        monsterGateController.SetIndex(index);
+        monsterGateController.OnGateOpen += SpawnMonsters;
+    }
+
+    void SpawnMonsters(int index)
+    {
         PoolManager.Instance.GetObjectFromPool<NormalMonsterController>(_spawnPosList[index], _monsterName);
         PoolManager.Instance.GetObjectFromPool<NormalMonsterController>(_spawnPosList[index] + _monsterInterval * Vector3.right, _monsterName);
         PoolManager.Instance.GetObjectFromPool<NormalMonsterController>(_spawnPosList[index] + _monsterInterval * Vector3.left, _monsterName);
         PoolManager.Instance.GetObjectFromPool<NormalMonsterController>(_spawnPosList[index] + _monsterInterval * Vector3.forward, _monsterName);
         PoolManager.Instance.GetObjectFromPool<NormalMonsterController>(_spawnPosList[index] + _monsterInterval * Vector3.back, _monsterName);
+    }
+
+    Vector3 GetRandomSpawnPos()
+    {
+        float randomDist = Random.Range(-20, 20);
+        
+        Vector3 randomPos = new Vector3(randomDist, 7, randomDist);
+        return randomPos;
     }
 }
