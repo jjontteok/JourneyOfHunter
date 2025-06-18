@@ -1,7 +1,5 @@
 using extension;
-using Unity.VisualScripting;
 using UnityEngine;
-using UnityEngine.UIElements;
 
 public class PlayerManager : Singleton<PlayerManager>
 {
@@ -38,7 +36,7 @@ public class PlayerManager : Singleton<PlayerManager>
                     _player.OnAutoDungeonChallenge?.Invoke();
                 }
             }
-            Debug.Log("IsAuto: " + _isAuto);
+            //Debug.Log("IsAuto: " + _isAuto);
         }
     }
 
@@ -63,7 +61,7 @@ public class PlayerManager : Singleton<PlayerManager>
     {
         base.Initialize();
         _player = Instantiate(ObjectManager.Instance.PlayerResource, _originPos, Quaternion.identity).GetComponent<PlayerController>();
-        _skillSystem = _player.GetOrAddComponent<SkillSystem>();
+        _skillSystem = _player.gameObject.GetOrAddComponent<SkillSystem>();
         _skillSystem.InitializeSkillSystem();
     }
 }
