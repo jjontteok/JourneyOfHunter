@@ -6,32 +6,57 @@ using UnityEngine;
 //- Manager.Instance.CreateManager()로 생성 및 초기화
 public class Singleton<T> : MonoBehaviour where T: MonoBehaviour
 {
-    protected static T _instance = null;
-    //public static bool IsInstance => _instance != null;
-    //public static T TryGetInstance() => IsInstance ? _instance : null;
+    private static T _instance = null;
+
     public static T Instance
     {
         get
         {
+            // 프로퍼티 접근 시 _instance null일 경우 자동 탐색 및 생성
             if (_instance == null)
             {
-                GameObject manager = GameObject.Find("@Managers");
-                if (manager == null)
-                {
-                    manager = new GameObject("@Managers");
-                    DontDestroyOnLoad(manager);
-                }
-                _instance = FindAnyObjectByType<T>();
-                if (_instance == null)
-                {
-                    GameObject obj = new GameObject(typeof(T).Name);
-                    T component = obj.AddComponent<T>();
+                _instance = FindAnyObjectByType<T>();   // 버전 체크 필수! Unity 2023 이후 존재하는 메서드
 
-                    obj.transform.parent = manager.transform;
-                    _instance = component;
+                if( _instance == null )
+                {
+                    GameObject managerRoot = GameObject.Find("@Managers");
+                    if (managerRoot == null)
+                    {
+                        managerRoot = new GameObject("@Managers");
+                        DontDestroyOnLoad(managerRoot);
+                    }
+                    GameObject obj = new GameObject(typeof(T).Name);
+                    obj.transform.parent = managerRoot.transform;
+                    _instance = obj.AddComponent<T>();
                 }
             }
+
             return _instance;
+        }
+    }
+
+    // 인스턴스 프로퍼티로 생성한 후 Awake를 통해 해당 _instance와 부모 한번더 검사
+    private void Awake()
+    {
+        T current = this as T;
+
+        if (_instance == null)
+        {
+            _instance = current;
+            if(transform.parent == null || transform.parent.name != "@Managers")
+            {
+                GameObject managerRoot = GameObject.Find("@Managers");
+                if (managerRoot == null)
+                {
+                    managerRoot = new GameObject("@Managers");
+                    DontDestroyOnLoad(managerRoot);
+                }
+                transform.parent = managerRoot.transform;
+            }
+        }
+        else if (_instance != current)
+        {
+            Destroy(gameObject);
         }
     }
 

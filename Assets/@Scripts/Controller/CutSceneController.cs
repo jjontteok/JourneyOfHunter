@@ -27,8 +27,20 @@ public class CutSceneController : MonoBehaviour
         //_virtualCamera.transform.position = GameObject.Find(Define.PlayerTag).transform.position;
     }
 
+    public void GetObjectInfo()
+    {
+        foreach (var output in _playableDirector.playableAsset.outputs)
+        {
+            if (output.streamName == "Activation Track")
+                _playableDirector.SetGenericBinding(output.sourceObject, GameObject.FindWithTag(Define.MonsterTag));
+            if (output.streamName == "Animation Track (1)")
+                _playableDirector.SetGenericBinding(output.sourceObject, GameObject.FindWithTag(Define.MonsterTag).GetComponent<Animator>());
+        }
+    }
+
     public void PlayCutScene()
     {
+        GetObjectInfo();
         //GameObject monster = GameObject.FindGameObjectWithTag(Define.MonsterTag);
         GameObject player = GameObject.Find("Player");
         player.transform.position = gameObject.transform.position;

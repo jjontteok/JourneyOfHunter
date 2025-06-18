@@ -27,6 +27,12 @@ public class SkillManager : Singleton<SkillManager>
 
     public SkillIconSlot[] IconSlots { get { return _skillIconSlots; } }
 
+    protected override void Initialize()
+    {
+        base.Initialize();
+        Debug.Log("");
+    }
+
     //protected override void Initialize()
     //{
     //    base.Initialize();

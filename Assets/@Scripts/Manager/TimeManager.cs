@@ -26,6 +26,17 @@ public class TimeManager : Singleton<TimeManager>, IEventSubscriber
     //임시 플래그 변수
     bool _isPlaying = true;
 
+    public bool IsPlaying
+    {
+        get { return _isPlaying; }
+        set 
+        {
+            _isPlaying = value; 
+            if(_isPlaying)
+                StartDay();
+        }
+    }
+
     protected override void Initialize()
     {
         base.Initialize();
