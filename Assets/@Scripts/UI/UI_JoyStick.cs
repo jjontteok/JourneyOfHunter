@@ -22,7 +22,7 @@ public class UI_JoyStick : UI_Base, IPointerDownHandler, IDragHandler, IPointerU
         _originPos = _joyStick.transform.position;
         _radius = _joyStick.GetOrAddComponent<RectTransform>().sizeDelta.y / 3;
 
-        _playerController = FindAnyObjectByType<PlayerController>();
+        _playerController = PlayerManager.Instance.Player;
         OnJoyStickMove += _playerController.SetMoveDirection;
 
         SetActiveJoyStick(false);

@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class BackgroundController : MonoBehaviour
 {
-    GameObject _player;
+    Transform _player;
 
     Vector3 _offset = new Vector3(0f, 5f, 200f);
 
@@ -13,11 +13,11 @@ public class BackgroundController : MonoBehaviour
 
     private void Initialize()
     {
-        _player = FindAnyObjectByType<PlayerController>().gameObject;
+        _player = PlayerManager.Instance.Player.transform;
     }
 
     void Update()
     {
-        transform.position = _player.transform.position + _offset;
+        transform.position = _player.position + _offset;
     }
 }

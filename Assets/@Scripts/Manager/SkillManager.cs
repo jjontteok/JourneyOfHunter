@@ -27,19 +27,6 @@ public class SkillManager : Singleton<SkillManager>
 
     public SkillIconSlot[] IconSlots { get { return _skillIconSlots; } }
 
-    //protected override void Initialize()
-    //{
-    //    base.Initialize();
-    //    _skillIconSlots = FindObjectsByType<SkillIconSlot>(FindObjectsSortMode.None);
-    //    Array.Sort(_skillIconSlots, (slot1, slot2) => String.Compare(slot1.name, slot2.name));
-
-    //    for (int i = 0; i < IconSlots.Length; i++)
-    //    {
-    //        int idx = i;
-    //        AddEvent(_skillIconSlots[idx].gameObject, EventTriggerType.PointerClick, (data) => { OnClick(_skillIconSlots[idx].gameObject, (PointerEventData)data); });
-    //    }
-    //}
-
     // Panel - SkillIconSlot에 생성된 슬롯들 가져오기
     public void SetIconSlots(SkillIconSlot[] slots)
     {
@@ -76,32 +63,4 @@ public class SkillManager : Singleton<SkillManager>
             skillSlot.OnOffSkillIntervalImage(flag);
         }
     }
-
-    //#region Events
-    //void AddEvent(GameObject go, EventTriggerType type, UnityAction<BaseEventData> action)
-    //{
-    //    var trigger = go.GetComponent<EventTrigger>();
-    //    if (!trigger) return;
-    //    EventTrigger.Entry eventTrigger = new EventTrigger.Entry { eventID = type };
-    //    eventTrigger.callback.AddListener(action);
-    //    trigger.triggers.Add(eventTrigger);
-    //}
-
-    //public void OnLeftClick(SkillIconSlot slot)
-    //{
-    //    //해당 아이콘의 스킬 실행
-    //    slot.OnClickSkillIcon?.Invoke();
-    //}
-
-    //public void OnClick(GameObject go, PointerEventData data)
-    //{
-    //    SkillIconSlot slot = go.GetComponent<SkillIconSlot>();
-    //    if (slot == null)
-    //        return;
-    //    if (data.button == PointerEventData.InputButton.Left)
-    //    {
-    //        OnLeftClick(slot);
-    //    }
-    //}
-    //#endregion
 }

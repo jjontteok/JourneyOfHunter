@@ -112,7 +112,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7106771230575074518, guid: 93503a21174f5d345a804c39bfa48549, type: 3}
       propertyPath: m_Name
-      value: Player Variant
+      value: Player
       objectReference: {fileID: 0}
     - target: {fileID: 7106771230575074518, guid: 93503a21174f5d345a804c39bfa48549, type: 3}
       propertyPath: m_TagString
@@ -130,12 +130,6 @@ PrefabInstance:
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: 7106771230575074518, guid: 93503a21174f5d345a804c39bfa48549, type: 3}
       insertIndex: -1
-      addedObject: {fileID: 1611978958385731254}
-    - targetCorrespondingSourceObject: {fileID: 7106771230575074518, guid: 93503a21174f5d345a804c39bfa48549, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 6121480987731012536}
-    - targetCorrespondingSourceObject: {fileID: 7106771230575074518, guid: 93503a21174f5d345a804c39bfa48549, type: 3}
-      insertIndex: -1
       addedObject: {fileID: 2057791244952273661}
   m_SourcePrefab: {fileID: 100100000, guid: 93503a21174f5d345a804c39bfa48549, type: 3}
 --- !u!1 &2904958579935399909 stripped
@@ -143,43 +137,6 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 7106771230575074518, guid: 93503a21174f5d345a804c39bfa48549, type: 3}
   m_PrefabInstance: {fileID: 5399867252812108595}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &1611978958385731254
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2904958579935399909}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 28f1c29d84f643d4b964504d8392cb12, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _speed: 10
-  skillList: []
---- !u!136 &6121480987731012536
-CapsuleCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2904958579935399909}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Radius: 0.5
-  m_Height: 2
-  m_Direction: 1
-  m_Center: {x: 0, y: 1, z: 0}
 --- !u!54 &2057791244952273661
 Rigidbody:
   m_ObjectHideFlags: 0

@@ -8,6 +8,7 @@ public class SkillSlot : MonoBehaviour
     // 스킬 슬롯에는 액티브형 스킬만 저장
     protected ActiveSkill _skill;
     protected PlayerController _player;
+    public ActiveSkill Skill { get { return _skill; } }
 
     Transform _target;
     bool _isTargetExist;
@@ -34,7 +35,8 @@ public class SkillSlot : MonoBehaviour
     void Initialize()
     {
         // 나중에 게임매니저에서 가져오든지 할 예정
-        _player = FindAnyObjectByType<PlayerController>();
+        //_player = FindAnyObjectByType<PlayerController>();
+        _player = PlayerManager.Instance.Player;
         //IsActivatePossible = false;
     }
 
@@ -45,7 +47,7 @@ public class SkillSlot : MonoBehaviour
 
         Skill skill;
         GameObject skillResource;
-        if(ObjectManager.Instance.PlayerSkillResourceList.TryGetValue(data.name, out skillResource))
+        if (ObjectManager.Instance.PlayerSkillResourceList.TryGetValue(data.name, out skillResource))
         {
             skill = skillResource.GetComponent<Skill>();
         }
@@ -67,9 +69,14 @@ public class SkillSlot : MonoBehaviour
         }
         _skill.Initialize(_player.PlayerData);
         var swift = _skill.GetComponent<ICharacterMovingSkill>();
-        if(swift!=null)
+        if (swift != null)
         {
             swift.OnSkillActivated += _player.ProcessPlayerCollision;
+        }
+        var rotation = _skill.GetComponent<IRotationSkill>();
+        if (rotation != null)
+        {
+            rotation.OnActivateSkill += _player.Rotate;
         }
         _skill.gameObject.SetActive(false);
 
@@ -114,14 +121,14 @@ public class SkillSlot : MonoBehaviour
     // 스킬 발동 & 마나 계산 & 쿨타임 시작
     void ProcessSkill(Transform target = null)
     {
-        if(_skill.ActivateSkill(transform.position))
+        if (_skill.ActivateSkill(transform.position))
         {
             _player.MP = Mathf.Max(_player.MP - _skill.SkillData.MP, 0);
             IsActivatePossible = false;
             StartCoroutine(CoStartCoolTime());
             OnActivateSkill?.Invoke();
         }
-        
+
     }
 
     public void DestroySkillSlot()

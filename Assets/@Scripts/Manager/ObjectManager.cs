@@ -510,7 +510,7 @@ public class ObjectManager : Singleton<ObjectManager>
         }
         else if(type == typeof(MonsterGateController))
         {
-            GameObject obj = Instantiate(MonsterGateResource, spawnPos, Quaternion.AngleAxis(-135f, Vector3.right));
+            GameObject obj = Instantiate(MonsterGateResource, spawnPos, Quaternion.identity);
             return obj;
         }
         return null;

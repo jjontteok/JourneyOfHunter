@@ -203,7 +203,7 @@ public class DungeonManager : Singleton<DungeonManager>, IEventSubscriber, IDeac
     private void CountMonsterDeath()
     {
         _deathMonsterCount++;
-        Debug.Log("몬스터 사망 : " + _deathMonsterCount);
+        //Debug.Log("몬스터 사망 : " + _deathMonsterCount);
         OnNormalMonsterDead?.Invoke(_deathMonsterCount, 20);
 
         if(_deathMonsterCount >= 20 && !_isOnSpawnableInvoked)
