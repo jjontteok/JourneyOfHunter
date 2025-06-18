@@ -141,12 +141,6 @@ public class PlayerController : MonoBehaviour, IDamageable
         _mp = _playerData.MP;
         _animator = GetComponent<Animator>();
         _rigidbody = GetComponent<Rigidbody>();
-
-        //_skillSystem = GetComponent<SkillSystem>();
-        //_skillSystem.InitializeSkillSystem();
-        //_skillSystem.BasicSkillSlot.Skill.GetComponent<IRotationSkill>().OnActivateSkill += Rotate;
-
-        //SkillManager.Instance.LockIconSlots(_playerData.UnlockedSkillSlotCount);
     }
 
     #region Player Moving
@@ -167,18 +161,16 @@ public class PlayerController : MonoBehaviour, IDamageable
             // 던전 클리어해서 포탈 향해 가는 상황
             if (PlayerManager.Instance.IsAutoMoving)
             {
-                //if (!MoveToTarget(0.5f))
-                //{
-                //    // 아무것도 없으면 중앙 길따라 앞으로 전진
-                //    // 다음 던전 시작되면 _isAutoMoving false시키고 target 초기화
-                //    _isAutoMoving = false;
-                //    Destroy(_target.gameObject);
-                //    _target = null;
-                //    return;
-                //}
-                MoveAlongRoad();
+                if (!MoveToTarget(0.5f))
+                {
+                    // 포탈에 닿으면 IsAutoMoving false시키고 target 초기화
+                    PlayerManager.Instance.IsAutoMoving = false;
+                    _target = null;
+                    return;
+                }
+                //MoveAlongRoad();
                 SetTarget();
-                if (_target != null)
+                if (_target.CompareTag(Define.MonsterTag))
                 {
                     PlayerManager.Instance.IsAutoMoving = false;
                 }
@@ -223,8 +215,6 @@ public class PlayerController : MonoBehaviour, IDamageable
     // target과의 거리가 distance 이하가 될 때까지 움직임
     bool MoveToTarget(float distance)
     {
-        //if(_target.name== "TargetPoint")
-        //    Debug.Log()
         //타겟과 거리가 가까워지면 정지
         Vector3 targetPos = _target.position;
         targetPos.y = 0;
@@ -240,10 +230,24 @@ public class PlayerController : MonoBehaviour, IDamageable
         }
         else
         {
-            _direction = _target.position - transform.position;
-            _direction.y = 0;
-            _rigidbody.MovePosition(_rigidbody.position + _direction.normalized * _speed * Time.fixedDeltaTime);
+            if (PlayerManager.Instance.IsAutoMoving)
+            {
+                if (Mathf.Abs(_rigidbody.position.x) > 0.1f)
+                {
+                    _direction = new Vector3(_target.position.x - transform.position.x, 0, 1);
+                }
+                else
+                {
+                    _direction = Vector3.forward;
+                }
+            }
+            else
+            {
+                _direction = _target.position - transform.position;
+                _direction.y = 0;
+            }
 
+            _rigidbody.MovePosition(_rigidbody.position + _direction.normalized * _speed * Time.fixedDeltaTime);
 
             _animator.SetFloat(Define.Speed, _direction.magnitude);
             //타겟 바라보게 회전
@@ -344,12 +348,7 @@ public class PlayerController : MonoBehaviour, IDamageable
             {
                 Debug.Log("No target on field!!!");
                 PlayerManager.Instance.IsAutoMoving = true;
-                //_target = new GameObject("TargetPoint").transform;
-                //_target.position = FindAnyObjectByType<DungeonPortalController>().transform.position;
-                //Vector3 pos=_target.position;
-                //pos.y = 0;
-                //pos += _partalOffset;
-                //_target.position = pos;
+                _target = FindAnyObjectByType<DungeonPortalController>().transform;
                 return;
             }
         }

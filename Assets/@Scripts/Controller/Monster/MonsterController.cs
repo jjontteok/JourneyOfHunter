@@ -162,16 +162,16 @@ public abstract class MonsterController : MonoBehaviour, IDamageable
 
     // * 플레이어 충돌 및 공격 중일 시 데미지 계산
     //- stay로 처리했기에 피격 쿨타임을 적용 시켜 밸런스 조정 필요
-    private void OnCollisionStay(Collision collision)
-    {
-        if (_animator.GetBool(Define.IsAttacking))
-        {
-            if (collision.gameObject.CompareTag(Define.PlayerTag))
-            {
-                // 공격 처리
-                // collision.gameObject.GetComponent<PlayerController>().피격메서드;
-                // 피격 메서드 내에서 피격 쿨타임 활용해보아도 될듯합니다.
-            }
-        }
-    }
+    //private void OnCollisionStay(Collision collision)
+    //{
+    //    if (_animator.GetBool(Define.IsAttacking))
+    //    {
+    //        if (collision.gameObject.CompareTag(Define.PlayerTag))
+    //        {
+    //            // 공격 처리
+    //            // collision.gameObject.GetComponent<PlayerController>().피격메서드;
+    //            // 피격 메서드 내에서 피격 쿨타임 활용해보아도 될듯합니다.
+    //        }
+    //    }
+    //}
 }

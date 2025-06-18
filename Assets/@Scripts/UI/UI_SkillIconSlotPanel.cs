@@ -14,7 +14,6 @@ public class UI_SkillIconSlotPanel : MonoBehaviour
     private void Awake()
     {
         CreateSkillIconSlots();
-        PlayerManager.Instance.SkillSystem.InitializeSkillSystem();
         SkillManager.Instance.SetIconSlots(_iconSlots);
         SkillManager.Instance.LockIconSlots(PlayerManager.Instance.Player.PlayerData.UnlockedSkillSlotCount);
         PlayerManager.Instance.SkillSystem.SetSkillSlotList();

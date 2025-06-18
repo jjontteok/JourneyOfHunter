@@ -21,7 +21,7 @@ public class CutSceneManager : Singleton<CutSceneManager>,IEventSubscriber ,IDea
     #region IDeactivate
     public void Deactivate()
     {
-        _cutScene.SetActive(false);
+       // _cutScene.SetActive(false);
     }
     #endregion
 

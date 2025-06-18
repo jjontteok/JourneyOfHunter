@@ -83,8 +83,6 @@ public class SkillSystem : MonoBehaviour
             if (_activeSkillSlotList.Count == _player.PlayerData.UnlockedSkillSlotCount)
                 break;
         }
-
-        //BasicSkillSlot.Skill.GetComponent<IRotationSkill>().OnActivateSkill += _player.Rotate;
     }
 
     public void AddSkill(SkillData data)
@@ -107,7 +105,10 @@ public class SkillSystem : MonoBehaviour
             OnShortestSkillDistanceChanged?.Invoke(data.targetDistance);
         }
         // 패시브면 효과 적용만 시키고
-        // 나중에 추가
+        else if (ObjectManager.Instance.PlayerSkillResourceList[data.name].GetComponent<PassiveSkill>() != null)
+        {
+
+        }
         // 액티브면 슬롯 만들어서 저장 및 관리
         else
         {

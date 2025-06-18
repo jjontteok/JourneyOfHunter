@@ -32,7 +32,6 @@ public class MeteorSkill : AreaTargetSkill, IDelayedDamageSkill
         RaycastHit ray;
         Physics.Raycast(transform.position + Vector3.up * 5, Vector3.down, out ray, SkillData.offset.y);
         effect.transform.position = ray.point;
-        Debug.Log(ray.point);
         Destroy(effect, 0.5f);
     }
 

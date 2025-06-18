@@ -44,7 +44,7 @@ public class PlayerManager : Singleton<PlayerManager>
     public bool IsAutoMoving
     {
         get { return _isAutoMoving; }
-        set { _isAutoMoving = value; }
+        set { _isAutoMoving = value; Debug.Log("IsAutoMoving: " + _isAutoMoving); }
     }
 
     public PlayerController Player
@@ -56,10 +56,8 @@ public class PlayerManager : Singleton<PlayerManager>
     protected override void Initialize()
     {
         base.Initialize();
-        //_player = GameObject.FindGameObjectWithTag(Define.PlayerTag).GetComponent<PlayerController>();
         _player = Instantiate(ObjectManager.Instance.PlayerResource, _originPos, Quaternion.identity).GetComponent<PlayerController>();
         _skillSystem = _player.GetOrAddComponent<SkillSystem>();
-        //_skillSystem.InitializeSkillSystem();
+        _skillSystem.InitializeSkillSystem();
     }
-
 }
