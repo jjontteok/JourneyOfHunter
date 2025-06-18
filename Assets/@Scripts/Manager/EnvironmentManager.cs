@@ -116,7 +116,7 @@ public class EnvironmentManager : Singleton<EnvironmentManager>, IEventSubscribe
         {
             { Morning, 0},
             { Noon, 60},
-            { Evening, 110 },
+            { Evening, 100 },
             { Night, 60 }
         };
 
@@ -213,8 +213,8 @@ public class EnvironmentManager : Singleton<EnvironmentManager>, IEventSubscribe
 
     IEnumerator LerpSkyBox(string from, string to)
     {
+        TimeManager.Instance.IsPlaying = false;
         Color originColor = _colorList[from];
-
         while (Extension.CheckTwoValues(_colorList[from].r, _targetColorList[from]))
         {
             _currentSkyBox.SetColor("_Tint", _colorList[from]);
@@ -294,6 +294,7 @@ public class EnvironmentManager : Singleton<EnvironmentManager>, IEventSubscribe
     void ChangeRenderSettings()
     {
         RenderSettings.skybox = _currentSkyBox;
+        TimeManager.Instance.IsPlaying = true;
     }
 
     Define.TimeOfDayType GetPreviousTimeOfDay(Define.TimeOfDayType type)

@@ -58934,7 +58934,7 @@ GameObject:
   - component: {fileID: 1689136131}
   - component: {fileID: 1689136130}
   m_Layer: 0
-  m_Name: GameManager
+  m_Name: ManagerRoot
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -74702,5 +74702,5 @@ SceneRoots:
   - {fileID: 956427771}
   - {fileID: 1689136131}
   - {fileID: 1025774402}
-  - {fileID: 1468422384}
   - {fileID: 1595598491}
+  - {fileID: 1468422384}
