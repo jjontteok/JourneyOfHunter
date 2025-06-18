@@ -5,6 +5,11 @@ public class CutSceneManager : Singleton<CutSceneManager>,IEventSubscriber ,IDea
 {
     private GameObject _cutScene;
 
+    public GameObject CutScene
+    {
+        get { return _cutScene; }
+    }
+
     protected override void Initialize()
     {
         base.Initialize();
@@ -21,14 +26,14 @@ public class CutSceneManager : Singleton<CutSceneManager>,IEventSubscriber ,IDea
     #region IDeactivate
     public void Deactivate()
     {
-        _cutScene.SetActive(false);
+        //_cutScene.SetActive(false);
     }
     #endregion
 
     public void PlayCutScene()
     {
+        Debug.Log("컷신 실행");
         _cutScene?.SetActive(true);
         _cutScene.GetComponentInChildren<CutSceneController>().PlayCutScene();
     }
-
 }

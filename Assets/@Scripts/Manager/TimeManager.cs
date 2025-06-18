@@ -36,8 +36,6 @@ public class TimeManager : Singleton<TimeManager>, IEventSubscriber
             { 10f, Define.TimeOfDayType.Evening },
             { 20f, Define.TimeOfDayType.Night }
         };
-        float a = GetTime(GetNextType(Define.TimeOfDayType.Noon));
-        float b = GetTime(Define.TimeOfDayType.Evening);
         _duration = GetTime(GetNextType(Define.TimeOfDayType.Noon));
     }
 
