@@ -35,16 +35,22 @@ public class PlayerManager : Singleton<PlayerManager>
             {
                 if (!DungeonManager.Instance.IsDungeonExist && StageManager.Instance.StageActionStatus == Define.StageActionStatus.NotChallenge)
                 {
-                    _player.OnAutoTeleport?.Invoke();
+                    _player.OnAutoDungeonChallenge?.Invoke();
                 }
             }
+            Debug.Log("IsAuto: " + _isAuto);
         }
     }
 
+    // 포탈을 향해 가야할 때(target==portal), 몬스터랑 포탈 다 없는 잠깐의 순간(target==null)
     public bool IsAutoMoving
     {
         get { return _isAutoMoving; }
-        set { _isAutoMoving = value; Debug.Log("IsAutoMoving: " + _isAutoMoving); }
+        set
+        {
+            _isAutoMoving = value;
+            //Debug.Log("IsAutoMoving: " + _isAutoMoving);
+        }
     }
 
     public PlayerController Player

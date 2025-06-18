@@ -50,6 +50,8 @@ public class ManagerRoot : MonoBehaviour
         TimeManager.Instance.CreateManager();
 
         EnvironmentManager.Instance.CreateManager();
+
+        CameraManager.Instance.CreateManager();
     }
 
     // * 이벤트 구독 메서드

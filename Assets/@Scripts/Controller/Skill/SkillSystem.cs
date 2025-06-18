@@ -14,8 +14,6 @@ public class SkillSystem : MonoBehaviour
     List<SkillSlot> _activeSkillSlotList = new List<SkillSlot>();
     BasicSkillSlot _basicSkillSlot;
 
-    //Queue<SkillSlot> _skillQueue = new Queue<SkillSlot>();
-
     PlayerController _player;
 
     public bool IsAuto { get; set; }
@@ -61,11 +59,6 @@ public class SkillSystem : MonoBehaviour
                 }
             }
         }
-        //else
-        //{
-        //    // 기본 공격만 알아서 되도록
-        //    _basicSkillSlot.ActivateSlotSkill();
-        //}
     }
 
     bool IsBasicAttackPossible()

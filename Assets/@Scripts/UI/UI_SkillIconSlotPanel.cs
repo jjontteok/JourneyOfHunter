@@ -29,7 +29,7 @@ public class UI_SkillIconSlotPanel : MonoBehaviour
             RectTransform rect = go.GetComponent<RectTransform>();
             rect.anchoredPosition = CalculateSlotPosition(i);
             rect.sizeDelta = _size;
-            Debug.Log($"{i}: {rect.localPosition}");
+            //Debug.Log($"{i}: {rect.localPosition}");
             AddEvent(go, EventTriggerType.PointerClick, (data) => { OnClick(go, (PointerEventData)data); });
             _iconSlots[i] = go.GetComponent<SkillIconSlot>();
         }
