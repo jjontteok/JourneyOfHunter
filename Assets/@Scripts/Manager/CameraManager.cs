@@ -27,7 +27,7 @@ public class CameraManager : Singleton<CameraManager>
         _cutSceneCam = CutSceneManager.Instance.CutScene;
         _mainCamera = Camera.main;
 
-        Transform playerTransform = FindAnyObjectByType<PlayerController>().transform;
+        Transform playerTransform = PlayerManager.Instance.Player.transform;
         _cinemachineBrain = _mainCamera.GetOrAddComponent<CinemachineBrain>();
         _followCam.GetComponent<CinemachineCamera>().Follow = playerTransform;
         _followCam.GetComponent<CinemachineCamera>().LookAt = playerTransform;

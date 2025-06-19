@@ -76,8 +76,53 @@ PrefabInstance:
       propertyPath: m_Name
       value: Goblin
       objectReference: {fileID: 0}
+    - target: {fileID: 6083658116794280929, guid: 2fc4d82fd83b67548abb7abd97c7cde4, type: 3}
+      propertyPath: m_Layer
+      value: 9
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 5804282926578478713, guid: 2fc4d82fd83b67548abb7abd97c7cde4, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 2407094756131980701}
+    - targetCorrespondingSourceObject: {fileID: 6083658116794280929, guid: 2fc4d82fd83b67548abb7abd97c7cde4, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 2674904483121869059}
   m_SourcePrefab: {fileID: 100100000, guid: 2fc4d82fd83b67548abb7abd97c7cde4, type: 3}
+--- !u!1 &1928794014112775009 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 5804282926578478713, guid: 2fc4d82fd83b67548abb7abd97c7cde4, type: 3}
+  m_PrefabInstance: {fileID: 5352677134353847576}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &2407094756131980701
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1928794014112775009}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ffbcaa8fd55845941be2b6dc0af809a4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!1 &2172416918528835321 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 6083658116794280929, guid: 2fc4d82fd83b67548abb7abd97c7cde4, type: 3}
+  m_PrefabInstance: {fileID: 5352677134353847576}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &2674904483121869059
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2172416918528835321}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f7ed5b9f0e48893428ac284e7b7e4cea, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _hitEffect: {fileID: 5880797563127281583, guid: 9fdefb0a3da64f3438b1a44b600c3cad, type: 3}

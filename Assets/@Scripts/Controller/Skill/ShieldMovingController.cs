@@ -8,18 +8,16 @@ public class ShieldMovingController : MonoBehaviour
 
     private void OnEnable()
     {
-        for (int i = 0; i < _direction.Length; i++)
-        {
-            _shields[i].transform.localPosition = _direction[i];
-        }
+        //for (int i = 0; i < _direction.Length; i++)
+        //{
+        //    _shields[i].transform.localPosition = _direction[i];
+        //}
+        transform.rotation = Quaternion.identity;
     }
 
     private void Update()
     {
-        for (int i = 0; i < _direction.Length; i++)
-        {
-            _shields[i].transform.Translate(_direction[i] * _speed * Time.deltaTime, Space.World);
-        }
+        transform.RotateAround(transform.position, Vector3.up, 3f);
     }
 
 }

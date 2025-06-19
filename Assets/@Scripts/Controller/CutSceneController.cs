@@ -53,13 +53,13 @@ public class CutSceneController : MonoBehaviour
 
     public void PlayCutScene()
     {
+        _virtualCamera.SetActive(true);
         CameraManager.Instance.SetCutSceneCam();
         SetBinding();
         GameObject player = PlayerManager.Instance.Player.gameObject;
         transform.position = player.transform.position;
         _monsterAppearEffect.transform.position = _monsterPos.position - Vector3.up * 3;
         _monsterAppearEffect.SetActive(true);
-        _virtualCamera.SetActive(true);
         _playableDirector.Play();
 
         UIManager.Instance.DeactivateUIGame();

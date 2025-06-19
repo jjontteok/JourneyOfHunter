@@ -84,7 +84,7 @@ public class NormalSpawnerController : MonoBehaviour
 
     Vector3 GetRandomPos()
     {
-        float randomDist = Random.Range(-20, 20);
+        float randomDist = Random.Range(-15, 15);
         
         Vector3 randomPos = new Vector3(randomDist, 7, randomDist);
         return randomPos;

@@ -15,7 +15,7 @@ public class SwiftStrikeSkill : RotationTargetSkill, ICharacterMovingSkill
     public override void Initialize(Status status)
     {
         base.Initialize(status);
-        _playerRigidbody = _playerController.GetComponent<Rigidbody>();
+        _playerRigidbody = _player.GetComponent<Rigidbody>();
         _rigidbody = GetComponentInChildren<Rigidbody>();
     }
 

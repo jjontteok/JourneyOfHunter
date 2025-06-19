@@ -21,7 +21,7 @@ public class ActiveSkill : Skill
         base.Initialize(status);
     }
 
-    IEnumerator DeActivateSkill()
+    protected override IEnumerator DeActivateSkill()
     {
         yield return _skillDurationTime;
         gameObject.SetActive(false);

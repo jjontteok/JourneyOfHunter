@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 
 public class PassiveSkill : Skill
@@ -10,5 +11,10 @@ public class PassiveSkill : Skill
     public override void Initialize(Status status)
     {
         base.Initialize(status);
+    }
+
+    protected override IEnumerator DeActivateSkill()
+    {
+        throw new System.NotImplementedException();
     }
 }
