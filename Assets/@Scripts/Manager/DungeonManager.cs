@@ -172,13 +172,10 @@ public class DungeonManager : Singleton<DungeonManager>, IEventSubscriber, IDeac
 
     private void ExitDungeon()
     {
-        if (PlayerManager.Instance.IsAuto)
+        OnDungeonExit?.Invoke();
+        if(PlayerManager.Instance.IsAuto)
         {
             CreateDungeon();
-        }
-        else
-        {
-            OnDungeonExit?.Invoke();
         }
     }
 

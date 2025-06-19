@@ -155,7 +155,7 @@ public class UI_Game : MonoBehaviour
 
     void OnAutoToggleClick(bool flag)
     {
-        Debug.Log($"Auto: {flag}");
+        //Debug.Log($"Auto: {flag}");
         OnAutoChanged?.Invoke(flag);
     }
 
