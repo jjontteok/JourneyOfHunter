@@ -118,6 +118,10 @@ public class PopupUIManager : Singleton<PopupUIManager>, IEventSubscriber, IDeac
     public void ActivateStageInfoPanel()
     {
         _popupStageInfo.SetActive(true);
+        if(PlayerManager.Instance.IsAuto)
+        {
+            StageManager.Instance.StageActionStatus = Define.StageActionStatus.AutoChallenge;
+        }
     }
 
     public void ActivateNamedMonsterInfoPanel()

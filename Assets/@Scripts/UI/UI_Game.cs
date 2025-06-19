@@ -49,7 +49,7 @@ public class UI_Game : MonoBehaviour
         _player = PlayerManager.Instance.Player;
         OnAutoChanged += (flag) => PlayerManager.Instance.IsAuto = flag;
         _player.OnAutoOff += OnAutoToggleOff;
-        _player.OnAutoTeleport += () =>
+        _player.OnAutoDungeonChallenge += () =>
         {
             if (PlayerManager.Instance.IsAuto)
             {
@@ -146,7 +146,6 @@ public class UI_Game : MonoBehaviour
     void OnCreateDungeonButtonClick()
     {
         DungeonManager.Instance.CreateDungeon();
-
         DungeonManager.Instance.OnDungeonExit -= ActivateDungeonPortalButton;
         DungeonManager.Instance.OnDungeonExit += ActivateDungeonPortalButton;
         _createDungeonPortalButton.gameObject.SetActive(false);
@@ -154,7 +153,7 @@ public class UI_Game : MonoBehaviour
 
     void OnAutoToggleClick(bool flag)
     {
-        Debug.Log($"Auto: {flag}");
+        //Debug.Log($"Auto: {flag}");
         OnAutoChanged?.Invoke(flag);
     }
 

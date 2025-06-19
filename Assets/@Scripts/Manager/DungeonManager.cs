@@ -20,7 +20,7 @@ public class DungeonManager : Singleton<DungeonManager>, IEventSubscriber, IDeac
 
     #region StageInfo
     private Dictionary<string, StageInfo> _stages;
-    private StageInfo _currentStage;    
+    private StageInfo _currentStage;
 
     private int _deathMonsterCount = 0;
     private bool _isOnSpawnableInvoked = false;
@@ -41,8 +41,8 @@ public class DungeonManager : Singleton<DungeonManager>, IEventSubscriber, IDeac
         get { return _dungeonWallBack; }
     }
     public GameObject DungeonEnterPortal
-    { 
-        get { return _dungeonEnterPortal; } 
+    {
+        get { return _dungeonEnterPortal; }
     }
     public GameObject DungeonExitPortal
     {
@@ -55,7 +55,7 @@ public class DungeonManager : Singleton<DungeonManager>, IEventSubscriber, IDeac
     public bool IsChallenge
     {
         get { return _isChallenge; }
-        set 
+        set
         {
             if (value == true)
                 OnSpawnNamedMonster?.Invoke();
@@ -63,10 +63,10 @@ public class DungeonManager : Singleton<DungeonManager>, IEventSubscriber, IDeac
         }
     }
 
-    public bool IsDungeonExist 
-    { 
+    public bool IsDungeonExist
+    {
         get { return _isDungeonExist; }
-        set { _isDungeonExist = value; } 
+        set { _isDungeonExist = value; }
     }
 
     public int DeathMonsterCount
@@ -123,7 +123,7 @@ public class DungeonManager : Singleton<DungeonManager>, IEventSubscriber, IDeac
         OnSpawnNamedMonster += SetNormalMonsterOff;
 
         OnDungeonEnter += () => IsDungeonExist = true;
-        OnDungeonExit+= () => IsDungeonExist = false;
+        OnDungeonExit += () => IsDungeonExist = false;
     }
     #endregion
 
@@ -186,6 +186,10 @@ public class DungeonManager : Singleton<DungeonManager>, IEventSubscriber, IDeac
     {
         OnDungeonExit?.Invoke();
         SetWallDown();
+        if(PlayerManager.Instance.IsAuto)
+        {
+            CreateDungeon();
+        }
     }
 
     // * 던전 오브젝트 관리 메서드
@@ -207,7 +211,7 @@ public class DungeonManager : Singleton<DungeonManager>, IEventSubscriber, IDeac
     private void SetNormalMonsterOff()
     {
         List<GameObject> normalMonsterPool = PoolManager.Instance.PoolList["Demon"];
-        for (int i =0; i< normalMonsterPool.Count; i++)
+        for (int i = 0; i < normalMonsterPool.Count; i++)
         {
             normalMonsterPool[i].SetActive(false);
         }
@@ -218,7 +222,7 @@ public class DungeonManager : Singleton<DungeonManager>, IEventSubscriber, IDeac
     {
         DeathMonsterCount++;
 
-        if(_deathMonsterCount >= 20 && !_isOnSpawnableInvoked)
+        if (_deathMonsterCount >= 20 && !_isOnSpawnableInvoked)
         {
             _isOnSpawnableInvoked = true;
             OnSpawnableNamedMonster?.Invoke(); //도전 버튼 활성화해야함
