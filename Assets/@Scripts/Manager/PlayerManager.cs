@@ -23,18 +23,38 @@ public class PlayerManager : Singleton<PlayerManager>
             _isAuto = value;
             _skillSystem.IsAuto = value;
             // 자동 모드 꺼지면 타겟도 초기화
+            // AutoChallenge 중이면 NotChallenge로 변화
             if (!value)
             {
                 _player.Target = null;
                 _isAutoMoving = false;
+                if(StageManager.Instance.StageActionStatus==Define.StageActionStatus.AutoChallenge)
+                {
+                    StageManager.Instance.StageActionStatus = Define.StageActionStatus.NotChallenge;
+                }
             }
-            // 던전 생성 버튼이 활성화되어있는데 자동 모드 켜질때
             else
             {
-                if (!DungeonManager.Instance.IsDungeonExist && StageManager.Instance.StageActionStatus == Define.StageActionStatus.NotChallenge)
+                if(StageManager.Instance.StageActionStatus == Define.StageActionStatus.NotChallenge)
                 {
-                    _player.OnAutoDungeonChallenge?.Invoke();
+                    // 던전 생성 버튼이 활성화되어있는데 자동 모드 켜질때
+                    if (!DungeonManager.Instance.IsDungeonExist)
+                    {
+                        _player.OnAutoDungeonChallenge?.Invoke();
+                    }
+                    // 던전 진행 중이고, 아직 게이지 다 안 찬 NotChallenge상태에서 자동 켜질 때
+                    else if (DungeonManager.Instance.IsDungeonExist)
+                    {
+                        StageManager.Instance.StageActionStatus = Define.StageActionStatus.AutoChallenge;
+                    }
                 }
+                else if (StageManager.Instance.StageActionStatus == Define.StageActionStatus.Challenge)
+                {
+                    //StageManager.Instance.StageActionStatus = Define.StageActionStatus.ExitStage;
+                    StageManager.Instance.IsSpawnNamedMonster = true;
+                }
+
+
             }
             //Debug.Log("IsAuto: " + _isAuto);
         }

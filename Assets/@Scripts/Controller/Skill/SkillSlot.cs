@@ -100,6 +100,12 @@ public class SkillSlot : MonoBehaviour
     {
         if (IsActivatePossible && _player.MP >= _skill.SkillData.MP)
         {
+            // 수동 전투이면 그냥 발동
+            if(!PlayerManager.Instance.IsAuto)
+            {
+                ProcessSkill();
+                return;
+            }
             // Target형 스킬인 경우
             if (_isTargetExist)
             {
@@ -107,7 +113,7 @@ public class SkillSlot : MonoBehaviour
                 _target = Util.GetNearestTarget(transform.position, _skill.SkillData.targetDistance)?.transform;
                 if (_target != null)
                 {
-                    ProcessSkill(_target);
+                    ProcessSkill();
                 }
             }
             // Target형 스킬이 아닌 경우
@@ -119,7 +125,7 @@ public class SkillSlot : MonoBehaviour
     }
 
     // 스킬 발동 & 마나 계산 & 쿨타임 시작
-    void ProcessSkill(Transform target = null)
+    void ProcessSkill()
     {
         if (_skill.ActivateSkill(transform.position))
         {
