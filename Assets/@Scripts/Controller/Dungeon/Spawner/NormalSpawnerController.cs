@@ -33,12 +33,7 @@ public class NormalSpawnerController : MonoBehaviour
     public void SetSpawnerPos(Vector3 offSet)
     {
         _offset = offSet;
-        _spawnPosList.Add(Define.SpawnSpot1 + _offset);
-        _spawnPosList.Add(Define.SpawnSpot2 + _offset);
-        _spawnPosList.Add(Define.SpawnSpot3 + _offset);
-        _spawnPosList.Add(Define.SpawnSpot4 + _offset);
-        _spawnPosList.Add(Define.SpawnSpot5 + _offset);
-        _spawnPosList.Add(Define.SpawnSpot6 + _offset);
+        _spawnPosList.Add(_offset);
     }
 
     // 스포너 설정 및 스폰 시작
@@ -69,28 +64,25 @@ public class NormalSpawnerController : MonoBehaviour
 
     void SpawnGate()
     {
-        int index = Random.Range(0, _spawnPosList.Count);
-
         // 이거 수정해야함
-        _spawnPosList[index] = GetRandomSpawnPos();
+        _spawnPosList[0] += GetRandomPos();
 
-        GameObject monsterGate = PoolManager.Instance.GetObjectFromPool<MonsterGateController>(_spawnPosList[index] + Vector3.up * 2, "HellGate");
+        GameObject monsterGate = PoolManager.Instance.GetObjectFromPool<MonsterGateController>(_spawnPosList[0] + Vector3.up * 2, "HellGate");
         MonsterGateController monsterGateController = monsterGate.GetComponent<MonsterGateController>();
         monsterGateController.SetRotation(_offset);
-        monsterGateController.SetIndex(index);
         monsterGateController.OnGateOpen += SpawnMonsters;
     }
 
     void SpawnMonsters(int index)
     {
-        PoolManager.Instance.GetObjectFromPool<NormalMonsterController>(_spawnPosList[index], _monsterName);
-        PoolManager.Instance.GetObjectFromPool<NormalMonsterController>(_spawnPosList[index] + _monsterInterval * Vector3.right, _monsterName);
-        PoolManager.Instance.GetObjectFromPool<NormalMonsterController>(_spawnPosList[index] + _monsterInterval * Vector3.left, _monsterName);
-        PoolManager.Instance.GetObjectFromPool<NormalMonsterController>(_spawnPosList[index] + _monsterInterval * Vector3.forward, _monsterName);
-        PoolManager.Instance.GetObjectFromPool<NormalMonsterController>(_spawnPosList[index] + _monsterInterval * Vector3.back, _monsterName);
+        PoolManager.Instance.GetObjectFromPool<NormalMonsterController>(_spawnPosList[0], _monsterName);
+        PoolManager.Instance.GetObjectFromPool<NormalMonsterController>(_spawnPosList[0] + _monsterInterval * Vector3.right, _monsterName);
+        PoolManager.Instance.GetObjectFromPool<NormalMonsterController>(_spawnPosList[0] + _monsterInterval * Vector3.left, _monsterName);
+        PoolManager.Instance.GetObjectFromPool<NormalMonsterController>(_spawnPosList[0] + _monsterInterval * Vector3.forward, _monsterName);
+        PoolManager.Instance.GetObjectFromPool<NormalMonsterController>(_spawnPosList[0] + _monsterInterval * Vector3.back, _monsterName);
     }
 
-    Vector3 GetRandomSpawnPos()
+    Vector3 GetRandomPos()
     {
         float randomDist = Random.Range(-20, 20);
         

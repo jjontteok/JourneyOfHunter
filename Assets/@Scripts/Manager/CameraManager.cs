@@ -1,4 +1,5 @@
 using extension;
+using System;
 using System.Collections.Generic;
 using Unity.Cinemachine;
 using Unity.VisualScripting;
@@ -8,6 +9,8 @@ public class CameraManager : Singleton<CameraManager>
 {
     CinemachineBrain _cinemachineBrain;
     private Camera _mainCamera;
+
+    public Action OnCutSceneEnded;
 
     GameObject _followCam;
     GameObject _cutSceneCam;
@@ -41,5 +44,6 @@ public class CameraManager : Singleton<CameraManager>
     {
         _cutSceneCam.GetComponentInChildren<CinemachineCamera>().Priority = highPriority;
         _followCam.GetComponent<CinemachineCamera>().Priority = lowPriority;
+        //_mainCamera.cullingMask 
     }
 }

@@ -58,8 +58,8 @@ public class SpawnManager : Singleton<SpawnManager>, IEventSubscriber, IDeactiva
     
     void SetNormalSpawnerOff()
     {
-        _normalSpawner.gameObject.SetActive(false);
         _normalSpawner.SetSpawnerOff();
+        _normalSpawner.gameObject.SetActive(false);
     }
 
     void SetNamedSpawnerOn()
@@ -71,7 +71,7 @@ public class SpawnManager : Singleton<SpawnManager>, IEventSubscriber, IDeactiva
 
     void SetNamedSpawnerOff()
     {
-        _namedSpawner.gameObject.SetActive(false);
         _namedSpawner.SetSpawnerOff();
+        _namedSpawner.gameObject.SetActive(false);
     }
 }
