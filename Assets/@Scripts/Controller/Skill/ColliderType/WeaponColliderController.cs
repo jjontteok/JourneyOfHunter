@@ -19,7 +19,6 @@ public class WeaponColliderController : MonoBehaviour
 
         effect.transform.position = Util.GetEffectPosition(other);
 
-        transform.parent.gameObject.SetActive(false);
         Destroy(effect, 0.5f);
     }
 
