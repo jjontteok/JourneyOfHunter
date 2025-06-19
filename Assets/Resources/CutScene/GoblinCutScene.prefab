@@ -131,7 +131,7 @@ MonoBehaviour:
       Curvature: {x: 2, y: 11}
       BarrelClipping: 0.25
       Anamorphism: 0
-  BlendHint: 0
+  BlendHint: 16
 --- !u!95 &2634237267759698532
 Animator:
   serializedVersion: 7

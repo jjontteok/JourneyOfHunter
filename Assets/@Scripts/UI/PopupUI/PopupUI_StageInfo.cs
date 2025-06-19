@@ -33,6 +33,7 @@ public class PopupUI_StageInfo : MonoBehaviour
 
     private void SetMonsterCountBarClear()
     {
+        _monsterCountText.text = "0 %";
         _monsterCountBarImage.fillAmount = 0;
     }
     private void SetMonsterCountBar(float currentDeathCount, float clearDeathCount)

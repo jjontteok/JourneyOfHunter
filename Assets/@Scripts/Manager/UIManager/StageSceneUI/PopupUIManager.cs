@@ -43,7 +43,8 @@ public class PopupUIManager : Singleton<PopupUIManager>, IEventSubscriber, IDeac
         DungeonManager.Instance.OnDungeonEnter += ActivateStageInfoPanel;
         DungeonManager.Instance.OnDungeonExit += DeactivateStageInfoPanel;
         DungeonManager.Instance.OnSpawnNamedMonster += DeactivateStageInfoPanel;
-        DungeonManager.Instance.OnSpawnNamedMonster += ActivateNamedMonsterInfoPanel;
+        //CameraManager.Instance.OnCutSceneEnded += ActivateNamedMonsterInfoPanel;
+        //DungeonManager.Instance.OnSpawnNamedMonster += ActivateNamedMonsterInfoPanel;
         DungeonManager.Instance.OnDungeonClear += DeactivateNamedMonsterInfo;
 
         TimeManager.Instance.OnGainedRecordTimeChanged += UpdateGainedRecordTime;
