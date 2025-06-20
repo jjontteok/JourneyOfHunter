@@ -99,11 +99,13 @@ public class Define : MonoBehaviour
     public enum StatusType
     {
         Atk,
+        Def,
+        Damage,
         HP,
         HPRecoveryPerSec,
-        Def,
         MP,
         MPRecoveryPerSec,
+        CoolTimeDecrease,
         None,
     }
     public enum GoodsType

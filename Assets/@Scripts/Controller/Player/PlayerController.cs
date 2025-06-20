@@ -6,14 +6,26 @@ public struct PlayerStatus
 {
     public float Atk;
     public float Def;
+    public float Damage;
     public float HP;
+    public float HPRecoveryPerSec;
+    public float CoolTimeDecrease;
 
     public PlayerStatus(PlayerData playerData)
     {
         Atk = playerData.Atk;
         Def = playerData.Def;
+        Damage = playerData.Damage;
         HP = playerData.HP;
+        HPRecoveryPerSec = playerData.HPRecoveryPerSec;
+        CoolTimeDecrease = playerData.CoolTimeDecrease;
     }
+
+    public float GetCoolTimeDecrease()
+    {
+        return CoolTimeDecrease;
+    }
+
 }
 
 public class PlayerController : MonoBehaviour, IDamageable
@@ -25,7 +37,7 @@ public class PlayerController : MonoBehaviour, IDamageable
     public static Action<float, float> OnHPValueChanged;
     public static Action<float, float> OnMPValueChanged;
 
-    PlayerStatus _runtimeData;
+    [SerializeField] PlayerStatus _runtimeData;
     Vector3 _direction;
     float _mp;
     float _hp;
@@ -38,7 +50,7 @@ public class PlayerController : MonoBehaviour, IDamageable
     public Action OnAutoOff;
     public Action OnAutoDungeonChallenge;
 
-    [SerializeField] PlayerData _playerData;
+    PlayerData _playerData;
     [SerializeField] float _speed;
 
     #region Properties
@@ -376,9 +388,9 @@ public class PlayerController : MonoBehaviour, IDamageable
         StartCoroutine(CoSetPlayerCollision(duration));
     }
 
-    public void OnOffStatusUpgrade(Define.StatusType status,float amount)
+    public void OnOffStatusUpgrade(Define.StatusType status, float amount, bool isMultiply)
     {
-        switch(status)
+        switch (status)
         {
             case Define.StatusType.Atk:
                 _runtimeData.Atk += amount;
@@ -386,6 +398,22 @@ public class PlayerController : MonoBehaviour, IDamageable
 
             case Define.StatusType.Def:
                 _runtimeData.Def += amount;
+                break;
+
+            case Define.StatusType.Damage:
+                _runtimeData.Damage += amount;
+                break;
+
+            case Define.StatusType.HP:
+                _runtimeData.HP += amount;
+                break;
+
+            case Define.StatusType.HPRecoveryPerSec:
+                _runtimeData.HPRecoveryPerSec += amount;
+                break;
+
+            case Define.StatusType.CoolTimeDecrease:
+                _runtimeData.CoolTimeDecrease += amount;
                 break;
 
             default:

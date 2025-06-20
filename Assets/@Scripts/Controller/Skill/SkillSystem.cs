@@ -86,54 +86,61 @@ public class SkillSystem : MonoBehaviour
             Debug.Log($"Skill named {data.skillName} already exists!!!");
             return;
         }
-
-        GameObject go = new GameObject(data.name + " slot");
-        go.transform.SetParent(transform);
-        go.transform.localPosition = Vector3.up;
-        // 기본 공격이면 기본공격 슬롯 따로 만들어서 저장 및 관리
-        if (data.name == "PlayerBasicAttack")
+        GameObject skillResource = ObjectManager.Instance.PlayerSkillResourceList[data.name];
+        // 패시브면 효과 적용만 시키고, 슬롯은 x
+        if (skillResource.GetComponent<PassiveSkill>() != null)
         {
-            _basicSkillSlot = go.AddComponent<BasicSkillSlot>();
-            _basicSkillSlot.SetSkill(data);
-            OnShortestSkillDistanceChanged?.Invoke(data.targetDistance);
-        }
-        // 패시브면 효과 적용만 시키고
-        else if (ObjectManager.Instance.PlayerSkillResourceList[data.name].GetComponent<PassiveSkill>() != null)
-        {
-
+            PassiveSkill passive = Instantiate(skillResource).GetComponent<PassiveSkill>();
+            passive.Initialize(_player.PlayerData);
         }
         // 액티브면 슬롯 만들어서 저장 및 관리
         else
         {
-            SkillSlot slot = go.AddComponent<SkillSlot>();
-            // 비어있는 인덱스 있나 찾아보고
-            int idx = _activeSkillSlotList.FindIndex((slot) => slot == null);
+            GameObject go = new GameObject(data.name + " slot");
+            go.transform.SetParent(transform);
+            go.transform.localPosition = Vector3.up;
 
-            // 비어있는 인덱스 없는 경우(idx == -1)
-            if (idx < 0)
+            // 기본 공격이면 기본공격 슬롯 따로 만들어서 저장 및 관리
+            if (data.name == "PlayerBasicAttack")
             {
-                // 슬롯리스트 아직 덜 찼으면 add
-                if (_activeSkillSlotList.Count < _player.PlayerData.UnlockedSkillSlotCount)
-                {
-                    _activeSkillSlotList.Add(slot);
-                    SkillManager.Instance.SubscribeEvents(slot, _activeSkillSlotList.Count - 1);
-                    slot.OnActivateSkill += StartSkillInterval;
-                }
-                // 슬롯리스트 꽉 찼으면 실행 x
-                else
-                {
-                    Debug.Log("Slot list is already full!!!");
-                    return;
-                }
+                _basicSkillSlot = go.AddComponent<BasicSkillSlot>();
+                _basicSkillSlot.SetSkill(data);
+                OnShortestSkillDistanceChanged?.Invoke(data.targetDistance);
             }
+
             else
             {
-                _activeSkillSlotList[idx] = slot;
-                SkillManager.Instance.SubscribeEvents(slot, idx);
-                slot.OnActivateSkill += StartSkillInterval;
+                SkillSlot slot = go.AddComponent<SkillSlot>();
+                // 비어있는 인덱스 있나 찾아보고
+                int idx = _activeSkillSlotList.FindIndex((slot) => slot == null);
+
+                // 비어있는 인덱스 없는 경우(idx == -1)
+                if (idx < 0)
+                {
+                    // 슬롯리스트 아직 덜 찼으면 add
+                    if (_activeSkillSlotList.Count < _player.PlayerData.UnlockedSkillSlotCount)
+                    {
+                        _activeSkillSlotList.Add(slot);
+                        SkillManager.Instance.SubscribeEvents(slot, _activeSkillSlotList.Count - 1);
+                        slot.OnActivateSkill += StartSkillInterval;
+                    }
+                    // 슬롯리스트 꽉 찼으면 실행 x
+                    else
+                    {
+                        Debug.Log("Slot list is already full!!!");
+                        return;
+                    }
+                }
+                else
+                {
+                    _activeSkillSlotList[idx] = slot;
+                    SkillManager.Instance.SubscribeEvents(slot, idx);
+                    slot.OnActivateSkill += StartSkillInterval;
+                }
+                slot.SetSkill(data);
             }
-            slot.SetSkill(data);
         }
+        
     }
 
     public void RemoveSkill(SkillData data)
