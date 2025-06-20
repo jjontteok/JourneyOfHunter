@@ -1,34 +1,56 @@
 using System;
 using System.Collections;
 using UnityEngine;
-using UnityEngine.UI;
+
+public struct PlayerStatus
+{
+    public float Atk;
+    public float Def;
+    public float Damage;
+    public float HP;
+    public float HPRecoveryPerSec;
+    public float CoolTimeDecrease;
+
+    public PlayerStatus(PlayerData playerData)
+    {
+        Atk = playerData.Atk;
+        Def = playerData.Def;
+        Damage = playerData.Damage;
+        HP = playerData.HP;
+        HPRecoveryPerSec = playerData.HPRecoveryPerSec;
+        CoolTimeDecrease = playerData.CoolTimeDecrease;
+    }
+
+    public float GetCoolTimeDecrease()
+    {
+        return CoolTimeDecrease;
+    }
+
+}
 
 public class PlayerController : MonoBehaviour, IDamageable
 {
     Animator _animator;
     Rigidbody _rigidbody;
-    //SkillSystem _skillSystem;
     [SerializeField] Transform _target;
 
     public static Action<float, float> OnHPValueChanged;
     public static Action<float, float> OnMPValueChanged;
 
-    readonly Vector3 _portalOffset = Vector3.forward * 2;
+    [SerializeField] PlayerStatus _runtimeData;
     Vector3 _direction;
     float _mp;
     float _hp;
     [SerializeField] float _shortestSkillDistance;   //자동일 때, 이동 멈추는 범위
-    //bool _isAuto;                   //자동 여부
-    //[SerializeField] bool _isAutoMoving;             //자동일 때, 타겟 없을 시 다음 스테이지 이동 여부
-    bool _isSwifting;                  //질풍참 사용 시 auto 여부 저장용으로 쓰임
 
+    bool _isSwifting;                  //질풍참 사용 여부
     bool _isKeyBoard;
     bool _isJoyStick;
 
     public Action OnAutoOff;
     public Action OnAutoDungeonChallenge;
 
-    [SerializeField] PlayerData _playerData;
+    PlayerData _playerData;
     [SerializeField] float _speed;
 
     #region Properties
@@ -73,6 +95,7 @@ public class PlayerController : MonoBehaviour, IDamageable
 
     // 데이터는 getter만 되도록?
     public PlayerData PlayerData { get { return _playerData; } }
+    public PlayerStatus PlayerStatus { get { return _runtimeData; } }
 
     public float HP
     {
@@ -118,6 +141,7 @@ public class PlayerController : MonoBehaviour, IDamageable
         _mp = _playerData.MP;
         _animator = GetComponent<Animator>();
         _rigidbody = GetComponent<Rigidbody>();
+        _runtimeData = new PlayerStatus(_playerData);
     }
 
     #region Player Moving
@@ -154,9 +178,6 @@ public class PlayerController : MonoBehaviour, IDamageable
                     _target = null;
                     return;
                 }
-                //MoveAlongRoad();
-                //SetTarget();
-
             }
             else
             {
@@ -355,21 +376,49 @@ public class PlayerController : MonoBehaviour, IDamageable
 
     IEnumerator CoSetPlayerCollision(float duration)
     {
-        //_isSwifting = PlayerManager.Instance.IsAuto;
         _isSwifting = true;
         SetPlayerCollision(false);
-        //PlayerManager.Instance.IsAuto = false;
         yield return new WaitForSeconds(duration);
         SetPlayerCollision(true);
-        //PlayerManager.Instance.IsAuto = _isSwifting;
         _isSwifting = false;
-
-        //ClampYPosition();
     }
 
     public void ProcessPlayerCollision(float duration)
     {
         StartCoroutine(CoSetPlayerCollision(duration));
+    }
+
+    public void OnOffStatusUpgrade(Define.StatusType status, float amount, bool isMultiply)
+    {
+        switch (status)
+        {
+            case Define.StatusType.Atk:
+                _runtimeData.Atk += amount;
+                break;
+
+            case Define.StatusType.Def:
+                _runtimeData.Def += amount;
+                break;
+
+            case Define.StatusType.Damage:
+                _runtimeData.Damage += amount;
+                break;
+
+            case Define.StatusType.HP:
+                _runtimeData.HP += amount;
+                break;
+
+            case Define.StatusType.HPRecoveryPerSec:
+                _runtimeData.HPRecoveryPerSec += amount;
+                break;
+
+            case Define.StatusType.CoolTimeDecrease:
+                _runtimeData.CoolTimeDecrease += amount;
+                break;
+
+            default:
+                break;
+        }
     }
 
     #endregion
@@ -378,7 +427,7 @@ public class PlayerController : MonoBehaviour, IDamageable
     // * 방어력 적용 데미지 계산 메서드
     public void GetDamage(float damage)
     {
-        float finalDamage = CalculateFinalDamage(damage, _playerData.Def);
+        float finalDamage = CalculateFinalDamage(damage, _runtimeData.Def);
         HP -= finalDamage;
         DamageTextEvent.Invoke(Util.GetDamageTextPosition(gameObject.GetComponent<Collider>()), finalDamage, false);
         //Debug.Log($"Damaged: {finalDamage}, Current Player HP: {_hp}");

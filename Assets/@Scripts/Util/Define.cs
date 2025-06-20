@@ -12,6 +12,7 @@ public class Define : MonoBehaviour
 
     public readonly static int CloseAttack = Animator.StringToHash("CloseAttack");
     public readonly static int LongAttack = Animator.StringToHash("LongAttack");
+    public readonly static int IsInteractionPossible = Animator.StringToHash("IsInteractionPossible");
 
     public const string EndAttack = "EndAttack";
     public const string WalkSpeed = "WalkSpeed";
@@ -98,11 +99,14 @@ public class Define : MonoBehaviour
     public enum StatusType
     {
         Atk,
+        Def,
+        Damage,
         HP,
         HPRecoveryPerSec,
-        Def,
         MP,
         MPRecoveryPerSec,
+        CoolTimeDecrease,
+        None,
     }
     public enum GoodsType
     {

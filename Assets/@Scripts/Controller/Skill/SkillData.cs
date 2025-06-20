@@ -19,4 +19,7 @@ public class SkillData : ScriptableObject
     public bool targetExistence;
     public bool isPlayerSkill;
     public Vector3 offset;
+
+    public Define.StatusType buffStatus;
+    public float buffAmount;
 }

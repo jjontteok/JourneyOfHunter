@@ -27,3 +27,5 @@ MonoBehaviour:
   targetExistence: 1
   isPlayerSkill: 0
   offset: {x: 0, y: 0, z: 0}
+  buffStatus: 6
+  buffAmount: 0

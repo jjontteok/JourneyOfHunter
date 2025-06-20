@@ -38,7 +38,7 @@ public class TransformTargetSkill : ActiveSkill, ITargetSkill, IMovingSkill, IDi
     public virtual bool IsTargetExist(Vector3 pos, bool isPlayerSkill)
     {
         // 수동 모드일 땐 타겟 유무 상관없이 그냥 발사
-        if (!PlayerManager.Instance.IsAuto)
+        if (SkillData.isPlayerSkill && !PlayerManager.Instance.IsAuto)
             return true;
         _target = Util.GetNearestTarget(pos, _skillData.targetDistance, isPlayerSkill)?.transform;
         //Debug.Log($"Current Target: {_target.name}\npostion:{_target.position}");
@@ -55,20 +55,30 @@ public class TransformTargetSkill : ActiveSkill, ITargetSkill, IMovingSkill, IDi
 
     public void SetDirection()
     {
-        // 자동 모드면 가까운 적을 향해 방향 설정
-        if(PlayerManager.Instance.IsAuto)
+        // 플레이어 스킬이 아니면(==몬스터 스킬이면) 타겟을 향해 설정
+        if (!SkillData.isPlayerSkill)
         {
-            //타겟 방향으로 스킬 방향 설정
-            //스킬이 땅으로 박히지 않도록 높이 맞춰주기
             Vector3 dir = _target.position - transform.position;
             dir.y = 0;
             _direction = dir.normalized;
         }
-        // 수동 모드면 현재 플레이어가 바라보는 방향으로 설정
         else
         {
-            _direction = PlayerManager.Instance.Player.transform.TransformDirection(Vector3.forward);
+            // 자동 모드면 가까운 적을 향해 방향 설정
+            if (PlayerManager.Instance.IsAuto)
+            {
+                //타겟 방향으로 스킬 방향 설정
+                //스킬이 땅으로 박히지 않도록 높이 맞춰주기
+                Vector3 dir = _target.position - transform.position;
+                dir.y = 0;
+                _direction = dir.normalized;
+            }
+            // 수동 모드면 현재 플레이어가 바라보는 방향으로 설정
+            else
+            {
+                _direction = PlayerManager.Instance.Player.transform.TransformDirection(Vector3.forward);
+            }
         }
-            transform.rotation = Quaternion.LookRotation(_direction);
+        transform.rotation = Quaternion.LookRotation(_direction);
     }
 }

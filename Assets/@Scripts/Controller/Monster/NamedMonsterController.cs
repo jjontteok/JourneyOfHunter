@@ -16,6 +16,7 @@ public class NamedMonsterController : MonsterController
     [SerializeField] private bool _isMoveToOrigin;
     [SerializeField] private Vector3 _originPos;
     [SerializeField] private SkillData _bulletSkillData;
+    [SerializeField] private WeaponColliderController _weapon;
 
     float _coolTime = 0.0f;
 
@@ -31,6 +32,7 @@ public class NamedMonsterController : MonsterController
         moveRange.transform.parent = this.gameObject.transform;
         _moveRangeController = moveRange.GetOrAddComponent<MoveRangeController>();
         _moveRangeController.Intiailize(_runtimeData.MoveRange);
+        _weapon.SetColliderInfo(_runtimeData.Atk);
     }
     protected override void OnEnable()
     {

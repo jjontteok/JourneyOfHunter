@@ -21,9 +21,14 @@ public class ActiveSkill : Skill
         base.Initialize(status);
     }
 
-    IEnumerator DeActivateSkill()
+    protected virtual IEnumerator DeActivateSkill()
     {
-        yield return _skillDurationTime;
+        yield return new WaitForSeconds(GetCoolTimeReduction());
         gameObject.SetActive(false);
+    }
+
+    float GetCoolTimeReduction()
+    {
+        return _skillData.coolTime * (1 + _player.PlayerStatus.GetCoolTimeDecrease() / 100);
     }
 }
