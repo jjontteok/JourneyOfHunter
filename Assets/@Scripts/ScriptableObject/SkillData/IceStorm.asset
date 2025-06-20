@@ -27,3 +27,6 @@ MonoBehaviour:
   hitEffectPrefab: {fileID: 5112403345868107898, guid: 76bd86df99b0e3946bef8e28b75c9925, type: 3}
   targetExistence: 0
   isPlayerSkill: 1
+  offset: {x: 0, y: 0, z: 0}
+  buffStatus: 6
+  buffAmount: 0

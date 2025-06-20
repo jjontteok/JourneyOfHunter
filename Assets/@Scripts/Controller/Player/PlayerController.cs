@@ -1,60 +1,59 @@
 using System;
 using System.Collections;
 using UnityEngine;
-using UnityEngine.UI;
+
+public struct PlayerStatus
+{
+    public float Atk;
+    public float Def;
+    public float Damage;
+    public float HP;
+    public float HPRecoveryPerSec;
+    public float CoolTimeDecrease;
+
+    public PlayerStatus(PlayerData playerData)
+    {
+        Atk = playerData.Atk;
+        Def = playerData.Def;
+        Damage = playerData.Damage;
+        HP = playerData.HP;
+        HPRecoveryPerSec = playerData.HPRecoveryPerSec;
+        CoolTimeDecrease = playerData.CoolTimeDecrease;
+    }
+
+    public float GetCoolTimeDecrease()
+    {
+        return CoolTimeDecrease;
+    }
+
+}
 
 public class PlayerController : MonoBehaviour, IDamageable
 {
     Animator _animator;
     Rigidbody _rigidbody;
-    //SkillSystem _skillSystem;
     [SerializeField] Transform _target;
 
     public static Action<float, float> OnHPValueChanged;
     public static Action<float, float> OnMPValueChanged;
 
-    readonly Vector3 _portalOffset = Vector3.forward * 2;
+    [SerializeField] PlayerStatus _runtimeData;
     Vector3 _direction;
     float _mp;
     float _hp;
     [SerializeField] float _shortestSkillDistance;   //자동일 때, 이동 멈추는 범위
-    //bool _isAuto;                   //자동 여부
-    //[SerializeField] bool _isAutoMoving;             //자동일 때, 타겟 없을 시 다음 스테이지 이동 여부
-    bool _tmpAuto;                  //질풍참 사용 시 auto 여부 저장용으로 쓰임
 
+    bool _isSwifting;                  //질풍참 사용 여부
     bool _isKeyBoard;
     bool _isJoyStick;
 
     public Action OnAutoOff;
-    public Action OnAutoTeleport;
+    public Action OnAutoDungeonChallenge;
 
-    [SerializeField] PlayerData _playerData;
+    PlayerData _playerData;
     [SerializeField] float _speed;
 
     #region Properties
-    //public bool IsAuto
-    //{
-    //    get { return _isAuto; }
-    //    set
-    //    {
-    //        _isAuto = value;
-    //        _skillSystem.IsAuto = value;
-    //        // 자동 모드 꺼지면 타겟도 초기화
-    //        if (!value)
-    //        {
-    //            _target = null;
-    //            _isAutoMoving = false;
-    //        }
-    //        // 던전 생성 버튼이 활성화되어있는데 자동 모드 켜질때
-    //        else
-    //        {
-    //            if(!DungeonManager.Instance.IsDungeonExist&&StageManager.Instance.StageActionStatus==Define.StageActionStatus.NotChallenge)
-    //            {
-    //                OnAutoTeleport?.Invoke();
-    //            }
-    //        }
-    //    }
-    //}
 
     public bool IsKeyBoard
     {
@@ -96,6 +95,7 @@ public class PlayerController : MonoBehaviour, IDamageable
 
     // 데이터는 getter만 되도록?
     public PlayerData PlayerData { get { return _playerData; } }
+    public PlayerStatus PlayerStatus { get { return _runtimeData; } }
 
     public float HP
     {
@@ -141,6 +141,7 @@ public class PlayerController : MonoBehaviour, IDamageable
         _mp = _playerData.MP;
         _animator = GetComponent<Animator>();
         _rigidbody = GetComponent<Rigidbody>();
+        _runtimeData = new PlayerStatus(_playerData);
     }
 
     #region Player Moving
@@ -152,27 +153,30 @@ public class PlayerController : MonoBehaviour, IDamageable
             Vector3 pos = transform.position;
             pos.z = 5;
             transform.position = pos;
-            OnAutoTeleport?.Invoke();
+            //OnAutoDungeonChallenge?.Invoke();
         }
 
         // 자동 모드일 때
-        if (PlayerManager.Instance.IsAuto)
+        if (!_isSwifting && PlayerManager.Instance.IsAuto)
         {
-            // 던전 클리어해서 포탈 향해 가는 상황
+            // 던전 클리어해서 포탈 향해 가는 상황 / target==portal or null 일 때
             if (PlayerManager.Instance.IsAutoMoving)
             {
-                if (!MoveToTarget(0.5f))
+                if (_target == null)
+                {
+                    SetTarget();
+                    // target 찾으면 autoMoving 스탑
+                    if (_target?.CompareTag(Define.MonsterTag) != null)
+                    {
+                        PlayerManager.Instance.IsAutoMoving = false;
+                    }
+                }
+                else if (!MoveToTarget(0.5f))
                 {
                     // 포탈에 닿으면 IsAutoMoving false시키고 target 초기화
                     PlayerManager.Instance.IsAutoMoving = false;
                     _target = null;
                     return;
-                }
-                //MoveAlongRoad();
-                SetTarget();
-                if (_target.CompareTag(Define.MonsterTag))
-                {
-                    PlayerManager.Instance.IsAutoMoving = false;
                 }
             }
             else
@@ -230,16 +234,9 @@ public class PlayerController : MonoBehaviour, IDamageable
         }
         else
         {
-            if (PlayerManager.Instance.IsAutoMoving)
+            if (PlayerManager.Instance.IsAutoMoving && Mathf.Abs(_rigidbody.position.x) > 0.1f)
             {
-                if (Mathf.Abs(_rigidbody.position.x) > 0.1f)
-                {
-                    _direction = new Vector3(_target.position.x - transform.position.x, 0, 1);
-                }
-                else
-                {
-                    _direction = Vector3.forward;
-                }
+                _direction = new Vector3(_target.position.x - transform.position.x, 0, 1);
             }
             else
             {
@@ -348,8 +345,7 @@ public class PlayerController : MonoBehaviour, IDamageable
             {
                 Debug.Log("No target on field!!!");
                 PlayerManager.Instance.IsAutoMoving = true;
-                _target = FindAnyObjectByType<DungeonPortalController>().transform;
-                return;
+                _target = FindAnyObjectByType<DungeonPortalController>()?.transform;
             }
         }
     }
@@ -380,19 +376,49 @@ public class PlayerController : MonoBehaviour, IDamageable
 
     IEnumerator CoSetPlayerCollision(float duration)
     {
-        _tmpAuto = PlayerManager.Instance.IsAuto;
+        _isSwifting = true;
         SetPlayerCollision(false);
-        PlayerManager.Instance.IsAuto = false;
         yield return new WaitForSeconds(duration);
         SetPlayerCollision(true);
-        PlayerManager.Instance.IsAuto = _tmpAuto;
-
-        //ClampYPosition();
+        _isSwifting = false;
     }
 
     public void ProcessPlayerCollision(float duration)
     {
         StartCoroutine(CoSetPlayerCollision(duration));
+    }
+
+    public void OnOffStatusUpgrade(Define.StatusType status, float amount, bool isMultiply)
+    {
+        switch (status)
+        {
+            case Define.StatusType.Atk:
+                _runtimeData.Atk += amount;
+                break;
+
+            case Define.StatusType.Def:
+                _runtimeData.Def += amount;
+                break;
+
+            case Define.StatusType.Damage:
+                _runtimeData.Damage += amount;
+                break;
+
+            case Define.StatusType.HP:
+                _runtimeData.HP += amount;
+                break;
+
+            case Define.StatusType.HPRecoveryPerSec:
+                _runtimeData.HPRecoveryPerSec += amount;
+                break;
+
+            case Define.StatusType.CoolTimeDecrease:
+                _runtimeData.CoolTimeDecrease += amount;
+                break;
+
+            default:
+                break;
+        }
     }
 
     #endregion
@@ -401,7 +427,7 @@ public class PlayerController : MonoBehaviour, IDamageable
     // * 방어력 적용 데미지 계산 메서드
     public void GetDamage(float damage)
     {
-        float finalDamage = CalculateFinalDamage(damage, _playerData.Def);
+        float finalDamage = CalculateFinalDamage(damage, _runtimeData.Def);
         HP -= finalDamage;
         DamageTextEvent.Invoke(Util.GetDamageTextPosition(gameObject.GetComponent<Collider>()), finalDamage, false);
         //Debug.Log($"Damaged: {finalDamage}, Current Player HP: {_hp}");

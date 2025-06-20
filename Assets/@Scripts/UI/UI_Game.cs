@@ -35,8 +35,7 @@ public class UI_Game : MonoBehaviour
     void Initialize()
     {
         ReleaseEvent();
-        //TimeManager.Instance.OnGainedRecordTimeChanged += UpdateGainedGoodsTime;
-        //TimeManager.Instance.OnNamedMonsterTimeChanged += UpdateNamedMonsterTime;
+
         MonsterController.OnMonsterDead += GainGoods;
         _inventoryData.OnValueChanged += UpdateGoods;
 
@@ -49,11 +48,10 @@ public class UI_Game : MonoBehaviour
         _doubleSpeedToggle.onValueChanged.AddListener(OnDoubleSpeedToggleClick);
         _inventoryButton.onClick.AddListener(OnInventoryButtonClick);
 
-        //_player = FindAnyObjectByType<PlayerController>();
         _player = PlayerManager.Instance.Player;
         OnAutoChanged += (flag) => PlayerManager.Instance.IsAuto = flag;
         _player.OnAutoOff += OnAutoToggleOff;
-        _player.OnAutoTeleport += () =>
+        _player.OnAutoDungeonChallenge += () =>
         {
             if (PlayerManager.Instance.IsAuto)
             {
@@ -152,8 +150,6 @@ public class UI_Game : MonoBehaviour
     void OnCreateDungeonButtonClick()
     {
         DungeonManager.Instance.CreateDungeon();
-        //DungeonManager.Instance.OnDungeonExit -= () => { _createDungeonPortalButton.gameObject.SetActive(true); };
-        //DungeonManager.Instance.OnDungeonExit += () => { _createDungeonPortalButton.gameObject.SetActive(true); };
         DungeonManager.Instance.OnDungeonExit -= ActivateDungeonPortalButton;
         DungeonManager.Instance.OnDungeonExit += ActivateDungeonPortalButton;
         _createDungeonPortalButton.gameObject.SetActive(false);
@@ -161,7 +157,7 @@ public class UI_Game : MonoBehaviour
 
     void OnAutoToggleClick(bool flag)
     {
-        Debug.Log($"Auto: {flag}");
+        //Debug.Log($"Auto: {flag}");
         OnAutoChanged?.Invoke(flag);
     }
 

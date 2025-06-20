@@ -20,7 +20,7 @@ public class DungeonManager : Singleton<DungeonManager>, IEventSubscriber, IDeac
 
     #region StageInfo
     private Dictionary<string, StageInfo> _stages;
-    private StageInfo _currentStage;    
+    private StageInfo _currentStage;
 
     private int _deathMonsterCount = 0;
     private bool _isOnSpawnableInvoked = false;
@@ -41,8 +41,8 @@ public class DungeonManager : Singleton<DungeonManager>, IEventSubscriber, IDeac
         get { return _dungeonWallBack; }
     }
     public GameObject DungeonEnterPortal
-    { 
-        get { return _dungeonEnterPortal; } 
+    {
+        get { return _dungeonEnterPortal; }
     }
     public GameObject DungeonExitPortal
     {
@@ -55,7 +55,7 @@ public class DungeonManager : Singleton<DungeonManager>, IEventSubscriber, IDeac
     public bool IsChallenge
     {
         get { return _isChallenge; }
-        set 
+        set
         {
             if (value == true)
                 OnSpawnNamedMonster?.Invoke();
@@ -63,10 +63,20 @@ public class DungeonManager : Singleton<DungeonManager>, IEventSubscriber, IDeac
         }
     }
 
-    public bool IsDungeonExist 
-    { 
+    public bool IsDungeonExist
+    {
         get { return _isDungeonExist; }
-        set { _isDungeonExist = value; } 
+        set { _isDungeonExist = value; }
+    }
+
+    public int DeathMonsterCount
+    {
+        get { return _deathMonsterCount; }
+        set 
+        {
+            _deathMonsterCount = value;
+            OnNormalMonsterDead?.Invoke(_deathMonsterCount, 20);
+        }
     }
     #endregion
 
@@ -87,31 +97,33 @@ public class DungeonManager : Singleton<DungeonManager>, IEventSubscriber, IDeac
         _dungeonWallFront = Instantiate(ObjectManager.Instance.DungeonWallResource);
         _dungeonWallBack = Instantiate(ObjectManager.Instance.DungeonWallResource);
         _dungeonEnterPortal = Instantiate(ObjectManager.Instance.DungeonPortalResource);
+        _dungeonEnterPortal.name = "EnterPortal";
         _dungeonExitPortal = Instantiate(ObjectManager.Instance.DungeonPortalResource);
+        _dungeonExitPortal.name = "ExitPortal";
 
         _portalEnterController = _dungeonEnterPortal.GetComponent<DungeonPortalController>();
         _portalExitController = _dungeonExitPortal.GetComponent<DungeonPortalController>();
 
         _stages = new Dictionary<string, StageInfo>();
+
+        _portalEnterController.OnPotalEnter += EnterDungeon;
+        _portalEnterController.OnPotalClose += SetWallUp;
+
+        _portalExitController.OnPotalEnter += ExitDungeon;
+        //_portalExitController.OnPotalClose += ExitDungeon;
+
+        OnSpawnNamedMonster += SetNormalMonsterOff;
+
+        OnDungeonEnter += () => IsDungeonExist = true;
+        OnDungeonExit += () => IsDungeonExist = false;
     }
     #endregion
 
     #region IEventSubscriber
     public void Subscribe()
     {
-        _portalEnterController.OnPotalEnter += EnterDungeon;
-        _portalEnterController.OnPotalClose += SetWallUp;
-
-        _portalExitController.OnPotalEnter += SetWallDown;
-        _portalExitController.OnPotalClose += ExitDungeon;
-
         NormalMonsterController.s_OnNormalMonsterDie += CountMonsterDeath;
         NamedMonsterController.s_OnNamedMonsterDie += ClearDungeon;
-
-        OnSpawnNamedMonster += SetNormalMonsterOff;
-
-        OnDungeonEnter += () => IsDungeonExist = true;
-        OnDungeonExit+= () => IsDungeonExist = false;
     }
     #endregion
 
@@ -136,7 +148,7 @@ public class DungeonManager : Singleton<DungeonManager>, IEventSubscriber, IDeac
     {
         DungeonOffSet = new Vector3(0, 0, PlayerManager.Instance.Player.transform.position.z);
 
-        SetStageInfo();
+        //SetStageInfo();
 
         DungeonEnterPortal.SetActive(true);
         DungeonEnterPortal.transform.position = Define.DungeonEnterPortalSpot + DungeonOffSet;
@@ -157,7 +169,7 @@ public class DungeonManager : Singleton<DungeonManager>, IEventSubscriber, IDeac
     private void EnterDungeon()
     {
         _isOnSpawnableInvoked = false;
-        _deathMonsterCount = 0;
+        DeathMonsterCount = 0;
         SetWallDown();
         OnDungeonEnter?.Invoke();
     }
@@ -173,6 +185,11 @@ public class DungeonManager : Singleton<DungeonManager>, IEventSubscriber, IDeac
     private void ExitDungeon()
     {
         OnDungeonExit?.Invoke();
+        SetWallDown();
+        if(PlayerManager.Instance.IsAuto)
+        {
+            CreateDungeon();
+        }
     }
 
     // * 던전 오브젝트 관리 메서드
@@ -188,12 +205,13 @@ public class DungeonManager : Singleton<DungeonManager>, IEventSubscriber, IDeac
     }
     private void SetWallUp()
     {
+        _dungeonWallFront.SetActive(true);
         _dungeonWallBack.SetActive(true);
     }
     private void SetNormalMonsterOff()
     {
         List<GameObject> normalMonsterPool = PoolManager.Instance.PoolList["Demon"];
-        for (int i =0; i< normalMonsterPool.Count; i++)
+        for (int i = 0; i < normalMonsterPool.Count; i++)
         {
             normalMonsterPool[i].SetActive(false);
         }
@@ -202,11 +220,9 @@ public class DungeonManager : Singleton<DungeonManager>, IEventSubscriber, IDeac
     // * 던전 몬스터 관리 메서드
     private void CountMonsterDeath()
     {
-        _deathMonsterCount++;
-        //Debug.Log("몬스터 사망 : " + _deathMonsterCount);
-        OnNormalMonsterDead?.Invoke(_deathMonsterCount, 20);
+        DeathMonsterCount++;
 
-        if(_deathMonsterCount >= 20 && !_isOnSpawnableInvoked)
+        if (_deathMonsterCount >= 20 && !_isOnSpawnableInvoked)
         {
             _isOnSpawnableInvoked = true;
             OnSpawnableNamedMonster?.Invoke(); //도전 버튼 활성화해야함

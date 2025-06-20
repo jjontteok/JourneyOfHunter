@@ -1,4 +1,5 @@
 using extension;
+using System;
 using System.Collections.Generic;
 using Unity.Cinemachine;
 using Unity.VisualScripting;
@@ -8,6 +9,8 @@ public class CameraManager : Singleton<CameraManager>
 {
     CinemachineBrain _cinemachineBrain;
     private Camera _mainCamera;
+
+    public Action OnCutSceneEnded;
 
     GameObject _followCam;
     GameObject _cutSceneCam;
@@ -24,7 +27,7 @@ public class CameraManager : Singleton<CameraManager>
         _cutSceneCam = CutSceneManager.Instance.CutScene;
         _mainCamera = Camera.main;
 
-        Transform playerTransform = FindAnyObjectByType<PlayerController>().transform;
+        Transform playerTransform = PlayerManager.Instance.Player.transform;
         _cinemachineBrain = _mainCamera.GetOrAddComponent<CinemachineBrain>();
         _followCam.GetComponent<CinemachineCamera>().Follow = playerTransform;
         _followCam.GetComponent<CinemachineCamera>().LookAt = playerTransform;

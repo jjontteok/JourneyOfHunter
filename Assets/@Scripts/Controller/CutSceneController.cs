@@ -53,14 +53,17 @@ public class CutSceneController : MonoBehaviour
 
     public void PlayCutScene()
     {
+        _virtualCamera.SetActive(true);
         CameraManager.Instance.SetCutSceneCam();
         SetBinding();
-        GameObject player = GameObject.Find("Player");
+        GameObject player = PlayerManager.Instance.Player.gameObject;
         transform.position = player.transform.position;
         _monsterAppearEffect.transform.position = _monsterPos.position - Vector3.up * 3;
         _monsterAppearEffect.SetActive(true);
-        _virtualCamera.SetActive(true);
         _playableDirector.Play();
+
+        UIManager.Instance.DeactivateUIGame();
+        PopupUIManager.Instance.DeactivateNamedMonsterInfo();
     }
 
     void FinishCutScene(PlayableDirector pd)
@@ -69,5 +72,9 @@ public class CutSceneController : MonoBehaviour
         _monsterAppearEffect?.SetActive(false);
         _virtualCamera.SetActive(false);
         _mainCamera.transform.rotation = Quaternion.Euler(new Vector3(30, 0, 0));
+        CameraManager.Instance.OnCutSceneEnded?.Invoke();
+
+        UIManager.Instance.ActivateUIGame();
+        PopupUIManager.Instance.ActivateNamedMonsterInfoPanel();
     }
 }

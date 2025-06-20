@@ -26,7 +26,7 @@ public class CutSceneManager : Singleton<CutSceneManager>,IEventSubscriber ,IDea
     #region IDeactivate
     public void Deactivate()
     {
-        //_cutScene.SetActive(false);
+        _cutScene.SetActive(false);
     }
     #endregion
 
@@ -34,6 +34,6 @@ public class CutSceneManager : Singleton<CutSceneManager>,IEventSubscriber ,IDea
     {
         Debug.Log("컷신 실행");
         _cutScene?.SetActive(true);
-        //_cutScene.GetComponentInChildren<CutSceneController>().PlayCutScene();
+        _cutScene.GetComponentInChildren<CutSceneController>().PlayCutScene();
     }
 }

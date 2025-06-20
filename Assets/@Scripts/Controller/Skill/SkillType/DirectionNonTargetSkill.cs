@@ -18,7 +18,7 @@ public class DirectionNonTargetSkill : ActiveSkill
 
         // 현재 플레이어가 바라보는 방향 == 스킬 발동 방향
         // 플레이어 객체를 받아오는 방법 강구 필요        
-        transform.rotation = _playerController.transform.rotation;
+        transform.rotation = _player.transform.rotation;
 
         return true;
     }

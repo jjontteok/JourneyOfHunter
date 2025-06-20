@@ -47,18 +47,21 @@ public class ManagerRoot : MonoBehaviour
         StageManager.Instance.CreateManager();
 
         CutSceneManager.Instance.CreateManager();
+
         TimeManager.Instance.CreateManager();
 
         EnvironmentManager.Instance.CreateManager();
+
+        CameraManager.Instance.CreateManager();
     }
 
     // * 이벤트 구독 메서드
     private void EventSubscribeAll()
     {
+        SpawnManager.Instance.Subscribe();
         DungeonManager.Instance.Subscribe();
         PopupUIManager.Instance.Subscribe();
         DamageTextManager.Instance.Subscribe();
-        SpawnManager.Instance.Subscribe();
         StageManager.Instance.Subscribe();
         CutSceneManager.Instance.Subscribe();
         TimeManager.Instance.Subscribe();
