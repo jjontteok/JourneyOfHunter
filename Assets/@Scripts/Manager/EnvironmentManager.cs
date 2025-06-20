@@ -219,6 +219,7 @@ public class EnvironmentManager : Singleton<EnvironmentManager>, IEventSubscribe
         {
             case Define.TimeOfDayType.Noon:
             case Define.TimeOfDayType.Morning:
+            case Define.TimeOfDayType.Evening:
                 _currentLight.transform.Rotate(Vector3.forward * _rotateSpeed * Time.deltaTime, Space.World);
                 break;
             case Define.TimeOfDayType.Night:

@@ -37,7 +37,7 @@ public class PlayerController : MonoBehaviour, IDamageable
     public static Action<float, float> OnHPValueChanged;
     public static Action<float, float> OnMPValueChanged;
 
-    [SerializeField] PlayerStatus _runtimeData;
+    PlayerStatus _runtimeData;
     Vector3 _direction;
     float _mp;
     float _hp;
@@ -50,7 +50,7 @@ public class PlayerController : MonoBehaviour, IDamageable
     public Action OnAutoOff;
     public Action OnAutoDungeonChallenge;
 
-    PlayerData _playerData;
+    [SerializeField] PlayerData _playerData;
     [SerializeField] float _speed;
 
     #region Properties
