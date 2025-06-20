@@ -8,31 +8,52 @@ public class TimeManager : Singleton<TimeManager>, IEventSubscriber
 {
     public event Action<float> OnNamedMonsterTimeChanged;
     public event Action OnGainedRecordTimeChanged;
-    public event Action<Define.TimeOfDayType, float> OnDayTimeChanged;
+    public event Action<Define.TimeOfDayType> OnColorChanged;
+    public event Action<Define.TimeOfDayType> OnSkyBoxChanged;
+    public event Action<Define.TimeOfDayType> OnTimeSpeedChanged;
 
-    WaitForSeconds _time = new WaitForSeconds(1f);
+    WaitForSeconds _standardTime = new WaitForSeconds(1f);
 
-    private Dictionary<float, Define.TimeOfDayType> _timeTransitions;
+    private Dictionary<float, Define.TimeOfDayType> _colorChangeTransitions;
+    private Dictionary<float, Define.TimeOfDayType> _skyBoxChangeTransitions;
 
     float _monsterTime;
-    float _dayTime;
-    float _duration;
+    public float _dayTime;
+    float _duration = 12;
+    Define.TimeOfDayType _currentTime;
+    bool _isDoubleSpeed;
+    bool _isPlaying = true;
+    bool _isSkyBoxChange = false;
+    float _toKey = 1;
 
     public float Duration
     {
-        get { return _duration; }
+        get 
+        { 
+            return _duration * _toKey; 
+        }
     }
 
-    //임시 플래그 변수
-    bool _isPlaying = true;
-
-    public bool IsPlaying
+    public bool IsDoubleSpeed
     {
-        get { return _isPlaying; }
+        get { return _isDoubleSpeed; }
+        set
+        {
+            _isDoubleSpeed = value;
+            _toKey = _isDoubleSpeed ? 0.2f : 1;
+            _standardTime = new WaitForSeconds(_toKey);
+            EnvironmentManager.Instance.ToKey = _toKey;
+            OnTimeSpeedChanged?.Invoke(_currentTime);
+        }
+    }
+
+    public bool IsSkyBoxChange
+    {
+        get { return _isSkyBoxChange; }
         set 
         {
-            _isPlaying = value; 
-            if(_isPlaying)
+            _isSkyBoxChange = value; 
+            if(!_isSkyBoxChange)
                 StartDay();
         }
     }
@@ -40,14 +61,21 @@ public class TimeManager : Singleton<TimeManager>, IEventSubscriber
     protected override void Initialize()
     {
         base.Initialize();
-        _timeTransitions = new()
+        _colorChangeTransitions = new()
         {
-            { 30f, Define.TimeOfDayType.Morning },
-            { 40f, Define.TimeOfDayType.Noon },
-            { 10f, Define.TimeOfDayType.Evening },
-            { 20f, Define.TimeOfDayType.Night }
+            { 12f, Define.TimeOfDayType.Noon }, //7초에 낮 색 변경
+            { 22f, Define.TimeOfDayType.Evening },
+            { 37f, Define.TimeOfDayType.Night },
+            { 51f, Define.TimeOfDayType.Morning }
         };
-        _duration = GetTime(GetNextType(Define.TimeOfDayType.Noon));
+        //값에 해당하는 스카이박스 변경될 때의 시각
+        _skyBoxChangeTransitions = new()
+        {
+            { GetColorChangeTime(Define.TimeOfDayType.Noon)+4f, Define.TimeOfDayType.Noon },
+            { GetColorChangeTime(Define.TimeOfDayType.Evening)+4f, Define.TimeOfDayType.Evening },
+            { GetColorChangeTime(Define.TimeOfDayType.Night)+5f, Define.TimeOfDayType.Night },
+            { GetColorChangeTime(Define.TimeOfDayType.Morning)+1f, Define.TimeOfDayType.Morning },
+        };
     }
 
     private void OnEnable()
@@ -63,56 +91,88 @@ public class TimeManager : Singleton<TimeManager>, IEventSubscriber
     }
     #endregion
 
+    #region NamedMonsterStageTimer
     public void StartNamedMonsterStage()
     {
         _monsterTime = 100;
         StartCoroutine(NamedMonsterTimer());
     }
 
+    IEnumerator NamedMonsterTimer()
+    {
+        while (_monsterTime > 0)
+        {
+            yield return _standardTime;
+            _monsterTime -= 1;
+            if (_monsterTime <= 0)
+                break;
+            OnNamedMonsterTimeChanged?.Invoke(_monsterTime);
+        }
+    }
+    #endregion
+
+    #region GainRecord Timer
     public void StartGainedRecord()
     {
         StartCoroutine(GainedRecordTimer());
     }
-
-    public void StartDay()
-    {
-        StartCoroutine(DayTimer());
-    }
-
     IEnumerator GainedRecordTimer()
     {
         while (_isPlaying)
         {
-            yield return _time;
+            yield return _standardTime;
             OnGainedRecordTimeChanged?.Invoke();
         }
     }
+    #endregion
 
+
+    #region DayTimer
+    public void StartDay()
+    {
+        StartCoroutine(DayTimer());
+    }
     IEnumerator DayTimer()
     {
-        while (_isPlaying)
+        while (true)
         {
-            yield return _time;
-            _dayTime += 1f;
-
-            if(_timeTransitions.TryGetValue(_dayTime, out var newTimeOfDay))
+            yield return _standardTime;
+            _dayTime += 1;
+            Debug.Log(_dayTime);
+            
+            if (_colorChangeTransitions.TryGetValue(_dayTime, out var newColorTimeOfDay))
             {
-                _duration = GetTime(GetNextType(newTimeOfDay)) - GetTime(newTimeOfDay);
-                if(newTimeOfDay == Define.TimeOfDayType.Noon)
+                //현재 스카이박스 색 변경
+                OnColorChanged?.Invoke(newColorTimeOfDay);
+                _currentTime = GetNextType(newColorTimeOfDay);
+            }
+            //newSkyBox를 다음 스카이박스로 변경
+            else if(_skyBoxChangeTransitions.TryGetValue(_dayTime, out var curSkyBox))
+            {
+                //그다음 스카이박스가 변경될 시각 - 현재 스카이박스가 끝날 시각
+                _duration = GetTime(GetNextType(curSkyBox)) - GetTime(curSkyBox);
+                if(curSkyBox == Define.TimeOfDayType.Morning)
                 {
-                    _dayTime = 0f;
-                    _duration = GetTime(GetNextType(newTimeOfDay));
-                }                        
-                OnDayTimeChanged?.Invoke(newTimeOfDay, _duration);
-            }  
+                    _duration = GetTime(GetNextType(curSkyBox));
+                }
+                OnSkyBoxChanged?.Invoke(GetNextType(curSkyBox));
+            }
+            if (_dayTime >= 53f)
+            {
+                _dayTime = 0f;
+            }
         }
+    }
+
+    float GetColorChangeTime(Define.TimeOfDayType type)
+    {
+        return _colorChangeTransitions.FirstOrDefault(x => x.Value == type).Key;
     }
 
     float GetTime(Define.TimeOfDayType type)
     {
-        return _timeTransitions.FirstOrDefault(x => x.Value == type).Key;
+        return _skyBoxChangeTransitions.FirstOrDefault(x => x.Value == type).Key;
     }
-
     Define.TimeOfDayType GetNextType(Define.TimeOfDayType type)
     {
         return type switch
@@ -124,15 +184,6 @@ public class TimeManager : Singleton<TimeManager>, IEventSubscriber
             _ => 0
         };
     }
-    IEnumerator NamedMonsterTimer()
-    {
-        while (_monsterTime > 0)
-        {
-            yield return _time;
-            _monsterTime -= 1;
-            if(_monsterTime <= 0)
-                break;
-            OnNamedMonsterTimeChanged?.Invoke(_monsterTime);
-        }
-    }
+
+    #endregion
 }
