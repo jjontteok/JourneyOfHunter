@@ -15,6 +15,7 @@ public class UI_Game : MonoBehaviour
     [SerializeField] TMP_Text _silverCoinText;
     [SerializeField] TMP_Text _gemText;
     [SerializeField] Toggle _autoToggle;
+    [SerializeField] Toggle _doubleSpeedToggle;
     [SerializeField] PlayerInventoryData _inventoryData;
 
     private List<UI_PlayerVital> _playerVitalList; 
@@ -29,7 +30,7 @@ public class UI_Game : MonoBehaviour
         _playerVitalList = new List<UI_PlayerVital>();
     }
     public Action<bool> OnAutoChanged;
-
+    public Action<bool> OnDoubleSpeedChanged;
 
     void Initialize()
     {
@@ -45,6 +46,7 @@ public class UI_Game : MonoBehaviour
         _createDungeonPortalButton.onClick.AddListener(OnCreateDungeonButtonClick);
         _silverCoinText.text = _inventoryData.silverCoin.ToString();
         _autoToggle.onValueChanged.AddListener(OnAutoToggleClick);
+        _doubleSpeedToggle.onValueChanged.AddListener(OnDoubleSpeedToggleClick);
         _inventoryButton.onClick.AddListener(OnInventoryButtonClick);
 
         //_player = FindAnyObjectByType<PlayerController>();
@@ -58,6 +60,8 @@ public class UI_Game : MonoBehaviour
                 OnCreateDungeonButtonClick();
             }
         };
+
+        OnDoubleSpeedChanged += (flag) => TimeManager.Instance.IsDoubleSpeed = flag;
     }
 
     private void ReleaseEvent()
@@ -159,6 +163,12 @@ public class UI_Game : MonoBehaviour
     {
         Debug.Log($"Auto: {flag}");
         OnAutoChanged?.Invoke(flag);
+    }
+
+    void OnDoubleSpeedToggleClick(bool flag)
+    {
+        OnDoubleSpeedChanged?.Invoke(flag);
+        _doubleSpeedToggle.isOn = flag;
     }
 
     void OnAutoToggleOff()
