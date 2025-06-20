@@ -23,7 +23,7 @@ public class ActiveSkill : Skill
 
     protected virtual IEnumerator DeActivateSkill()
     {
-        yield return new WaitForSeconds(GetCoolTimeReduction());
+        yield return _skillDurationTime;
         gameObject.SetActive(false);
     }
 
