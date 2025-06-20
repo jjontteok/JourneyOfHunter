@@ -105,25 +105,25 @@ public class DungeonManager : Singleton<DungeonManager>, IEventSubscriber, IDeac
         _portalExitController = _dungeonExitPortal.GetComponent<DungeonPortalController>();
 
         _stages = new Dictionary<string, StageInfo>();
-    }
-    #endregion
 
-    #region IEventSubscriber
-    public void Subscribe()
-    {
         _portalEnterController.OnPotalEnter += EnterDungeon;
         _portalEnterController.OnPotalClose += SetWallUp;
 
         _portalExitController.OnPotalEnter += ExitDungeon;
         //_portalExitController.OnPotalClose += ExitDungeon;
 
-        NormalMonsterController.s_OnNormalMonsterDie += CountMonsterDeath;
-        NamedMonsterController.s_OnNamedMonsterDie += ClearDungeon;
-
         OnSpawnNamedMonster += SetNormalMonsterOff;
 
         OnDungeonEnter += () => IsDungeonExist = true;
         OnDungeonExit += () => IsDungeonExist = false;
+    }
+    #endregion
+
+    #region IEventSubscriber
+    public void Subscribe()
+    {
+        NormalMonsterController.s_OnNormalMonsterDie += CountMonsterDeath;
+        NamedMonsterController.s_OnNamedMonsterDie += ClearDungeon;
     }
     #endregion
 

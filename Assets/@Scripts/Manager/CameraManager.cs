@@ -44,6 +44,5 @@ public class CameraManager : Singleton<CameraManager>
     {
         _cutSceneCam.GetComponentInChildren<CinemachineCamera>().Priority = highPriority;
         _followCam.GetComponent<CinemachineCamera>().Priority = lowPriority;
-        //_mainCamera.cullingMask 
     }
 }
