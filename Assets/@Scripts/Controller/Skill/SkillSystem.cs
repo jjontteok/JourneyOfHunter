@@ -10,15 +10,19 @@ public class SkillSystem : MonoBehaviour
     //플레이어가 보유 중인 스킬 리소스들을 담은 리스트
     List<Skill> _skillList = new List<Skill>();
 
+    // 스킬 슬롯 리스트에 실질적으로 들어있는 스킬 개수 확인용
+    int _skillSlotCount = 0;
     // 스킬 슬롯 리스트 - 액티브형 스킬 보관 슬롯
     List<SkillSlot> _activeSkillSlotList = new List<SkillSlot>();
     BasicSkillSlot _basicSkillSlot;
 
     PlayerController _player;
 
+    public Action<float> OnShortestSkillDistanceChanged;
+
     public bool IsAuto { get; set; }
 
-    public Action<float> OnShortestSkillDistanceChanged;
+    public List<Skill> SkillList { get { return _skillList; } }
 
     public BasicSkillSlot BasicSkillSlot
     {
@@ -30,8 +34,8 @@ public class SkillSystem : MonoBehaviour
         _player = PlayerManager.Instance.Player;
         OnShortestSkillDistanceChanged += _player.SetShortestSkillDistance;
 
+        // 오브젝트매니저가 보유 중인 스킬 프리팹들을 플레이어의 스킬리스트에 넣기
         Dictionary<string, GameObject> skillList = ObjectManager.Instance.PlayerSkillResourceList;
-        // 플레이어가 현재 보유 중인 스킬 중에서 열린 슬롯 개수만큼 가져와야함
         SkillData[] skillDatas = _player.PlayerData.CurrentSkillData;
         foreach (var skillData in skillDatas)
         {
@@ -70,22 +74,23 @@ public class SkillSystem : MonoBehaviour
 
     public void SetSkillSlotList()
     {
+        // 플레이어가 현재 보유 중인 스킬 중에서 열린 슬롯 개수만큼 가져와야함
         foreach (var skill in _skillList)
         {
             AddSkill(skill.SkillData);
-            if (_activeSkillSlotList.Count == _player.PlayerData.UnlockedSkillSlotCount)
-                break;
         }
     }
 
     public void AddSkill(SkillData data)
     {
+        // 이미 스킬 아이콘 슬롯에 보유 중인 스킬인지 검사
         SkillSlot skillSlot = _activeSkillSlotList.Find((slot) => slot.SkillData == data);
         if (skillSlot != null)
         {
             Debug.Log($"Skill named {data.skillName} already exists!!!");
             return;
         }
+
         GameObject skillResource = ObjectManager.Instance.PlayerSkillResourceList[data.name];
         // 패시브면 효과 적용만 시키고, 슬롯은 x
         if (skillResource.GetComponent<PassiveSkill>() != null)
@@ -110,6 +115,14 @@ public class SkillSystem : MonoBehaviour
 
             else
             {
+                // 이미 스킬 아이콘 슬롯 자리 다 찼으면 슬롯 생성 x
+                if (_skillSlotCount == _player.PlayerData.UnlockedSkillSlotCount)
+                {
+                    Debug.Log("Slot list is already full!!!");
+                    Destroy(go);
+                    return;
+                }
+
                 SkillSlot slot = go.AddComponent<SkillSlot>();
                 // 비어있는 인덱스 있나 찾아보고
                 int idx = _activeSkillSlotList.FindIndex((slot) => slot == null);
@@ -117,19 +130,22 @@ public class SkillSystem : MonoBehaviour
                 // 비어있는 인덱스 없는 경우(idx == -1)
                 if (idx < 0)
                 {
-                    // 슬롯리스트 아직 덜 찼으면 add
-                    if (_activeSkillSlotList.Count < _player.PlayerData.UnlockedSkillSlotCount)
-                    {
-                        _activeSkillSlotList.Add(slot);
-                        SkillManager.Instance.SubscribeEvents(slot, _activeSkillSlotList.Count - 1);
-                        slot.OnActivateSkill += StartSkillInterval;
-                    }
-                    // 슬롯리스트 꽉 찼으면 실행 x
-                    else
-                    {
-                        Debug.Log("Slot list is already full!!!");
-                        return;
-                    }
+                    _activeSkillSlotList.Add(slot);
+                    SkillManager.Instance.SubscribeEvents(slot, _activeSkillSlotList.Count - 1);
+                    slot.OnActivateSkill += StartSkillInterval;
+                    //// 슬롯리스트 아직 덜 찼으면 add
+                    //if (_activeSkillSlotList.Count < _player.PlayerData.UnlockedSkillSlotCount)
+                    //{
+                    //    _activeSkillSlotList.Add(slot);
+                    //    SkillManager.Instance.SubscribeEvents(slot, _activeSkillSlotList.Count - 1);
+                    //    slot.OnActivateSkill += StartSkillInterval;
+                    //}
+                    //// 슬롯리스트 꽉 찼으면 실행 x
+                    //else
+                    //{
+                    //    Debug.Log("Slot list is already full!!!");
+                    //    return;
+                    //}
                 }
                 else
                 {
@@ -137,10 +153,13 @@ public class SkillSystem : MonoBehaviour
                     SkillManager.Instance.SubscribeEvents(slot, idx);
                     slot.OnActivateSkill += StartSkillInterval;
                 }
-                slot.SetSkill(data);
+                if(slot.SetSkill(data))
+                {
+                    _skillSlotCount++;
+                }
             }
         }
-        
+
     }
 
     public void RemoveSkill(SkillData data)
@@ -152,6 +171,7 @@ public class SkillSystem : MonoBehaviour
             return;
         }
         slot.DestroySkillSlot();
+        _skillSlotCount--;
     }
 
     public float GetShortestSkillDistance()

@@ -3,6 +3,8 @@ using UnityEngine;
 public class GravityColliderController : DamageOverTimeColliderController, IGravityCollider
 {
     float _worldRadius;
+    const float _maxForce = 20f;
+    const float _minForce = 10f;
 
     private void Awake()
     {
@@ -11,9 +13,15 @@ public class GravityColliderController : DamageOverTimeColliderController, IGrav
 
     public void ProcessGravityEffect(Collider other)
     {
-        Vector3 direction = (transform.position - other.transform.position).normalized;
-        // 틱 대미지에 끌어당기는 효과도 추가
-        other.GetComponent<Rigidbody>().AddForce(direction * 7f,ForceMode.Impulse);
+        Rigidbody rb = other.attachedRigidbody;
+        if (rb != null)
+        {
+            Vector3 difference = transform.position - other.transform.position;
+            Vector3 direction = difference.normalized;
+            float distance = difference.magnitude;
+            float forceStrength = Mathf.Lerp(_minForce, _maxForce, distance / _worldRadius);
+            rb.AddForce(direction * forceStrength);
+        }
     }
 
     public override void TickDamage(Collider other)

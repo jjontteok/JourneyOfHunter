@@ -26,6 +26,7 @@ MonoBehaviour:
   hitEffectPrefab: {fileID: 0}
   targetExistence: 0
   isPlayerSkill: 1
+  isPassive: 0
   offset: {x: 0, y: 0, z: 0}
-  buffStatus: 3
+  buffStatus: 1
   buffAmount: 5

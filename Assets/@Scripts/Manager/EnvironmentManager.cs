@@ -248,7 +248,7 @@ public class EnvironmentManager : Singleton<EnvironmentManager>, IEventSubscribe
     //현재의 스카이박스 색을 변경하는 함수
     IEnumerator LerpSkyBox(Define.TimeOfDayType type)
     {
-        Debug.Log("스카이박스 색 변경" + a++);
+        //Debug.Log("스카이박스 색 변경" + a++);
         string current = GetSkyBoxKey(type);
         Color changeColor = _colorList[current]; //현재 스카이박스의 초기값을 지정
         while (Extension.CheckTwoValues(changeColor.r, _targetColorList[current]))
@@ -260,7 +260,7 @@ public class EnvironmentManager : Singleton<EnvironmentManager>, IEventSubscribe
             LerpMountain(current);
             yield return null;
         }
-        Debug.Log("색 변경 완료" + b++);
+        //Debug.Log("색 변경 완료" + b++);
         if(current == Noon) _betterColor = changeColor;
         ChangeSkyBox(GetNextType(type));
     }

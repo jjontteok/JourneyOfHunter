@@ -26,9 +26,4 @@ public class ActiveSkill : Skill
         yield return _skillDurationTime;
         gameObject.SetActive(false);
     }
-
-    float GetCoolTimeReduction()
-    {
-        return _skillData.coolTime * (1 + _player.PlayerStatus.GetCoolTimeDecrease() / 100);
-    }
 }
