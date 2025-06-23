@@ -63,7 +63,7 @@ namespace Drakkar
 		public int FixedUpdateSlots=10;
 		#endregion
 		#region INTERNALS
-		internal bool started;
+		internal bool started = false;
 		internal IndexedStaticList<IPreUpdatable> preUpdate;
 		internal IndexedStaticList<IUpdatable> normalUpdate;
 		internal IndexedStaticList<IPostUpdatable> postUpdate;

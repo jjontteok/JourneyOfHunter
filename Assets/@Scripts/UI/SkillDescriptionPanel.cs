@@ -36,6 +36,17 @@ public class SkillDescriptionPanel : MonoBehaviour
         _skillName.text = skillData.skillName;
         _skillDescription.text = skillData.skillDescription;
         _skillIcon.sprite = skillData.skillIcon;
+        // 패시브 스킬은 스킬 아이콘 슬롯에 등록 x
+        if(skillData.isPassive)
+        {
+            _equipButton.gameObject.SetActive(false);
+            _releaseButton.gameObject.SetActive(false);
+        }
+        else
+        {
+            _equipButton.gameObject.SetActive(true);
+            _releaseButton.gameObject.SetActive(true);
+        }
     }
 
     void OnEquipButtonClick()

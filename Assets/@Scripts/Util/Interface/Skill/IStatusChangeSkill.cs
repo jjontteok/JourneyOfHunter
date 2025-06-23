@@ -2,5 +2,5 @@ using UnityEngine;
 
 public interface IStatusChangeSkill
 {
-    void StatusChange(bool flag, bool isMultiply);
+    void StatusChange(bool flag);
 }

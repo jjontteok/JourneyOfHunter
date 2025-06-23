@@ -189,7 +189,7 @@ namespace Drakkar
 			fontStyle=FontStyle.Bold,
 			richText=true
 		};
-		private static GUIStyle drakkarBoldWhiteLargeLabel;
+		private static GUIStyle drakkarBoldWhiteLargeLabel = null;
 		public static GUIStyle DrakkarBoldWhiteLargeLabel => drakkarBoldWhiteLargeLabel??new("whiteLargeLabel")
 		{
 			fontSize=24,
@@ -198,7 +198,7 @@ namespace Drakkar
 			fontStyle=FontStyle.Bold,
 			richText=true
 		};
-		private static GUIStyle drakkarBoldMediumLabel;
+		private static GUIStyle drakkarBoldMediumLabel = null;
 		public static GUIStyle DrakkarBoldMediumLabel => drakkarBoldMediumLabel??new("whiteLargeLabel")
 		{
 			fontSize=18,
@@ -207,7 +207,7 @@ namespace Drakkar
 			fontStyle=FontStyle.Bold,
 			richText=true
 		};
-		private static GUIStyle drakkarBoldLabel;
+		private static GUIStyle drakkarBoldLabel = null;
 		public static GUIStyle DrakkarBoldLabel => drakkarBoldLabel??new("whiteLargeLabel")
 		{
 			fontSize=14,

@@ -53,7 +53,7 @@ public class TransformTargetSkill : ActiveSkill, ITargetSkill, IMovingSkill, IDi
         }
     }
 
-    public void SetDirection()
+    public virtual void SetDirection()
     {
         // 플레이어 스킬이 아니면(==몬스터 스킬이면) 타겟을 향해 설정
         if (!SkillData.isPlayerSkill)

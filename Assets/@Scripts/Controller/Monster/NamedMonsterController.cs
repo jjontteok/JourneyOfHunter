@@ -1,10 +1,6 @@
 using System;
-using System.Collections;
 using Unity.VisualScripting;
 using UnityEngine;
-using UnityEngine.Playables;
-using UnityEngine.UIElements;
-using static UnityEngine.GraphicsBuffer;
 
 public class NamedMonsterController : MonsterController
 {

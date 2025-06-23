@@ -9,6 +9,8 @@ public struct PlayerStatus
     public float Damage;
     public float HP;
     public float HPRecoveryPerSec;
+    public float MP;
+    public float MPRecoveryPerSec;
     public float CoolTimeDecrease;
 
     public PlayerStatus(PlayerData playerData)
@@ -18,6 +20,8 @@ public struct PlayerStatus
         Damage = playerData.Damage;
         HP = playerData.HP;
         HPRecoveryPerSec = playerData.HPRecoveryPerSec;
+        MP = playerData.MP;
+        MPRecoveryPerSec = playerData.MPRecoveryPerSec;
         CoolTimeDecrease = playerData.CoolTimeDecrease;
     }
 
@@ -41,9 +45,9 @@ public class PlayerController : MonoBehaviour, IDamageable
     Vector3 _direction;
     float _mp;
     float _hp;
-    [SerializeField] float _shortestSkillDistance;   //자동일 때, 이동 멈추는 범위
+    float _shortestSkillDistance;       //자동일 때, 이동 멈추는 범위
 
-    bool _isSwifting;                  //질풍참 사용 여부
+    bool _isSwifting;                   //질풍참 사용 여부
     bool _isKeyBoard;
     bool _isJoyStick;
 
@@ -118,7 +122,7 @@ public class PlayerController : MonoBehaviour, IDamageable
     }
     #endregion
 
-    void Start()
+    void Awake()
     {
         Initialize();
     }
@@ -148,12 +152,11 @@ public class PlayerController : MonoBehaviour, IDamageable
 
     public void Move()
     {
-        if (transform.position.z >= 113.2)
+        if (!DungeonManager.Instance.IsDungeonExist && transform.position.z >= 113.2)
         {
             Vector3 pos = transform.position;
             pos.z = 5;
             transform.position = pos;
-            //OnAutoDungeonChallenge?.Invoke();
         }
 
         // 자동 모드일 때
@@ -273,7 +276,7 @@ public class PlayerController : MonoBehaviour, IDamageable
     {
         Vector3 newPos = _rigidbody.position;
         newPos.x = Mathf.Clamp(newPos.x, -23, 23);
-        newPos.z = Mathf.Clamp(newPos.z, -100, 115);
+        newPos.z = Mathf.Clamp(newPos.z, -100, 300);
         _rigidbody.position = newPos;
     }
 
@@ -321,15 +324,15 @@ public class PlayerController : MonoBehaviour, IDamageable
     #region Player Utility
     void Recover()
     {
-        _hp += _playerData.HPRecoveryPerSec * Time.deltaTime;
-        if (_hp > _playerData.HP)
+        _hp += _runtimeData.HPRecoveryPerSec * Time.deltaTime;
+        if (_hp > _runtimeData.HP)
         {
-            _hp = _playerData.HP;
+            _hp = _runtimeData.HP;
         }
-        MP += _playerData.MPRecoveryPerSec * Time.deltaTime;
-        if (MP > _playerData.MP)
+        MP += _runtimeData.MPRecoveryPerSec * Time.deltaTime;
+        if (MP > _runtimeData.MP)
         {
-            MP = _playerData.MP;
+            MP = _runtimeData.MP;
         }
     }
 
@@ -388,7 +391,7 @@ public class PlayerController : MonoBehaviour, IDamageable
         StartCoroutine(CoSetPlayerCollision(duration));
     }
 
-    public void OnOffStatusUpgrade(Define.StatusType status, float amount, bool isMultiply)
+    public void OnOffStatusUpgrade(Define.StatusType status, float amount)
     {
         switch (status)
         {
@@ -414,6 +417,7 @@ public class PlayerController : MonoBehaviour, IDamageable
 
             case Define.StatusType.CoolTimeDecrease:
                 _runtimeData.CoolTimeDecrease += amount;
+                Debug.Log($"After cooltime reduction changed: {_runtimeData.CoolTimeDecrease}%");
                 break;
 
             default:

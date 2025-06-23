@@ -9,8 +9,6 @@ public class PlayerManager : Singleton<PlayerManager>
     private bool _isAuto = false;
     private bool _isAutoMoving = false;
 
-    private float _coolTimeDecrease = 1f;
-
     readonly Vector3 _originPos = new Vector3(0f, 0.1f, 0.5f);
 
     #region Properties
@@ -69,16 +67,6 @@ public class PlayerManager : Singleton<PlayerManager>
         set
         {
             _isAutoMoving = value;
-            //Debug.Log("IsAutoMoving: " + _isAutoMoving);
-        }
-    }
-
-    public float CoolTimeDecrease
-    {
-        get { return _coolTimeDecrease; }
-        set
-        {
-
         }
     }
 

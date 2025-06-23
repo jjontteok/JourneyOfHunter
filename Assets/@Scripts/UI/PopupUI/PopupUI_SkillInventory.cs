@@ -87,9 +87,9 @@ public class PopupUI_SkillInventory : MonoBehaviour
             go.name = "SkillItemSlot " + i;
         }
         int j = 0;
-        foreach (var skillResource in ObjectManager.Instance.PlayerSkillResourceList)
+        // 플레이어가 보유 중인 스킬리스트를 스킬 인벤토리에 등록
+        foreach (var skill in PlayerManager.Instance.SkillSystem.SkillList)
         {
-            Skill skill = skillResource.Value.GetComponent<Skill>();
             if (skill.SkillData.skillName == "PlayerBasicAttack")
                 continue;
             _slots[j++].UpdateSlot(skill.SkillData);

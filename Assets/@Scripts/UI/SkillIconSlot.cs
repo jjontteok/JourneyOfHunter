@@ -18,6 +18,8 @@ public class SkillIconSlot : MonoBehaviour
     bool _isCoolTime = false;
     float _currentTime = 0f;
     float _coolTime;
+    // 쿨타임 감소 효과 적용 전의 진짜 쿨타임
+    float _defaultCoolTime;
 
     readonly Color _coolTimeColor = new Color(0, 0, 0, 150f / 255);
     readonly Color _intervalColor = new Color(0, 0, 150f / 255, 150f / 255);
@@ -43,8 +45,17 @@ public class SkillIconSlot : MonoBehaviour
 
     public void StartIconCoolTime()
     {
-        _skillCoolTimeImage.color = _coolTimeColor;
+        var reduction = PlayerManager.Instance.Player.PlayerStatus.GetCoolTimeDecrease();
+        if(!Mathf.Approximately(reduction, 0f))
+        {
+            _coolTime = _defaultCoolTime * (1 + reduction / 100);
+        }
+        else
+        {
+            _coolTime = _defaultCoolTime;
+        }
         _currentTime = _coolTime;
+            _skillCoolTimeImage.color = _coolTimeColor;
         _isCoolTime = true;
     }
 
@@ -53,7 +64,7 @@ public class SkillIconSlot : MonoBehaviour
         _skillIconImage.sprite = skillData.skillIcon;
         _skillIconImage.color = Color.white;
         _skillCoolTimeImage.color = Color.clear;
-        _coolTime = skillData.coolTime;
+        _defaultCoolTime = skillData.coolTime;
         _isCoolTime = false;
     }
 

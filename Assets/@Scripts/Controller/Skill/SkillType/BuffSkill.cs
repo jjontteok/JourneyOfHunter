@@ -4,14 +4,12 @@ using UnityEngine;
 public class BuffSkill : ActiveSkill, IStatusChangeSkill
 {
     bool _isCoroutineRunning = false;
-    bool _isMultiply;
-    ParticleSystem _particle;
 
     public override bool ActivateSkill(Vector3 pos)
     {
         gameObject.SetActive(true);
         transform.position = pos;
-        StatusChange(true, _isMultiply);
+        StatusChange(true);
 
         StartCoroutine(DeActivateSkill());
         return true;
@@ -20,24 +18,6 @@ public class BuffSkill : ActiveSkill, IStatusChangeSkill
     public override void Initialize(Status status)
     {
         base.Initialize(status);
-        _particle = GetComponentInChildren<ParticleSystem>();
-        switch (_skillData.buffStatus)
-        {
-            case Define.StatusType.Atk:
-            case Define.StatusType.Def:
-            case Define.StatusType.Damage:
-            case Define.StatusType.HP:
-                _isMultiply = false;
-                break;
-
-            case Define.StatusType.HPRecoveryPerSec:
-            case Define.StatusType.CoolTimeDecrease:
-                _isMultiply = true;
-                break;
-
-            default:
-                break;
-        }
     }
 
     private void Update()
@@ -50,7 +30,7 @@ public class BuffSkill : ActiveSkill, IStatusChangeSkill
         _isCoroutineRunning = true;
         yield return _skillDurationTime;
         // 적용됐던 버프 효과 되돌리기
-        StatusChange(false,false);
+        StatusChange(false);
         gameObject.SetActive(false);
         _isCoroutineRunning = false;
     }
@@ -60,29 +40,20 @@ public class BuffSkill : ActiveSkill, IStatusChangeSkill
         // 버프 진행 중에 겜 종료 / 스킬 제거 등 발생 시
         if(_isCoroutineRunning)
         {
-            StatusChange(false, _isMultiply);
+            StatusChange(false);
+            StopAllCoroutines();
         }
     }
 
-    public void StatusChange(bool flag, bool isMultiply)
+    public void StatusChange(bool flag)
     {
         float coeff = SkillData.buffAmount;
-        // 감소 & 합연산
-        if (!flag && !isMultiply)
+
+        if (!flag)
         {
             coeff *= -1;
         }
-        // 곱연산
-        else if (isMultiply)
-        {
-            coeff = 1 + coeff / 100;
-            // 감소일 경우 역수
-            if (!flag)
-            {
-                coeff = 1 / coeff;
-            }
-        }
 
-        _player.OnOffStatusUpgrade(SkillData.buffStatus, coeff, isMultiply);
+        _player.OnOffStatusUpgrade(SkillData.buffStatus, coeff);
     }
 }

@@ -21,7 +21,7 @@ public class SwiftStrikeSkill : RotationTargetSkill, ICharacterMovingSkill
 
     private void Update()
     {
-
+        // 부모 객체에서의 Update 효과 무시하기 위함
     }
 
     private void FixedUpdate()
@@ -66,9 +66,10 @@ public class SwiftStrikeSkill : RotationTargetSkill, ICharacterMovingSkill
 
     IEnumerator CoAfterEffect()
     {
-        //yield return new WaitForSeconds(SkillData.durationTime - 0.1f);
         yield return null;
-        GameObject particle = Instantiate(_afterEffect, _coll.transform.position, Quaternion.Euler(-90, 0, 0),_coll.transform);
+        GameObject particle = Instantiate(_afterEffect, _coll.transform);
+        particle.transform.localPosition = Vector3.up;
+        particle.transform.localEulerAngles = new Vector3(-90, 0, 0);
         PlayerManager.Instance.Player.GetComponent<Animator>().SetTrigger("SkillAttack");
         Destroy(particle, 0.5f);
     }

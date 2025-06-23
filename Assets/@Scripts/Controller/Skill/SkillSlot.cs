@@ -10,8 +10,8 @@ public class SkillSlot : MonoBehaviour
     protected PlayerController _player;
     public ActiveSkill Skill { get { return _skill; } }
 
-    Transform _target;
-    bool _isTargetExist;
+    //Transform _target;
+    //bool _isTargetExist;
 
     // 스킬 슬롯 생성 시 스킬 아이콘 슬롯에 등록하는 이벤트
     public Action<SkillData> OnGenerateSlot;
@@ -32,16 +32,14 @@ public class SkillSlot : MonoBehaviour
     {
         Initialize();
     }
+
     void Initialize()
     {
-        // 나중에 게임매니저에서 가져오든지 할 예정
-        //_player = FindAnyObjectByType<PlayerController>();
         _player = PlayerManager.Instance.Player;
-        //IsActivatePossible = false;
     }
 
     // 처음 슬롯 생성 시 스킬 등록
-    public void SetSkill(SkillData data)
+    public bool SetSkill(SkillData data)
     {
         IsActivatePossible = true;
 
@@ -54,25 +52,29 @@ public class SkillSlot : MonoBehaviour
         else
         {
             Debug.Log("Cannot Find Skill Resource named " + data.skillName);
-            return;
+            return false;
         }
         _skill = Instantiate(skill) as ActiveSkill;
 
         // 타겟이 필요한 스킬인지 아닌지 체크
-        if (_skill.SkillData.targetExistence)
-        {
-            _isTargetExist = true;
-        }
-        else
-        {
-            _isTargetExist = false;
-        }
+        //if (_skill.SkillData.targetExistence)
+        //{
+        //    _isTargetExist = true;
+        //}
+        //else
+        //{
+        //    _isTargetExist = false;
+        //}
         _skill.Initialize(_player.PlayerData);
+
+        // 질풍참 처럼 캐릭터가 함께 이동하는 스킬
         var swift = _skill.GetComponent<ICharacterMovingSkill>();
         if (swift != null)
         {
             swift.OnSkillActivated += _player.ProcessPlayerCollision;
         }
+
+        // 기본공격 처럼 스킬 발동 시 캐릭터가 타겟 향해 회전하는 스킬
         var rotation = _skill.GetComponent<IRotationSkill>();
         if (rotation != null)
         {
@@ -81,18 +83,15 @@ public class SkillSlot : MonoBehaviour
         _skill.gameObject.SetActive(false);
 
         OnGenerateSlot?.Invoke(data);
+        return true;
     }
 
-    protected IEnumerator CoStartCoolTime(float time = default)
+    protected IEnumerator CoStartCoolTime()
     {
-        if (time == default)
-        {
-            yield return new WaitForSeconds(_skill.SkillData.coolTime);
-        }
-        else
-        {
-            yield return new WaitForSeconds(time);
-        }
+        float realCoolTime = _skill.SkillData.coolTime;
+        realCoolTime *= 1 + _player.PlayerStatus.GetCoolTimeDecrease() / 100;
+        Debug.Log($"Current cooltime reduction: {_player.PlayerStatus.GetCoolTimeDecrease()}%");
+        yield return new WaitForSeconds(realCoolTime);
         IsActivatePossible = true;
     }
 
@@ -100,27 +99,7 @@ public class SkillSlot : MonoBehaviour
     {
         if (IsActivatePossible && _player.MP >= _skill.SkillData.MP)
         {
-            // 수동 전투이면 그냥 발동
-            if(!PlayerManager.Instance.IsAuto)
-            {
-                ProcessSkill();
-                return;
-            }
-            // Target형 스킬인 경우
-            if (_isTargetExist)
-            {
-                // 가장 가까운 타겟을 탐색하고, 있으면 스킬 발동
-                _target = Util.GetNearestTarget(transform.position, _skill.SkillData.targetDistance)?.transform;
-                if (_target != null)
-                {
-                    ProcessSkill();
-                }
-            }
-            // Target형 스킬이 아닌 경우
-            else
-            {
-                ProcessSkill();
-            }
+            ProcessSkill();
         }
     }
 

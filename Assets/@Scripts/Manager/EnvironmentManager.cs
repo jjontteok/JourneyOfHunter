@@ -2,7 +2,6 @@ using extension;
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using UnityEditorInternal;
 using UnityEngine;
 
 public class EnvironmentManager : Singleton<EnvironmentManager>, IEventSubscriber
@@ -228,6 +227,21 @@ public class EnvironmentManager : Singleton<EnvironmentManager>, IEventSubscribe
                 break;
         }
     }
+
+    void RotateLight()
+    {
+        switch (_currentProperty)
+        {
+            case Define.TimeOfDayType.Noon:
+            case Define.TimeOfDayType.Morning:
+                _currentLight.transform.Rotate(Vector3.forward * _rotateSpeed * Time.deltaTime, Space.World);
+                break;
+            case Define.TimeOfDayType.Night:
+                //밤이 되면 빛의 회전을 미리 아침 때의 위치로 변경
+                _currentLight.transform.localEulerAngles = new Vector3(140, 78, 86);   
+                break;
+        }
+    }
     #endregion
 
     #region TimeManager Event Perform
@@ -249,7 +263,7 @@ public class EnvironmentManager : Singleton<EnvironmentManager>, IEventSubscribe
     //현재의 스카이박스 색을 변경하는 함수
     IEnumerator LerpSkyBox(Define.TimeOfDayType type)
     {
-        Debug.Log("스카이박스 색 변경" + a++);
+        //Debug.Log("스카이박스 색 변경" + a++);
         string current = GetSkyBoxKey(type);
         Color changeColor = _colorList[current]; //현재 스카이박스의 초기값을 지정
         while (Extension.CheckTwoValues(changeColor.r, _targetColorList[current]))
@@ -261,7 +275,7 @@ public class EnvironmentManager : Singleton<EnvironmentManager>, IEventSubscribe
             LerpMountain(current);
             yield return null;
         }
-        Debug.Log("색 변경 완료" + b++);
+        //Debug.Log("색 변경 완료" + b++);
         if(current == Noon) _betterColor = changeColor;
         ChangeSkyBox(GetNextType(type));
     }
