@@ -24,7 +24,8 @@ public class CameraManager : Singleton<CameraManager>
     {
         base.Initialize();
         _followCam = Instantiate(ObjectManager.Instance.FollowCam);
-        _cutSceneCam = CutSceneManager.Instance.CutScene;
+        _cutSceneCam = Instantiate(ObjectManager.Instance.CutSceneCam);
+
         _mainCamera = Camera.main;
 
         Transform playerTransform = PlayerManager.Instance.Player.transform;
@@ -36,13 +37,17 @@ public class CameraManager : Singleton<CameraManager>
 
     public void SetFollowPlayerCam()
     {
-        _cutSceneCam.GetComponentInChildren<CinemachineCamera>().Priority = lowPriority;
+        _cutSceneCam.GetComponentInChildren<CinemachineCamera>(true).Priority = lowPriority;
         _followCam.GetComponent<CinemachineCamera>().Priority = highPriority;
     }
 
     public void SetCutSceneCam()
     {
-        _cutSceneCam.GetComponentInChildren<CinemachineCamera>().Priority = highPriority;
+        Transform monster = FindAnyObjectByType<NamedMonsterController>().transform;
+        _cutSceneCam.GetComponentInChildren<CinemachineCamera>(true).Follow = monster;
+        _cutSceneCam.GetComponentInChildren<CinemachineCamera>(true).LookAt = monster;
+        CinemachineCamera cim = _cutSceneCam.GetComponentInChildren<CinemachineCamera>(true);
+        cim.Priority = highPriority;
         _followCam.GetComponent<CinemachineCamera>().Priority = lowPriority;
     }
 }

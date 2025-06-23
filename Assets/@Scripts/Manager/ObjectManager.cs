@@ -47,6 +47,7 @@ public class ObjectManager : Singleton<ObjectManager>
     // * CutScene
     private GameObject _goblinKingCutScene;
     private GameObject _followCam;
+    private GameObject _cutSceneCam;
     
 
     // * 프로퍼티
@@ -329,6 +330,16 @@ public class ObjectManager : Singleton<ObjectManager>
             return _followCam;
         }
     }
+
+    public GameObject CutSceneCam
+    {
+        get
+        {
+            if (NullCheck(_cutSceneCam))
+                return null;
+            return _cutSceneCam;
+        }
+    }
     #endregion
 
     #region Override
@@ -362,7 +373,7 @@ public class ObjectManager : Singleton<ObjectManager>
         PopupUIResourceLoad();
         PlayerVitalResourceLoad();
         CutSceneResourceLoad();
-        FollowCamResourceLoad();
+        CameraResourceLoad();
     }
 
     // * 플레이어 리소스 로드 메서드
@@ -470,9 +481,10 @@ public class ObjectManager : Singleton<ObjectManager>
         _goblinKingCutScene = Resources.Load<GameObject>(Define.GoblinKingCutScenePath);
     }
 
-    private void FollowCamResourceLoad()
+    private void CameraResourceLoad()
     {
         _followCam = Resources.Load<GameObject>(Define.FollowCameraPath);
+        _cutSceneCam = Resources.Load<GameObject>(Define.CutSceneCameraPath);
     }
     #endregion
 

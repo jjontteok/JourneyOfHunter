@@ -54,6 +54,7 @@ public class Define : MonoBehaviour
 
     public const string GoblinKingCutScenePath = "CutScene/GoblinCutScene";
     public const string FollowCameraPath = "Camera/FollowPlayerCamera";
+    public const string CutSceneCameraPath = "Camera/CutSceneCamera";
     #endregion
 
     #region DungeonSpots
