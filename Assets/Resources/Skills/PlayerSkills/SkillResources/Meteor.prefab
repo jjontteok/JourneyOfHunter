@@ -10,7 +10,6 @@ GameObject:
   m_Component:
   - component: {fileID: 3031205265131374617}
   - component: {fileID: 9026722359768662598}
-  - component: {fileID: 2033451969501631463}
   m_Layer: 0
   m_Name: Meteor
   m_TagString: Untagged
@@ -31,7 +30,6 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 4701364230462134971}
   - {fileID: 5867847576960062263}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -49,34 +47,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _skillData: {fileID: 11400000, guid: 8d17acd05d4825f49b29f04aa6209000, type: 2}
   _meteorObject: {fileID: 4457259708161309300}
-  _delay: 1.5
---- !u!54 &2033451969501631463
-Rigidbody:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 330995456638174607}
-  serializedVersion: 4
-  m_Mass: 1
-  m_Drag: 0
-  m_AngularDrag: 0.05
-  m_CenterOfMass: {x: 0, y: 0, z: 0}
-  m_InertiaTensor: {x: 1, y: 1, z: 1}
-  m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ImplicitCom: 1
-  m_ImplicitTensor: 1
-  m_UseGravity: 1
-  m_IsKinematic: 0
-  m_Interpolate: 0
-  m_Constraints: 0
-  m_CollisionDetection: 0
+  _delay: 2
 --- !u!1 &1641824635244316803
 GameObject:
   m_ObjectHideFlags: 0
@@ -4940,7 +4911,8 @@ Transform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children: []
+  m_Children:
+  - {fileID: 4701364230462134971}
   m_Father: {fileID: 3031205265131374617}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!135 &2696592405820216079
@@ -4987,7 +4959,7 @@ GameObject:
   - component: {fileID: 4701364230462134971}
   - component: {fileID: 3684091617520371652}
   - component: {fileID: 2562095838084025311}
-  m_Layer: 8
+  m_Layer: 0
   m_Name: MeteorObject
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -5002,13 +4974,13 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4457259708161309300}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 1
   m_Children:
   - {fileID: 5472881734503535013}
-  m_Father: {fileID: 3031205265131374617}
+  m_Father: {fileID: 5867847576960062263}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!33 &3684091617520371652
 MeshFilter:

@@ -12,14 +12,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b5a2bd60270c28542a965d0ea4006cc1, type: 3}
   m_Name: Demon
   m_EditorClassIdentifier: 
+  Atk: 5
+  Def: 1
   SpawnEffect: {fileID: 0}
   DeadEffect: {fileID: 0}
   Name: Demon
   Description: "\uC545\uB9C8 \uCAC4\uB530\uAD6C"
-  Atk: 5
-  Def: 1
   Damage: 1
-  HP: 10
+  HP: 1000
   Speed: 1
   AttackSpeed: 1
   MoveRange: 1
