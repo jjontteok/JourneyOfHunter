@@ -7,12 +7,12 @@ using UnityEngine.Timeline;
 
 public class CutSceneController : MonoBehaviour
 {
-    PlayableDirector _playableDirector;
-    [SerializeField] GameObject _virtualCamera;
-    [SerializeField] Camera _mainCamera;
     [SerializeField] GameObject _monsterAppearEffectPrefab;
+
+    PlayableDirector _playableDirector;
     GameObject _monsterAppearEffect;
-    Transform _monsterPos;
+    Transform _monsterTransform;
+
     private void Awake()
     {
         Initialize();
@@ -20,7 +20,6 @@ public class CutSceneController : MonoBehaviour
 
     private void Initialize()
     {
-        _mainCamera = Camera.main;
         _playableDirector = GetComponent<PlayableDirector>();
         _monsterAppearEffect = Instantiate(_monsterAppearEffectPrefab);
         _monsterAppearEffect.SetActive(false);
@@ -32,33 +31,43 @@ public class CutSceneController : MonoBehaviour
     }
 
     private void OnDisable()
-    {
+    {        
         _playableDirector.stopped -= FinishCutScene;
     }
 
     void SetBinding()
     {
+        GameObject namedMonster = FindAnyObjectByType<NamedMonsterController>().gameObject;
+        _monsterTransform = namedMonster.transform;
+
+        //타임라인 복제
         var timeline = _playableDirector.playableAsset as TimelineAsset;
-        var cineTrack = timeline.GetOutputTracks().OfType<CinemachineTrack>().FirstOrDefault();
-        _playableDirector.SetGenericBinding(cineTrack, _mainCamera.GetComponent<CinemachineBrain>());
 
         var activateTrack = timeline.GetOutputTrack(0);
         var animationTrack = timeline.GetOutputTracks().OfType<AnimationTrack>().FirstOrDefault();
-        GameObject namedMonster = FindAnyObjectByType<NamedMonsterController>().gameObject;
-        _monsterPos = namedMonster.transform;
+
         _playableDirector.SetGenericBinding(activateTrack, namedMonster);
         _playableDirector.SetGenericBinding(animationTrack, namedMonster.GetComponent<Animator>());
     }
-
-
-    public void PlayCutScene()
+    void SetAnimStartPos()
     {
-        _virtualCamera.SetActive(true);
-        CameraManager.Instance.SetCutSceneCam();
-        SetBinding();
         GameObject player = PlayerManager.Instance.Player.gameObject;
         transform.position = player.transform.position;
-        _monsterAppearEffect.transform.position = _monsterPos.position - Vector3.up * 3;
+    }
+
+    // * CutScene 실행 함수
+    public void PlayCutScene()
+    {
+        //시네머신 카메라들의 우선순위 설정
+        CameraManager.Instance.SetCutSceneCam();
+
+        //컷신 카메라의 위치 설정
+        SetAnimStartPos();
+
+        //트랙 연결
+        SetBinding();
+
+        _monsterAppearEffect.transform.position = _monsterTransform.position - Vector3.up * 3;
         _monsterAppearEffect.SetActive(true);
         _playableDirector.Play();
 
@@ -70,8 +79,6 @@ public class CutSceneController : MonoBehaviour
     {
         CameraManager.Instance.SetFollowPlayerCam();
         _monsterAppearEffect?.SetActive(false);
-        _virtualCamera.SetActive(false);
-        _mainCamera.transform.rotation = Quaternion.Euler(new Vector3(30, 0, 0));
         CameraManager.Instance.OnCutSceneEnded?.Invoke();
 
         UIManager.Instance.ActivateUIGame();
