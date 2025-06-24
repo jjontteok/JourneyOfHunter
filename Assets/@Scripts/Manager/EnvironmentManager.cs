@@ -221,36 +221,6 @@ public class EnvironmentManager : Singleton<EnvironmentManager>, IEventSubscribe
         }
     }
 
-    void RotateLight()
-    {
-        switch (_currentProperty)
-        {
-            case Define.TimeOfDayType.Noon:
-            case Define.TimeOfDayType.Morning:
-            case Define.TimeOfDayType.Evening:
-                _currentLight.transform.Rotate(Vector3.forward * _rotateSpeed * Time.deltaTime, Space.World);
-                break;
-            case Define.TimeOfDayType.Night:
-                //밤이 되면 빛의 회전을 미리 아침 때의 위치로 변경
-                _currentLight.transform.localEulerAngles = new Vector3(140, 78, 86);   
-                break;
-        }
-    }
-
-    void RotateLight()
-    {
-        switch (_currentProperty)
-        {
-            case Define.TimeOfDayType.Noon:
-            case Define.TimeOfDayType.Morning:
-                _currentLight.transform.Rotate(Vector3.forward * _rotateSpeed * Time.deltaTime, Space.World);
-                break;
-            case Define.TimeOfDayType.Night:
-                //밤이 되면 빛의 회전을 미리 아침 때의 위치로 변경
-                _currentLight.transform.localEulerAngles = new Vector3(140, 78, 86);   
-                break;
-        }
-    }
     #endregion
 
     #region TimeManager Event Perform
@@ -346,9 +316,7 @@ public class EnvironmentManager : Singleton<EnvironmentManager>, IEventSubscribe
 
         //실제로 스카이박스 변경
         ChangeRenderSettings();
-    }
-
-    
+    }   
 
     void SetRotateSpeed(Define.TimeOfDayType type)
     {
