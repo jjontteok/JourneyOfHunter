@@ -316,9 +316,7 @@ public class EnvironmentManager : Singleton<EnvironmentManager>, IEventSubscribe
 
         //실제로 스카이박스 변경
         ChangeRenderSettings();
-    }
-
-    
+    }   
 
     void SetRotateSpeed(Define.TimeOfDayType type)
     {
