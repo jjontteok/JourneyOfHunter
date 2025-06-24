@@ -127,6 +127,7 @@ public class Define : MonoBehaviour
     }
     public enum TimeOfDayType
     {
+        None,
         Morning,
         Noon,
         Evening,

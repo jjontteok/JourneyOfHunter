@@ -18,6 +18,10 @@ public class UI_Game : MonoBehaviour
     [SerializeField] Toggle _doubleSpeedToggle;
     [SerializeField] PlayerInventoryData _inventoryData;
 
+    public TMP_Text temporaryText;
+    public TMP_Text temporaryColorChangeText;
+    public TMP_Text temporaryTimeText;
+
     private List<UI_PlayerVital> _playerVitalList; 
     private GameObject _playerVitalCanvas;
     private PlayerController _player;

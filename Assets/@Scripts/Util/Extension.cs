@@ -39,21 +39,23 @@ namespace extension
             return false;
         }
 
-        //public static bool CheckTwoValues(Color color1, Color color2, float threshold = 0.35f)
-        //{
-        //    Vector3 vec1 = new Vector3(color1.r, color1.g, color1.b);
-        //    Vector3 vec2 = new Vector3(color2.r, color2.g, color2.b);
-
-        //    if (Vector3.Distance(vec1, vec2) < 0.001f)
-        //        return false;
-        //    return true;
-        //}
-
         public static bool CheckTwoValues(float value1, float value2, float threshold = 0.001f)
         {
             if (Mathf.Abs(value1 - value2) < threshold)
                 return false;
             return true;
+        }
+
+        public static Define.TimeOfDayType GetNextType(Define.TimeOfDayType type)
+        {
+            return type switch
+            {
+                Define.TimeOfDayType.Noon => Define.TimeOfDayType.Evening,
+                Define.TimeOfDayType.Evening => Define.TimeOfDayType.Night,
+                Define.TimeOfDayType.Night => Define.TimeOfDayType.Morning,
+                Define.TimeOfDayType.Morning => Define.TimeOfDayType.Noon,
+                _ => 0
+            };
         }
     }
 }

@@ -11,14 +11,12 @@ public class EnvironmentManager : Singleton<EnvironmentManager>, IEventSubscribe
     #region Dictionary
     private Dictionary<string, Material> _skyBoxList;
     private Dictionary<string, Color> _colorList;
-    private Dictionary<string, Color> _variationColorList;
-    private Dictionary<string, float> _variationLightList;
-    private Dictionary<string, float> _variationMountainList;
-    private Dictionary<string, float> _targetColorList;
+    private Dictionary<string, Color> _targetColorList;
     private Dictionary<string, float> _targetLightList;
     private Dictionary<string, float> _targetMountainList;
     private Dictionary<string, float> _rotateSkyBoxList;
     private Dictionary<string, float> _rotateLightList;
+    private Dictionary<string, float> _skyBoxDurationList;
 
     #endregion
     private Material _currentSkyBox;
@@ -27,26 +25,29 @@ public class EnvironmentManager : Singleton<EnvironmentManager>, IEventSubscribe
 
     private Light _currentLight;
 
-    private Define.TimeOfDayType _currentProperty;
-
-    Coroutine _lerpCoroutine;
+    private Define.TimeOfDayType _currentType;
+    private Define.TimeOfDayType _changeType = Define.TimeOfDayType.None;
 
     //더 좋은 방법 어디 없나?
     Color _betterColor;
 
-    public Define.TimeOfDayType CurrentProperty
-    {
-        get { return _currentProperty; }
-        set { _currentProperty = value; }
-    }
+    const string Morning = "MorningSkyBox";
+    const string Noon = "NoonSkyBox";
+    const string Evening = "EveningSkyBox";
+    const string Night = "NightSkyBox";
 
     float _currentLightValue = 1;
     float _currentMountainValue = 1;
     float _rotateSpeed = 1;
     float _skyBoxRotateValue;
+    float _duration;
     float _toKey = 1;
-    bool _isSkyBoxColor = false;
+    float _time = 0;
 
+    Color _morningColor = new Color(0.1254f, 0.2081f, 0.2745f, 1);
+
+    string _currentTime;
+    bool _isMorning = false;
 
     public float ToKey
     {
@@ -57,17 +58,17 @@ public class EnvironmentManager : Singleton<EnvironmentManager>, IEventSubscribe
     }
 
     //임시 방편
-    const string Morning = "MorningSkyBox";
-    const string Noon = "NoonSkyBox";
-    const string Evening = "EveningSkyBox";
-    const string Night = "NightSkyBox";
     protected override void Initialize()
     {
         base.Initialize();
 
         _skyBoxList = new Dictionary<string, Material>();
 
-        _skyBoxList = ObjectManager.Instance.SkyBoxResourceList;
+        foreach(var material in ObjectManager.Instance.SkyBoxResourceList)
+        {
+            Material newMaterial = Instantiate(material.Value);
+            _skyBoxList.Add(material.Key, newMaterial);
+        }
 
         _currentLight = GameObject.Find("Directional Light").GetComponent<Light>();
 
@@ -80,37 +81,12 @@ public class EnvironmentManager : Singleton<EnvironmentManager>, IEventSubscribe
             //{ Night, new Color(0.426f, 0.611f, 0.896f, 1) }
         };
 
-        _variationColorList = new Dictionary<string, Color>()
+        _targetColorList = new Dictionary<string, Color>()
         {
-            { Morning, new Color(-0.001f, -0.0005f, 0, 0) },
-            { Noon, new Color(-0.0003f, -0.0004f, -0.0004f, 0) },
-            { Evening, new Color(-0.0004f, -0.0003f, -0.0003f, 0) },
-            { Night, new Color(0.0005f, 0.0004f, 0.0004f, 0) }
-        };
-
-        _variationLightList = new Dictionary<string, float>()
-        {
-            { Morning, 0.002f },
-            { Noon, -0.001f },
-            { Evening, -0.0015f },
-            { Night, 0.001f }
-        };
-
-        _variationMountainList = new Dictionary<string, float>()
-        {
-            { Morning,  0.002f},
-            { Noon, -0.001f },
-            { Evening, -0.0005f },
-            { Night, 0.001f}
-        };
-
-        _targetColorList = new Dictionary<string, float>()
-        {
-            { Morning, 0.35f },
-            { Noon, 0.29f },
-            //{ Evening, 0.1f },
-            { Evening, 0.08f },
-            { Night, 0.6f }
+            { Morning, new Color(0.36f, 0.446f, 0.5f, 1) },
+            { Noon, new Color(0.29f, 0.221f, 0.221f, 1) },
+            { Evening, new Color(0.011f, 0.08f, 0.08f, 1) },
+            { Night, new Color(0.9f, 0.9f, 0.9f, 1) }
         };
 
         _targetLightList = new Dictionary<string, float>()
@@ -145,6 +121,14 @@ public class EnvironmentManager : Singleton<EnvironmentManager>, IEventSubscribe
             { Night, 40 }
         };
 
+        _skyBoxDurationList = new Dictionary<string, float>()
+        {
+            { Morning, 10f },
+            { Noon, 16f },
+            { Evening, 10f },
+            { Night, 16f }
+        };
+
         SetEnvironmentObject();
         SetInitLightRotateSpeed();
         SetInitAllSkyBoxRotate();
@@ -176,13 +160,14 @@ public class EnvironmentManager : Singleton<EnvironmentManager>, IEventSubscribe
     void SetInitLightRotateSpeed()
     {
         _skyBoxRotateValue = _rotateSkyBoxList[Noon];
-        _rotateSpeed = _rotateLightList[Noon] / TimeManager.Instance.Duration;
+        _rotateSpeed = _rotateLightList[Noon] / ( _skyBoxDurationList[Noon] * _toKey);
     }
     #endregion
 
     #region IEventSubscriber
     public void Subscribe()
     {
+        TimeManager.Instance.OnColorChanged -= UpdateSkyColor;
         TimeManager.Instance.OnColorChanged += UpdateSkyColor;
         TimeManager.Instance.OnSkyBoxChanged += UpdateDuration;
         TimeManager.Instance.OnTimeSpeedChanged += UpdateDuration;
@@ -197,10 +182,18 @@ public class EnvironmentManager : Singleton<EnvironmentManager>, IEventSubscribe
 
     void Update()
     {
+        if (_changeType != Define.TimeOfDayType.None)
+        {
+            LerpSkyBox(_currentType);
+        }
+        if (_isMorning)
+        {
+            ChangeMorningColor();
+        }
         RotateSkyBox();
         RotateLight();
     }
-
+     
     #region Rotate
     void RotateSkyBox()
     {
@@ -210,6 +203,22 @@ public class EnvironmentManager : Singleton<EnvironmentManager>, IEventSubscribe
             _skyBoxRotateValue = 0;
         }
         _currentSkyBox.SetFloat("_Rotation", _skyBoxRotateValue);
+    }
+
+    void RotateLight()
+    {
+        switch (_currentType)
+        {
+            case Define.TimeOfDayType.Noon:
+            case Define.TimeOfDayType.Morning:
+            case Define.TimeOfDayType.Evening:
+                _currentLight.transform.Rotate(Vector3.forward * _rotateSpeed * Time.deltaTime, Space.World);
+                break;
+            case Define.TimeOfDayType.Night:
+                //밤이 되면 빛의 회전을 미리 아침 때의 위치로 변경
+                _currentLight.transform.localEulerAngles = new Vector3(140, 78, 86);   
+                break;
+        }
     }
 
     void RotateLight()
@@ -248,7 +257,9 @@ public class EnvironmentManager : Singleton<EnvironmentManager>, IEventSubscribe
     //TimeManager의 현재 스카이박스의 색을 변경할 때 호출되는 함수
     void UpdateSkyColor(Define.TimeOfDayType type)
     {
-        StartCoroutine(LerpSkyBox(type));
+        _time = 0;
+        _changeType = type;
+        _currentTime = GetSkyBoxKey(type);
     }
 
     //속도를 변경할 때 호출되는 함수
@@ -261,44 +272,44 @@ public class EnvironmentManager : Singleton<EnvironmentManager>, IEventSubscribe
     #region Update Color
     float a=0, b= 1;
     //현재의 스카이박스 색을 변경하는 함수
-    IEnumerator LerpSkyBox(Define.TimeOfDayType type)
+    void LerpSkyBox(Define.TimeOfDayType type)
     {
-        //Debug.Log("스카이박스 색 변경" + a++);
         string current = GetSkyBoxKey(type);
-        Color changeColor = _colorList[current]; //현재 스카이박스의 초기값을 지정
-        while (Extension.CheckTwoValues(changeColor.r, _targetColorList[current]))
+        _time += Time.deltaTime;
+
+        UIManager.Instance.TemporaryText.text = "스카이박스 색 변경" + (++a).ToString();
+
+        float t = (_time / _duration) * 10 / _toKey;
+        Color changeColor = Color.Lerp(_colorList[_currentTime], _targetColorList[_currentTime], t);
+        _currentSkyBox.SetColor("_Tint", changeColor);
+
+        LerpLight(current, t);
+        LerpMountain(current, t);
+
+        //색 변경이 다 끝나면 스카이박스 변경
+        if (t >= 1f)
         {
-            _currentSkyBox.SetColor("_Tint", changeColor);
-            changeColor += _variationColorList[current] / _toKey;
+            _time = 0;
+            _changeType = Define.TimeOfDayType.None;
+            UIManager.Instance.TemoraryColorChangeText.text = $"{changeColor}으로 색 변경 {b++}";
+            if (current == Noon) _betterColor = changeColor;
 
-            LerpLight(current);
-            LerpMountain(current);
-            yield return null;
+            ChangeSkyBox(Extension.GetNextType(type));
         }
-        //Debug.Log("색 변경 완료" + b++);
-        if(current == Noon) _betterColor = changeColor;
-        ChangeSkyBox(GetNextType(type));
     }
-
-    void LerpLight(string from)
+    
+    void LerpLight(string current, float t)
     {
-        float change = _currentLightValue + _variationLightList[from];
-        if (Extension.CheckTwoValues(change, _targetLightList[from]))
-        {
-            _currentLight.color = new Color(_currentLightValue, _currentLightValue, _currentLightValue, 1);
-            _currentLightValue += _variationLightList[from] / _toKey;
-        }
+        _currentLightValue = Mathf.Lerp(_currentLightValue, _targetLightList[current], t / 5);
+        _currentLight.color = new Color(_currentLightValue, _currentLightValue, _currentLightValue, 1);
     }
 
-    void LerpMountain(string from)
+    void LerpMountain(string current, float t)
     {
-        float change = _currentMountainValue + _variationMountainList[from];
-        if (Extension.CheckTwoValues(change, _targetMountainList[from]))
-        {
-            _mountain.SetColor("_Color", new Color(_currentMountainValue, _currentMountainValue, _currentMountainValue, 1));
-            _currentMountainValue += _variationMountainList[from] / _toKey; 
-        }
+        _currentMountainValue = Mathf.Lerp(_currentMountainValue, _targetMountainList[current], t / 5);
+        _mountain.SetColor("_Color", new Color(_currentMountainValue, _currentMountainValue, _currentMountainValue, 1));
     }
+
     #endregion
 
     //스카이박스를 변경하는 함수
@@ -307,11 +318,11 @@ public class EnvironmentManager : Singleton<EnvironmentManager>, IEventSubscribe
         Debug.Log("스카이박스 변경");
         string skyBoxName = GetSkyBoxKey(skyBox);
         _currentSkyBox = _skyBoxList[skyBoxName];
-        _currentProperty =  SetCurrentProperty(skyBoxName);
-
+        _currentType =  SetCurrentProperty(skyBoxName);
+        _currentTime = skyBoxName;
 
         //바꿀 스카이박스가 저녁이면
-        if(skyBoxName == Evening)
+        if (skyBoxName == Evening)
         {
             //초기 저녁 색을 낮의 마지막 색으로 변경
             _colorList[Evening] = _betterColor;
@@ -322,7 +333,7 @@ public class EnvironmentManager : Singleton<EnvironmentManager>, IEventSubscribe
         }
         else if(skyBoxName == Morning)
         {
-            StartCoroutine(ChangeMorningColor());
+            _isMorning = true;
             _skyBoxRotateValue = _rotateSkyBoxList[skyBoxName];
         }
         else
@@ -331,32 +342,35 @@ public class EnvironmentManager : Singleton<EnvironmentManager>, IEventSubscribe
             _skyBoxRotateValue = _rotateSkyBoxList[skyBoxName];
             _currentSkyBox.SetColor("_Tint", _colorList[skyBoxName]);
         }
+        _duration = _skyBoxDurationList[skyBoxName];
 
         //실제로 스카이박스 변경
         ChangeRenderSettings();
     }
 
+    
+
     void SetRotateSpeed(Define.TimeOfDayType type)
     {
         string skyBox = GetSkyBoxKey(type);
         //현재 스카이박스의 회전할 총량을 스카이박스가 유지될 시간으로 나눠 속력을 구함
-        _rotateSpeed = _rotateLightList[skyBox] / TimeManager.Instance.Duration;
+        _rotateSpeed = _rotateLightList[skyBox] / (_duration * _toKey);
         Debug.Log(_rotateSpeed);
     }
 
-    IEnumerator ChangeMorningColor()
+    void ChangeMorningColor()
     {
-        Color morningColor = new Color(0.1254f, 0.2081f, 0.2745f, 1);
-        while (Extension.CheckTwoValues(morningColor.r, 0.5f))
+        _time += Time.deltaTime;
+        float t = (_time / _duration) * 10 / _toKey;
+        
+        Color changeColor = Color.Lerp(_morningColor, _colorList[Morning], t);
+        _currentSkyBox.SetColor("_Tint", changeColor);
+
+        if (t >= 1f)
         {
-            _currentSkyBox.SetColor("_Tint", morningColor);
-            morningColor += new Color(0.0005f, 0.0004f, 0.0003f, 0) / _toKey;
-            if (_currentLightValue < 0.5f)
-                LerpLight(Night);
-            yield return null;
+            _isMorning = false;
         }
     }
-
 
     Define.TimeOfDayType SetCurrentProperty(string skyBox)
     {
@@ -384,18 +398,6 @@ public class EnvironmentManager : Singleton<EnvironmentManager>, IEventSubscribe
             Define.TimeOfDayType.Evening => Evening,
             Define.TimeOfDayType.Night => Night,
             _ => Noon,
-        };
-    }
-
-    Define.TimeOfDayType GetNextType(Define.TimeOfDayType type)
-    {
-        return type switch
-        {
-            Define.TimeOfDayType.Noon => Define.TimeOfDayType.Evening,
-            Define.TimeOfDayType.Evening => Define.TimeOfDayType.Night,
-            Define.TimeOfDayType.Night => Define.TimeOfDayType.Morning,
-            Define.TimeOfDayType.Morning => Define.TimeOfDayType.Noon,
-            _ => 0
         };
     }
 }
