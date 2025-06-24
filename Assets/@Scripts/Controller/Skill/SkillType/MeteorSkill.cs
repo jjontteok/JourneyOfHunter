@@ -1,7 +1,7 @@
 using System.Collections;
 using UnityEngine;
 
-public class MeteorSkill : AreaTargetSkill, IDelayedDamageSkill
+public class MeteorSkill : TransformTargetSkill, IDelayedDamageSkill, IPositioningSkill
 {
     [SerializeField] GameObject _meteorObject;
     [SerializeField] float _delay;
@@ -15,41 +15,45 @@ public class MeteorSkill : AreaTargetSkill, IDelayedDamageSkill
     private void OnEnable()
     {
         _meteorObject.transform.localScale = Vector3.one * 0.5f;
-        StartCoroutine(ActiveTrueSelf());
+        StartCoroutine(CoControlScale());
+    }
+
+    public override bool ActivateSkill(Vector3 pos)
+    {
+        gameObject.SetActive(true);
+        transform.position = GetCastPosition(pos);
+        _coll.transform.localPosition = Vector3.zero;
+        Physics.IgnoreLayerCollision(LayerMask.NameToLayer(Define.PlayerSkillLayer), LayerMask.NameToLayer(Define.MonsterTag), true);
+        SetDirection();
+        _meteorObject.SetActive(true);
+        // 콜라이더 꺼주고
+        //_coll.gameObject.SetActive(false);
+        StartCoroutine(CoActivateDelayedCollider());
+
+        StartCoroutine(DeActivateSkill());
+        return true;
     }
 
     public IEnumerator CoActivateDelayedCollider()
     {
         // 딜레이 타임 후 콜라이더 활성화 -> 대미지
         yield return new WaitForSeconds(_delay);
+        Physics.IgnoreLayerCollision(LayerMask.NameToLayer(Define.PlayerSkillLayer), LayerMask.NameToLayer(Define.MonsterTag), false);
         _meteorObject.SetActive(false);
-        _coll.gameObject.SetActive(true);
+        //_coll.gameObject.SetActive(true);
 
 
         GameObject effect = Instantiate(_skillData.hitEffectPrefab);
         effect.name = $"{_skillData.hitEffectPrefab.name} effect";
 
         RaycastHit ray;
-        Physics.Raycast(transform.position + Vector3.up * 5, Vector3.down, out ray, SkillData.offset.y);
+        //Physics.Raycast(transform.position, _direction, out ray, 100, LayerMask.NameToLayer(Define.GroundTag));
+        Physics.Raycast(transform.position, _direction, out ray, 100, LayerMask.GetMask(Define.GroundTag));
         effect.transform.position = ray.point;
         Destroy(effect, 0.5f);
     }
 
-    public override bool ActivateSkill(Vector3 pos)
-    {
-        if (base.ActivateSkill(pos))
-        {
-            _meteorObject.SetActive(true);
-            // 콜라이더 꺼주고
-            _coll.gameObject.SetActive(false);
-            StartCoroutine(CoActivateDelayedCollider());
-            return true;
-        }
-
-        return false;
-    }
-
-    IEnumerator ActiveTrueSelf()
+    IEnumerator CoControlScale()
     {
         Vector3 targetScale = Vector3.one * 10;
         while (true)
@@ -59,5 +63,15 @@ public class MeteorSkill : AreaTargetSkill, IDelayedDamageSkill
             if (Vector3.Distance(_meteorObject.transform.localScale, targetScale) <= 1f)
                 break;
         }
+    }
+
+    public Vector3 GetCastPosition(Vector3 pos)
+    {
+        return pos + _skillData.offset;
+    }
+
+    public override void SetDirection()
+    {
+        _direction = (_player.transform.position - transform.position).normalized;
     }
 }
