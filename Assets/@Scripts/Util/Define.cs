@@ -153,6 +153,29 @@ public class Define : MonoBehaviour
         Evening,
         Night,
     }
+    public enum ItemValue
+    {
+        Normal,
+        Rare,
+        Epic,
+        Unique,
+        Legendary
+    }
+    public enum ItemType
+    {
+        Equipment,
+        Consumable,
+        Other
+    }
+
+    public enum EquipmentItemType
+    {
+        Helmet,
+        Armor,
+        Gloves,
+        Shoes,
+        Weapon
+    }
     #endregion
 
     #region Layer
