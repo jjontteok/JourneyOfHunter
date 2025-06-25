@@ -52,13 +52,15 @@ public class Define : MonoBehaviour
     public const string PopupInventoryPanelPath = "UI/PopupUI/InventoryPanel - Popup";
     public const string PopupSkillInventoryPath = "UI/PopupUI/UI_SkillInventory - Popup";
     public const string PopupGainedRecordPanelPath = "UI/PopupUI/GainedRecordPanel - Popup";
-    public const string PopupAdventureInfoPanelPath = "UI/PopupUI/Panel - AdventureInfo";
+    public const string PopupJourneyInfoPanelPath = "UI/PopupUI/Panel - JourneyInfo";
     public const string PopupStageInfoPanelPath = "UI/PopupUI/Panel - StageInfo";
     public const string PopupNamedMonsterInfoPanelPath = "UI/PopupUI/Panel - NamedMonsterInfo";
 
     public const string GoblinKingCutScenePath = "CutScene/GoblinCutScene";
     public const string FollowCameraPath = "Camera/FollowPlayerCamera";
     public const string CutSceneCameraPath = "Camera/CutSceneCamera";
+
+    public const string JourneyRankPath = "DB/JourneyRankDB";
     #endregion
 
     #region DungeonSpots
@@ -77,22 +79,6 @@ public class Define : MonoBehaviour
     public static Vector3 SpawnSpot5 = new Vector3(-7, 7, -20);
     public static Vector3 SpawnSpot6 = new Vector3(7, 7, -20);
     public static Vector3 NamedMonsterSpawnSpot = new Vector3(0, 3, 30);
-    #endregion
-
-    #region Medal
-    //메달 레벨: 메달 레벨의 초기값, Max값
-    public static Dictionary<int, Tuple<string, int, int>> MedalList = new()
-    {
-        { 1, new Tuple<string, int, int>("동메달 1", 0, 10 ) },
-        { 2, new Tuple<string, int, int>("동메달 2", 10, 110 ) },
-        { 3, new Tuple<string, int, int>("동메달 3", 110, 410 ) },
-        { 4, new Tuple<string, int, int>("은메달 1", 410, 1010) },
-        { 5, new Tuple<string, int, int>("은메달 2", 1010, 2010) },
-        { 6, new Tuple<string, int, int>("은메달 3", 2010, 3510) },
-        { 7, new Tuple<string, int, int>("금메달 1", 3510, 5710) },
-        { 8, new Tuple<string, int, int>("금메달 2", 5710, 8510) },
-        { 9, new Tuple<string, int, int>("금메달 3", 8510, 13010) }
-    };
     #endregion
 
     #region Enum
@@ -153,6 +139,23 @@ public class Define : MonoBehaviour
         Evening,
         Night,
     }
+
+    public enum JourneyRankType
+    {
+        Bronze,
+        Silver,
+        Gold,
+        Master
+    }
+
+    public enum JourneyType
+    {
+        Default,    //초당
+        Explore,    //구역 통과시
+        Dungeon,    //던전 클리어
+        Treasure,   //보물
+    }
+    
     public enum ItemValue
     {
         Normal,
