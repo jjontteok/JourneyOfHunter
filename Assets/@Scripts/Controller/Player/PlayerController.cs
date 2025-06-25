@@ -1,5 +1,7 @@
+using NUnit.Framework;
 using System;
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
 public struct PlayerStatus
@@ -12,6 +14,8 @@ public struct PlayerStatus
     public float MP;
     public float MPRecoveryPerSec;
     public float CoolTimeDecrease;
+    public float Adventure;
+    public int AdventureMedal;
 
     public PlayerStatus(PlayerData playerData)
     {
@@ -23,6 +27,8 @@ public struct PlayerStatus
         MP = playerData.MP;
         MPRecoveryPerSec = playerData.MPRecoveryPerSec;
         CoolTimeDecrease = playerData.CoolTimeDecrease;
+        Adventure = playerData.Adventure;
+        AdventureMedal = playerData.AdventureMedal;
     }
 
     public float GetCoolTimeDecrease()
@@ -38,13 +44,15 @@ public class PlayerController : MonoBehaviour, IDamageable
     Rigidbody _rigidbody;
     [SerializeField] Transform _target;
 
-    public static Action<float, float> OnHPValueChanged;
-    public static Action<float, float> OnMPValueChanged;
+    public Action<float, float> OnHPValueChanged;
+    public Action<float, float> OnMPValueChanged;
+    public Action<float, int> OnAdventureValueChanged; 
 
     PlayerStatus _runtimeData;
     Vector3 _direction;
     float _mp;
     float _hp;
+    
     float _shortestSkillDistance;       //자동일 때, 이동 멈추는 범위
 
     bool _isSwifting;                   //질풍참 사용 여부
@@ -120,6 +128,23 @@ public class PlayerController : MonoBehaviour, IDamageable
             OnMPValueChanged?.Invoke(_mp, _playerData.MP);
         }
     }
+
+    public float Adventure
+    {
+        get { return _playerData.Adventure; }
+        set
+        {
+            _playerData.Adventure = value;
+            //해당 레벨의 맥스 값보다 현재 메달 값이 높으면 
+            if (Define.MedalList[PlayerData.AdventureMedal].Item3 <= _playerData.Adventure)
+            {
+                //플레이어의 메달 레벨 증가
+                _playerData.AdventureMedal++;
+            }
+            //PopupUI_AdventureInfo에서 이벤트 구독
+            OnAdventureValueChanged?.Invoke(_playerData.Adventure, _playerData.AdventureMedal);
+        }
+    }
     #endregion
 
     void Awake()
@@ -152,11 +177,13 @@ public class PlayerController : MonoBehaviour, IDamageable
 
     public void Move()
     {
+        //던전에 들어가지 않았을 때 플레이어의 위치를 이동시킴
         if (!DungeonManager.Instance.IsDungeonExist && transform.position.z >= 113.2)
         {
             Vector3 pos = transform.position;
             pos.z = 5;
             transform.position = pos;
+            Adventure += _playerData.AdventureMedal * 10;
         }
 
         // 자동 모드일 때
@@ -324,7 +351,7 @@ public class PlayerController : MonoBehaviour, IDamageable
     #region Player Utility
     void Recover()
     {
-        _hp += _runtimeData.HPRecoveryPerSec * Time.deltaTime;
+        HP += _runtimeData.HPRecoveryPerSec * Time.deltaTime;
         if (_hp > _runtimeData.HP)
         {
             _hp = _runtimeData.HP;

@@ -82,6 +82,6 @@ public class CutSceneController : MonoBehaviour
         CameraManager.Instance.OnCutSceneEnded?.Invoke();
 
         UIManager.Instance.ActivateUIGame();
-        PopupUIManager.Instance.ActivateNamedMonsterInfoPanel();
+        PopupUIManager.Instance.ActivateNamedMonsterInfo();
     }
 }

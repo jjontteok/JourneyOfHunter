@@ -53,8 +53,6 @@ public class PlayerManager : Singleton<PlayerManager>
                     //StageManager.Instance.StageActionStatus = Define.StageActionStatus.ExitStage;
                     StageManager.Instance.IsSpawnNamedMonster = true;
                 }
-
-
             }
             //Debug.Log("IsAuto: " + _isAuto);
         }

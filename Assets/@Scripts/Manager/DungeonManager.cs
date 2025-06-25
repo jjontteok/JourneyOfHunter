@@ -171,7 +171,8 @@ public class DungeonManager : Singleton<DungeonManager>, IEventSubscriber, IDeac
         _isOnSpawnableInvoked = false;
         DeathMonsterCount = 0;
         SetWallDown();
-        OnDungeonEnter?.Invoke();
+        //PopupUIManager에서 stageInfo 활성화, adventureInfo 비활성화
+        OnDungeonEnter?.Invoke(); 
     }
 
     // * 네임드 몬스터 사망 액션 구독 메서드
@@ -184,6 +185,7 @@ public class DungeonManager : Singleton<DungeonManager>, IEventSubscriber, IDeac
 
     private void ExitDungeon()
     {
+        //PopupUIManager에서 stageInfo 비활성화, adventureInfo 활성화
         OnDungeonExit?.Invoke();
         SetWallDown();
         if(PlayerManager.Instance.IsAuto)

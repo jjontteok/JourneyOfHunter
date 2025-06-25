@@ -24,6 +24,8 @@ MonoBehaviour:
   MPRecoveryPerSec: 10
   CoolTimeDecrease: 0
   UnlockedSkillSlotCount: 6
+  Adventure: 0
+  AdventureMedal: 1
   CurrentSkillData:
   - {fileID: 11400000, guid: fd5198dc4616eb641b608a206e87ff74, type: 2}
   - {fileID: 11400000, guid: a216770b25d62b7408ec2475f44984b1, type: 2}
