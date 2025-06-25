@@ -13,5 +13,7 @@ public class PlayerData : Status
     public float MPRecoveryPerSec;  //마나회복
     public float CoolTimeDecrease;  //쿨타임 감소
     public int UnlockedSkillSlotCount;  //현재 오픈된 스킬 슬롯 개수
+    public float Adventure;      //모험 게이지
+    public int AdventureMedal; //모험 메달 : 1(동메달 3)부터 9(금메달1)까지
     public SkillData[] CurrentSkillData;
 }
