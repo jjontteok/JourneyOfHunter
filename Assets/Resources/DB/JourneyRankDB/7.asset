@@ -1,0 +1,20 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8ba8e97c65e994b49857b8f425053c6b, type: 3}
+  m_Name: 7
+  m_EditorClassIdentifier: 
+  index: 7
+  medalType: 2
+  name: "\uAE08\uBA54\uB2EC1"
+  minAdventure: 3510
+  maxAdventure: 5710
+  textColor: {r: 0.8392157, g: 0.70980394, b: 0.20392157, a: 1}

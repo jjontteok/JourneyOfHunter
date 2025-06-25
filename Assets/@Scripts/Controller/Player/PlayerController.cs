@@ -3,6 +3,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using static UnityEditorInternal.ReorderableList;
 
 public struct PlayerStatus
 {
@@ -14,8 +15,8 @@ public struct PlayerStatus
     public float MP;
     public float MPRecoveryPerSec;
     public float CoolTimeDecrease;
-    public float Adventure;
-    public int AdventureMedal;
+    public float JourneyExp;
+    public int JourneyRank;
 
     public PlayerStatus(PlayerData playerData)
     {
@@ -27,8 +28,8 @@ public struct PlayerStatus
         MP = playerData.MP;
         MPRecoveryPerSec = playerData.MPRecoveryPerSec;
         CoolTimeDecrease = playerData.CoolTimeDecrease;
-        Adventure = playerData.Adventure;
-        AdventureMedal = playerData.AdventureMedal;
+        JourneyExp = playerData.JourneyExp;
+        JourneyRank = playerData.JourneyRank;
     }
 
     public float GetCoolTimeDecrease()
@@ -46,7 +47,8 @@ public class PlayerController : MonoBehaviour, IDamageable
 
     public Action<float, float> OnHPValueChanged;
     public Action<float, float> OnMPValueChanged;
-    public Action<float, int> OnAdventureValueChanged; 
+    public Action<float> OnJourneyExpChanged;
+    public Action<int> OnJourneyRankChanged;
 
     PlayerStatus _runtimeData;
     Vector3 _direction;
@@ -64,6 +66,7 @@ public class PlayerController : MonoBehaviour, IDamageable
 
     [SerializeField] PlayerData _playerData;
     [SerializeField] float _speed;
+
 
     #region Properties
 
@@ -129,20 +132,21 @@ public class PlayerController : MonoBehaviour, IDamageable
         }
     }
 
-    public float Adventure
+    public float JourneyExp
     {
-        get { return _playerData.Adventure; }
+        get { return _playerData.JourneyExp; }
         set
         {
-            _playerData.Adventure = value;
+            _playerData.JourneyExp = value;
             //해당 레벨의 맥스 값보다 현재 메달 값이 높으면 
-            if (Define.MedalList[PlayerData.AdventureMedal].Item3 <= _playerData.Adventure)
+            if (_playerData.JourneyRankData.maxAdventure <= _playerData.JourneyExp)
             {
-                //플레이어의 메달 레벨 증가
-                _playerData.AdventureMedal++;
+                //현재 메달 변경
+                _playerData.JourneyRankData =
+                    Instantiate(ObjectManager.Instance.JourneyRankResourceList[(++_playerData.JourneyRank).ToString()]);
+
+                OnJourneyRankChanged?.Invoke(_playerData.JourneyRank);
             }
-            //PopupUI_AdventureInfo에서 이벤트 구독
-            OnAdventureValueChanged?.Invoke(_playerData.Adventure, _playerData.AdventureMedal);
         }
     }
     #endregion
@@ -171,9 +175,34 @@ public class PlayerController : MonoBehaviour, IDamageable
         _animator = GetComponent<Animator>();
         _rigidbody = GetComponent<Rigidbody>();
         _runtimeData = new PlayerStatus(_playerData);
+        _playerData.JourneyRankData =
+            Instantiate(ObjectManager.Instance.JourneyRankResourceList[_playerData.JourneyRank.ToString()]);
     }
 
     #region Player Moving
+
+    public void GainJourneyExp(Define.JourneyType type)
+    {
+        float journeyExp = 1;
+        switch (type)
+        {
+            case Define.JourneyType.Default:
+                break;
+            case Define.JourneyType.Explore:
+                journeyExp = 10;
+                break;
+            case Define.JourneyType.Dungeon:
+                journeyExp = 100;
+                break;
+            case Define.JourneyType.Treasure:
+                journeyExp = 50;
+                break;
+        }
+        journeyExp *= _playerData.JourneyRank;
+        JourneyExp += journeyExp;
+        OnJourneyExpChanged?.Invoke(journeyExp);
+
+    }
 
     public void Move()
     {
@@ -183,7 +212,8 @@ public class PlayerController : MonoBehaviour, IDamageable
             Vector3 pos = transform.position;
             pos.z = 5;
             transform.position = pos;
-            Adventure += _playerData.AdventureMedal * 10;
+            //구역 통과 시 여정 경험치? 증가
+            GainJourneyExp(Define.JourneyType.Explore); 
         }
 
         // 자동 모드일 때
@@ -232,7 +262,7 @@ public class PlayerController : MonoBehaviour, IDamageable
         {
             if (!_animator.GetBool(Define.IsAttacking) && _direction != Vector3.zero)
             {
-                _rigidbody.MovePosition(_rigidbody.position + _direction.normalized * _speed * Time.fixedDeltaTime);
+                _rigidbody.MovePosition(_rigidbody.position + _direction.normalized * _speed * 5 * Time.fixedDeltaTime);
 
                 _animator.SetFloat(Define.Speed, _direction.magnitude);
                 transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(_direction), _speed * Time.deltaTime);
