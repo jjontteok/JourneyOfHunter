@@ -155,6 +155,30 @@ public class Define : MonoBehaviour
         Dungeon,    //던전 클리어
         Treasure,   //보물
     }
+    
+    public enum ItemValue
+    {
+        Normal,
+        Rare,
+        Epic,
+        Unique,
+        Legendary
+    }
+    public enum ItemType
+    {
+        Equipment,
+        Consumable,
+        Other
+    }
+
+    public enum EquipmentItemType
+    {
+        Helmet,
+        Armor,
+        Gloves,
+        Shoes,
+        Weapon
+    }
     #endregion
 
     #region Layer
