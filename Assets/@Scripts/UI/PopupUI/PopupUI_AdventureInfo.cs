@@ -36,6 +36,7 @@ public class PopupUI_AdventureInfo : MonoBehaviour
         _maxAdventure = Define.MedalList[_currentMedal].Item3;
 
         _adventureGaugeBarImage.fillAmount = _currentAdventure / _maxAdventure;
+        _adventureText.text = _currentAdventure.ToString();
         _medalText.text = Define.MedalList[_currentMedal].Item1;
         _minAdventureText.text = Define.MedalList[_currentMedal].Item2.ToString();
         _maxAdventureText.text = _maxAdventure.ToString();
