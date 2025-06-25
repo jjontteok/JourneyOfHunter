@@ -40,6 +40,8 @@ public class ManagerRoot : MonoBehaviour
 
         SpawnManager.Instance.CreateManager();
 
+        FieldManager.Instance.CreateManager();
+
         DamageTextManager.Instance.CreateManager();
 
         SkillManager.Instance.CreateManager();

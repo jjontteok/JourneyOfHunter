@@ -32,14 +32,13 @@ public class ObjectManager : Singleton<ObjectManager>
 
     private GameObject _popupCanvas;
     private GameObject _popupPanel;
+    private GameObject _popupGainedRecordInfo;
+    private GameObject _popupAdventureInfo;
     private GameObject _popupStageInfo;
     private GameObject _popupNamedMonsterInfo;
     private GameObject _popupStatusPanel;
     private GameObject _popupInventoryPanel;
     private GameObject _popupSkillInventory;
-    private GameObject _popupGainedRecordPanel;
-    private GameObject _popupStageInfoPanel;
-    private GameObject _popupNamedMonsterInfoPanel;
 
     private GameObject _playerVitalCanvas;
     private GameObject _playerVitalResource;
@@ -212,6 +211,15 @@ public class ObjectManager : Singleton<ObjectManager>
         }
     }
 
+    public GameObject PopupAdventureInfo
+    {
+        get
+        {
+            if (NullCheck(_popupAdventureInfo))
+                return null;
+            return _popupAdventureInfo;
+        }
+    }
     public GameObject PopupStageInfo
     {
         get
@@ -263,31 +271,11 @@ public class ObjectManager : Singleton<ObjectManager>
     {
         get
         {
-            if (NullCheck(_popupGainedRecordPanel))
+            if (NullCheck(_popupGainedRecordInfo))
             {
                 return null;
             }
-            return _popupGainedRecordPanel;
-        }
-    }
-    public GameObject PopupStageInfoPanel
-    {
-        get
-        {
-            if (NullCheck(_popupStageInfoPanel))
-            {
-                return null;
-            }
-            return _popupStageInfoPanel;
-        }
-    }
-    public GameObject PopupNamedMonsterInfoPanel
-    {
-        get
-        {
-            if (NullCheck(_popupNamedMonsterInfoPanel))
-                return null;
-            return _popupNamedMonsterInfoPanel;
+            return _popupGainedRecordInfo;
         }
     }
 
@@ -459,14 +447,13 @@ public class ObjectManager : Singleton<ObjectManager>
     {
         _popupCanvas = Resources.Load<GameObject>(Define.PopupUICanvasPath);
         _popupPanel = Resources.Load<GameObject>(Define.PopupPanelPath);
+        _popupAdventureInfo = Resources.Load<GameObject>(Define.PopupAdventureInfoPanelPath);
+        _popupGainedRecordInfo = Resources.Load<GameObject>(Define.PopupGainedRecordPanelPath);
         _popupStageInfo = Resources.Load<GameObject>(Define.PopupStageInfoPanelPath);
         _popupNamedMonsterInfo = Resources.Load<GameObject>(Define.PopupNamedMonsterInfoPanelPath);
         _popupStatusPanel = Resources.Load<GameObject>(Define.PopupStatusPanelPath);
         _popupInventoryPanel = Resources.Load<GameObject>(Define.PopupInventoryPanelPath);
         _popupSkillInventory = Resources.Load<GameObject>(Define.PopupSkillInventoryPath);
-        _popupGainedRecordPanel = Resources.Load<GameObject>(Define.PopupGainedRecordPanelPath);
-        _popupStageInfoPanel = Resources.Load<GameObject>(Define.PopupStageInfoPanelPath);
-        _popupNamedMonsterInfoPanel = Resources.Load<GameObject>(Define.PopupNamedMonsterInfoPanelPath);
     }
 
     private void PlayerVitalResourceLoad()

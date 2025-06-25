@@ -9,6 +9,7 @@ public class PopupUIManager : Singleton<PopupUIManager>, IEventSubscriber, IDeac
 {
     private GameObject _canvasPopupUI;
     private GameObject _popupPanel;
+    private GameObject _popupAdventureInfo;
     private GameObject _popupStageInfo;
     private GameObject _popupNamedMonsterInfo;
     private GameObject _panelStatus;
@@ -27,6 +28,7 @@ public class PopupUIManager : Singleton<PopupUIManager>, IEventSubscriber, IDeac
     {
         _canvasPopupUI = Instantiate(ObjectManager.Instance.PopupCanvas);
         _popupPanel = Instantiate(ObjectManager.Instance.PopupPanel, _canvasPopupUI.transform);
+        _popupAdventureInfo = Instantiate(ObjectManager.Instance.PopupAdventureInfo, _canvasPopupUI.transform);
         _popupStageInfo = Instantiate(ObjectManager.Instance.PopupStageInfo, _canvasPopupUI.transform);
         _popupNamedMonsterInfo = Instantiate(ObjectManager.Instance.PopupNamedMonsterInfo, _canvasPopupUI.transform);
         _panelStatus = Instantiate(ObjectManager.Instance.PopupStatusPanel, _canvasPopupUI.transform);
@@ -40,11 +42,13 @@ public class PopupUIManager : Singleton<PopupUIManager>, IEventSubscriber, IDeac
     #region IEventSubscriber
     public void Subscribe()
     {
-        DungeonManager.Instance.OnDungeonEnter += ActivateStageInfoPanel;
-        DungeonManager.Instance.OnDungeonExit += DeactivateStageInfoPanel;
-        DungeonManager.Instance.OnSpawnNamedMonster += DeactivateStageInfoPanel;
-        //CameraManager.Instance.OnCutSceneEnded += ActivateNamedMonsterInfoPanel;
-        //DungeonManager.Instance.OnSpawnNamedMonster += ActivateNamedMonsterInfoPanel;
+        DungeonManager.Instance.OnDungeonEnter += ActivateStageInfo;
+        DungeonManager.Instance.OnDungeonEnter += DeactivateAdventureInfo;
+        DungeonManager.Instance.OnDungeonExit += DeactivateStageInfo;
+        DungeonManager.Instance.OnDungeonExit += ActivateAdventureInfo;
+        DungeonManager.Instance.OnSpawnNamedMonster += DeactivateStageInfo;
+        //CameraManager.Instance.OnCutSceneEnded += ActivateNamedMonsterInfo;
+        //DungeonManager.Instance.OnSpawnNamedMonster += ActivateNamedMonsterInfo;
         DungeonManager.Instance.OnDungeonClear += DeactivateNamedMonsterInfo;
 
         TimeManager.Instance.OnGainedRecordTimeChanged += UpdateGainedRecordTime;
@@ -71,6 +75,7 @@ public class PopupUIManager : Singleton<PopupUIManager>, IEventSubscriber, IDeac
     public void Deactivate()
     {
         _popupPanel.SetActive(false);
+        _popupAdventureInfo.SetActive(false);
         _popupStageInfo.SetActive(false);
         _popupNamedMonsterInfo.SetActive(false);
         _panelStatus.SetActive(false);
@@ -115,7 +120,12 @@ public class PopupUIManager : Singleton<PopupUIManager>, IEventSubscriber, IDeac
         _panelGainedRecord.SetActive(true);
     }
 
-    public void ActivateStageInfoPanel()
+    public void ActivateAdventureInfo()
+    {
+        _popupAdventureInfo.SetActive(true);
+    }
+
+    public void ActivateStageInfo()
     {
         _popupStageInfo.SetActive(true);
         if(PlayerManager.Instance.IsAuto)
@@ -124,7 +134,7 @@ public class PopupUIManager : Singleton<PopupUIManager>, IEventSubscriber, IDeac
         }
     }
 
-    public void ActivateNamedMonsterInfoPanel()
+    public void ActivateNamedMonsterInfo()
     {
         _popupNamedMonsterInfo.SetActive(true);
     }
@@ -137,8 +147,13 @@ public class PopupUIManager : Singleton<PopupUIManager>, IEventSubscriber, IDeac
         _popupPanel.SetActive(false);
         _activePopup = null;
     }
+    
+    public void DeactivateAdventureInfo()
+    {
+        _popupAdventureInfo.SetActive(true);
+    }
 
-    private void DeactivateStageInfoPanel()
+    private void DeactivateStageInfo()
     {
         _popupStageInfo?.SetActive(false);
     }

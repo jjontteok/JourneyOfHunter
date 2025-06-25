@@ -27,15 +27,15 @@ public class UI_PlayerVital : MonoBehaviour
 
     private void OnEnable()
     {
-        PlayerController.OnHPValueChanged += UpdatePlayerHp;
-        PlayerController.OnMPValueChanged += UpdatePlayerMp;
+        PlayerManager.Instance.Player.OnHPValueChanged += UpdatePlayerHp;
+        PlayerManager.Instance.Player.OnMPValueChanged += UpdatePlayerMp;
     }
 
-    private void OnDisable()
-    {
-        PlayerController.OnHPValueChanged -= UpdatePlayerHp;
-        PlayerController.OnMPValueChanged -= UpdatePlayerMp;
-    }
+    //private void OnDisable()
+    //{
+    //    PlayerManager.Instance.Player.OnHPValueChanged -= UpdatePlayerHp;
+    //    PlayerManager.Instance.Player.OnMPValueChanged -= UpdatePlayerMp;
+    //}
 
     private void LateUpdate()
     {
