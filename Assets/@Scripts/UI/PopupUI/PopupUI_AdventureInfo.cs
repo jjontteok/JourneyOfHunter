@@ -25,10 +25,12 @@ public class PopupUI_AdventureInfo : MonoBehaviour
         PlayerManager.Instance.Player.OnAdventureValueChanged += UpdateAdventure;
     }
 
-    //private void OnDisable()
-    //{
-    //    PlayerManager.Instance.Player.OnAdventureValueChanged -= UpdateAdventure;
-    //}
+    private void OnDisable()
+    {
+        if(PlayerManager.Instance.Player != null)
+            PlayerManager.Instance.Player.OnAdventureValueChanged -= UpdateAdventure;
+    }
+
     void Initialize()
     {
         _currentAdventure = PlayerManager.Instance.Player.Adventure;

@@ -17,6 +17,7 @@ public class UI_Game : MonoBehaviour
     [SerializeField] Toggle _autoToggle;
     [SerializeField] Toggle _doubleSpeedToggle;
     [SerializeField] PlayerInventoryData _inventoryData;
+    [SerializeField] GameObject _systemTextPanel;
 
     public TMP_Text temporaryText;
     public TMP_Text temporaryColorChangeText;
@@ -27,7 +28,6 @@ public class UI_Game : MonoBehaviour
     private PlayerController _player;
 
     private int _currentPlayers;
-
 
     private void Awake()
     {
@@ -79,6 +79,7 @@ public class UI_Game : MonoBehaviour
         _playerVitalCanvas = Instantiate(ObjectManager.Instance.PlayerVitalCanvas);
         Canvas canvas = _playerVitalCanvas.GetOrAddComponent<Canvas>();
         
+        //다 모듈화해주세용
         //플레이어 리스트를 받아와서
         GameObject[] players = GameObject.FindGameObjectsWithTag(Define.PlayerTag);
         _currentPlayers = players.Length;
@@ -92,6 +93,7 @@ public class UI_Game : MonoBehaviour
             uiPlayerVital.Initialize(players[i].transform);
             _playerVitalList.Add(uiPlayerVital);
         }
+
     }
 
     //얘도 몬스터 처치 시 재화를 얼만큼 획득할지 정해야 한당
@@ -182,5 +184,17 @@ public class UI_Game : MonoBehaviour
         {
             _createDungeonPortalButton.gameObject.SetActive(true);
         }
+    }
+
+    void OnSystemMessage(string text)
+    {
+        SystemTextController[] activeTexts = _systemTextPanel.GetComponentsInChildren<SystemTextController>(false);
+        foreach(SystemTextController activeText in activeTexts)
+        {
+            activeText.UpEffect();
+        }
+
+        GameObject systemText = PoolManager.Instance.GetObjectFromPool<SystemTextController>(new Vector3(50,0,0), "SystemText", _systemTextPanel.transform);
+        systemText.GetComponent<SystemTextController>().SetText(text);
     }
 }
