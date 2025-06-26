@@ -31,7 +31,6 @@ public class ObjectManager : Singleton<ObjectManager>
 
     // * UI Object
     private GameObject _uiGame;
-
     private GameObject _popupCanvas;
     private GameObject _popupPanel;
     private GameObject _popupGainedRecordInfo;
@@ -41,6 +40,8 @@ public class ObjectManager : Singleton<ObjectManager>
     private GameObject _popupStatusPanel;
     private GameObject _popupInventoryPanel;
     private GameObject _popupSkillInventory;
+
+    private GameObject _systemTextResource;
 
     private GameObject _playerVitalCanvas;
     private GameObject _playerVitalResource;
@@ -200,6 +201,16 @@ public class ObjectManager : Singleton<ObjectManager>
             if (NullCheck(_uiGame))
                 return null;
             return _uiGame;
+        }
+    }
+
+    public GameObject SystemTextResource
+    {
+        get
+        {
+            if (NullCheck(_systemTextResource))
+                return null;
+            return _systemTextResource;
         }
     }
 
@@ -464,8 +475,8 @@ public class ObjectManager : Singleton<ObjectManager>
     private void UIResourceLoad()
     {
         _uiGame = Resources.Load<GameObject>(Define.UIGamePath);
+        _systemTextResource = Resources.Load<GameObject>(Define.SystemTextPath);
     }
-
 
     // * 팝업 UI 리소스 로드 메서드
     private void PopupUIResourceLoad()
@@ -501,7 +512,7 @@ public class ObjectManager : Singleton<ObjectManager>
     #endregion
 
     #region InstantiateObjectMethod
-    public GameObject GetObject<T>(Vector3 spawnPos, string name) where T : MonoBehaviour
+    public GameObject GetObject<T>(Vector3 spawnPos, string name, Transform parent = default) where T : MonoBehaviour
     {
         Type type = typeof(T);
         if(type == typeof(PlayerController))
@@ -535,6 +546,11 @@ public class ObjectManager : Singleton<ObjectManager>
         else if(type == typeof(MonsterGateController))
         {
             GameObject obj = Instantiate(MonsterGateResource, spawnPos, Quaternion.identity);
+            return obj;
+        }
+        else if(type == typeof(SystemTextController))
+        {
+            GameObject obj = Instantiate(SystemTextResource, spawnPos, Quaternion.identity);
             return obj;
         }
         return null;
