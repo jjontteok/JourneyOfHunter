@@ -139,7 +139,7 @@ public class PlayerController : MonoBehaviour, IDamageable
         {
             _playerData.JourneyExp = value;
             //해당 레벨의 맥스 값보다 현재 메달 값이 높으면 
-            if (_playerData.JourneyRankData.maxAdventure <= _playerData.JourneyExp)
+            if (_playerData.JourneyRankData.maxJourneyExp <= _playerData.JourneyExp)
             {
                 //현재 메달 변경
                 _playerData.JourneyRankData =
@@ -213,6 +213,7 @@ public class PlayerController : MonoBehaviour, IDamageable
             pos.z = 5;
             transform.position = pos;
             //구역 통과 시 여정 경험치? 증가
+
             GainJourneyExp(Define.JourneyType.Explore); 
         }
 
