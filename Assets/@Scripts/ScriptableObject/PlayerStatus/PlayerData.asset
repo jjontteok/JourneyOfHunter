@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 607570ebac24e4a45abeea4b538c7693, type: 3}
   m_Name: PlayerData
   m_EditorClassIdentifier: 
-  Atk: 80
+  Atk: 199
   Def: 10
   Name: YongJinNa
   Level: 1
@@ -24,8 +24,8 @@ MonoBehaviour:
   MPRecoveryPerSec: 10
   CoolTimeDecrease: 0
   UnlockedSkillSlotCount: 6
-  JourneyExp: 20
-  JourneyRank: 2
+  JourneyExp: 934
+  JourneyRank: 4
   JourneyRankData: {fileID: 0}
   CurrentSkillData:
   - {fileID: 11400000, guid: fd5198dc4616eb641b608a206e87ff74, type: 2}

@@ -13,7 +13,7 @@ public class FieldManager : Singleton<FieldManager>, IEventSubscriber, IDeactiva
 
     void Start()
     {
-        PopupUIManager.Instance.ActivateAdventureInfo();
+        PopupUIManager.Instance.ActivateJourneyInfo();
     }
     public void Deactivate()
     {
@@ -27,11 +27,6 @@ public class FieldManager : Singleton<FieldManager>, IEventSubscriber, IDeactiva
 
     void Update()
     {
-        _time += Time.deltaTime;
-        if (_time >= _interval)
-        {
-            _time = 0;
-            _playerController.GainJourneyExp(Define.JourneyType.Default);
-        }
+        
     }
 }

@@ -39,13 +39,6 @@ namespace extension
             return false;
         }
 
-        public static bool CheckTwoValues(float value1, float value2, float threshold = 0.001f)
-        {
-            if (Mathf.Abs(value1 - value2) < threshold)
-                return false;
-            return true;
-        }
-
         public static Define.TimeOfDayType GetNextType(Define.TimeOfDayType type)
         {
             return type switch

@@ -9,7 +9,7 @@ public class PopupUIManager : Singleton<PopupUIManager>, IEventSubscriber, IDeac
 {
     private GameObject _canvasPopupUI;
     private GameObject _popupPanel;
-    private GameObject _popupAdventureInfo;
+    private GameObject _popupJourneyInfo;
     private GameObject _popupStageInfo;
     private GameObject _popupNamedMonsterInfo;
     private GameObject _panelStatus;
@@ -28,7 +28,7 @@ public class PopupUIManager : Singleton<PopupUIManager>, IEventSubscriber, IDeac
     {
         _canvasPopupUI = Instantiate(ObjectManager.Instance.PopupCanvas);
         _popupPanel = Instantiate(ObjectManager.Instance.PopupPanel, _canvasPopupUI.transform);
-        _popupAdventureInfo = Instantiate(ObjectManager.Instance.PopupJourneyInfo, _canvasPopupUI.transform);
+        _popupJourneyInfo = Instantiate(ObjectManager.Instance.PopupJourneyInfo, _canvasPopupUI.transform);
         _popupStageInfo = Instantiate(ObjectManager.Instance.PopupStageInfo, _canvasPopupUI.transform);
         _popupNamedMonsterInfo = Instantiate(ObjectManager.Instance.PopupNamedMonsterInfo, _canvasPopupUI.transform);
         _panelStatus = Instantiate(ObjectManager.Instance.PopupStatusPanel, _canvasPopupUI.transform);
@@ -43,9 +43,9 @@ public class PopupUIManager : Singleton<PopupUIManager>, IEventSubscriber, IDeac
     public void Subscribe()
     {
         DungeonManager.Instance.OnDungeonEnter += ActivateStageInfo;
-        DungeonManager.Instance.OnDungeonEnter += DeactivateAdventureInfo;
+        DungeonManager.Instance.OnDungeonEnter += DeactivateJourneyInfo;
         DungeonManager.Instance.OnDungeonExit += DeactivateStageInfo;
-        DungeonManager.Instance.OnDungeonExit += ActivateAdventureInfo;
+        DungeonManager.Instance.OnDungeonExit += ActivateJourneyInfo;
         DungeonManager.Instance.OnSpawnNamedMonster += DeactivateStageInfo;
         //CameraManager.Instance.OnCutSceneEnded += ActivateNamedMonsterInfo;
         //DungeonManager.Instance.OnSpawnNamedMonster += ActivateNamedMonsterInfo;
@@ -75,7 +75,7 @@ public class PopupUIManager : Singleton<PopupUIManager>, IEventSubscriber, IDeac
     public void Deactivate()
     {
         _popupPanel.SetActive(false);
-        _popupAdventureInfo.SetActive(false);
+        _popupJourneyInfo.SetActive(false);
         _popupStageInfo.SetActive(false);
         _popupNamedMonsterInfo.SetActive(false);
         _panelStatus.SetActive(false);
@@ -120,9 +120,9 @@ public class PopupUIManager : Singleton<PopupUIManager>, IEventSubscriber, IDeac
         _panelGainedRecord.SetActive(true);
     }
 
-    public void ActivateAdventureInfo()
+    public void ActivateJourneyInfo()
     {
-        _popupAdventureInfo.SetActive(true);
+        _popupJourneyInfo.SetActive(true);
     }
 
     public void ActivateStageInfo()
@@ -148,9 +148,9 @@ public class PopupUIManager : Singleton<PopupUIManager>, IEventSubscriber, IDeac
         _activePopup = null;
     }
     
-    public void DeactivateAdventureInfo()
+    public void DeactivateJourneyInfo()
     {
-        _popupAdventureInfo.SetActive(true);
+        _popupJourneyInfo.SetActive(false);
     }
 
     private void DeactivateStageInfo()
