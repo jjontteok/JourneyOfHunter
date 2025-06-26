@@ -28,7 +28,7 @@ public class PopupUIManager : Singleton<PopupUIManager>, IEventSubscriber, IDeac
     {
         _canvasPopupUI = Instantiate(ObjectManager.Instance.PopupCanvas);
         _popupPanel = Instantiate(ObjectManager.Instance.PopupPanel, _canvasPopupUI.transform);
-        _popupAdventureInfo = Instantiate(ObjectManager.Instance.PopupAdventureInfo, _canvasPopupUI.transform);
+        _popupAdventureInfo = Instantiate(ObjectManager.Instance.PopupJourneyInfo, _canvasPopupUI.transform);
         _popupStageInfo = Instantiate(ObjectManager.Instance.PopupStageInfo, _canvasPopupUI.transform);
         _popupNamedMonsterInfo = Instantiate(ObjectManager.Instance.PopupNamedMonsterInfo, _canvasPopupUI.transform);
         _panelStatus = Instantiate(ObjectManager.Instance.PopupStatusPanel, _canvasPopupUI.transform);

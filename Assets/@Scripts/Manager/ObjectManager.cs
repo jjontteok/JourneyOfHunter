@@ -1,3 +1,4 @@
+using extension;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -18,6 +19,7 @@ public class ObjectManager : Singleton<ObjectManager>
     private Dictionary<string, GameObject> _playerSkillHitEffectResourceList;
     private Dictionary<string, GameObject> _damageTextResourceList;
     private Dictionary<string, Material> _skyBoxResourceList;
+    private Dictionary<string, JourneyRankData> _journeyRankResourceList;
 
     // * GameObject : 인게임 오브젝트
     private GameObject _playerResource;
@@ -32,7 +34,7 @@ public class ObjectManager : Singleton<ObjectManager>
     private GameObject _popupCanvas;
     private GameObject _popupPanel;
     private GameObject _popupGainedRecordInfo;
-    private GameObject _popupAdventureInfo;
+    private GameObject _popupJourneyInfo;
     private GameObject _popupStageInfo;
     private GameObject _popupNamedMonsterInfo;
     private GameObject _popupStatusPanel;
@@ -125,6 +127,15 @@ public class ObjectManager : Singleton<ObjectManager>
         }
     }
 
+    public Dictionary<string, JourneyRankData> JourneyRankResourceList
+    {
+        get 
+        {
+            if (NullCheck(_journeyRankResourceList))
+                return null;
+            return _journeyRankResourceList;
+        }
+    }
 
     public GameObject PlayerResource 
     { 
@@ -222,13 +233,13 @@ public class ObjectManager : Singleton<ObjectManager>
         }
     }
 
-    public GameObject PopupAdventureInfo
+    public GameObject PopupJourneyInfo
     {
         get
         {
-            if (NullCheck(_popupAdventureInfo))
+            if (NullCheck(_popupJourneyInfo))
                 return null;
-            return _popupAdventureInfo;
+            return _popupJourneyInfo;
         }
     }
     public GameObject PopupStageInfo
@@ -354,6 +365,7 @@ public class ObjectManager : Singleton<ObjectManager>
         _playerSkillHitEffectResourceList = new Dictionary<string, GameObject>();
         _damageTextResourceList = new Dictionary<string, GameObject>();
         _skyBoxResourceList = new Dictionary<string, Material>();
+        _journeyRankResourceList = new Dictionary<string, JourneyRankData>();
     }
     #endregion
 
@@ -367,6 +379,7 @@ public class ObjectManager : Singleton<ObjectManager>
         MonsterResourceLoad();
         DamageTextResourceLoad();
         SkyBoxResourceLoad();
+        JourneyRankResourceLoad();
         EnvironmentResourceLoad();
         UIResourceLoad();
         PopupUIResourceLoad();
@@ -441,6 +454,18 @@ public class ObjectManager : Singleton<ObjectManager>
         }
     }
 
+    private void JourneyRankResourceLoad()
+    {
+        if (!NullCheck(_journeyRankResourceList))
+        {
+            Resources.LoadAll<JourneyRankData>(Define.JourneyRankPath).ToList(_journeyRankResourceList);
+        }
+        else
+        {
+            Debug.Log("Can't Load because of journey rank list is null");
+        }
+    }
+
     private void EnvironmentResourceLoad()
     {
         _backgroundResource = Resources.Load<GameObject>(Define.BackgroundPath);
@@ -458,7 +483,7 @@ public class ObjectManager : Singleton<ObjectManager>
     {
         _popupCanvas = Resources.Load<GameObject>(Define.PopupUICanvasPath);
         _popupPanel = Resources.Load<GameObject>(Define.PopupPanelPath);
-        _popupAdventureInfo = Resources.Load<GameObject>(Define.PopupAdventureInfoPanelPath);
+        _popupJourneyInfo = Resources.Load<GameObject>(Define.PopupJourneyInfoPanelPath);
         _popupGainedRecordInfo = Resources.Load<GameObject>(Define.PopupGainedRecordPanelPath);
         _popupStageInfo = Resources.Load<GameObject>(Define.PopupStageInfoPanelPath);
         _popupNamedMonsterInfo = Resources.Load<GameObject>(Define.PopupNamedMonsterInfoPanelPath);
