@@ -3,10 +3,24 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "newItem", menuName = "Item/EquipmentItem")]
 public class EquipmentItemData : ItemData
 {
-    public Define.EquipmentItemType equipmentType;
+    public Define.EquipmentItemType _equipmentType;
+    public ItemStatus _itemStatus;
 }
 
+[System.Serializable]
 public class ItemStatus
 {
+    public float Atk;                       //공격력
+    public float Def;                       //방어력
+    public float HP;                        //체력
+    public float HPRecoveryPerSec;          //체력회복
+    public float MP;                        //마나
+    public float MPRecoveryPerSec;          //마나회복
+    public float CoolTimeDecrease;          //쿨타임 감소
 
+    public void ApplyStatus(ref Status playerStatus)
+    {
+        playerStatus.Atk += Atk;
+        playerStatus.Def += Def;
+    }
 }
