@@ -3,7 +3,7 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "newItem", menuName = "Item/ConsumerItem")]
 public class ConsumerItemData : ItemData
 {
-    public ConsumerItemStatus _consumerItemStatus;
+    public ConsumerItemStatus ConsumerItemStatus;
 }
 
 [System.Serializable]

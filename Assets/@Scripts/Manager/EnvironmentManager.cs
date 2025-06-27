@@ -169,14 +169,12 @@ public class EnvironmentManager : Singleton<EnvironmentManager>, IEventSubscribe
     {
         TimeManager.Instance.OnColorChanged -= UpdateSkyColor;
         TimeManager.Instance.OnColorChanged += UpdateSkyColor;
-        TimeManager.Instance.OnSkyBoxChanged += UpdateDuration;
         TimeManager.Instance.OnTimeSpeedChanged += UpdateDuration;
     }
     #endregion
     void OnDisable()
     {
         TimeManager.Instance.OnColorChanged -= UpdateSkyColor;
-        TimeManager.Instance.OnSkyBoxChanged -= UpdateDuration;
         TimeManager.Instance.OnTimeSpeedChanged -= UpdateDuration;
     }
 
@@ -240,7 +238,6 @@ public class EnvironmentManager : Singleton<EnvironmentManager>, IEventSubscribe
     #endregion
 
     #region Update Color
-    float a=0, b= 1;
     //현재의 스카이박스 색을 변경하는 함수
     void LerpSkyBox(Define.TimeOfDayType type)
     {
