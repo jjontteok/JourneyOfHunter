@@ -20,7 +20,7 @@ public class UIEffectsManager : MonoBehaviour
         }
     }
 	
-    //Find the index of the given effect
+    //Find the Index of the given effect
     int indexOfEffect (string effectName)
     {
         for (int i = 0; i < Settings.Count; i++)
@@ -416,7 +416,7 @@ public class UIEffectsManager : MonoBehaviour
         int index = indexOfEffect(effectName);
         System.Reflection.FieldInfo property = typeof(UIEffect).GetField(propertyName);
         if (property == null)
-            throw new System.NullReferenceException("There is no property called " + propertyName + " on UIEffect structure! Find the correct name through the source code.");
+            throw new System.NullReferenceException("There is no property called " + propertyName + " on UIEffect structure! Find the correct Name through the source code.");
         object boxed = Settings[index];
         property.SetValue(boxed, value);
         Settings[index] = (UIEffect)boxed;

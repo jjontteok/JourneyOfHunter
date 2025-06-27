@@ -43,7 +43,7 @@ public class NamedMonsterController : MonsterController
 
     private void Start()
     {
-        _bulletSkill = Instantiate(ObjectManager.Instance.MonsterSkillResourceList[_bulletSkillData.skillName]).
+        _bulletSkill = Instantiate(ObjectManager.Instance.MonsterSkillResourceList[_bulletSkillData.SkillName]).
             GetComponent<ActiveSkill>();
         _bulletSkill.Initialize(_monsterData);
         _bulletSkill.gameObject.SetActive(false);
@@ -142,7 +142,7 @@ public class NamedMonsterController : MonsterController
     {
 
         _animator.SetTrigger(Define.LongAttack);
-        // offset = (0,0,3)
+        // Offset = (0,0,3)
         _bulletSkill.ActivateSkill(transform.position + Vector3.up * 2f);
     }
 

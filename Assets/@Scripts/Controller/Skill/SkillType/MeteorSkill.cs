@@ -43,8 +43,8 @@ public class MeteorSkill : TransformTargetSkill, IDelayedDamageSkill, IPositioni
         //_coll.gameObject.SetActive(true);
 
 
-        GameObject effect = Instantiate(_skillData.hitEffectPrefab);
-        effect.name = $"{_skillData.hitEffectPrefab.name} effect";
+        GameObject effect = Instantiate(_skillData.HitEffectPrefab);
+        effect.name = $"{_skillData.HitEffectPrefab.name} effect";
 
         RaycastHit ray;
         //Physics.Raycast(transform.position, _direction, out ray, 100, LayerMask.NameToLayer(Define.GroundTag));
@@ -67,7 +67,7 @@ public class MeteorSkill : TransformTargetSkill, IDelayedDamageSkill, IPositioni
 
     public Vector3 GetCastPosition(Vector3 pos)
     {
-        return pos + _skillData.offset;
+        return pos + _skillData.Offset;
     }
 
     public override void SetDirection()

@@ -13,13 +13,13 @@ public class AreaTargetSkill : ActiveSkill, ITargetSkill, IPositioningSkill
         _rigidbody = GetComponentInChildren<Rigidbody>();
         _coll = GetComponentInChildren<SkillColliderController>();
         _coll.SetColliderInfo(status, _skillData);
-        _offset = SkillData.offset;
+        _offset = SkillData.Offset;
     }
 
     // target받아서 그 위치에 생성
     public override bool ActivateSkill(Vector3 pos)
     {
-        if (IsTargetExist(pos, SkillData.isPlayerSkill))
+        if (IsTargetExist(pos, SkillData.IsPlayerSkill))
         {
             base.ActivateSkill(GetCastPosition(_target.position));
             _coll.transform.localPosition = Vector3.zero;
@@ -36,7 +36,7 @@ public class AreaTargetSkill : ActiveSkill, ITargetSkill, IPositioningSkill
 
     public bool IsTargetExist(Vector3 pos, bool isPlayerSkill)
     {
-        _target = Util.GetNearestTarget(pos, _skillData.targetDistance, isPlayerSkill)?.transform;
+        _target = Util.GetNearestTarget(pos, _skillData.TargetDistance, isPlayerSkill)?.transform;
         return _target != null;
     }
 

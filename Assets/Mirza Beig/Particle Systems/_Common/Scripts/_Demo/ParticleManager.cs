@@ -41,7 +41,7 @@ namespace MirzaBeig
 
                 public int currentParticlePrefabIndex;
 
-                // Take only the part of the prefab name string after these many underscores.
+                // Take only the part of the prefab Name string after these many underscores.
 
                 public int prefabNameUnderscoreCountCutoff = 4;
 
@@ -134,11 +134,11 @@ namespace MirzaBeig
 
                 public string GetCurrentPrefabName(bool shorten = false)
                 {
-                    // Save object name for clarity.
+                    // Save object Name for clarity.
 
                     string particleSystemName = particlePrefabs[currentParticlePrefabIndex][0].name;
 
-                    // Only take name from after the last underscore to the end.
+                    // Only take Name from after the last underscore to the end.
 
                     if (shorten)
                     {

@@ -76,7 +76,7 @@ namespace UnityStandardAssets.Cameras
             var x = Input.GetAxis("Mouse X");
             var y = Input.GetAxis("Mouse Y");
 
-            // Adjust the look angle by an amount proportional to the turn speed and horizontal input.
+            // Adjust the look Angle by an amount proportional to the turn Speed and horizontal input.
             m_LookAngle += x*m_TurnSpeed;
 
             // Rotate the rig (the root object) around Y axis only:
@@ -91,7 +91,7 @@ namespace UnityStandardAssets.Cameras
             }
             else
             {
-                // on platforms with a mouse, we adjust the current angle based on Y mouse input and turn speed
+                // on platforms with a mouse, we adjust the current Angle based on Y mouse input and turn Speed
                 m_TiltAngle -= y*m_TurnSpeed;
                 // and make sure the new value is within the tilt range
                 m_TiltAngle = Mathf.Clamp(m_TiltAngle, -m_TiltMin, m_TiltMax);

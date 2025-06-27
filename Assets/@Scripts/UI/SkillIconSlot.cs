@@ -61,10 +61,10 @@ public class SkillIconSlot : MonoBehaviour
 
     public void SetIconSlot(SkillData skillData)
     {
-        _skillIconImage.sprite = skillData.skillIcon;
+        _skillIconImage.sprite = skillData.SkillIcon;
         _skillIconImage.color = Color.white;
         _skillCoolTimeImage.color = Color.clear;
-        _defaultCoolTime = skillData.coolTime;
+        _defaultCoolTime = skillData.CoolTime;
         _isCoolTime = false;
     }
 

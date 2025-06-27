@@ -12,8 +12,8 @@ public abstract class Skill : MonoBehaviour
 
     public virtual void Initialize(Status status)
     {
-        _skillCoolTime = new WaitForSeconds(_skillData.coolTime);
-        _skillDurationTime = new WaitForSeconds(_skillData.durationTime);
+        _skillCoolTime = new WaitForSeconds(_skillData.CoolTime);
+        _skillDurationTime = new WaitForSeconds(_skillData.DurationTime);
         _player = PlayerManager.Instance.Player;
     }
 

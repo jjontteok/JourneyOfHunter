@@ -12,21 +12,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e807fb188ff3a544ba349f772e49f4cc, type: 3}
   m_Name: GoblinExplosion
   m_EditorClassIdentifier: 
-  skillName: GoblinExplosion
-  skillDescription: 
-  skillIcon: {fileID: 0}
-  coolTime: 0
-  durationTime: 2
-  targetDistance: 0
-  damage: 5
-  speed: 0
-  angle: 0
+  SkillName: GoblinExplosion
+  SkillDescription: 
+  SkillIcon: {fileID: 0}
+  CoolTime: 0
+  DurationTime: 2
+  TargetDistance: 0
+  Damage: 5
+  Speed: 0
+  Angle: 0
   MP: 0
-  connectedSkillPrefab: {fileID: 0}
-  hitEffectPrefab: {fileID: 2504214343621411470, guid: 49fa13df8c065f844adbd5114be9b29e, type: 3}
-  targetExistence: 0
-  isPlayerSkill: 0
-  isPassive: 0
-  offset: {x: 0, y: 0, z: 0}
-  buffStatus: 8
-  buffAmount: 0
+  ConnectedSkillPrefab: {fileID: 0}
+  HitEffectPrefab: {fileID: 2504214343621411470, guid: 49fa13df8c065f844adbd5114be9b29e, type: 3}
+  TargetExistence: 0
+  IsPlayerSkill: 0
+  IsPassive: 0
+  Offset: {x: 0, y: 0, z: 0}
+  BuffStatus: 8
+  BuffAmount: 0

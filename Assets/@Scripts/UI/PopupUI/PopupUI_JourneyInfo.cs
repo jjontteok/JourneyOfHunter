@@ -19,8 +19,6 @@ public class PopupUI_JourneyInfo : MonoBehaviour
 
     bool _isRankChanged = false;
 
-    Color _warningColor = new Color(0.896f, 0.139f, 0.139f, 1);
-
     private void Awake()
     {
         Initialize();

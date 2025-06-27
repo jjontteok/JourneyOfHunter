@@ -12,21 +12,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e807fb188ff3a544ba349f772e49f4cc, type: 3}
   m_Name: PlayerBasicAttack
   m_EditorClassIdentifier: 
-  skillName: PlayerBasicAttack
-  skillDescription: 
-  skillIcon: {fileID: 0}
-  coolTime: 0.75
-  durationTime: 0.4
-  targetDistance: 3
-  damage: 3
-  speed: 0
-  angle: 180
+  SkillName: PlayerBasicAttack
+  SkillDescription: 
+  SkillIcon: {fileID: 0}
+  CoolTime: 0.75
+  DurationTime: 0.4
+  TargetDistance: 3
+  Damage: 3
+  Speed: 0
+  Angle: 180
   MP: 0
-  connectedSkillPrefab: {fileID: 0}
-  hitEffectPrefab: {fileID: 4553287630450876385, guid: f5f7cfb700e6b3e419c0e156473bee3e, type: 3}
-  targetExistence: 1
-  isPlayerSkill: 1
-  isPassive: 0
-  offset: {x: 0, y: 0, z: 0}
-  buffStatus: 8
-  buffAmount: 0
+  ConnectedSkillPrefab: {fileID: 0}
+  HitEffectPrefab: {fileID: 4553287630450876385, guid: f5f7cfb700e6b3e419c0e156473bee3e, type: 3}
+  TargetExistence: 1
+  IsPlayerSkill: 1
+  IsPassive: 0
+  Offset: {x: 0, y: 0, z: 0}
+  BuffStatus: 8
+  BuffAmount: 0

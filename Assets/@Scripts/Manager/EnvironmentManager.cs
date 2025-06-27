@@ -6,7 +6,7 @@ using UnityEngine;
 
 public class EnvironmentManager : Singleton<EnvironmentManager>, IEventSubscriber
 {
-    public event Action<Define.TimeOfDayType> OnTimeOfDayChanged;
+    //public event Action<Define.TimeOfDayType> OnTimeOfDayChanged;
 
     #region Dictionary
     private Dictionary<string, Material> _skyBoxList;

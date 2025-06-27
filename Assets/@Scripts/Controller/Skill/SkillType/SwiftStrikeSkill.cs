@@ -37,7 +37,7 @@ public class SwiftStrikeSkill : RotationTargetSkill, ICharacterMovingSkill
             Vector3 tmp = _direction;
             tmp.y = 0f;
             _fixedDirection = tmp;
-            OnSkillActivated?.Invoke(SkillData.durationTime);
+            OnSkillActivated?.Invoke(SkillData.DurationTime);
             StartCoroutine(CoAfterEffect());
             return true;
         }
@@ -47,21 +47,21 @@ public class SwiftStrikeSkill : RotationTargetSkill, ICharacterMovingSkill
 
     public override void MoveSkillCollider()
     {
-        if (Vector3.Distance(_coll.transform.position, _originPos) < _skillData.targetDistance)
+        if (Vector3.Distance(_coll.transform.position, _originPos) < _skillData.TargetDistance)
         {
-            //_playerController.transform.Translate(_fixedDirection * _skillData.speed * Time.deltaTime, Space.World);
-            _playerRigidbody.MovePosition(_playerRigidbody.position + _fixedDirection * _skillData.speed * Time.fixedDeltaTime);
+            //_playerController.transform.Translate(_fixedDirection * _skillData.Speed * Time.deltaTime, Space.World);
+            _playerRigidbody.MovePosition(_playerRigidbody.position + _fixedDirection * _skillData.Speed * Time.fixedDeltaTime);
             //_coll.transform.position = _playerController.transform.position;
-            _rigidbody.MovePosition(_rigidbody.position + _fixedDirection * _skillData.speed * 1.3f * Time.fixedDeltaTime);
+            _rigidbody.MovePosition(_rigidbody.position + _fixedDirection * _skillData.Speed * 1.3f * Time.fixedDeltaTime);
         }
     }
 
     private void OnDrawGizmos()
     {
         Gizmos.color = Color.black;
-        Gizmos.DrawLine(transform.position + Vector3.up * 0.1f, transform.position + _direction * _skillData.targetDistance + Vector3.up * 0.1f);
+        Gizmos.DrawLine(transform.position + Vector3.up * 0.1f, transform.position + _direction * _skillData.TargetDistance + Vector3.up * 0.1f);
         Gizmos.color = Color.red;
-        Gizmos.DrawLine(transform.position, transform.position + _fixedDirection * _skillData.targetDistance);
+        Gizmos.DrawLine(transform.position, transform.position + _fixedDirection * _skillData.TargetDistance);
     }
 
     IEnumerator CoAfterEffect()

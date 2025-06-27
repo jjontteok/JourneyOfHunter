@@ -87,7 +87,7 @@ public class SkillSystem : MonoBehaviour
         SkillSlot skillSlot = _activeSkillSlotList.Find((slot) => slot.SkillData == data);
         if (skillSlot != null)
         {
-            Debug.Log($"Skill named {data.skillName} already exists!!!");
+            Debug.Log($"Skill named {data.SkillName} already exists!!!");
             return;
         }
 
@@ -110,7 +110,7 @@ public class SkillSystem : MonoBehaviour
             {
                 _basicSkillSlot = go.AddComponent<BasicSkillSlot>();
                 _basicSkillSlot.SetSkill(data);
-                OnShortestSkillDistanceChanged?.Invoke(data.targetDistance);
+                OnShortestSkillDistanceChanged?.Invoke(data.TargetDistance);
             }
 
             else
@@ -167,7 +167,7 @@ public class SkillSystem : MonoBehaviour
         SkillSlot slot = _activeSkillSlotList.Find((slot) => slot.SkillData == data);
         if (slot == null)
         {
-            Debug.Log("Cannot Find Skill with name " + data.skillName);
+            Debug.Log("Cannot Find Skill with Name " + data.SkillName);
             return;
         }
         slot.DestroySkillSlot();
@@ -183,17 +183,17 @@ public class SkillSystem : MonoBehaviour
             {
                 if (min < 0)
                 {
-                    min = slot.SkillData.targetDistance;
+                    min = slot.SkillData.TargetDistance;
                 }
                 else
                 {
-                    min = Mathf.Min(min, slot.SkillData.targetDistance);
+                    min = Mathf.Min(min, slot.SkillData.TargetDistance);
                 }
             }
         }
         if (min < 0)
         {
-            min = BasicSkillSlot.SkillData.targetDistance;
+            min = BasicSkillSlot.SkillData.TargetDistance;
         }
 
         OnShortestSkillDistanceChanged?.Invoke(min);

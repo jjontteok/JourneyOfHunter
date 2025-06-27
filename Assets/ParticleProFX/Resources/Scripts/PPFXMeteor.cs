@@ -29,7 +29,7 @@ public class PPFXMeteor : MonoBehaviour {
 		
 		//ground pos is spawn position
 		groundPos = this.transform.position;
-		//apply position offset
+		//apply position Offset
 		this.transform.position = this.transform.position + spawnPosOffset;
 		 
 		//store current distance to ground

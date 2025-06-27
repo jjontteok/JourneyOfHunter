@@ -12,12 +12,12 @@
 //        base.Initialize(status);
 //        _rigidbody = GetComponentInChildren<Rigidbody>();
 //        _coll = GetComponentInChildren<CrashColliderController>();
-//        _coll.SetColliderInfo(_skillData.damage, status, _skillData.connectedSkillPrefab, _skillData.hitEffectPrefab, _skillData.angle);
+//        _coll.SetColliderInfo(_skillData.Damage, status, _skillData.ConnectedSkillPrefab, _skillData.HitEffectPrefab, _skillData.Angle);
 //    }
 
 //    public override bool ActivateSkill(Vector3 pos)
 //    {
-//        if(IsTargetExist(pos, SkillData.isPlayerSkill))
+//        if(IsTargetExist(pos, SkillData.IsPlayerSkill))
 //        {
 //            base.ActivateSkill(_target.position + _offset);
 //            _coll.gameObject.transform.localPosition = Vector3.zero;
@@ -34,9 +34,9 @@
 //        return false;
 //    }
 
-//    public bool IsTargetExist(Vector3 pos, bool isPlayerSkill)
+//    public bool IsTargetExist(Vector3 pos, bool IsPlayerSkill)
 //    {
-//        _target = Util.GetNearestTarget(pos, _skillData.targetDistance, isPlayerSkill)?.transform;
+//        _target = Util.GetNearestTarget(pos, _skillData.TargetDistance, IsPlayerSkill)?.transform;
 //        return _target != null;
 //    }
 //}
