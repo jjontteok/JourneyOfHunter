@@ -10,7 +10,6 @@ public class TimeManager : Singleton<TimeManager>, IEventSubscriber
     public event Action<float> OnNamedMonsterTimeChanged;
     public event Action OnGainedRecordTimeChanged;
     public event Action<Define.TimeOfDayType> OnColorChanged;
-    public event Action<Define.TimeOfDayType> OnSkyBoxChanged;
     public event Action<Define.TimeOfDayType> OnTimeSpeedChanged;
 
     WaitForSeconds _standardTime = new WaitForSeconds(1f);

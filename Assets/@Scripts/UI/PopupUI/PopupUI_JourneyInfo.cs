@@ -1,10 +1,8 @@
-using Palmmedia.ReportGenerator.Core;
 using System.Collections;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
-using static TMPro.SpriteAssetUtilities.TexturePacker_JsonArray;
-using static UnityEditor.Experimental.GraphView.GraphView;
+
 
 public class PopupUI_JourneyInfo : MonoBehaviour
 {
@@ -21,8 +19,6 @@ public class PopupUI_JourneyInfo : MonoBehaviour
     int _currentJourneyRank;
 
     bool _isRankChanged = false;
-
-    Color _warningColor = new Color(0.896f, 0.139f, 0.139f, 1);
 
     private void Awake()
     {
@@ -47,9 +43,9 @@ public class PopupUI_JourneyInfo : MonoBehaviour
         _journeyRankData = PlayerManager.Instance.Player.PlayerData.JourneyRankData;
         _currentPlayerData = PlayerManager.Instance.Player.PlayerData;
         _currentJourneyExp = _currentPlayerData.JourneyExp;
-        _currentJourneyRank = _journeyRankData.index;
+        _currentJourneyRank = _journeyRankData.Index;
 
-        _journeyGaugeBarImage.fillAmount = _currentJourneyExp / _journeyRankData.maxJourneyExp;
+        _journeyGaugeBarImage.fillAmount = _currentJourneyExp / _journeyRankData.MaxJourneyExp;
         _journeyExpText.text = _currentJourneyExp.ToString(); //모험 게이지
         _journeyExpText.color = Color.white;
         UpdateJourneyUI();
@@ -82,18 +78,18 @@ public class PopupUI_JourneyInfo : MonoBehaviour
     //랭크 변경 시 실행되는 함수
     void UpdateJourneyUI()
     {
-        _rankText.text = _journeyRankData.name;
-        _rankText.color = _journeyRankData.textColor;
-        _maxJourneyExpText.text = _journeyRankData.maxJourneyExp.ToString();
-        _rankImage.sprite = _journeyRankData.rankImage;
-        _journeyGaugeBarImage.color = _journeyRankData.textColor;
+        _rankText.text = _journeyRankData.Name;
+        _rankText.color = _journeyRankData.TextColor;
+        _maxJourneyExpText.text = _journeyRankData.MaxJourneyExp.ToString();
+        _rankImage.sprite = _journeyRankData.RankImage;
+        _journeyGaugeBarImage.color = _journeyRankData.TextColor;
     }
 
     IEnumerator StartJourneyExp(float journeyExp)
     {
         float t = 0;
-        float end = (journeyExp - _journeyRankData.minJourneyExp)
-            / (_journeyRankData.maxJourneyExp-_journeyRankData.minJourneyExp);
+        float end = (journeyExp - _journeyRankData.MinJourneyExp)
+            / (_journeyRankData.MaxJourneyExp-_journeyRankData.MinJourneyExp);
         float start = _journeyGaugeBarImage.fillAmount;
         while (Mathf.Abs(_journeyGaugeBarImage.fillAmount - end) > 0.01f)
         {

@@ -57,7 +57,7 @@ public class Util
         return pos;
     }
 
-    // Get angle between two normalized vectors
+    // Get Angle between two normalized vectors
     public static float GetAngleBetweenDirections(Vector3 from, Vector3 to)
     {
         float dot = Vector3.Dot(from, to);

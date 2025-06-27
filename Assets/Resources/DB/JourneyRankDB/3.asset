@@ -12,10 +12,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8ba8e97c65e994b49857b8f425053c6b, type: 3}
   m_Name: 3
   m_EditorClassIdentifier: 
-  index: 3
-  rankType: 0
-  name: "\uB3D9\uBA54\uB2EC3"
-  minJourneyExp: 120
-  maxJourneyExp: 420
-  textColor: {r: 0.4117647, g: 0.19607843, b: 0.15294118, a: 1}
-  rankImage: {fileID: 21300000, guid: a492c1b8237fc3746baddcd0cb2a7439, type: 3}
+  Index: 3
+  RankType: 0
+  Name: "\uB3D9\uBA54\uB2EC3"
+  MinJourneyExp: 120
+  MaxJourneyExp: 420
+  TextColor: {r: 0.6117647, g: 0.2509804, b: 0.2509804, a: 1}
+  RankImage: {fileID: 21300000, guid: a492c1b8237fc3746baddcd0cb2a7439, type: 3}

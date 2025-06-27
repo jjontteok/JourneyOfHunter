@@ -10,7 +10,7 @@ public class AngularColliderController : PenetrationColliderController, IAngleCo
 
     protected override void ProcessTrigger(Collider other)
     {
-        if (CheckInRange(other, _skillData.angle))
+        if (CheckInRange(other, _skillData.Angle))
         {
             base.ProcessTrigger(other);
         }

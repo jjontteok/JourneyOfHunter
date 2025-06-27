@@ -19,13 +19,13 @@ public class PassiveSkill : Skill, IStatusChangeSkill
     // 패시브 적용 시 true, 적용 사항 롤백 시 false
     public void StatusChange(bool flag)
     {
-        float coeff = SkillData.buffAmount;
+        float coeff = SkillData.BuffAmount;
 
         if (!flag)
         {
             coeff *= -1;
         }
 
-        _player.OnOffStatusUpgrade(SkillData.buffStatus, coeff);
+        _player.OnOffStatusUpgrade(SkillData.BuffStatus, coeff);
     }
 }

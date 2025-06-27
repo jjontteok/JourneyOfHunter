@@ -8,7 +8,7 @@ public class DamageOverTimeColliderController : PenetrationColliderController, I
     public override void SetColliderInfo(Status status, SkillData skillData)
     {
         base.SetColliderInfo(status, skillData);
-        _damage = _skillData.damage / ((int)(_skillData.durationTime / _timeInterval) + 1);
+        _damage = _skillData.Damage / ((int)(_skillData.DurationTime / _timeInterval) + 1);
     }
 
     private void OnEnable()

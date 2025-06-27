@@ -44,9 +44,9 @@ public class PPFXWindow : EditorWindow {
 		Refresh,
 	};
 	
-	int selIndex = 0; //store current selected preset index
+	int selIndex = 0; //store current selected preset Index
 	int selFolderIndex = 0; 
-	string selPrefabName = ""; //current selected prefab name
+	string selPrefabName = ""; //current selected prefab Name
 	
 	static List<Vector2> pfxGUIScrollPos = new List<Vector2>();
 	
@@ -320,7 +320,7 @@ public class PPFXWindow : EditorWindow {
 			}	
 		EditorGUILayout.EndHorizontal();
 		
-		//show current selected prefab name
+		//show current selected prefab Name
 		GUILayout.BeginArea(new Rect (10, 20, position.width, 100)); 
 		if(!Application.isPlaying && selFolderIndex < pfxFolders.Length)
 		{
@@ -462,12 +462,12 @@ public class PPFXWindow : EditorWindow {
 						EditorGUILayout.BeginHorizontal();	
 		        	}
 					
-					Texture _tex =  pfxPreviewImageList[f][x] as Texture; //pekPrefabList1[x].name
+					Texture _tex =  pfxPreviewImageList[f][x] as Texture; //pekPrefabList1[x].Name
 				
         			
 					if(GUILayout.Button(_tex, GUILayout.Width (pfxGUIButtonWidth), GUILayout.Height (pfxGUIButtonHeight)))
 					{
-						//Debug.Log(pekPrefabList[f][x].name);
+						//Debug.Log(pekPrefabList[f][x].Name);
 						GameObject _inst = Instantiate(pfxPrefabList[f][x], Vector3.zero, Quaternion.Euler(-90,0,0)) as GameObject;
 						Build(_inst);
 						

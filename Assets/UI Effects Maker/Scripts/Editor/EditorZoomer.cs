@@ -92,9 +92,9 @@ namespace UIEM
 
         public Vector2 GetContentOffset()
         {
-            Vector2 offset = -zoomOrigin / zoom; //offset the midpoint
+            Vector2 offset = -zoomOrigin / zoom; //Offset the midpoint
 
-            offset -= (zoomArea.size / 2f) / zoom; //offset the center
+            offset -= (zoomArea.size / 2f) / zoom; //Offset the center
 
             return offset;
         }

@@ -18,7 +18,7 @@ public class TransformTargetSkill : ActiveSkill, ITargetSkill, IMovingSkill, IDi
     // 방향 설정 + 타겟 설정
     public override bool ActivateSkill(Vector3 pos)
     {
-        if (IsTargetExist(pos, SkillData.isPlayerSkill))
+        if (IsTargetExist(pos, SkillData.IsPlayerSkill))
         {
             base.ActivateSkill(pos);
             _coll.transform.localPosition = Vector3.zero;
@@ -38,25 +38,25 @@ public class TransformTargetSkill : ActiveSkill, ITargetSkill, IMovingSkill, IDi
     public virtual bool IsTargetExist(Vector3 pos, bool isPlayerSkill)
     {
         // 수동 모드일 땐 타겟 유무 상관없이 그냥 발사
-        if (SkillData.isPlayerSkill && !PlayerManager.Instance.IsAuto)
+        if (SkillData.IsPlayerSkill && !PlayerManager.Instance.IsAuto)
             return true;
-        _target = Util.GetNearestTarget(pos, _skillData.targetDistance, isPlayerSkill)?.transform;
-        //Debug.Log($"Current Target: {_target.name}\npostion:{_target.position}");
+        _target = Util.GetNearestTarget(pos, _skillData.TargetDistance, isPlayerSkill)?.transform;
+        //Debug.Log($"Current Target: {_target.Name}\npostion:{_target.position}");
         return _target != null;
     }
 
     public virtual void MoveSkillCollider()
     {
-        if (Vector3.Distance(transform.position, _coll.transform.position) < _skillData.targetDistance)
+        if (Vector3.Distance(transform.position, _coll.transform.position) < _skillData.TargetDistance)
         {
-            _coll.transform.Translate(_direction * _skillData.speed * Time.deltaTime, Space.World);
+            _coll.transform.Translate(_direction * _skillData.Speed * Time.deltaTime, Space.World);
         }
     }
 
     public virtual void SetDirection()
     {
         // 플레이어 스킬이 아니면(==몬스터 스킬이면) 타겟을 향해 설정
-        if (!SkillData.isPlayerSkill)
+        if (!SkillData.IsPlayerSkill)
         {
             Vector3 dir = _target.position - transform.position;
             dir.y = 0;

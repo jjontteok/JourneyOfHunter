@@ -12,22 +12,22 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e807fb188ff3a544ba349f772e49f4cc, type: 3}
   m_Name: IceAge
   m_EditorClassIdentifier: 
-  skillName: "\uC808\uB300\uC601\uB3C4"
-  skillDescription: "(\uAD81\uADF9\uAE30) \uAD11\uBC94\uC704 \uC9C0\uC5ED\uC5D0 \uC5BC\uC74C\uC774
-    \uC19F\uC544\uB098\uBA70 \uB300\uBBF8\uC9C0\uB97C \uC90D\uB2C8\uB2E4."
-  skillIcon: {fileID: 21300000, guid: 13e4a3b47b811d8448867c800a436bcf, type: 3}
-  coolTime: 5
-  durationTime: 2
-  targetDistance: 0
-  damage: 20
-  speed: 0
-  angle: 0
+  SkillName: "\uC808\uB300\uC601\uB3C4"
+  SkillDescription: "(\uAD81\uADF9\uAE30) \uAD11\uBC94\uC704 \uC9C0\uC5ED\uC5D0 \uC5BC\uC74C\uC774
+    \uC19F\uC544\uB098\uBA70 \uB370\uBBF8\uC9C0\uB97C \uC90D\uB2C8\uB2E4."
+  SkillIcon: {fileID: 21300000, guid: 13e4a3b47b811d8448867c800a436bcf, type: 3}
+  CoolTime: 5
+  DurationTime: 2
+  TargetDistance: 0
+  Damage: 20
+  Speed: 0
+  Angle: 0
   MP: 10
-  connectedSkillPrefab: {fileID: 0}
-  hitEffectPrefab: {fileID: 5112403345868107898, guid: 76bd86df99b0e3946bef8e28b75c9925, type: 3}
-  targetExistence: 0
-  isPlayerSkill: 1
-  isPassive: 0
-  offset: {x: 0, y: 0, z: 0}
-  buffStatus: 8
-  buffAmount: 0
+  ConnectedSkillPrefab: {fileID: 5112403345868107898, guid: 76bd86df99b0e3946bef8e28b75c9925, type: 3}
+  HitEffectPrefab: {fileID: 0}
+  TargetExistence: 0
+  IsPlayerSkill: 1
+  IsPassive: 0
+  Offset: {x: 0, y: 0, z: 0}
+  BuffStatus: 8
+  BuffAmount: 0

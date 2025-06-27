@@ -33,7 +33,7 @@ public class PPFXRandomPosition : MonoBehaviour {
 	void Update()
 	{
 		
-		//transform.position = Vector3.MoveTowards(transform.position, target.transform.position, Time.time * speed);
+		//transform.position = Vector3.MoveTowards(transform.position, target.transform.position, Time.time * Speed);
 		
 		if (xAxis)
 		{

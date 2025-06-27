@@ -26,11 +26,11 @@ public class DirectionNonTargetSkill : ActiveSkill
     //private void OnDrawGizmos()
     //{
     //    Gizmos.color = Color.red;
-    //    Gizmos.DrawWireSphere(transform.position, _skillData.targetDistance);
-    //    Vector3 angle1 = new Vector3(Mathf.Sin((-_skillData.angle / 2f + transform.eulerAngles.y) * Mathf.Deg2Rad), 0, (Mathf.Cos((-_skillData.angle / 2f + transform.eulerAngles.y) * Mathf.Deg2Rad)));
-    //    Vector3 angle2 = new Vector3(Mathf.Sin((_skillData.angle / 2f + transform.eulerAngles.y) * Mathf.Deg2Rad), 0, (Mathf.Cos((_skillData.angle / 2f + transform.eulerAngles.y) * Mathf.Deg2Rad)));
+    //    Gizmos.DrawWireSphere(transform.position, _skillData.TargetDistance);
+    //    Vector3 angle1 = new Vector3(Mathf.Sin((-_skillData.Angle / 2f + transform.eulerAngles.y) * Mathf.Deg2Rad), 0, (Mathf.Cos((-_skillData.Angle / 2f + transform.eulerAngles.y) * Mathf.Deg2Rad)));
+    //    Vector3 angle2 = new Vector3(Mathf.Sin((_skillData.Angle / 2f + transform.eulerAngles.y) * Mathf.Deg2Rad), 0, (Mathf.Cos((_skillData.Angle / 2f + transform.eulerAngles.y) * Mathf.Deg2Rad)));
     //    Gizmos.color = Color.blue;
-    //    Gizmos.DrawLine(transform.position, transform.position + angle1 * _skillData.targetDistance);
-    //    Gizmos.DrawLine(transform.position, transform.position + angle2 * _skillData.targetDistance);
+    //    Gizmos.DrawLine(transform.position, transform.position + angle1 * _skillData.TargetDistance);
+    //    Gizmos.DrawLine(transform.position, transform.position + angle2 * _skillData.TargetDistance);
     //}
 }

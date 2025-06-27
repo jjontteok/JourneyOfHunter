@@ -15,12 +15,12 @@ public class SkillColliderController : MonoBehaviour
     {
         _skillData = skillData;
         _status = status;
-        _damage = skillData.damage;
-        _hitEffect = skillData.hitEffectPrefab;
+        _damage = skillData.Damage;
+        _hitEffect = skillData.HitEffectPrefab;
 
-        if (skillData.connectedSkillPrefab != null)
+        if (skillData.ConnectedSkillPrefab != null)
         {
-            _connectedSkill = Instantiate(skillData.connectedSkillPrefab).GetComponent<ActiveSkill>();
+            _connectedSkill = Instantiate(skillData.ConnectedSkillPrefab).GetComponent<ActiveSkill>();
             _connectedSkill.Initialize(status);
             _connectedSkill.gameObject.SetActive(false);
         }
@@ -56,6 +56,6 @@ public class SkillColliderController : MonoBehaviour
 
     public void OnOffHitEffect(bool flag)
     {
-        _hitEffect = flag ? _skillData.hitEffectPrefab : null;
+        _hitEffect = flag ? _skillData.HitEffectPrefab : null;
     }
 }

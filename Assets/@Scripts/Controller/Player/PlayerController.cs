@@ -1,9 +1,6 @@
-using NUnit.Framework;
 using System;
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using static UnityEditorInternal.ReorderableList;
 
 public struct PlayerStatus
 {
@@ -138,13 +135,13 @@ public class PlayerController : MonoBehaviour, IDamageable
         {
             _playerData.JourneyExp = value;
             //해당 레벨의 맥스 값보다 현재 메달 값이 높으면 
-            if (_playerData.JourneyRankData.maxJourneyExp <= _playerData.JourneyExp)
+            if (_playerData.JourneyRankData.MaxJourneyExp <= _playerData.JourneyExp)
             {
                 //현재 메달 변경
                 _playerData.JourneyRankData =
-                    ObjectManager.Instance.JourneyRankResourceList[(_playerData.JourneyRankData.index+1).ToString()];
+                    ObjectManager.Instance.JourneyRankResourceList[(_playerData.JourneyRankData.Index+1).ToString()];
 
-                OnJourneyRankChanged?.Invoke(_playerData.JourneyRankData.index);
+                OnJourneyRankChanged?.Invoke(_playerData.JourneyRankData.Index);
             }
         }
     }
@@ -175,7 +172,7 @@ public class PlayerController : MonoBehaviour, IDamageable
         _rigidbody = GetComponent<Rigidbody>();
         _runtimeData = new PlayerStatus(_playerData);
         _playerData.JourneyRankData =
-            ObjectManager.Instance.JourneyRankResourceList[_playerData.JourneyRankData.index.ToString()];
+            ObjectManager.Instance.JourneyRankResourceList[_playerData.JourneyRankData.Index.ToString()];
     }
 
     #region Player Moving
@@ -197,7 +194,7 @@ public class PlayerController : MonoBehaviour, IDamageable
                 journeyExp = 50;
                 break;
         }
-        journeyExp *= _playerData.JourneyRankData.index;
+        journeyExp *= _playerData.JourneyRankData.Index;
         OnJourneyExpChanged?.Invoke(journeyExp);
         JourneyExp += journeyExp;
 
