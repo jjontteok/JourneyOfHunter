@@ -14,7 +14,6 @@ public class PlayerData : Status
     public float CoolTimeDecrease;          //쿨타임 감소
     public int UnlockedSkillSlotCount;      //현재 오픈된 스킬 슬롯 개수
     public float JourneyExp;                //모험 게이지
-    public int JourneyRank;                 //모험 메달
     public JourneyRankData JourneyRankData;
     public SkillData[] CurrentSkillData;
 }

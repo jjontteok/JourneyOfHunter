@@ -1,3 +1,4 @@
+using Palmmedia.ReportGenerator.Core;
 using System.Collections;
 using TMPro;
 using UnityEngine;
@@ -18,6 +19,8 @@ public class PopupUI_JourneyInfo : MonoBehaviour
     JourneyRankData _journeyRankData;   //플레이어 데이터의 여정 랭크 데이터
     float _currentJourneyExp;
     int _currentJourneyRank;
+
+    bool _isRankChanged = false;
 
     Color _warningColor = new Color(0.896f, 0.139f, 0.139f, 1);
 
@@ -68,10 +71,11 @@ public class PopupUI_JourneyInfo : MonoBehaviour
     {
         if (_currentJourneyRank != medal)
         {
+            StartCoroutine(_rankText.GetComponent<UIEffectsManager>().PerformEffect(0));
+            StartCoroutine(_rankImage.GetComponent<UIEffectsManager>().PerformEffect(0));
             _currentJourneyRank = medal;
             _journeyRankData = Instantiate(ObjectManager.Instance.JourneyRankResourceList[medal.ToString()]);
-            _journeyGaugeBarImage.fillAmount = 0;
-            UpdateJourneyUI();
+            _isRankChanged = true;
         }
     }
 
@@ -88,14 +92,22 @@ public class PopupUI_JourneyInfo : MonoBehaviour
     IEnumerator StartJourneyExp(float journeyExp)
     {
         float t = 0;
-        float end = journeyExp / _journeyRankData.maxJourneyExp;
-        float duration = (end - _journeyGaugeBarImage.fillAmount) * 2;
+        float end = (journeyExp - _journeyRankData.minJourneyExp)
+            / (_journeyRankData.maxJourneyExp-_journeyRankData.minJourneyExp);
         float start = _journeyGaugeBarImage.fillAmount;
-        while (t < duration)
+        while (Mathf.Abs(_journeyGaugeBarImage.fillAmount - end) > 0.01f)
         {
-            t += Time.deltaTime;
+            t += Time.deltaTime * (end - _journeyGaugeBarImage.fillAmount) * 20;
             _journeyGaugeBarImage.fillAmount = Mathf.Lerp(start, end, t);
             yield return null;
+        }
+        if (_isRankChanged)
+        {
+            _isRankChanged = false;
+            _journeyGaugeBarImage.fillAmount = 0;
+            StartCoroutine(_rankText.GetComponent<UIEffectsManager>().PerformEffect(1));
+            StartCoroutine(_rankImage.GetComponent<UIEffectsManager>().PerformEffect(1));
+            UpdateJourneyUI();
         }
     }
 }

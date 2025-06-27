@@ -17,6 +17,8 @@ public class Define : MonoBehaviour
     public readonly static int LongAttack = Animator.StringToHash("LongAttack");
     public readonly static int IsInteractionPossible = Animator.StringToHash("IsInteractionPossible");
 
+    public readonly static int Open = Animator.StringToHash("Open");
+
     public const string EndAttack = "EndAttack";
     public const string WalkSpeed = "WalkSpeed";
     #endregion
@@ -39,6 +41,7 @@ public class Define : MonoBehaviour
     public const string DungeonWallPath = "Dungeon/Object/DungeonWall";
     public const string DungeonPortalPath = "Dungeon/Object/DungeonPortal";
     public const string MonsterGatePath = "Dungeon/Object/HellGate";
+    public const string TreasureBoxPath = "Field/TreasureBox";
     public const string SkyBoxPath = "SkyBox";
     public const string BackgroundPath = "Environment/Background";
     public const string DamageTextPath = "UI/Text/DamageText";

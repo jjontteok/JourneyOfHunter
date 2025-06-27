@@ -247,8 +247,6 @@ public class EnvironmentManager : Singleton<EnvironmentManager>, IEventSubscribe
         string current = GetSkyBoxKey(type);
         _time += Time.deltaTime;
 
-        UIManager.Instance.TemporaryText.text = "스카이박스 색 변경" + (++a).ToString();
-
         float t = (_time / _duration) * 10 / _toKey;
         Color changeColor = Color.Lerp(_colorList[_currentTime], _targetColorList[_currentTime], t);
         _currentSkyBox.SetColor("_Tint", changeColor);
@@ -260,8 +258,7 @@ public class EnvironmentManager : Singleton<EnvironmentManager>, IEventSubscribe
         if (t >= 1f)
         {
             _time = 0;
-            _changeType = Define.TimeOfDayType.None;
-            UIManager.Instance.TemoraryColorChangeText.text = $"{changeColor}으로 색 변경 {b++}";
+            _changeType = Define.TimeOfDayType.None;    
             if (current == Noon) _betterColor = changeColor;
 
             ChangeSkyBox(Extension.GetNextType(type));
