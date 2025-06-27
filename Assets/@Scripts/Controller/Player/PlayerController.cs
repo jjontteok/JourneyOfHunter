@@ -16,7 +16,6 @@ public struct PlayerStatus
     public float MPRecoveryPerSec;
     public float CoolTimeDecrease;
     public float JourneyExp;
-    public int JourneyRank;
 
     public PlayerStatus(PlayerData playerData)
     {
@@ -29,7 +28,6 @@ public struct PlayerStatus
         MPRecoveryPerSec = playerData.MPRecoveryPerSec;
         CoolTimeDecrease = playerData.CoolTimeDecrease;
         JourneyExp = playerData.JourneyExp;
-        JourneyRank = playerData.JourneyRank;
     }
 
     public float GetCoolTimeDecrease()
@@ -49,6 +47,7 @@ public class PlayerController : MonoBehaviour, IDamageable
     public Action<float, float> OnMPValueChanged;
     public Action<float> OnJourneyExpChanged;
     public Action<int> OnJourneyRankChanged;
+    public Action OnPlayerCrossed;
 
     PlayerStatus _runtimeData;
     Vector3 _direction;
@@ -143,9 +142,9 @@ public class PlayerController : MonoBehaviour, IDamageable
             {
                 //현재 메달 변경
                 _playerData.JourneyRankData =
-                    Instantiate(ObjectManager.Instance.JourneyRankResourceList[(++_playerData.JourneyRank).ToString()]);
+                    ObjectManager.Instance.JourneyRankResourceList[(_playerData.JourneyRankData.index+1).ToString()];
 
-                OnJourneyRankChanged?.Invoke(_playerData.JourneyRank);
+                OnJourneyRankChanged?.Invoke(_playerData.JourneyRankData.index);
             }
         }
     }
@@ -176,7 +175,7 @@ public class PlayerController : MonoBehaviour, IDamageable
         _rigidbody = GetComponent<Rigidbody>();
         _runtimeData = new PlayerStatus(_playerData);
         _playerData.JourneyRankData =
-            Instantiate(ObjectManager.Instance.JourneyRankResourceList[_playerData.JourneyRank.ToString()]);
+            ObjectManager.Instance.JourneyRankResourceList[_playerData.JourneyRankData.index.ToString()];
     }
 
     #region Player Moving
@@ -198,9 +197,9 @@ public class PlayerController : MonoBehaviour, IDamageable
                 journeyExp = 50;
                 break;
         }
-        journeyExp *= _playerData.JourneyRank;
-        JourneyExp += journeyExp;
+        journeyExp *= _playerData.JourneyRankData.index;
         OnJourneyExpChanged?.Invoke(journeyExp);
+        JourneyExp += journeyExp;
 
     }
 
@@ -212,9 +211,11 @@ public class PlayerController : MonoBehaviour, IDamageable
             Vector3 pos = transform.position;
             pos.z = 5;
             transform.position = pos;
-            //구역 통과 시 여정 경험치? 증가
 
-            GainJourneyExp(Define.JourneyType.Explore); 
+            //구역 통과 시 여정 경험치? 증가
+            GainJourneyExp(Define.JourneyType.Explore);
+
+            OnPlayerCrossed?.Invoke();
         }
 
         // 자동 모드일 때
@@ -263,7 +264,7 @@ public class PlayerController : MonoBehaviour, IDamageable
         {
             if (!_animator.GetBool(Define.IsAttacking) && _direction != Vector3.zero)
             {
-                _rigidbody.MovePosition(_rigidbody.position + _direction.normalized * _speed * 5 * Time.fixedDeltaTime);
+                _rigidbody.MovePosition(_rigidbody.position + _direction.normalized * _speed * 1 * Time.fixedDeltaTime);
 
                 _animator.SetFloat(Define.Speed, _direction.magnitude);
                 transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(_direction), _speed * Time.deltaTime);

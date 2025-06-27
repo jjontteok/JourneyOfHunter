@@ -15,7 +15,7 @@ MonoBehaviour:
   index: 5
   rankType: 0
   name: "\uC740\uBA54\uB2EC2"
-  minAdventure: 1010
-  maxAdventure: 2010
+  minJourneyExp: 1020
+  maxJourneyExp: 2020
   textColor: {r: 0.60784316, g: 0.60784316, b: 0.60784316, a: 1}
   rankImage: {fileID: 21300000, guid: 2c8b0ed502ad8104d80aee2bc8ccc805, type: 3}
