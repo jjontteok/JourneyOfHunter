@@ -6,23 +6,6 @@ public class UIManager : Singleton<UIManager>
     private GameObject _uiGame;
     UI_Game ui_game;
 
-    public TMP_Text TemporaryText
-    {
-        get { return ui_game.temporaryText; }
-        set { ui_game.temporaryText = value; }
-    }
-
-    public TMP_Text TemporaryTimeText
-    {
-        get { return ui_game.temporaryTimeText; }
-        set { ui_game.temporaryTimeText = value; }
-    }
-
-    public TMP_Text TemoraryColorChangeText
-    {
-        get { return ui_game.temporaryColorChangeText; }
-        set { ui_game.temporaryColorChangeText = value; }
-    }
     protected override void Initialize()
     {
         base.Initialize();

@@ -123,7 +123,6 @@ public class TimeManager : Singleton<TimeManager>, IEventSubscriber
             yield return _standardTime;
             _dayTime += 1;
             Debug.Log(_dayTime);
-            UIManager.Instance.TemporaryTimeText.text = $"시간 + {_dayTime}";
             
             if (_colorChangeTransitions.TryGetValue(_dayTime, out var newColorTimeOfDay))
             {

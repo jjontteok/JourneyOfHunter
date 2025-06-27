@@ -27,6 +27,7 @@ public class ObjectManager : Singleton<ObjectManager>
     private GameObject _dungeonPortalResource;
     private GameObject _shieldEffectResource;
     private GameObject _monsterGateResource;
+    private GameObject _treasureBoxResource;
     private GameObject _backgroundResource;
 
     // * UI Object
@@ -180,6 +181,16 @@ public class ObjectManager : Singleton<ObjectManager>
             if (NullCheck(_monsterGateResource))
                 return null;
             return _monsterGateResource;
+        }
+    }
+
+    public GameObject TreasureBoxResource
+    {
+        get
+        {
+            if (NullCheck(_treasureBoxResource))
+                return null;
+            return _treasureBoxResource;
         }
     }
 
@@ -366,6 +377,7 @@ public class ObjectManager : Singleton<ObjectManager>
         DungeonObjectResourceLoad();
         SkillResourceLoad();
         MonsterResourceLoad();
+        FieldResourceLoad();
         DamageTextResourceLoad();
         SkyBoxResourceLoad();
         JourneyRankResourceLoad();
@@ -418,6 +430,13 @@ public class ObjectManager : Singleton<ObjectManager>
             Debug.Log("Can't Load because of monster list is null");
         }
     }
+
+    // * 필드 리소스 로드 메서드
+    private void FieldResourceLoad()
+    {
+        _treasureBoxResource = Resources.Load<GameObject>(Define.TreasureBoxPath);
+    }
+
     // * 데미지 텍스트 리소스 로드 메서드
     private void DamageTextResourceLoad()
     {
