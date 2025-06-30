@@ -59,8 +59,8 @@ public class PlayerController : MonoBehaviour, IDamageable
     public Action OnAutoDungeonChallenge;
 
     [SerializeField] PlayerData _playerData;
-    //[SerializeField] float _speed;
-
+    [SerializeField] PlayerInventoryData _playerInventoryData;
+    [SerializeField] Inventory _inventory;
 
     #region Properties
 
@@ -79,7 +79,6 @@ public class PlayerController : MonoBehaviour, IDamageable
             _isKeyBoard = value;
         }
     }
-
     public bool IsJoyStick
     {
         get { return _isJoyStick; }
@@ -95,7 +94,6 @@ public class PlayerController : MonoBehaviour, IDamageable
             _isJoyStick = value;
         }
     }
-
     public Transform Target
     {
         get { return _target; }
@@ -104,6 +102,7 @@ public class PlayerController : MonoBehaviour, IDamageable
 
     // 데이터는 getter만 되도록?
     public PlayerData PlayerData { get { return _playerData; } }
+    public Inventory Inventory{ get { return _inventory; } }
     public PlayerStatus PlayerStatus { get { return _runtimeData; } }
 
     public float HP
@@ -127,7 +126,7 @@ public class PlayerController : MonoBehaviour, IDamageable
             {
                 //현재 메달 변경
                 _playerData.JourneyRankData =
-                    ObjectManager.Instance.JourneyRankResourceList[(_playerData.JourneyRankData.Index+1).ToString()];
+                    ObjectManager.Instance.JourneyRankResourceList[(_playerData.JourneyRankData.Index + 1).ToString()];
 
                 OnJourneyRankChanged?.Invoke(_playerData.JourneyRankData.Index);
             }
@@ -160,6 +159,7 @@ public class PlayerController : MonoBehaviour, IDamageable
         _runtimeData = new PlayerStatus(_playerData);
         _playerData.JourneyRankData =
             ObjectManager.Instance.JourneyRankResourceList[_playerData.JourneyRankData.Index.ToString()];
+        _inventory = new Inventory(_playerInventoryData);
     }
 
     #region Player Moving

@@ -1,5 +1,9 @@
 fileFormatVersion: 2
+<<<<<<<< HEAD:Assets/Animations/Player.meta
 guid: d49dc1dbb14307b4ebf79e42fae02fb6
+========
+guid: c3084b9b04f1bd9469f525ee1c5055be
+>>>>>>>> Develop:Assets/Animations/Merchant.meta
 folderAsset: yes
 DefaultImporter:
   externalObjects: {}

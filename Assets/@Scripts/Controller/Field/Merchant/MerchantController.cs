@@ -2,15 +2,23 @@ using UnityEngine;
 
 public class MerchantController : MonoBehaviour
 {
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
+    Animator _animator;
+
+    private void Awake()
     {
-        
+        Initialize();
     }
 
-    // Update is called once per frame
-    void Update()
+    void Initialize()
     {
-        
+        _animator = GetComponent<Animator>();
+    }
+
+    private void OnCollisionEnter(Collision collision)
+    {
+        if (collision.collider.CompareTag(Define.PlayerTag))
+        {
+            _animator.SetTrigger(Define.Contact);
+        }
     }
 }

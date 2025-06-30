@@ -1,6 +1,7 @@
 using UnityEditor;
 using UnityEngine;
 
+[System.Serializable]
 public abstract class ItemData : ScriptableObject
 {
     [Tooltip("아이템 인덱스")]
