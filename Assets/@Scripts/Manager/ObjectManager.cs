@@ -20,6 +20,7 @@ public class ObjectManager : Singleton<ObjectManager>
     private Dictionary<string, GameObject> _damageTextResourceList;
     private Dictionary<string, Material> _skyBoxResourceList;
     private Dictionary<string, JourneyRankData> _journeyRankResourceList;
+    private Dictionary<string, GameObject> _fieldObjectSpawnSpotList;
 
     // * GameObject : 인게임 오브젝트
     private GameObject _playerResource;
@@ -28,6 +29,7 @@ public class ObjectManager : Singleton<ObjectManager>
     private GameObject _shieldEffectResource;
     private GameObject _monsterGateResource;
     private GameObject _treasureBoxResource;
+    private GameObject _merchantResource;
     private GameObject _backgroundResource;
 
     // * UI Object
@@ -138,6 +140,15 @@ public class ObjectManager : Singleton<ObjectManager>
         }
     }
 
+    public Dictionary<string, GameObject> FieldObjectSpawnSpotList
+    {
+        get
+        {
+            if (NullCheck(_fieldObjectSpawnSpotList))
+                return null;
+            return _fieldObjectSpawnSpotList;
+        }
+    }
     public GameObject PlayerResource 
     { 
         get 
@@ -192,6 +203,16 @@ public class ObjectManager : Singleton<ObjectManager>
             if (NullCheck(_treasureBoxResource))
                 return null;
             return _treasureBoxResource;
+        }
+    }
+
+    public GameObject MerchantResource
+    {
+        get
+        {
+            if (NullCheck(_merchantResource))
+                return null;
+            return _merchantResource;
         }
     }
 
@@ -377,6 +398,7 @@ public class ObjectManager : Singleton<ObjectManager>
         _damageTextResourceList = new Dictionary<string, GameObject>();
         _skyBoxResourceList = new Dictionary<string, Material>();
         _journeyRankResourceList = new Dictionary<string, JourneyRankData>();
+        _fieldObjectSpawnSpotList = new Dictionary<string, GameObject>();
     }
     #endregion
 
@@ -388,7 +410,8 @@ public class ObjectManager : Singleton<ObjectManager>
         DungeonObjectResourceLoad();
         SkillResourceLoad();
         MonsterResourceLoad();
-        FieldResourceLoad();
+        FieldObjectResourceLoad();
+        FieldObjectSpawnSpotLoad();
         DamageTextResourceLoad();
         SkyBoxResourceLoad();
         JourneyRankResourceLoad();
@@ -443,9 +466,23 @@ public class ObjectManager : Singleton<ObjectManager>
     }
 
     // * 필드 리소스 로드 메서드
-    private void FieldResourceLoad()
+    private void FieldObjectResourceLoad()
     {
         _treasureBoxResource = Resources.Load<GameObject>(Define.TreasureBoxPath);
+        _merchantResource = Resources.Load<GameObject>(Define.MerchantPath);
+    }
+
+    // * 필드 오브젝트 스폰 스팟 로드 메서드
+    private void FieldObjectSpawnSpotLoad()
+    {
+        if (!NullCheck(_fieldObjectSpawnSpotList))
+        {
+            Resources.LoadAll<GameObject>(Define.FieldObjectSpawnSpotPath).ToList(_fieldObjectSpawnSpotList);
+        }
+        else
+        {
+            Debug.Log("Can't Load because of field object spawn spot list is null");
+        }
     }
 
     // * 데미지 텍스트 리소스 로드 메서드

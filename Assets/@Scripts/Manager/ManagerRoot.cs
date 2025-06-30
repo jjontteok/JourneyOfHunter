@@ -30,17 +30,14 @@ public class ManagerRoot : MonoBehaviour
 
         PlayerManager.Instance.CreateManager();
 
+        FieldManager.Instance.CreateManager();
+
         UIManager.Instance.CreateManager();
 
         PoolManager.Instance.CreateManager();
 
-        DungeonManager.Instance.CreateManager();
-
         PopupUIManager.Instance.CreateManager();
 
-        SpawnManager.Instance.CreateManager();
-
-        FieldManager.Instance.CreateManager();
 
         DamageTextManager.Instance.CreateManager();
 
@@ -60,8 +57,7 @@ public class ManagerRoot : MonoBehaviour
     // * 이벤트 구독 메서드
     private void EventSubscribeAll()
     {
-        SpawnManager.Instance.Subscribe();
-        DungeonManager.Instance.Subscribe();
+        FieldManager.Instance.Subscribe();
         PopupUIManager.Instance.Subscribe();
         DamageTextManager.Instance.Subscribe();
         StageManager.Instance.Subscribe();
@@ -73,9 +69,7 @@ public class ManagerRoot : MonoBehaviour
     // * 오브젝트 비활성화 메서드
     private void DeactivateObjectsAll()
     {
-        DungeonManager.Instance.Deactivate();
         PopupUIManager.Instance.Deactivate();
-        SpawnManager.Instance.Deactivate();
         DamageTextManager.Instance.Deactivate();
         CutSceneManager.Instance.Deactivate();
     }

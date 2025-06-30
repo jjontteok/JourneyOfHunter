@@ -38,7 +38,9 @@ public class Define : MonoBehaviour
     public const string DungeonWallPath = "Dungeon/Object/DungeonWall";
     public const string DungeonPortalPath = "Dungeon/Object/DungeonPortal";
     public const string MonsterGatePath = "Dungeon/Object/HellGate";
-    public const string TreasureBoxPath = "Field/TreasureBox";
+    public const string TreasureBoxPath = "Field/Objects/TreasureBox";
+    public const string MerchantPath = "Field/Objects/Merchant";
+    public const string FieldObjectSpawnSpotPath = "Field/SpawnSpots";
     public const string SkyBoxPath = "SkyBox";
     public const string BackgroundPath = "Environment/Background";
     public const string DamageTextPath = "UI/Text/DamageText";
@@ -72,7 +74,7 @@ public class Define : MonoBehaviour
     public static Vector3 DungeonExitPortalSpot = new Vector3(0, 2.5f, 34f);
     #endregion
 
-    #region SpawnSpots
+    #region MonsterSpawnSpots
     public static Vector3 SpawnSpot1 = new Vector3(-7, 7, 0);
     public static Vector3 SpawnSpot2 = new Vector3(7, 7, 0);
     public static Vector3 SpawnSpot3 = new Vector3(-7, 7, 20);
@@ -155,6 +157,13 @@ public class Define : MonoBehaviour
         Explore,    //구역 통과시
         Dungeon,    //던전 클리어
         Treasure,   //보물
+    }
+
+    public enum JourneyEventType
+    {
+        Default, 
+        Treasure,
+        Merchant,
     }
     
     public enum ItemValue
