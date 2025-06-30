@@ -64,6 +64,8 @@ public class PlayerController : MonoBehaviour, IDamageable
 
     #region Properties
 
+    public PlayerInventoryData PlayerInventoryData { get { return _playerInventoryData; } }
+
     public bool IsKeyBoard
     {
         get { return _isKeyBoard; }
