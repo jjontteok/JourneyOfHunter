@@ -1,9 +1,5 @@
 fileFormatVersion: 2
-<<<<<<<< HEAD:Assets/DoubleL/Model/Grid_01_BaseMap.png.meta
-guid: aabc9b201e428084cbafce795c5ba85e
-========
-guid: 4eba08e8434a6e940aa54d3f63ead11a
->>>>>>>> Develop:Assets/Free_Icons/Icons/1024/17271.png.meta
+guid: a70c6b4ec08b3704a9c3a1f3d20d7979
 TextureImporter:
   internalIDToNameTable: []
   externalObjects: {}
@@ -131,16 +127,13 @@ TextureImporter:
   assetBundleVariant: 
 AssetOrigin:
   serializedVersion: 1
-<<<<<<<< HEAD:Assets/DoubleL/Model/Grid_01_BaseMap.png.meta
   productId: 288783
   packageName: RPG_Animations_Pack_FREE
   packageVersion: 1.2
   assetPath: Assets/DoubleL/Model/Grid_01_BaseMap.png
   uploadId: 758198
-========
   productId: 290500
   packageName: 60 free icons pack
   packageVersion: 1.0
   assetPath: Assets/Free_Icons/Icons/1024/17271.png
   uploadId: 678006
->>>>>>>> Develop:Assets/Free_Icons/Icons/1024/17271.png.meta

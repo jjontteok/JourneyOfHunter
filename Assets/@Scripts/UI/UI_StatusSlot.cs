@@ -116,12 +116,6 @@ public class UI_StatusSlot : MonoBehaviour
             case Define.StatusType.Def:
                 _playerData.Def = amount;
                 break;
-            case Define.StatusType.MP:
-                _playerData.MP = amount;
-                break;
-            case Define.StatusType.MPRecoveryPerSec:
-                _playerData.MPRecoveryPerSec = amount;
-                break;
         }
     }
 }

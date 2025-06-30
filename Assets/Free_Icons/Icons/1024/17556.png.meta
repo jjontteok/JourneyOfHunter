@@ -1,5 +1,9 @@
 fileFormatVersion: 2
+<<<<<<<< HEAD:Assets/Kevin Iglesias/Human Animations/Textures/HumanAnimations_ColorPalette.png.meta
+guid: ce83c9a178071e943bc26abc87efa7ac
+========
 guid: ed365c034b707e64fb4e2681b91b8f6e
+>>>>>>>> Develop:Assets/Free_Icons/Icons/1024/17556.png.meta
 TextureImporter:
   internalIDToNameTable: []
   externalObjects: {}
@@ -69,6 +73,7 @@ TextureImporter:
   platformSettings:
   - serializedVersion: 3
     buildTarget: DefaultTexturePlatform
+<<<<<<<< HEAD:Assets/Kevin Iglesias/Human Animations/Textures/HumanAnimations_ColorPalette.png.meta
     maxTextureSize: 2048
     resizeAlgorithm: 0
     textureFormat: -1
@@ -82,6 +87,34 @@ TextureImporter:
     forceMaximumCompressionQuality_BC6H_BC7: 0
   - serializedVersion: 3
     buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 3
+    buildTarget: WebGL
+========
+>>>>>>>> Develop:Assets/Free_Icons/Icons/1024/17556.png.meta
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 3
+    buildTarget: Android
     maxTextureSize: 2048
     resizeAlgorithm: 0
     textureFormat: -1
@@ -127,8 +160,16 @@ TextureImporter:
   assetBundleVariant: 
 AssetOrigin:
   serializedVersion: 1
+<<<<<<<< HEAD:Assets/Kevin Iglesias/Human Animations/Textures/HumanAnimations_ColorPalette.png.meta
+  productId: 151650
+  packageName: Human Melee Animations
+  packageVersion: 2.0.2
+  assetPath: Assets/Kevin Iglesias/Human Animations/Textures/HumanAnimations_ColorPalette.png
+  uploadId: 762272
+========
   productId: 290500
   packageName: 60 free icons pack
   packageVersion: 1.0
   assetPath: Assets/Free_Icons/Icons/1024/17556.png
   uploadId: 678006
+>>>>>>>> Develop:Assets/Free_Icons/Icons/1024/17556.png.meta
