@@ -8,6 +8,7 @@ public class FieldManager : Singleton<FieldManager>, IEventSubscriber, IDeactiva
 
     SpawnController _spawnController;
     DungeonController _dungeonController;
+    PlayerData _playerData;
 
     public DungeonController DungeonController
     {
@@ -18,6 +19,8 @@ public class FieldManager : Singleton<FieldManager>, IEventSubscriber, IDeactiva
     {
         _dungeonController = new GameObject("DungeonController").AddComponent<DungeonController>();
         _spawnController = new GameObject("SpawnController").AddComponent<SpawnController>();
+
+        _playerData = PlayerManager.Instance.Player.PlayerData;
     }
     void Start()
     {
@@ -41,6 +44,6 @@ public class FieldManager : Singleton<FieldManager>, IEventSubscriber, IDeactiva
 
     public void Deactivate()
     {
-        throw new System.NotImplementedException();
+        
     }
 }

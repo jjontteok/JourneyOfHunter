@@ -50,7 +50,7 @@ public class PlayerController : MonoBehaviour, IDamageable
     Vector3 _direction;
     float _mp;
     float _hp;
-    
+
     float _shortestSkillDistance;       //자동일 때, 이동 멈추는 범위
 
     bool _isSwifting;                   //질풍참 사용 여부
@@ -61,6 +61,7 @@ public class PlayerController : MonoBehaviour, IDamageable
     public Action OnAutoDungeonChallenge;
 
     [SerializeField] PlayerData _playerData;
+    [SerializeField] PlayerInventoryData _playerInventoryData;
     [SerializeField] float _speed;
 
 
@@ -106,6 +107,7 @@ public class PlayerController : MonoBehaviour, IDamageable
 
     // 데이터는 getter만 되도록?
     public PlayerData PlayerData { get { return _playerData; } }
+    public PlayerInventoryData PlayerInventoryData { get { return _playerInventoryData; } }
     public PlayerStatus PlayerStatus { get { return _runtimeData; } }
 
     public float HP
@@ -139,7 +141,7 @@ public class PlayerController : MonoBehaviour, IDamageable
             {
                 //현재 메달 변경
                 _playerData.JourneyRankData =
-                    ObjectManager.Instance.JourneyRankResourceList[(_playerData.JourneyRankData.Index+1).ToString()];
+                    ObjectManager.Instance.JourneyRankResourceList[(_playerData.JourneyRankData.Index + 1).ToString()];
 
                 OnJourneyRankChanged?.Invoke(_playerData.JourneyRankData.Index);
             }
