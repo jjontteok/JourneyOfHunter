@@ -189,6 +189,14 @@ public class Define : MonoBehaviour
         Shoes,
         Weapon
     }
+
+    public enum ConsumeTarget
+    {
+        Player,
+        Field,
+        Dungeon,
+        Goods,
+    }
     #endregion
 
     #region Layer
