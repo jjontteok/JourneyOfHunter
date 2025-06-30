@@ -9,23 +9,31 @@ public class ConsumerItemData : ItemData
 [System.Serializable]
 public class ConsumerItemStatus
 {
-    // 이건 각 봐서해야할듯..
-    public int Count = 0;
-    
+    public Define.ConsumeTarget ConsumeTarget;
+
+    private object _consumeTargetID;
+
+    // 아이템 사용 메서드
     public void Consume()
     {
-        if(Count <= 0)
-        {
-            Debug.Log("아이템이 존재하지 않습니다.");
-        }
-        else
-        {
-            Count--;
-        }
+        ApplyChanges();
     }
 
+    // * 아이템 사용 시 실행
+    //- 사용 타겟에 따라 효과를 적용함
     private void ApplyChanges(/*ref ApplyTarget applyTarget*/)
     {
-
+        switch( ConsumeTarget)
+        {
+            case Define.ConsumeTarget.Player:
+                _consumeTargetID = PlayerManager.Instance.Player;
+                break;
+            case Define.ConsumeTarget.Field:
+                break;
+            case Define.ConsumeTarget.Dungeon:
+                break;
+            case Define.ConsumeTarget.Goods:
+                break;
+        }
     }
 }
