@@ -50,7 +50,7 @@ public class PlayerController : MonoBehaviour, IDamageable
     Vector3 _direction;
     float _mp;
     float _hp;
-
+    
     float _shortestSkillDistance;       //자동일 때, 이동 멈추는 범위
 
     bool _isSwifting;                   //질풍참 사용 여부
@@ -62,6 +62,7 @@ public class PlayerController : MonoBehaviour, IDamageable
 
     [SerializeField] PlayerData _playerData;
     [SerializeField] PlayerInventoryData _playerInventoryData;
+    [SerializeField] Inventory _inventory;
     [SerializeField] float _speed;
 
 
@@ -82,7 +83,6 @@ public class PlayerController : MonoBehaviour, IDamageable
             _isKeyBoard = value;
         }
     }
-
     public bool IsJoyStick
     {
         get { return _isJoyStick; }
@@ -98,7 +98,6 @@ public class PlayerController : MonoBehaviour, IDamageable
             _isJoyStick = value;
         }
     }
-
     public Transform Target
     {
         get { return _target; }
@@ -107,7 +106,7 @@ public class PlayerController : MonoBehaviour, IDamageable
 
     // 데이터는 getter만 되도록?
     public PlayerData PlayerData { get { return _playerData; } }
-    public PlayerInventoryData PlayerInventoryData { get { return _playerInventoryData; } }
+    public Inventory Inventory{ get { return _inventory; } }
     public PlayerStatus PlayerStatus { get { return _runtimeData; } }
 
     public float HP
@@ -175,6 +174,7 @@ public class PlayerController : MonoBehaviour, IDamageable
         _runtimeData = new PlayerStatus(_playerData);
         _playerData.JourneyRankData =
             ObjectManager.Instance.JourneyRankResourceList[_playerData.JourneyRankData.Index.ToString()];
+        _inventory = new Inventory(_playerInventoryData);
     }
 
     #region Player Moving
