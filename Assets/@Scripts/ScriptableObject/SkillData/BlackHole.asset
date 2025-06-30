@@ -23,7 +23,6 @@ MonoBehaviour:
   Damage: 20
   Speed: 0
   Angle: 0
-  MP: 10
   ConnectedSkillPrefab: {fileID: 0}
   HitEffectPrefab: {fileID: 1719286497750891180, guid: a57f318647c2b904f82e73abef7d64b7, type: 3}
   TargetExistence: 1
@@ -32,3 +31,5 @@ MonoBehaviour:
   Offset: {x: 0, y: 0.1, z: 0}
   BuffStatus: 8
   BuffAmount: 0
+  IsUltimate: 1
+  SkillAnimationName: BlackHole

@@ -12,7 +12,6 @@ public class SkillData : ScriptableObject
     public float Damage;
     public float Speed;
     public float Angle;                     //DirectionNonTarget 각도
-    public float MP;
     public GameObject ConnectedSkillPrefab;
     public GameObject HitEffectPrefab;
     public bool TargetExistence;
@@ -22,4 +21,7 @@ public class SkillData : ScriptableObject
 
     public Define.StatusType BuffStatus;
     public float BuffAmount;
+
+    public bool IsUltimate;
+    public string SkillAnimationName;
 }

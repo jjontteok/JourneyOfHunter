@@ -70,7 +70,8 @@ public class SwiftStrikeSkill : RotationTargetSkill, ICharacterMovingSkill
         GameObject particle = Instantiate(_afterEffect, _coll.transform);
         particle.transform.localPosition = Vector3.up;
         particle.transform.localEulerAngles = new Vector3(-90, 0, 0);
-        PlayerManager.Instance.Player.GetComponent<Animator>().SetTrigger("SkillAttack");
+        //PlayerManager.Instance.Player.GetComponent<Animator>().SetTrigger("SkillAttack");
+        PlayerManager.Instance.Player.GetComponent<Animator>().SetTrigger(Define.Attack);
         Destroy(particle, 0.5f);
     }
 }

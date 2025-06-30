@@ -22,7 +22,6 @@ MonoBehaviour:
   Damage: 20
   Speed: 0
   Angle: 0
-  MP: 10
   ConnectedSkillPrefab: {fileID: 0}
   HitEffectPrefab: {fileID: 5112403345868107898, guid: 76bd86df99b0e3946bef8e28b75c9925, type: 3}
   TargetExistence: 0
@@ -31,3 +30,5 @@ MonoBehaviour:
   Offset: {x: 0, y: 0, z: 0}
   BuffStatus: 8
   BuffAmount: 0
+  IsUltimate: 1
+  SkillAnimationName: IceAge

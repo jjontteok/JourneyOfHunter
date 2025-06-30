@@ -17,4 +17,14 @@ public class AttackInteractionController : MonoBehaviour
     {
         _animator.SetBool(Define.IsInteractionPossible, false);
     }
+
+    public void SetUltimateReadyOn()
+    {
+        _animator.SetBool(Define.UltimateReady, true);
+    }
+
+    public void SetUltimateReadyOff()
+    {
+        _animator.SetBool(Define.UltimateReady, false);
+    }
 }

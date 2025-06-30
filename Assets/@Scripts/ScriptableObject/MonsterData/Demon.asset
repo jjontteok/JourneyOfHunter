@@ -19,7 +19,7 @@ MonoBehaviour:
   Name: Demon
   Description: "\uC545\uB9C8 \uCAC4\uB530\uAD6C"
   Damage: 1
-  HP: 1000
+  HP: 20
   Speed: 1
   AttackSpeed: 1
   MoveRange: 1

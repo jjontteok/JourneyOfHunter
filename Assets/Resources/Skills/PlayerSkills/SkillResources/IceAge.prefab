@@ -49302,7 +49302,7 @@ GameObject:
   - component: {fileID: 1767818454702758615}
   - component: {fileID: 4768945605358178570}
   - component: {fileID: 337914223625308113}
-  - component: {fileID: 1743482696932039371}
+  - component: {fileID: -8337447355813069668}
   m_Layer: 0
   m_Name: IceAge
   m_TagString: Untagged
@@ -54194,7 +54194,7 @@ ParticleSystemRenderer:
   m_MeshWeighting2: 1
   m_MeshWeighting3: 1
   m_MaskInteraction: 0
---- !u!114 &1743482696932039371
+--- !u!114 &-8337447355813069668
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -54203,7 +54203,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 7863428854650669018}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5c3bdf417f8fa404488830e0a40deda1, type: 3}
+  m_Script: {fileID: 11500000, guid: 2a6f2d91719aab94283294c2db17dfb7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   _skillData: {fileID: 11400000, guid: a216770b25d62b7408ec2475f44984b1, type: 2}

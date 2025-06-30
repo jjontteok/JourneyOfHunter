@@ -9,10 +9,9 @@ public struct PlayerStatus
     public float Damage;
     public float HP;
     public float HPRecoveryPerSec;
-    public float MP;
-    public float MPRecoveryPerSec;
     public float CoolTimeDecrease;
     public float JourneyExp;
+    public float Speed;
 
     public PlayerStatus(PlayerData playerData)
     {
@@ -21,10 +20,9 @@ public struct PlayerStatus
         Damage = playerData.Damage;
         HP = playerData.HP;
         HPRecoveryPerSec = playerData.HPRecoveryPerSec;
-        MP = playerData.MP;
-        MPRecoveryPerSec = playerData.MPRecoveryPerSec;
         CoolTimeDecrease = playerData.CoolTimeDecrease;
         JourneyExp = playerData.JourneyExp;
+        Speed = playerData.Speed;
     }
 
     public float GetCoolTimeDecrease()
@@ -61,7 +59,7 @@ public class PlayerController : MonoBehaviour, IDamageable
     public Action OnAutoDungeonChallenge;
 
     [SerializeField] PlayerData _playerData;
-    [SerializeField] float _speed;
+    //[SerializeField] float _speed;
 
 
     #region Properties
@@ -118,16 +116,6 @@ public class PlayerController : MonoBehaviour, IDamageable
         }
     }
 
-    public float MP
-    {
-        get { return _mp; }
-        set
-        {
-            _mp = value;
-            OnMPValueChanged?.Invoke(_mp, _playerData.MP);
-        }
-    }
-
     public float JourneyExp
     {
         get { return _playerData.JourneyExp; }
@@ -167,7 +155,6 @@ public class PlayerController : MonoBehaviour, IDamageable
     void Initialize()
     {
         _hp = _playerData.HP;
-        _mp = _playerData.MP;
         _animator = GetComponent<Animator>();
         _rigidbody = GetComponent<Rigidbody>();
         _runtimeData = new PlayerStatus(_playerData);
@@ -261,10 +248,10 @@ public class PlayerController : MonoBehaviour, IDamageable
         {
             if (!_animator.GetBool(Define.IsAttacking) && _direction != Vector3.zero)
             {
-                _rigidbody.MovePosition(_rigidbody.position + _direction.normalized * _speed * 1 * Time.fixedDeltaTime);
+                _rigidbody.MovePosition(_rigidbody.position + _direction.normalized * _playerData.Speed * 1 * Time.fixedDeltaTime);
 
                 _animator.SetFloat(Define.Speed, _direction.magnitude);
-                transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(_direction), _speed * Time.deltaTime);
+                transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(_direction), _playerData.Speed * Time.deltaTime);
             }
             else
             {
@@ -303,15 +290,16 @@ public class PlayerController : MonoBehaviour, IDamageable
                 _direction.y = 0;
             }
 
-            _rigidbody.MovePosition(_rigidbody.position + _direction.normalized * _speed * Time.fixedDeltaTime);
+            _rigidbody.MovePosition(_rigidbody.position + _direction.normalized * _playerData.Speed * Time.fixedDeltaTime);
 
             _animator.SetFloat(Define.Speed, _direction.magnitude);
             //타겟 바라보게 회전
-            transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(_direction), _speed * Time.deltaTime);
+            transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(_direction), _playerData.Speed * Time.deltaTime);
             return true;
         }
     }
 
+    // 가운데 길 따라 이동
     void MoveAlongRoad()
     {
         if (Mathf.Abs(_rigidbody.position.x) > 0.1f)
@@ -322,10 +310,10 @@ public class PlayerController : MonoBehaviour, IDamageable
         {
             _direction = Vector3.forward;
         }
-        _rigidbody.MovePosition(_rigidbody.position + _direction.normalized * _speed * Time.fixedDeltaTime);
+        _rigidbody.MovePosition(_rigidbody.position + _direction.normalized * _playerData.Speed * Time.fixedDeltaTime);
         _animator.SetFloat(Define.Speed, _direction.magnitude);
         //타겟 바라보게 회전
-        transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(_direction), _speed * Time.deltaTime);
+        transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(_direction), _playerData.Speed * Time.deltaTime);
     }
 
     void ClampPosition()
@@ -384,11 +372,6 @@ public class PlayerController : MonoBehaviour, IDamageable
         if (_hp > _runtimeData.HP)
         {
             _hp = _runtimeData.HP;
-        }
-        MP += _runtimeData.MPRecoveryPerSec * Time.deltaTime;
-        if (MP > _runtimeData.MP)
-        {
-            MP = _runtimeData.MP;
         }
     }
 
@@ -473,7 +456,7 @@ public class PlayerController : MonoBehaviour, IDamageable
 
             case Define.StatusType.CoolTimeDecrease:
                 _runtimeData.CoolTimeDecrease += amount;
-                Debug.Log($"After cooltime reduction changed: {_runtimeData.CoolTimeDecrease}%");
+                //Debug.Log($"After cooltime reduction changed: {_runtimeData.CoolTimeDecrease}%");
                 break;
 
             default:

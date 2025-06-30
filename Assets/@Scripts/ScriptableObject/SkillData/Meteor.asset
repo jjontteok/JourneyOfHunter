@@ -22,7 +22,6 @@ MonoBehaviour:
   Damage: 40
   Speed: 10
   Angle: 0
-  MP: 20
   ConnectedSkillPrefab: {fileID: 3064670825082450941, guid: 3248be089215539499490d876b2a339c, type: 3}
   HitEffectPrefab: {fileID: 1928904326118327751, guid: 0670723db4923c84e95bdf2a5a43da80, type: 3}
   TargetExistence: 1
@@ -31,3 +30,5 @@ MonoBehaviour:
   Offset: {x: 0, y: 10, z: 20}
   BuffStatus: 8
   BuffAmount: 0
+  IsUltimate: 1
+  SkillAnimationName: Meteor

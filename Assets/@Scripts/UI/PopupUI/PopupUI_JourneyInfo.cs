@@ -90,7 +90,7 @@ public class PopupUI_JourneyInfo : MonoBehaviour
         float end = (journeyExp - _journeyRankData.MinJourneyExp)
             / (_journeyRankData.MaxJourneyExp-_journeyRankData.MinJourneyExp);
         float start = _journeyGaugeBarImage.fillAmount;
-        while (Mathf.Abs(_journeyGaugeBarImage.fillAmount - end) > 0.01f)
+        while (Mathf.Abs(_journeyGaugeBarImage.fillAmount - end) > 0.001f)
         {
             t += Time.deltaTime * (end - _journeyGaugeBarImage.fillAmount) * 20;
             _journeyGaugeBarImage.fillAmount = Mathf.Lerp(start, end, t);
