@@ -1,10 +1,78 @@
 using UnityEditor;
 using UnityEngine;
 
-[CustomEditor(typeof(ItemData), true)]
+[CustomEditor(typeof(EquipmentItemData), true)]
 public class ItemDataEditor : Editor
 {
+    private SerializedProperty idProp;
+    private SerializedProperty nameProp;
+    private SerializedProperty descProp;
+    private SerializedProperty iconProp;
+    private SerializedProperty typeProp;
+    private SerializedProperty valueProp;
+    private SerializedProperty equipTypeProp;
+    private SerializedProperty itemStatusProp;
+
     private static Texture2D _checkerTexture;
+
+    private void OnEnable()
+    {
+        idProp = serializedObject.FindProperty("Id");
+        nameProp = serializedObject.FindProperty("Name");
+        descProp = serializedObject.FindProperty("Description");
+        iconProp = serializedObject.FindProperty("IconImage");
+        typeProp = serializedObject.FindProperty("Type");
+        valueProp = serializedObject.FindProperty("Value");
+        equipTypeProp = serializedObject.FindProperty("EquipmentType");
+        itemStatusProp = serializedObject.FindProperty("ItemStatus");
+    }
+
+    public override void OnInspectorGUI()
+    {
+        serializedObject.Update();
+
+        // 상단 타이틀 라인
+        EditorGUILayout.BeginVertical("box");
+        GUILayout.Label("Item Info", EditorStyles.boldLabel);
+
+        // 텍스트 영역
+        EditorGUILayout.BeginHorizontal("box");
+        if (iconProp.objectReferenceValue != null)
+        {
+            Texture iconTex = ((Sprite)iconProp.objectReferenceValue).texture;
+            GUILayout.Label(iconTex, GUILayout.Width(64), GUILayout.Height(64));
+        }
+        else
+        {
+            GUILayout.Box("No Icon", GUILayout.Width(64), GUILayout.Height(64));
+        }
+
+        EditorGUILayout.BeginVertical();
+        GUILayout.Space(4);
+
+        EditorGUILayout.PropertyField(idProp, new GUIContent("Index"));
+        EditorGUILayout.PropertyField(nameProp, new GUIContent("Item Name"));
+        EditorGUILayout.PropertyField(descProp, new GUIContent("Description"));
+
+        EditorGUILayout.EndVertical();
+        EditorGUILayout.EndHorizontal();
+        EditorGUILayout.EndVertical();
+
+        EditorGUILayout.Space(5);
+
+        // 다른 필드들 섹션
+        EditorGUILayout.BeginVertical("box");
+        EditorGUILayout.LabelField("Basic Info", EditorStyles.boldLabel);
+        EditorGUILayout.PropertyField(iconProp, new GUIContent("Icon Image"));
+        EditorGUILayout.PropertyField(typeProp, new GUIContent("Type"));
+        EditorGUILayout.PropertyField(valueProp, new GUIContent("Value"));
+        EditorGUILayout.PropertyField(equipTypeProp, new GUIContent("Equipment Type"));
+        EditorGUILayout.PropertyField(itemStatusProp, new GUIContent("ItemStatus"));
+
+        EditorGUILayout.EndVertical();
+
+        serializedObject.ApplyModifiedProperties();
+    }
 
     private void EnsureCheckerTexture()
     {
@@ -19,28 +87,5 @@ public class ItemDataEditor : Editor
         _checkerTexture.filterMode = FilterMode.Point;
         _checkerTexture.wrapMode = TextureWrapMode.Repeat;
         _checkerTexture.Apply();
-    }
-
-    public override void OnInspectorGUI()
-    {
-        base.OnInspectorGUI();
-
-        ItemData item = (ItemData)target;
-
-        if (item.IconImage != null)
-        {
-            GUILayout.Space(10);
-            GUILayout.Label("Icon Preview", EditorStyles.boldLabel);
-
-            float aspect = item.IconImage.texture.height / (float)item.IconImage.texture.width;
-            Rect rect = GUILayoutUtility.GetAspectRect(aspect, GUILayout.Width(100));
-
-            EnsureCheckerTexture();
-            // 배경 체커보드
-            GUI.DrawTextureWithTexCoords(rect, _checkerTexture, new Rect(0, 0, rect.width / 16f, rect.height / 16f));
-
-            // 아이콘 이미지 (투명 적용)
-            GUI.DrawTexture(rect, item.IconImage.texture, ScaleMode.ScaleToFit, true);
-        }
     }
 }

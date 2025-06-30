@@ -3,8 +3,8 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "newItem", menuName = "Item/EquipmentItem")]
 public class EquipmentItemData : ItemData
 {
-    public Define.EquipmentItemType _equipmentType;
-    public ItemStatus _itemStatus;
+    public Define.EquipmentItemType EquipmentType;
+    public ItemStatus ItemStatus;
 }
 
 [System.Serializable]
