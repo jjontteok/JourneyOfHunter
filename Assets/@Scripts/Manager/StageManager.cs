@@ -26,7 +26,7 @@ public class StageManager : Singleton<StageManager>, IEventSubscriber, IDeactiva
         { 
             _isSpawnNamedMonster = value;
             if (_isSpawnNamedMonster == true)
-                DungeonManager.Instance.OnSpawnNamedMonster?.Invoke();
+                FieldManager.Instance.DungeonController.OnSpawnNamedMonster?.Invoke();
         }
     }
 
@@ -42,8 +42,8 @@ public class StageManager : Singleton<StageManager>, IEventSubscriber, IDeactiva
     #region IEventSubscriber
     public void Subscribe()
     {
-        DungeonManager.Instance.OnSpawnableNamedMonster += ChangeStageActionStatusToChallenge;
-        DungeonManager.Instance.OnDungeonExit += ClearSetting;
+        FieldManager.Instance.DungeonController.OnSpawnableNamedMonster += ChangeStageActionStatusToChallenge;
+        FieldManager.Instance.DungeonController.OnDungeonExit += ClearSetting;
     }
     #endregion
     #region IDeactivateObject

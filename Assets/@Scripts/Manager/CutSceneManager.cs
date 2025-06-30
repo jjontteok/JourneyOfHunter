@@ -19,7 +19,7 @@ public class CutSceneManager : Singleton<CutSceneManager>,IEventSubscriber ,IDea
     #region IEventSubscriber
     public void Subscribe()
     {
-        DungeonManager.Instance.OnSpawnNamedMonster += PlayCutScene;
+        FieldManager.Instance.DungeonController.OnSpawnNamedMonster += PlayCutScene;
     }
     #endregion
 

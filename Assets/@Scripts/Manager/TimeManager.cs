@@ -69,7 +69,7 @@ public class TimeManager : Singleton<TimeManager>, IEventSubscriber
     #region IEventSubscriber
     public void Subscribe()
     {
-        DungeonManager.Instance.OnSpawnNamedMonster += StartNamedMonsterStage;
+        FieldManager.Instance.DungeonController.OnSpawnNamedMonster += StartNamedMonsterStage;
     }
     #endregion
 

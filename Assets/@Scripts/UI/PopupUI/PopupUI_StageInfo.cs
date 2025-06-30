@@ -20,8 +20,8 @@ public class PopupUI_StageInfo : MonoBehaviour
     private void Initialize()
     {
         _actionButton.onClick.AddListener(PerformDungeonAction);
-        DungeonManager.Instance.OnNormalMonsterDead += SetMonsterCountBar;
-        DungeonManager.Instance.OnDungeonExit += SetMonsterCountBarClear;
+        FieldManager.Instance.DungeonController.OnNormalMonsterDead += SetMonsterCountBar;
+        FieldManager.Instance.DungeonController.OnDungeonExit += SetMonsterCountBarClear;
         StageManager.Instance.OnStageActionChanged += SetStatusImage;
         _statusImages = _actionButton.GetComponentsInChildren<Image>();
         _currentStatusImage = null;

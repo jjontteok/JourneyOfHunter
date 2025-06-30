@@ -42,14 +42,14 @@ public class PopupUIManager : Singleton<PopupUIManager>, IEventSubscriber, IDeac
     #region IEventSubscriber
     public void Subscribe()
     {
-        DungeonManager.Instance.OnDungeonEnter += ActivateStageInfo;
-        DungeonManager.Instance.OnDungeonEnter += DeactivateJourneyInfo;
-        DungeonManager.Instance.OnDungeonExit += DeactivateStageInfo;
-        DungeonManager.Instance.OnDungeonExit += ActivateJourneyInfo;
-        DungeonManager.Instance.OnSpawnNamedMonster += DeactivateStageInfo;
+        FieldManager.Instance.DungeonController.OnDungeonEnter += ActivateStageInfo;
+        FieldManager.Instance.DungeonController.OnDungeonEnter += DeactivateJourneyInfo;
+        FieldManager.Instance.DungeonController.OnDungeonExit += DeactivateStageInfo;
+        FieldManager.Instance.DungeonController.OnDungeonExit += ActivateJourneyInfo;
+        FieldManager.Instance.DungeonController.OnSpawnNamedMonster += DeactivateStageInfo;
         //CameraManager.Instance.OnCutSceneEnded += ActivateNamedMonsterInfo;
-        //DungeonManager.Instance.OnSpawnNamedMonster += ActivateNamedMonsterInfo;
-        DungeonManager.Instance.OnDungeonClear += DeactivateNamedMonsterInfo;
+        //DungeonController.Instance.OnSpawnNamedMonster += ActivateNamedMonsterInfo;
+        FieldManager.Instance.DungeonController.OnDungeonClear += DeactivateNamedMonsterInfo;
 
         TimeManager.Instance.OnGainedRecordTimeChanged += UpdateGainedRecordTime;
         _popupPanel.GetComponent<PopupUI_Panel>().OnPopupPanelClicked += DeactivatePopup;

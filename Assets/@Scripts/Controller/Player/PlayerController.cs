@@ -203,7 +203,7 @@ public class PlayerController : MonoBehaviour, IDamageable
     public void Move()
     {
         //던전에 들어가지 않았을 때 플레이어의 위치를 이동시킴
-        if (!DungeonManager.Instance.IsDungeonExist && transform.position.z >= 113.2)
+        if (!FieldManager.Instance.DungeonController.IsDungeonExist && transform.position.z >= 113.2)
         {
             Vector3 pos = transform.position;
             pos.z = 5;

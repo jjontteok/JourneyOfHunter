@@ -79,10 +79,4 @@ public class Util
             return false;
         }
     }
-
-    public static bool Probability(double chance)
-    {
-        //0~1사이의 무작위 float 값을 반환함
-        return (UnityEngine.Random.value <= chance);
-    }
 }

@@ -98,13 +98,13 @@ public class UI_Game : MonoBehaviour
     {
         Define.GoodsType type;
         float amount;
-        //확률을 이렇게 하는 게 맞?나
-        if (Util.Probability(0.3f))
+        float r = UnityEngine.Random.Range(0, 1);
+        if (r < 0.3f)
         {
             type = Define.GoodsType.SilverCoin;
             amount = 100;
         }
-        else if (Util.Probability(0.6f))
+        else if (r < 0.6f)
         {
             type = Define.GoodsType.Exp;
             amount = 10;
@@ -152,9 +152,9 @@ public class UI_Game : MonoBehaviour
 
     void OnCreateDungeonButtonClick()
     {
-        DungeonManager.Instance.CreateDungeon();
-        DungeonManager.Instance.OnDungeonExit -= ActivateDungeonPortalButton;
-        DungeonManager.Instance.OnDungeonExit += ActivateDungeonPortalButton;
+        FieldManager.Instance.DungeonController.CreateDungeon();
+        FieldManager.Instance.DungeonController.OnDungeonExit -= ActivateDungeonPortalButton;
+        FieldManager.Instance.DungeonController.OnDungeonExit += ActivateDungeonPortalButton;
         _createDungeonPortalButton.gameObject.SetActive(false);
     }
 

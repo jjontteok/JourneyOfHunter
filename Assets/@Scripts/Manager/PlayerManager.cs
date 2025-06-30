@@ -39,12 +39,12 @@ public class PlayerManager : Singleton<PlayerManager>
                 if(StageManager.Instance.StageActionStatus == Define.StageActionStatus.NotChallenge)
                 {
                     // 던전 생성 버튼이 활성화되어있는데 자동 모드 켜질때
-                    if (!DungeonManager.Instance.IsDungeonExist)
+                    if (!FieldManager.Instance.DungeonController.IsDungeonExist)
                     {
                         _player.OnAutoDungeonChallenge?.Invoke();
                     }
                     // 던전 진행 중이고, 아직 게이지 다 안 찬 NotChallenge상태에서 자동 켜질 때
-                    else if (DungeonManager.Instance.IsDungeonExist)
+                    else if (FieldManager.Instance.DungeonController.IsDungeonExist)
                     {
                         StageManager.Instance.StageActionStatus = Define.StageActionStatus.AutoChallenge;
                     }
