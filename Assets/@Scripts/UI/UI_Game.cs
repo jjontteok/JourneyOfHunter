@@ -16,12 +16,12 @@ public class UI_Game : MonoBehaviour
     [SerializeField] TMP_Text _gemText;
     [SerializeField] Toggle _autoToggle;
     [SerializeField] Toggle _doubleSpeedToggle;
-    [SerializeField] PlayerInventoryData _inventoryData;
     [SerializeField] GameObject _systemTextPanel;
 
     private List<UI_PlayerVital> _playerVitalList; 
     private GameObject _playerVitalCanvas;
     private PlayerController _player;
+    private PlayerInventoryData _inventoryData;
 
     private int _currentPlayers;
 
@@ -35,6 +35,8 @@ public class UI_Game : MonoBehaviour
     void Initialize()
     {
         ReleaseEvent();
+        _player = PlayerManager.Instance.Player;
+        _inventoryData = _player.PlayerInventoryData;
 
         MonsterController.OnMonsterDead += GainGoods;
         _inventoryData.OnValueChanged += UpdateGoods;
@@ -48,7 +50,6 @@ public class UI_Game : MonoBehaviour
         _doubleSpeedToggle.onValueChanged.AddListener(OnDoubleSpeedToggleClick);
         _inventoryButton.onClick.AddListener(OnInventoryButtonClick);
 
-        _player = PlayerManager.Instance.Player;
         OnAutoChanged += (flag) => PlayerManager.Instance.IsAuto = flag;
         _player.OnAutoOff += OnAutoToggleOff;
         _player.OnAutoDungeonChallenge += () =>

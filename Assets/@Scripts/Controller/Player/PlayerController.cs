@@ -140,7 +140,7 @@ public class PlayerController : MonoBehaviour, IDamageable
             {
                 //현재 메달 변경
                 _playerData.JourneyRankData =
-                    ObjectManager.Instance.JourneyRankResourceList[(_playerData.JourneyRankData.Index+1).ToString()];
+                    ObjectManager.Instance.JourneyRankResourceList[(_playerData.JourneyRankData.Index + 1).ToString()];
 
                 OnJourneyRankChanged?.Invoke(_playerData.JourneyRankData.Index);
             }

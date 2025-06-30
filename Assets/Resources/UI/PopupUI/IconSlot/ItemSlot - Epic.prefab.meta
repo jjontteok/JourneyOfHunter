@@ -1,6 +1,12 @@
 fileFormatVersion: 2
+<<<<<<<< HEAD:Assets/DoubleL/Actions/Ladder.meta
+guid: 285947414c81a8145bcb2797ff34a26f
+folderAsset: yes
+DefaultImporter:
+========
 guid: 2e7e966fc4f51fe4a9ec84f35fb27c3b
 PrefabImporter:
+>>>>>>>> Develop:Assets/Resources/UI/PopupUI/IconSlot/ItemSlot - Epic.prefab.meta
   externalObjects: {}
   userData: 
   assetBundleName: 
