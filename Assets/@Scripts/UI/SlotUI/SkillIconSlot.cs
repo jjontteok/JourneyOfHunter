@@ -14,6 +14,8 @@ public class SkillIconSlot : MonoBehaviour
     // 스킬 아이콘 클릭 시 스킬 발동하는 이벤트
     public Action OnClickSkillIcon;
 
+    public Sprite SkillIconSprite { get { return _skillIconImage.sprite; } }
+
     bool _isCoolTime = false;
     float _currentTime = 0f;
     float _coolTime;

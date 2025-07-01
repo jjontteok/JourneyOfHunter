@@ -30,6 +30,17 @@ public class SkillManager : Singleton<SkillManager>
 
     public UltimateSkillIconSlot UltimateIconSlot { get { return _ultimateSkillIconSlot; } }
 
+    public Sprite[] CurrentSkillIcons()
+    {
+        Sprite[] sprites = new Sprite[6];
+        sprites[0] = _ultimateSkillIconSlot.SkillIconSprite;
+        for (int i = 1; i < sprites.Length; i++)
+        {
+            sprites[i] = _skillIconSlots[i - 1].SkillIconSprite;
+        }
+        return sprites;
+    }
+
     // Panel - SkillIconSlot에 생성된 슬롯들 가져오기
     public void SetIconSlots(SkillIconSlot[] slots, UltimateSkillIconSlot ultimate)
     {

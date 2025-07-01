@@ -91,6 +91,11 @@ public class SkillSystem : MonoBehaviour
 
     public void AddSkill(SkillData data)
     {
+        if (data == null)
+        {
+            Debug.Log("No Skill Data!!!");
+            return;
+        }
         // 궁극기인지 확인 후 궁극기이면
         // 궁극기 칸이 비어있거나, 쿨타임 진행 중이지 않으면 교체
         // 궁극기 칸이 이미 차있고, 쿨타임 진행 중이면 쿨타임 중엔 교체 불가 표시
@@ -182,9 +187,14 @@ public class SkillSystem : MonoBehaviour
 
     public void RemoveSkill(SkillData data)
     {
+        if (data == null)
+        {
+            Debug.Log("No Skill Data!!!");
+            return;
+        }
         if (data.IsUltimate)
         {
-            if (_ultimateSkillSlot == null || _ultimateSkillSlot.SkillData != null)
+            if (_ultimateSkillSlot == null || _ultimateSkillSlot.SkillData != data)
             {
                 Debug.Log($"Your ultimate skill is not {data.SkillName}");
                 return;

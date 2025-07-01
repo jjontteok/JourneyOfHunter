@@ -144,7 +144,7 @@ public class PlayerController : MonoBehaviour, IDamageable
     void Update()
     {
         Recover();
-        SkillInventoryOnOff();
+        //SkillInventoryOnOff();
     }
 
     private void FixedUpdate()
@@ -422,13 +422,13 @@ public class PlayerController : MonoBehaviour, IDamageable
         }        
     }
 
-    void SkillInventoryOnOff()
-    {
-        if (Input.GetKeyDown(KeyCode.K))
-        {
-            PopupUIManager.Instance.ActivateSkillInventoryPanel();
-        }
-    }
+    //void SkillInventoryOnOff()
+    //{
+    //    if (Input.GetKeyDown(KeyCode.K))
+    //    {
+    //        PopupUIManager.Instance.ActivateSkillInventoryPanel();
+    //    }
+    //}
 
     public void SetAuto(bool flag)
     {

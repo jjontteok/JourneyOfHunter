@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.EventSystems;
@@ -16,18 +17,35 @@ public static class MouseData
 public class PopupUI_SkillInventory : MonoBehaviour
 {
     [SerializeField] GameObject _slot;
-    [SerializeField] GameObject _skillViewPort;
-    [SerializeField] GameObject _ultimateSkillViewPort;
+    [SerializeField] GameObject _generalSkillScrollView;
+    [SerializeField] GameObject _ultimateSkillScrollView;
+    [SerializeField] Transform _generalSkillContainer;
+    [SerializeField] Transform _ultimateSkillContainer;
+
+    [SerializeField] Button _equipButton;
+    [SerializeField] Button _releaseButton;
     [SerializeField] Button _exitButton;
-    [SerializeField] SkillDescriptionPanel _skillDescriptionPanel;
+    [SerializeField] Button _generalButton;
+    [SerializeField] Button _ultimateButton;
+
+    [SerializeField] TMP_Text _skillNameText;
+    [SerializeField] TMP_Text _skillDescriptionText;
+    [SerializeField] Image _skillIconImage;
+    [SerializeField] Image[] _currentSkillIconImage = new Image[6];
 
     SkillItemSlot[] _slots = new SkillItemSlot[24];
     SkillItemSlot[] _ultimateSlots = new SkillItemSlot[4];
 
+    SkillData _selectedSkillData;
+
     Dictionary<GameObject, SkillItemSlot> _slotUIs = new Dictionary<GameObject, SkillItemSlot>();
 
     public Action<SkillData> OnUseSkillItem;
+    public Action<SkillData> OnEquipSkill;
+    public Action<SkillData> OnReleaseSkill;
     public event Action OnExitButtonClicked;
+
+    public static Action<Sprite[]> OnCurrentSkillIconSet;
 
     #region Events
     void AddEvent(GameObject go, EventTriggerType type, UnityAction<BaseEventData> action)
@@ -55,8 +73,7 @@ public class PopupUI_SkillInventory : MonoBehaviour
 
     public void OnLeftClick(SkillItemSlot slot)
     {
-        // 게임 설명 칸 등장
-        _skillDescriptionPanel.TurnOnDescription(slot.SkillData);
+        ActivateDescription(slot.SkillData);
     }
 
     public void OnClick(GameObject go, PointerEventData data)
@@ -75,7 +92,7 @@ public class PopupUI_SkillInventory : MonoBehaviour
     {
         for (int i = 0; i < _slots.Length; i++)
         {
-            GameObject go = Instantiate(_slot, _skillViewPort.transform);
+            GameObject go = Instantiate(_slot, _generalSkillContainer);
 
             go.AddComponent<EventTrigger>();
 
@@ -90,7 +107,7 @@ public class PopupUI_SkillInventory : MonoBehaviour
         }
         for (int i = 0; i < _ultimateSlots.Length; i++)
         {
-            GameObject go = Instantiate(_slot, _skillViewPort.transform);
+            GameObject go = Instantiate(_slot, _ultimateSkillContainer);
 
             go.AddComponent<EventTrigger>();
 
@@ -124,24 +141,100 @@ public class PopupUI_SkillInventory : MonoBehaviour
         }
     }
 
-    private void Start()
+    private void OnEnable()
+    {
+        // 스킬 설명 초기화
+        ActivateDescription();
+        // 일반스킬 뷰포트 활성화
+        _generalSkillScrollView.SetActive(true);
+        _ultimateSkillScrollView.SetActive(false);
+    }
+
+    private void Awake()
+    {
+        Initialize();
+
+        OnCurrentSkillIconSet += UpdateCurrentSkillIcon;
+    }
+
+    private void OnDestroy()
+    {
+        OnCurrentSkillIconSet -= UpdateCurrentSkillIcon;
+    }
+
+    void Initialize()
     {
         CreateSlot();
+        _equipButton.onClick.AddListener(OnEquipButtonClick);
+        _releaseButton.onClick.AddListener(OnReleaseButtonClick);
         _exitButton.onClick.AddListener(OnExitButtonClick);
+        _generalButton.onClick.AddListener(OnGeneralButtonClick);
+        _ultimateButton.onClick.AddListener(OnUltimateButtonClick);
 
         // 스킬 장착 및 해제 이벤트 구독?
         SkillSystem skillSystem = PlayerManager.Instance.SkillSystem;
-        _skillDescriptionPanel.OnEquipSkill += skillSystem.AddSkill;
-        _skillDescriptionPanel.OnReleaseSkill += skillSystem.RemoveSkill;
+        OnEquipSkill += skillSystem.AddSkill;
+        OnReleaseSkill += skillSystem.RemoveSkill;
+
+        UpdateCurrentSkillIcon(SkillManager.Instance.CurrentSkillIcons());
     }
 
-    private void OnDisable()
+    void ActivateDescription(SkillData data = null)
     {
-        _skillDescriptionPanel.gameObject.SetActive(false);
+        _selectedSkillData = data;
+        _skillNameText.text = (data == null) ? String.Empty : data.SkillName;
+        _skillDescriptionText.text = (data == null) ? String.Empty : data.SkillDescription;
+        _skillIconImage.sprite = (data == null) ? null : data.SkillIcon;
+        _skillIconImage.color = (data == null) ? Color.clear : Color.white;
+        // 액티브스킬에 대해서만 장착 및 해제 버튼 활성화
+        if (data != null && !data.IsPassive)
+        {
+            _equipButton.gameObject.SetActive(true);
+            _releaseButton.gameObject.SetActive(true);
+        }
+        else
+        {
+            _equipButton.gameObject.SetActive(false);
+            _releaseButton.gameObject.SetActive(false);
+        }
     }
 
+    void OnEquipButtonClick()
+    {
+        // 현재 스킬 슬롯에 이미 있는 스킬이면 경고문?
+        // 현재 스킬 슬롯에 없는 스킬이면 장착
+        OnEquipSkill?.Invoke(_selectedSkillData);
+    }
+
+    void OnReleaseButtonClick()
+    {
+        // 현재 스킬 슬롯에 있는 스킬이면 해제
+        // 현재 스킬 슬롯에 없는 스킬이면 경고문?
+        OnReleaseSkill?.Invoke(_selectedSkillData);
+    }
     void OnExitButtonClick()
     {
         OnExitButtonClicked?.Invoke();
+    }
+
+    void OnGeneralButtonClick()
+    {
+        _generalSkillScrollView.gameObject.SetActive(true);
+        _ultimateSkillScrollView.gameObject.SetActive(false);
+    }
+
+    void OnUltimateButtonClick()
+    {
+        _generalSkillScrollView.gameObject.SetActive(false);
+        _ultimateSkillScrollView.gameObject.SetActive(true);
+    }
+
+    void UpdateCurrentSkillIcon(Sprite[] sprites)
+    {
+        for(int i=0;i<sprites.Length;i++)
+        {
+            _currentSkillIconImage[i].sprite = sprites[i];
+            _currentSkillIconImage[i].color = sprites[i] == null ? Color.clear : Color.white;
+        }
     }
 }

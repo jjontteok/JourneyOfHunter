@@ -73,6 +73,7 @@ public class SkillSlot : MonoBehaviour
         _skill.gameObject.SetActive(false);
 
         OnGenerateSlot?.Invoke(data);
+        PopupUI_SkillInventory.OnCurrentSkillIconSet?.Invoke(SkillManager.Instance.CurrentSkillIcons());
         return true;
     }
 
@@ -108,6 +109,7 @@ public class SkillSlot : MonoBehaviour
     public void DestroySkillSlot()
     {
         OnRemoveSkill?.Invoke();
+        PopupUI_SkillInventory.OnCurrentSkillIconSet?.Invoke(SkillManager.Instance.CurrentSkillIcons());
         Destroy(_skill.gameObject);
         Destroy(gameObject);
     }
