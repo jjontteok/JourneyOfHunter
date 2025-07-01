@@ -16,11 +16,13 @@ public static class MouseData
 public class PopupUI_SkillInventory : MonoBehaviour
 {
     [SerializeField] GameObject _slot;
-    [SerializeField] GameObject _viewPort;
+    [SerializeField] GameObject _skillViewPort;
+    [SerializeField] GameObject _ultimateSkillViewPort;
     [SerializeField] Button _exitButton;
     [SerializeField] SkillDescriptionPanel _skillDescriptionPanel;
 
     SkillItemSlot[] _slots = new SkillItemSlot[24];
+    SkillItemSlot[] _ultimateSlots = new SkillItemSlot[4];
 
     Dictionary<GameObject, SkillItemSlot> _slotUIs = new Dictionary<GameObject, SkillItemSlot>();
 
@@ -73,7 +75,7 @@ public class PopupUI_SkillInventory : MonoBehaviour
     {
         for (int i = 0; i < _slots.Length; i++)
         {
-            GameObject go = Instantiate(_slot, _viewPort.transform);
+            GameObject go = Instantiate(_slot, _skillViewPort.transform);
 
             go.AddComponent<EventTrigger>();
 
@@ -86,13 +88,39 @@ public class PopupUI_SkillInventory : MonoBehaviour
             _slotUIs.Add(go, _slots[i]);
             go.name = "SkillItemSlot " + i;
         }
-        int j = 0;
+        for (int i = 0; i < _ultimateSlots.Length; i++)
+        {
+            GameObject go = Instantiate(_slot, _skillViewPort.transform);
+
+            go.AddComponent<EventTrigger>();
+
+            AddEvent(go, EventTriggerType.PointerClick, (data) => { OnClick(go, (PointerEventData)data); });
+            AddEvent(go, EventTriggerType.PointerEnter, delegate { OnEnterSlot(go); });
+            AddEvent(go, EventTriggerType.PointerExit, delegate { OnEnterSlot(go); });
+
+            _ultimateSlots[i] = go.GetComponent<SkillItemSlot>();
+
+            _slotUIs.Add(go, _ultimateSlots[i]);
+            go.name = "UltimateSkillItemSlot " + i;
+        }
+
+        int skillCount = 0;
+        int ultimateSkillCount = 0;
         // 플레이어가 보유 중인 스킬리스트를 스킬 인벤토리에 등록
         foreach (var skill in PlayerManager.Instance.SkillSystem.SkillList)
         {
+            // 기본 공격은 등록하지 않음
             if (skill.SkillData.SkillName == "PlayerBasicAttack")
                 continue;
-            _slots[j++].UpdateSlot(skill.SkillData);
+            // 궁극기는 궁극기 인벤토리 영역에 따로 저장
+            if (skill.SkillData.IsUltimate)
+            {
+                _ultimateSlots[ultimateSkillCount++].UpdateSlot(skill.SkillData);
+            }
+            else
+            {
+                _slots[skillCount++].UpdateSlot(skill.SkillData);
+            }
         }
     }
 

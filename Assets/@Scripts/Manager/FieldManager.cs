@@ -38,12 +38,12 @@ public class FieldManager : Singleton<FieldManager>, IEventSubscriber, IDeactiva
     //플레이어가 구역을 지나면 호출될 함수
     void OnPlayerCross()
     {
-        float rnd= UnityEngine.Random.Range(0, 2);
+        float rnd = UnityEngine.Random.Range(0, 2);
         OnJourneyEvent?.Invoke((Define.JourneyEventType)rnd);
     }
 
     public void Deactivate()
     {
-        
+
     }
 }

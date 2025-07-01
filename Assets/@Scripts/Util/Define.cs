@@ -217,5 +217,6 @@ public class Define : MonoBehaviour
     #region Constants
     public const float MaxDef = 100f;
     public const float SkillInterval = 0.5f;
+    public const int TotalSkillIconSlotNum = 6;
     #endregion
 }

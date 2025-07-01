@@ -178,10 +178,11 @@ public class UI_Game : MonoBehaviour
 
     void ActivateDungeonPortalButton()
     {
-        if(!PlayerManager.Instance.IsAuto)
-        {
-            _createDungeonPortalButton.gameObject.SetActive(true);
-        }
+        //if(!PlayerManager.Instance.IsAuto)
+        //{
+        //    _createDungeonPortalButton.gameObject.SetActive(true);
+        //}
+        _createDungeonPortalButton.gameObject.SetActive(true);
     }
 
     void OnSystemMessage(float score)
