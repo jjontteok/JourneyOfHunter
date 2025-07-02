@@ -1,15 +1,19 @@
 using System.Collections;
 using UnityEngine;
 
-public class MeteorSkill : TransformTargetSkill, IDelayedDamageSkill, IPositioningSkill
+public class MeteorSkill : TransformTargetSkill, IDelayedDamageSkill, IPositioningSkill, IUltimateSkill
 {
     [SerializeField] GameObject _meteorObject;
     [SerializeField] float _delay;
+
+    Animator _animator;
+    int _animationHash;
 
     public override void Initialize(Status status)
     {
         base.Initialize(status);
         _coll.OnOffHitEffect(false);
+        InitializeAnimationSetting();
     }
 
     private void OnEnable()
@@ -21,16 +25,21 @@ public class MeteorSkill : TransformTargetSkill, IDelayedDamageSkill, IPositioni
     public override bool ActivateSkill(Vector3 pos)
     {
         gameObject.SetActive(true);
-        transform.position = GetCastPosition(pos);
-        _coll.transform.localPosition = Vector3.zero;
-        Physics.IgnoreLayerCollision(LayerMask.NameToLayer(Define.PlayerSkillLayer), LayerMask.NameToLayer(Define.MonsterTag), true);
-        SetDirection();
-        _meteorObject.SetActive(true);
-        // 콜라이더 꺼주고
-        //_coll.gameObject.SetActive(false);
-        StartCoroutine(CoActivateDelayedCollider());
+        // 눈에서 안 보이게 꼼수
+        transform.position = new Vector3(0, 500f, 0);
+        StartCoroutine(CoActivateSkillwithMotion(pos));
 
-        StartCoroutine(DeActivateSkill());
+        //gameObject.SetActive(true);
+        //transform.position = GetCastPosition(pos);
+        //_coll.transform.localPosition = Vector3.zero;
+        //Physics.IgnoreLayerCollision(LayerMask.NameToLayer(Define.PlayerSkillLayer), LayerMask.NameToLayer(Define.MonsterTag), true);
+        //SetDirection();
+        //_meteorObject.SetActive(true);
+        //// 콜라이더 꺼주고
+        ////_coll.gameObject.SetActive(false);
+        //StartCoroutine(CoActivateDelayedCollider());
+
+        //StartCoroutine(DeActivateSkill());
         return true;
     }
 
@@ -73,5 +82,30 @@ public class MeteorSkill : TransformTargetSkill, IDelayedDamageSkill, IPositioni
     public override void SetDirection()
     {
         _direction = (_player.transform.position - transform.position).normalized;
+    }
+
+    public void InitializeAnimationSetting()
+    {
+        _animator=_player.GetComponent<Animator>();
+        _animationHash = Animator.StringToHash(_skillData.SkillAnimationName);
+    }
+
+    public IEnumerator CoActivateSkillwithMotion(Vector3 pos)
+    {
+        // 해당 궁극기의 모션 실행해주고
+        _animator.SetTrigger(_animationHash);
+        // 특정 타이밍에 스킬 실행
+        yield return new WaitUntil(() => _animator.GetBool(Define.UltimateReady));
+        //gameObject.SetActive(true);
+        transform.position = GetCastPosition(pos);
+        _coll.transform.localPosition = Vector3.zero;
+        Physics.IgnoreLayerCollision(LayerMask.NameToLayer(Define.PlayerSkillLayer), LayerMask.NameToLayer(Define.MonsterTag), true);
+        SetDirection();
+        _meteorObject.SetActive(true);
+        // 콜라이더 꺼주고
+        //_coll.gameObject.SetActive(false);
+        StartCoroutine(CoActivateDelayedCollider());
+
+        StartCoroutine(DeActivateSkill());
     }
 }

@@ -97,7 +97,7 @@ public class SkillSlot : MonoBehaviour
 
     public virtual void ActivateSlotSkill()
     {
-        if (IsActivatePossible)
+        if(IsActivatePossible)
         {
             ProcessSkill();
         }

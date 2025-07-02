@@ -9,12 +9,13 @@ public class Define : MonoBehaviour
     public readonly static int Speed = Animator.StringToHash("Speed");
     public readonly static int IsAttacking = Animator.StringToHash("IsAttacking");
     public readonly static int Walk = Animator.StringToHash("Walk");
+    public readonly static int UltimateReady = Animator.StringToHash("UltimateReady");
 
     public readonly static int CloseAttack = Animator.StringToHash("CloseAttack");
     public readonly static int LongAttack = Animator.StringToHash("LongAttack");
     public readonly static int IsInteractionPossible = Animator.StringToHash("IsInteractionPossible");
 
-    public readonly static int Open = Animator.StringToHash("Open");
+    public readonly static int Contact = Animator.StringToHash("Contact");
 
     public const string EndAttack = "EndAttack";
     public const string WalkSpeed = "WalkSpeed";
@@ -24,6 +25,7 @@ public class Define : MonoBehaviour
     public const string PlayerTag = "Player";
     public const string GroundTag = "Ground";
     public const string MonsterTag = "Monster";
+    public const string FieldObjectTag = "FieldObject";
     #endregion
 
     #region Path

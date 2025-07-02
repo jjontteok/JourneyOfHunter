@@ -1,9 +1,13 @@
 fileFormatVersion: 2
+<<<<<<<< HEAD:Assets/Sitting Lion Statue/Textures/Seated Lion Metal/Seated Lion Metal Normal.png.meta
 guid: 191380ca4fb228140880d4aa61c00401
+========
+guid: 6af1838bc4f4ee047a889fd4beb3aa07
+>>>>>>>> Develop:Assets/Hunter_1/Texture/T_Fur_Normal.tga.meta
 TextureImporter:
-  internalIDToNameTable: []
+  fileIDToRecycleName: {}
   externalObjects: {}
-  serializedVersion: 12
+  serializedVersion: 9
   mipmaps:
     mipMapMode: 0
     enableMipMap: 1
@@ -23,8 +27,11 @@ TextureImporter:
   isReadable: 0
   streamingMipmaps: 0
   streamingMipmapsPriority: 0
+<<<<<<<< HEAD:Assets/Sitting Lion Statue/Textures/Seated Lion Metal/Seated Lion Metal Normal.png.meta
   vTOnly: 0
   ignoreMasterTextureLimit: 0
+========
+>>>>>>>> Develop:Assets/Hunter_1/Texture/T_Fur_Normal.tga.meta
   grayScaleToAlpha: 0
   generateCubemap: 6
   cubemapConvolution: 0
@@ -33,12 +40,12 @@ TextureImporter:
   maxTextureSize: 2048
   textureSettings:
     serializedVersion: 2
-    filterMode: 1
-    aniso: 1
-    mipBias: 0
-    wrapU: 0
-    wrapV: 0
-    wrapW: 0
+    filterMode: -1
+    aniso: -1
+    mipBias: -100
+    wrapU: -1
+    wrapV: -1
+    wrapW: -1
   nPOTScale: 1
   lightmap: 0
   compressionQuality: 50
@@ -56,17 +63,19 @@ TextureImporter:
   textureType: 1
   textureShape: 1
   singleChannelComponent: 0
-  flipbookRows: 1
-  flipbookColumns: 1
   maxTextureSizeSet: 0
   compressionQualitySet: 0
   textureFormatSet: 0
+<<<<<<<< HEAD:Assets/Sitting Lion Statue/Textures/Seated Lion Metal/Seated Lion Metal Normal.png.meta
   ignorePngGamma: 0
   applyGammaDecoding: 0
   cookieLightType: 0
+========
+>>>>>>>> Develop:Assets/Hunter_1/Texture/T_Fur_Normal.tga.meta
   platformSettings:
-  - serializedVersion: 3
+  - serializedVersion: 2
     buildTarget: DefaultTexturePlatform
+<<<<<<<< HEAD:Assets/Sitting Lion Statue/Textures/Seated Lion Metal/Seated Lion Metal Normal.png.meta
     maxTextureSize: 4096
     resizeAlgorithm: 0
     textureFormat: -1
@@ -79,6 +88,8 @@ TextureImporter:
     forceMaximumCompressionQuality_BC6H_BC7: 0
   - serializedVersion: 3
     buildTarget: Standalone
+========
+>>>>>>>> Develop:Assets/Hunter_1/Texture/T_Fur_Normal.tga.meta
     maxTextureSize: 2048
     resizeAlgorithm: 0
     textureFormat: -1
@@ -87,6 +98,7 @@ TextureImporter:
     crunchedCompression: 0
     allowsAlphaSplitting: 0
     overridden: 0
+<<<<<<<< HEAD:Assets/Sitting Lion Statue/Textures/Seated Lion Metal/Seated Lion Metal Normal.png.meta
     androidETC2FallbackOverride: 0
     forceMaximumCompressionQuality_BC6H_BC7: 0
   - serializedVersion: 3
@@ -99,8 +111,9 @@ TextureImporter:
     crunchedCompression: 0
     allowsAlphaSplitting: 0
     overridden: 0
+========
+>>>>>>>> Develop:Assets/Hunter_1/Texture/T_Fur_Normal.tga.meta
     androidETC2FallbackOverride: 0
-    forceMaximumCompressionQuality_BC6H_BC7: 0
   spriteSheet:
     serializedVersion: 2
     sprites: []
@@ -108,13 +121,15 @@ TextureImporter:
     physicsShape: []
     bones: []
     spriteID: 
-    internalID: 0
     vertices: []
     indices: 
     edges: []
     weights: []
+<<<<<<<< HEAD:Assets/Sitting Lion Statue/Textures/Seated Lion Metal/Seated Lion Metal Normal.png.meta
     secondaryTextures: []
     nameFileIdTable: {}
+========
+>>>>>>>> Develop:Assets/Hunter_1/Texture/T_Fur_Normal.tga.meta
   spritePackingTag: 
   pSDRemoveMatte: 0
   pSDShowRemoveMatteOption: 0
@@ -123,9 +138,17 @@ TextureImporter:
   assetBundleVariant: 
 AssetOrigin:
   serializedVersion: 1
+<<<<<<<< HEAD:Assets/Sitting Lion Statue/Textures/Seated Lion Metal/Seated Lion Metal Normal.png.meta
   productId: 260994
   packageName: Sitting Lion Statue
   packageVersion: 1.0
   assetPath: Assets/AK Studio Art/Sitting Lion Statue/Textures/Seated Lion Metal/Seated
     Lion Metal Normal.png
   uploadId: 675463
+========
+  productId: 159973
+  packageName: Hunter
+  packageVersion: 1.0
+  assetPath: Assets/Hunter_1/Texture/T_Fur_Normal.tga
+  uploadId: 389426
+>>>>>>>> Develop:Assets/Hunter_1/Texture/T_Fur_Normal.tga.meta

@@ -9,6 +9,7 @@ public class FieldManager : Singleton<FieldManager>, IEventSubscriber, IDeactiva
     StageController _stageController;
     SpawnController _spawnController;
     DungeonController _dungeonController;
+    PlayerData _playerData;
 
     Define.JourneyEventType _currentEventType;
 
@@ -29,6 +30,8 @@ public class FieldManager : Singleton<FieldManager>, IEventSubscriber, IDeactiva
         _dungeonController = new GameObject("DungeonController").AddComponent<DungeonController>();
         _stageController = new GameObject("StageController").AddComponent<StageController>();
         _spawnController = new GameObject("SpawnController").AddComponent<SpawnController>();
+
+        _playerData = PlayerManager.Instance.Player.PlayerData;
     }
     void Start()
     {
@@ -63,6 +66,6 @@ public class FieldManager : Singleton<FieldManager>, IEventSubscriber, IDeactiva
 
     public void Deactivate()
     {
-        throw new System.NotImplementedException();
+        
     }
 }

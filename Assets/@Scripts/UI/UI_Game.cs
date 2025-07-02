@@ -20,7 +20,7 @@ public class UI_Game : MonoBehaviour
     private List<UI_PlayerVital> _playerVitalList; 
     private GameObject _playerVitalCanvas;
     private PlayerController _player;
-    PlayerInventoryData _inventoryData;
+    private PlayerInventoryData _inventoryData;
 
     private int _currentPlayers;
 

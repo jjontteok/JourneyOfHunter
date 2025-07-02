@@ -48,7 +48,7 @@ public class PlayerController : MonoBehaviour, IDamageable
     Vector3 _direction;
     float _mp;
     float _hp;
-
+    
     float _shortestSkillDistance;       //자동일 때, 이동 멈추는 범위
 
     bool _isSwifting;                   //질풍참 사용 여부
@@ -250,7 +250,7 @@ public class PlayerController : MonoBehaviour, IDamageable
         {
             if (!_animator.GetBool(Define.IsAttacking) && _direction != Vector3.zero)
             {
-                _rigidbody.MovePosition(_rigidbody.position + _direction.normalized * _playerData.Speed * Time.fixedDeltaTime);
+                _rigidbody.MovePosition(_rigidbody.position + _direction.normalized * _playerData.Speed * 1 * Time.fixedDeltaTime);
 
                 _animator.SetFloat(Define.Speed, _direction.magnitude);
                 transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(_direction), _playerData.Speed * Time.deltaTime);

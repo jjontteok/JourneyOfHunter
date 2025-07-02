@@ -1,9 +1,17 @@
 fileFormatVersion: 2
+<<<<<<<< HEAD:Assets/Anubis/Texture/anubis/pbr/anubis_head_anubis_head_AO.png.meta
 guid: 9760dfbff13e4e448bbc6e203fb9d928
+========
+guid: c953761b8d326474ba5ae192b0fe0bbb
+>>>>>>>> Develop:Assets/Hunter_1/Texture/T_Body_Roughness.tga.meta
 TextureImporter:
-  internalIDToNameTable: []
+  fileIDToRecycleName: {}
   externalObjects: {}
+<<<<<<<< HEAD:Assets/Anubis/Texture/anubis/pbr/anubis_head_anubis_head_AO.png.meta
   serializedVersion: 11
+========
+  serializedVersion: 9
+>>>>>>>> Develop:Assets/Hunter_1/Texture/T_Body_Roughness.tga.meta
   mipmaps:
     mipMapMode: 0
     enableMipMap: 1
@@ -57,9 +65,12 @@ TextureImporter:
   maxTextureSizeSet: 0
   compressionQualitySet: 0
   textureFormatSet: 0
+<<<<<<<< HEAD:Assets/Anubis/Texture/anubis/pbr/anubis_head_anubis_head_AO.png.meta
   applyGammaDecoding: 0
+========
+>>>>>>>> Develop:Assets/Hunter_1/Texture/T_Body_Roughness.tga.meta
   platformSettings:
-  - serializedVersion: 3
+  - serializedVersion: 2
     buildTarget: DefaultTexturePlatform
     maxTextureSize: 2048
     resizeAlgorithm: 0
@@ -70,7 +81,6 @@ TextureImporter:
     allowsAlphaSplitting: 0
     overridden: 0
     androidETC2FallbackOverride: 0
-    forceMaximumCompressionQuality_BC6H_BC7: 0
   spriteSheet:
     serializedVersion: 2
     sprites: []
@@ -78,12 +88,14 @@ TextureImporter:
     physicsShape: []
     bones: []
     spriteID: 
-    internalID: 0
     vertices: []
     indices: 
     edges: []
     weights: []
+<<<<<<<< HEAD:Assets/Anubis/Texture/anubis/pbr/anubis_head_anubis_head_AO.png.meta
     secondaryTextures: []
+========
+>>>>>>>> Develop:Assets/Hunter_1/Texture/T_Body_Roughness.tga.meta
   spritePackingTag: 
   pSDRemoveMatte: 0
   pSDShowRemoveMatteOption: 0
@@ -92,8 +104,16 @@ TextureImporter:
   assetBundleVariant: 
 AssetOrigin:
   serializedVersion: 1
+<<<<<<<< HEAD:Assets/Anubis/Texture/anubis/pbr/anubis_head_anubis_head_AO.png.meta
   productId: 191360
   packageName: Lowpoly Anubis - FREE
   packageVersion: 1.0
   assetPath: Assets/Anubis/Texture/anubis/pbr/anubis_head_anubis_head_AO.png
   uploadId: 622539
+========
+  productId: 159973
+  packageName: Hunter
+  packageVersion: 1.0
+  assetPath: Assets/Hunter_1/Texture/T_Body_Roughness.tga
+  uploadId: 389426
+>>>>>>>> Develop:Assets/Hunter_1/Texture/T_Body_Roughness.tga.meta

@@ -1,5 +1,9 @@
 fileFormatVersion: 2
-guid: 942163c9cb2aba44c85fbaee1d11f853
+<<<<<<<< HEAD:Assets/@Scripts/Controller/Field/OtherObject.meta
+guid: 62248dac27d672448b7553ee226bd620
+========
+guid: ff5649c5390e2934981a4f5c50e56224
+>>>>>>>> Develop:Assets/DoubleL.meta
 folderAsset: yes
 DefaultImporter:
   externalObjects: {}

@@ -11,8 +11,7 @@ public class SpawnController : MonoBehaviour
     Dictionary<string, GameObject> _fieldObjectList;
     private NormalSpawnerController _normalSpawner;
     private NamedSpawnerController _namedSpawner;
-    private TreasureBoxSpawnerController _treasureBoxSpawner;
-    private MerchantSpawnerController _merchantSpawner; 
+
 
     [SerializeField] float _spawnInterval = 3f;
     [SerializeField] float _monsterInterval = 2f;
@@ -105,7 +104,8 @@ public class SpawnController : MonoBehaviour
     }
     #endregion
 
-    //FieldManager에서 이벤트 발생
+    //FieldManager에서 이벤트 발생 -> PlayerManager로 받아와 FieldManager를 거치지 않고 할까??????
+    //현재대로만 한다면 PlayerManager의 Player 프로퍼티를 받아 바로 이벤트 구독하자
     void SetEvent(Define.JourneyEventType type)
     {
         DeactivateObject();
