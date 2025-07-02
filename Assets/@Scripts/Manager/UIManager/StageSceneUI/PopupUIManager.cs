@@ -15,13 +15,8 @@ public class PopupUIManager : Singleton<PopupUIManager>, IEventSubscriber, IDeac
     private GameObject _panelStatus;
     private GameObject _panelInventory;
     private GameObject _panelSkillInventory;
-    private GameObject _panelGainedRecord;
 
     private GameObject _activePopup;
-    public GameObject PanelGainedRecord
-    {
-        get { return _panelGainedRecord; }
-    }
 
     #region Initialize
     protected override void Initialize()
@@ -34,7 +29,6 @@ public class PopupUIManager : Singleton<PopupUIManager>, IEventSubscriber, IDeac
         _panelStatus = Instantiate(ObjectManager.Instance.PopupStatusPanel, _canvasPopupUI.transform);
         _panelInventory = Instantiate(ObjectManager.Instance.PopupInventoryPanel, _canvasPopupUI.transform);
         _panelSkillInventory = Instantiate(ObjectManager.Instance.PopupSkillInventory, _canvasPopupUI.transform);
-        _panelGainedRecord = Instantiate(ObjectManager.Instance.PopupGainedRecordPanel, _canvasPopupUI.transform);
     }
     #endregion
 
@@ -51,12 +45,10 @@ public class PopupUIManager : Singleton<PopupUIManager>, IEventSubscriber, IDeac
         //DungeonController.Instance.OnSpawnNamedMonster += ActivateNamedMonsterInfo;
         FieldManager.Instance.DungeonController.OnDungeonClear += DeactivateNamedMonsterInfo;
 
-        TimeManager.Instance.OnGainedRecordTimeChanged += UpdateGainedRecordTime;
         _popupPanel.GetComponent<PopupUI_Panel>().OnPopupPanelClicked += DeactivatePopup;
         _panelStatus.GetComponent<PopupUI_Status>().OnExitButtonClicked += DeactivatePopup;
         _panelInventory.GetComponent<PopupUI_Inventory>().OnExitButtonClicked += DeactivatePopup;
         _panelSkillInventory.GetComponent<PopupUI_SkillInventory>().OnExitButtonClicked += DeactivatePopup;
-        _panelGainedRecord.GetComponent<PopupUI_GainRecord>().OnExitButtonClicked += DeactivatePopup;
     }
     #endregion
 
@@ -81,7 +73,6 @@ public class PopupUIManager : Singleton<PopupUIManager>, IEventSubscriber, IDeac
         _panelStatus.SetActive(false);
         _panelInventory.SetActive(false);
         _panelSkillInventory.SetActive(false);
-        _panelGainedRecord.SetActive(false);
     }
     #endregion
 
@@ -110,14 +101,6 @@ public class PopupUIManager : Singleton<PopupUIManager>, IEventSubscriber, IDeac
         ActivatePopupPanel();
         _activePopup = _panelSkillInventory;
         _panelSkillInventory.SetActive(!_panelSkillInventory.activeSelf);
-    }
-
-    public void ActivateGainedRecordPanel(Define.GoodsType type, float amount)
-    {
-        ActivatePopupPanel();
-        _activePopup = _panelGainedRecord;
-        UpdateGainedRecord(type, amount);
-        _panelGainedRecord.SetActive(true);
     }
 
     public void ActivateJourneyInfo()
@@ -164,13 +147,4 @@ public class PopupUIManager : Singleton<PopupUIManager>, IEventSubscriber, IDeac
     }
     #endregion
 
-    public void UpdateGainedRecord(Define.GoodsType type, float amount)
-    {
-        _panelGainedRecord.GetComponent<PopupUI_GainRecord>().SetGoods(type, amount);
-    }
-
-    public void UpdateGainedRecordTime()
-    {
-        _panelGainedRecord.GetComponent<PopupUI_GainRecord>().SetTime();
-    }
 }

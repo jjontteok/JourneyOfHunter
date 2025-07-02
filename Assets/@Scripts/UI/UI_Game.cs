@@ -10,7 +10,6 @@ public class UI_Game : MonoBehaviour
     [SerializeField] TMP_Text _playerLevelText;
     [SerializeField] Button _statusButton;
     [SerializeField] Button _inventoryButton;
-    [SerializeField] Button _gainedGoodsButton;
     [SerializeField] Button _createDungeonPortalButton;
     [SerializeField] TMP_Text _silverCoinText;
     [SerializeField] TMP_Text _gemText;
@@ -37,13 +36,12 @@ public class UI_Game : MonoBehaviour
         ReleaseEvent();
 
         MonsterController.OnMonsterDead += GainGoods;
-        _inventoryData.OnValueChanged += UpdateGoods;
+        //_inventoryData.OnValueChanged += UpdateGoods;
 
         _statusButton.onClick.AddListener(OnStatusButtonClick);
         _inventoryButton.onClick.AddListener(OnInventoryButtonClick);
-        _gainedGoodsButton.onClick.AddListener(OnGainedGoodsButtonClick);
         _createDungeonPortalButton.onClick.AddListener(OnCreateDungeonButtonClick);
-        _silverCoinText.text = _inventoryData.silverCoin.ToString();
+        _silverCoinText.text = _inventoryData.SilverCoin.ToString();
         _autoToggle.onValueChanged.AddListener(OnAutoToggleClick);
         _doubleSpeedToggle.onValueChanged.AddListener(OnDoubleSpeedToggleClick);
         _inventoryButton.onClick.AddListener(OnInventoryButtonClick);
@@ -93,6 +91,7 @@ public class UI_Game : MonoBehaviour
 
     }
 
+    // 변경 필수
     //얘도 몬스터 처치 시 재화를 얼만큼 획득할지 정해야 한당
     void GainGoods()
     {
@@ -104,19 +103,6 @@ public class UI_Game : MonoBehaviour
             type = Define.GoodsType.SilverCoin;
             amount = 100;
         }
-        else if (r < 0.6f)
-        {
-            type = Define.GoodsType.Exp;
-            amount = 10;
-        }
-        else
-        {
-            type = Define.GoodsType.EnhancementStone;
-            amount = 5;
-        }
-        _inventoryData.ModifyGoods(type, amount);
-
-        PopupUIManager.Instance.UpdateGainedRecord(type, amount);
     }
 
     void UpdateGoods(Define.GoodsType type)
@@ -124,11 +110,7 @@ public class UI_Game : MonoBehaviour
         switch (type)
         {
             case Define.GoodsType.SilverCoin:
-                _silverCoinText.text = _inventoryData.silverCoin.ToString();
-                break;
-            case Define.GoodsType.Exp:
-                break;
-            case Define.GoodsType.EnhancementStone:
+                _silverCoinText.text = _inventoryData.SilverCoin.ToString();
                 break;
             case Define.GoodsType.Gem:
                 break;
@@ -143,11 +125,6 @@ public class UI_Game : MonoBehaviour
     void OnInventoryButtonClick()
     {
         PopupUIManager.Instance.ActivateInventoryPanel();
-    }
-
-    void OnGainedGoodsButtonClick()
-    {
-        PopupUIManager.Instance.ActivateGainedRecordPanel(Define.GoodsType.None, 0);
     }
 
     void OnCreateDungeonButtonClick()

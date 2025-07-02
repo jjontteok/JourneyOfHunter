@@ -54,10 +54,10 @@ public class Define : MonoBehaviour
     public const string PopupStatusPanelPath = "UI/PopupUI/StatusPanel - Popup";
     public const string PopupInventoryPanelPath = "UI/PopupUI/InventoryPanel - Popup";
     public const string PopupSkillInventoryPath = "UI/PopupUI/UI_SkillInventory - Popup";
-    public const string PopupGainedRecordPanelPath = "UI/PopupUI/GainedRecordPanel - Popup";
     public const string PopupJourneyInfoPanelPath = "UI/PopupUI/Panel - JourneyInfo";
     public const string PopupStageInfoPanelPath = "UI/PopupUI/Panel - StageInfo";
     public const string PopupNamedMonsterInfoPanelPath = "UI/PopupUI/Panel - NamedMonsterInfo";
+    public const string ItemSlotPath = "UI/PopupUI/IconSlotResources";
 
     public const string GoblinKingCutScenePath = "CutScene/GoblinCutScene";
     public const string FollowCameraPath = "Camera/FollowPlayerCamera";
@@ -120,10 +120,7 @@ public class Define : MonoBehaviour
     }
     public enum GoodsType
     {
-        None,
         SilverCoin,
-        Exp,
-        EnhancementStone,
         Gem,
     }
     public enum StageActionStatus
@@ -196,6 +193,12 @@ public class Define : MonoBehaviour
         Field,
         Dungeon,
         Goods,
+    }
+
+    public enum PendingTaskType
+    {
+        ItemTask,
+        SkillTask,
     }
     #endregion
 

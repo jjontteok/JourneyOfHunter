@@ -21,18 +21,18 @@ public class PopupUI_Status : MonoBehaviour
 
     private void OnEnable()
     {
-        _inventoryData.OnValueChanged += UpdateStatusUI;
+        //_inventoryData.OnValueChanged += UpdateStatusUI;
     }
 
     private void OnDisable()
     {
-        _inventoryData.OnValueChanged -= UpdateStatusUI;
+        //_inventoryData.OnValueChanged -= UpdateStatusUI;
     }
 
     void Initialize() {
         //임시 방편
         PlayerController playerController = PlayerManager.Instance.Player;
-        _silverCoinText.text = _inventoryData.silverCoin.ToString();
+        _silverCoinText.text = _inventoryData.SilverCoin.ToString();
         foreach (var slot in _statusList)
         {
             slot.Initialize(playerController.PlayerData, _inventoryData);
@@ -43,7 +43,7 @@ public class PopupUI_Status : MonoBehaviour
     private void UpdateStatusUI(Define.GoodsType type)
     {
         if(type == Define.GoodsType.SilverCoin)
-            _silverCoinText.text = _inventoryData.silverCoin.ToString();
+            _silverCoinText.text = _inventoryData.SilverCoin.ToString();
     }
 
     void OnExitButtonClick()
