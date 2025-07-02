@@ -1,0 +1,32 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e807fb188ff3a544ba349f772e49f4cc, type: 3}
+  m_Name: PlayerBasicAttack
+  m_EditorClassIdentifier: 
+  SkillName: PlayerBasicAttack
+  SkillDescription: 
+  SkillIcon: {fileID: 0}
+  CoolTime: 0.75
+  DurationTime: 0.4
+  TargetDistance: 3
+  Damage: 3
+  Speed: 0
+  Angle: 180
+  MP: 0
+  ConnectedSkillPrefab: {fileID: 0}
+  HitEffectPrefab: {fileID: 4553287630450876385, guid: f5f7cfb700e6b3e419c0e156473bee3e, type: 3}
+  TargetExistence: 1
+  IsPlayerSkill: 1
+  IsPassive: 0
+  Offset: {x: 0, y: 0, z: 0}
+  BuffStatus: 8
+  BuffAmount: 0

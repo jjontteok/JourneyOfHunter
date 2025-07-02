@@ -8,7 +8,7 @@ Material:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: Plants
-  m_Shader: {fileID: 10723, guid: 0000000000000000f000000000000000, type: 0}
+  m_Shader: {fileID: 10606, guid: 0000000000000000f000000000000000, type: 0}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
   m_ValidKeywords: []
@@ -55,6 +55,10 @@ Material:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
+    - _GlossMap:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
     - _MainTex:
         m_Texture: {fileID: 2800000, guid: 3387a475305d644488601aa9b6b309ef, type: 3}
         m_Scale: {x: 1, y: 1}
@@ -79,6 +83,10 @@ Material:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
+    - _ShadowOffset:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
     - _SpecGlossMap:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
@@ -89,6 +97,10 @@ Material:
         m_Offset: {x: 0, y: 0}
     - _TextureSample0:
         m_Texture: {fileID: 2800000, guid: 3387a475305d644488601aa9b6b309ef, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _TranslucencyMap:
+        m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _texcoord:
@@ -109,9 +121,11 @@ Material:
         m_Offset: {x: 0, y: 0}
     m_Ints: []
     m_Floats:
+    - _AO: 2.4
     - _AdditionalLightIgnoreCelShade: 0.9
     - _AlphaClip: 1
     - _AlphaCutoff: 0.5
+    - _BaseLight: 0.35
     - _Blend: 0
     - _BumpScale: 1
     - _CelShadeMidPoint: -1
@@ -140,6 +154,7 @@ Material:
     - _Metallic: 0
     - _Mode: 0
     - _NormalStrength: 1
+    - _Occlusion: 7.5
     - _OcclusionRemapEnd: 1
     - _OcclusionRemapStart: 0
     - _OcclusionStrength: 1
@@ -153,14 +168,17 @@ Material:
     - _ReceiveShadowMappingPosOffset: 0
     - _ReceiveShadows: 1
     - _SampleGI: 0
-    - _Shininess: 0
+    - _ShadowStrength: 1
+    - _Shininess: 0.01
     - _Smoothness: 0
     - _SmoothnessSource: 0
     - _SmoothnessTextureChannel: 0
     - _SpecSource: 0
     - _SpecularHighlights: 0
+    - _SquashAmount: 1
     - _SrcBlend: 1
     - _Surface: 0
+    - _TranslucencyViewDependency: 0.7
     - _UVSec: 0
     - _UseAlphaClipping: 1
     - _UseEmission: 0
@@ -189,6 +207,9 @@ Material:
     - _ShadowMapColor: {r: 0.29313743, g: 0.46226418, b: 0.28128338, a: 1}
     - _SpecColor: {r: 0.19999722, g: 0.19999722, b: 0.19999722, a: 0}
     - _Tint: {r: 1, g: 1, b: 1, a: 0}
+    - _TranslucencyColor: {r: 0.73, g: 0.85, b: 0.40999997, a: 1}
+    - _TreeInstanceColor: {r: 1, g: 1, b: 1, a: 1}
+    - _TreeInstanceScale: {r: 1, g: 1, b: 1, a: 1}
   m_BuildTextureStacks: []
   m_AllowLocking: 1
 --- !u!114 &4437940333290642650

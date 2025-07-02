@@ -2,12 +2,22 @@ using UnityEngine;
 
 public class BackgroundController : MonoBehaviour
 {
-    [SerializeField] Transform player;
+    Transform _player;
 
-    Vector3 _offset = new Vector3(0f, 0f, 200f);
+    Vector3 _offset = new Vector3(0f, 5f, 200f);
+
+    private void Awake()
+    {
+        Initialize();
+    }
+
+    private void Initialize()
+    {
+        _player = PlayerManager.Instance.Player.transform;
+    }
 
     void Update()
     {
-        transform.position = player.position + _offset;
+        transform.position = _player.position + _offset;
     }
 }

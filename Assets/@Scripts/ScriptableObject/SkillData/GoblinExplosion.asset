@@ -1,0 +1,32 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e807fb188ff3a544ba349f772e49f4cc, type: 3}
+  m_Name: GoblinExplosion
+  m_EditorClassIdentifier: 
+  SkillName: GoblinExplosion
+  SkillDescription: 
+  SkillIcon: {fileID: 0}
+  CoolTime: 0
+  DurationTime: 2
+  TargetDistance: 0
+  Damage: 5
+  Speed: 0
+  Angle: 0
+  MP: 0
+  ConnectedSkillPrefab: {fileID: 0}
+  HitEffectPrefab: {fileID: 2504214343621411470, guid: 49fa13df8c065f844adbd5114be9b29e, type: 3}
+  TargetExistence: 0
+  IsPlayerSkill: 0
+  IsPassive: 0
+  Offset: {x: 0, y: 0, z: 0}
+  BuffStatus: 8
+  BuffAmount: 0

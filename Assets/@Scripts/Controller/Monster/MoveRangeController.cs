@@ -21,7 +21,7 @@ public class MoveRangeController : MonoBehaviour
     {
         if (other.CompareTag(Define.PlayerTag))
         {
-            Debug.Log("ÀÌµ¿ ¹üÀ§ ¾È¿¡ µé¾î¿È");
+            //Debug.Log("ì´ë™ ë²”ìœ„ ì•ˆì— ë“¤ì–´ì˜´");
             OnMoveToTarget?.Invoke();
         }
     }
@@ -29,7 +29,7 @@ public class MoveRangeController : MonoBehaviour
     {
         if (other.CompareTag(Define.PlayerTag))
         {
-            Debug.Log("ÀÌµ¿ ¹üÀ§ ¹ş¾î³²");
+            Debug.Log("ì´ë™ ë²”ìœ„ ë²—ì–´ë‚¨");
             OnMoveToOrigin?.Invoke();
         }
     }

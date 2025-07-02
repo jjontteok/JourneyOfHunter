@@ -6,6 +6,8 @@ TagManager:
   tags:
   - Monster
   - Ground
+  - FxTemporaire
+  - FieldObject
   layers:
   - Default
   - TransparentFX
@@ -17,8 +19,8 @@ TagManager:
   - Monster
   - PlayerSkill
   - MonsterSkill
-  - 
-  - 
+  - MonsterAttackRange
+  - Ground
   - 
   - 
   - 

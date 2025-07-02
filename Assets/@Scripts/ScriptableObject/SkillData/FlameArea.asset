@@ -1,0 +1,33 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e807fb188ff3a544ba349f772e49f4cc, type: 3}
+  m_Name: FlameArea
+  m_EditorClassIdentifier: 
+  SkillName: "\uBD88\uC7A5\uD310"
+  SkillDescription: "\uAD11\uBC94\uC704\uD55C \uC9C0\uC5ED\uC5D0 \uBD88\uC7A5\uD310\uC774
+    \uC0DD\uC131\uB429\uB2C8\uB2E4."
+  SkillIcon: {fileID: 21300000, guid: ba1d2d1cb7c1e574bbe33405c02ba997, type: 3}
+  CoolTime: 0
+  DurationTime: 0
+  TargetDistance: 0
+  Damage: 10
+  Speed: 0
+  Angle: 0
+  MP: 0
+  ConnectedSkillPrefab: {fileID: 0}
+  HitEffectPrefab: {fileID: 6823302871133167919, guid: cd974dacb07f86b4ebe991d1822d05ea, type: 3}
+  TargetExistence: 0
+  IsPlayerSkill: 1
+  IsPassive: 0
+  Offset: {x: 0, y: 0, z: 0}
+  BuffStatus: 8
+  BuffAmount: 0

@@ -1,18 +1,24 @@
 using UnityEngine;
 
-public class AoENonTargetSkill : NonTargetSkill
+public class AoENonTargetSkill : ActiveSkill
 {
-    PenetrationColliderController _coll;
+    SkillColliderController _coll;
 
-    void Start()
+    public override void Initialize(Status status)
     {
-        Initialize();
+        base.Initialize(status);
+        _coll = GetComponentInChildren<SkillColliderController>();
+        _coll.SetColliderInfo(status, _skillData);
     }
 
-    public override void Initialize()
+    public override bool ActivateSkill(Vector3 pos)
     {
-        base.Initialize();
-        _coll = GetComponentInChildren<PenetrationColliderController>();
-        _coll.SetColliderInfo(_skillData.damage, _skillData.connectedSkillPrefab, _skillData.hitEffectPrefab);
+        base.ActivateSkill(pos);
+        RaycastHit hit;
+        Physics.Raycast(pos, Vector3.down, out hit, 5f, LayerMask.GetMask(Define.GroundTag));
+        Vector3 position = hit.point;
+        position.y += 0.3f;
+        transform.position = position;
+        return true;
     }
 }

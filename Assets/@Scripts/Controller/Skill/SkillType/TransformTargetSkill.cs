@@ -1,57 +1,84 @@
 using UnityEngine;
 
-public class TransformTargetSkill : TargetSkill
+public class TransformTargetSkill : ActiveSkill, ITargetSkill, IMovingSkill, IDirectionSkill
 {
-    PenetrationColliderController _coll;
-    bool _isCasting = false;
-    float _currentTime = 0f;
-    Vector3 dir;
+    protected SkillColliderController _coll;
+    Transform _target;
+    protected Vector3 _direction;
 
-    void Start()
+    public Vector3 Direction { get => _direction; }
+
+    public override void Initialize(Status status)
     {
-        Initialize();
+        base.Initialize(status);
+        _coll = GetComponentInChildren<SkillColliderController>();
+        _coll.SetColliderInfo(status, _skillData);
     }
 
-    private void OnEnable()
+    // 방향 설정 + 타겟 설정
+    public override bool ActivateSkill(Vector3 pos)
     {
-        if (_skillData.castingTime > 0)
+        if (IsTargetExist(pos, SkillData.IsPlayerSkill))
         {
-            _isCasting = true;
-            //dir = _direction;
+            base.ActivateSkill(pos);
+            _coll.transform.localPosition = Vector3.zero;
+            SetDirection();
+
+            return true;
         }
-    }
 
-    public override void ActivateSkill(Transform target, Vector3 pos = default)
-    {
-        base.ActivateSkill(target, pos);
-        _coll.transform.localPosition = Vector3.zero;
-    }
-
-    public override void Initialize()
-    {
-        base.Initialize();
-        _coll = GetComponentInChildren<PenetrationColliderController>();
-        _coll.SetColliderInfo(_skillData.damage, _skillData.connectedSkillPrefab, _skillData.hitEffectPrefab);
+        return false;
     }
 
     private void Update()
     {
-        // 캐스팅 동작 중이지 않을 땐 distance까지 이동
-        if (!_isCasting)
+        MoveSkillCollider();
+    }
+
+    public virtual bool IsTargetExist(Vector3 pos, bool isPlayerSkill)
+    {
+        // 수동 모드일 땐 타겟 유무 상관없이 그냥 발사
+        if (SkillData.IsPlayerSkill && !PlayerManager.Instance.IsAuto)
+            return true;
+        _target = Util.GetNearestTarget(pos, _skillData.TargetDistance, isPlayerSkill)?.transform;
+        //Debug.Log($"Current Target: {_target.Name}\npostion:{_target.position}");
+        return _target != null;
+    }
+
+    public virtual void MoveSkillCollider()
+    {
+        if (Vector3.Distance(transform.position, _coll.transform.position) < _skillData.TargetDistance)
         {
-            if (Vector3.Distance(transform.position, _coll.transform.position) < _skillData.targetDistance)
-            {
-                _coll.transform.Translate(_direction * _skillData.speed * Time.deltaTime, Space.World);
-            }
+            _coll.transform.Translate(_direction * _skillData.Speed * Time.deltaTime, Space.World);
+        }
+    }
+
+    public virtual void SetDirection()
+    {
+        // 플레이어 스킬이 아니면(==몬스터 스킬이면) 타겟을 향해 설정
+        if (!SkillData.IsPlayerSkill)
+        {
+            Vector3 dir = _target.position - transform.position;
+            dir.y = 0;
+            _direction = dir.normalized;
         }
         else
         {
-            _currentTime += Time.deltaTime;
-            if (_currentTime >= _skillData.castingTime)
+            // 자동 모드면 가까운 적을 향해 방향 설정
+            if (PlayerManager.Instance.IsAuto)
             {
-                _isCasting = false;
-                _currentTime = 0f;
+                //타겟 방향으로 스킬 방향 설정
+                //스킬이 땅으로 박히지 않도록 높이 맞춰주기
+                Vector3 dir = _target.position - transform.position;
+                dir.y = 0;
+                _direction = dir.normalized;
+            }
+            // 수동 모드면 현재 플레이어가 바라보는 방향으로 설정
+            else
+            {
+                _direction = PlayerManager.Instance.Player.transform.TransformDirection(Vector3.forward);
             }
         }
+        transform.rotation = Quaternion.LookRotation(_direction);
     }
 }

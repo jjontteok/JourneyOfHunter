@@ -8,7 +8,7 @@ namespace MatthewAssets
     {
         public Transform target; // The object around which the camera will rotate
         public float distance = 10.0f; // Distance from object
-        public float orbitSpeed = 10.0f; // Orbit speed
+        public float orbitSpeed = 10.0f; // Orbit Speed
         public Vector3 orbitAxis = Vector3.up; // Axis around which the camera will rotate
 
         private float currentAngle = 0.0f;
@@ -17,7 +17,7 @@ namespace MatthewAssets
         {
             if (target)
             {
-                // Increase angle based on time and orbit speed
+                // Increase Angle based on time and orbit Speed
                 currentAngle += orbitSpeed * Time.deltaTime;
 
                 // Calculate the new camera position

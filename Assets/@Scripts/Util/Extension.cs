@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 namespace extension
@@ -13,11 +14,13 @@ namespace extension
             return component;
         }
 
+      
+
         // * GameObject 배열을 주어진 리스트에 복사 (주의 : 기존 데이터는 삭제)
-        public static void ToList(this GameObject[] goArr, Dictionary<string, GameObject> list)
+        public static void ToList<T>(this T[] goArr, Dictionary<string, T> list) where T : UnityEngine.Object
         {
             list.Clear();
-            foreach (GameObject go in goArr)
+            foreach (T go in goArr)
             {
                 list.Add(go.name, go);
             }
@@ -34,6 +37,18 @@ namespace extension
                 }
             }
             return false;
+        }
+
+        public static Define.TimeOfDayType GetNextType(Define.TimeOfDayType type)
+        {
+            return type switch
+            {
+                Define.TimeOfDayType.Noon => Define.TimeOfDayType.Evening,
+                Define.TimeOfDayType.Evening => Define.TimeOfDayType.Night,
+                Define.TimeOfDayType.Night => Define.TimeOfDayType.Morning,
+                Define.TimeOfDayType.Morning => Define.TimeOfDayType.Noon,
+                _ => 0
+            };
         }
     }
 }

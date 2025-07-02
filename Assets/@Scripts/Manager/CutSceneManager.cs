@@ -1,16 +1,39 @@
 using UnityEngine;
 
-public class CutSceneManager : MonoBehaviour
+// 이거 없애보자
+public class CutSceneManager : Singleton<CutSceneManager>,IEventSubscriber ,IDeactivateObject
 {
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
+    private GameObject _cutScene;
+
+    public GameObject CutScene
     {
-        
+        get { return _cutScene; }
     }
 
-    // Update is called once per frame
-    void Update()
+    protected override void Initialize()
     {
-        
+        base.Initialize();
+        _cutScene = Instantiate(ObjectManager.Instance.GoblinKingCutScene);
+    }
+
+    #region IEventSubscriber
+    public void Subscribe()
+    {
+        FieldManager.Instance.DungeonController.OnSpawnNamedMonster += PlayCutScene;
+    }
+    #endregion
+
+    #region IDeactivate
+    public void Deactivate()
+    {
+        _cutScene.SetActive(false);
+    }
+    #endregion
+
+    public void PlayCutScene()
+    {
+        Debug.Log("컷신 실행");
+        _cutScene?.SetActive(true);
+        _cutScene.GetComponentInChildren<CutSceneController>().PlayCutScene();
     }
 }
