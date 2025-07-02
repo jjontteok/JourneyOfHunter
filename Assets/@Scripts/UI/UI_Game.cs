@@ -11,7 +11,6 @@ public class UI_Game : MonoBehaviour
     [SerializeField] Button _statusButton;
     [SerializeField] Button _inventoryButton;
     [SerializeField] Button _skillInventoryButton;
-    [SerializeField] Button _gainedGoodsButton;
     [SerializeField] TMP_Text _silverCoinText;
     [SerializeField] TMP_Text _gemText;
     [SerializeField] Toggle _autoToggle;
@@ -44,8 +43,7 @@ public class UI_Game : MonoBehaviour
         _statusButton.onClick.AddListener(OnStatusButtonClick);
         _inventoryButton.onClick.AddListener(OnInventoryButtonClick);
         _skillInventoryButton.onClick.AddListener(OnSkillInventoryButtonClick);
-        _gainedGoodsButton.onClick.AddListener(OnGainedGoodsButtonClick);
-        _silverCoinText.text = _inventoryData.silverCoin.ToString();
+        _silverCoinText.text = _inventoryData.SilverCoin.ToString();
         _autoToggle.onValueChanged.AddListener(OnAutoToggleClick);
         _doubleSpeedToggle.onValueChanged.AddListener(OnDoubleSpeedToggleClick);
         _inventoryButton.onClick.AddListener(OnInventoryButtonClick);
@@ -133,11 +131,6 @@ public class UI_Game : MonoBehaviour
     void OnSkillInventoryButtonClick()
     {
         PopupUIManager.Instance.ActivateSkillInventoryPanel();
-    }
-
-    void OnGainedGoodsButtonClick()
-    {
-        PopupUIManager.Instance.ActivateGainedRecordPanel(Define.GoodsType.None, 0);
     }
 
     void OnAutoToggleClick(bool flag)

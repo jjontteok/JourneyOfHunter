@@ -35,7 +35,7 @@ public class PopupUI_Status : MonoBehaviour
     void Initialize() {
         _player = PlayerManager.Instance.Player;
         _inventoryData = _player.PlayerInventoryData;
-        _silverCoinText.text = _inventoryData.silverCoin.ToString();
+        _silverCoinText.text = _inventoryData.SilverCoin.ToString();
         foreach (var slot in _statusList)
         {
             slot.Initialize(_player.PlayerData, _inventoryData);

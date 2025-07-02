@@ -19,6 +19,7 @@ public class Define : MonoBehaviour
 
     public const string EndAttack = "EndAttack";
     public const string WalkSpeed = "WalkSpeed";
+    public const string Open = "Open";
     #endregion
 
     #region Tag
@@ -50,6 +51,7 @@ public class Define : MonoBehaviour
     public const string TreasureTextPath = "UI/Text/TreasureText/Text - Treasure";
     public const string PlayerVitalCanvasPath = "UI/PlayerVital/UI_Vital";
     public const string PlayerVitalPath = "UI/PlayerVital/PlayerVital";
+    public const string ItemSlotPath = "UI/PopupUI/IconSlotResources";
 
     public const string UIGamePath = "UI/MainUI/UI_Game";
     public const string PopupUICanvasPath = "UI/PopupUI/Canvas - Popup";
