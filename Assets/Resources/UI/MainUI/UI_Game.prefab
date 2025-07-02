@@ -703,7 +703,6 @@ RectTransform:
   - {fileID: 1280743637210526795}
   - {fileID: 243141835664311359}
   - {fileID: 6449803468542689497}
-  - {fileID: 3679403012540498640}
   m_Father: {fileID: 288643592103054748}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
@@ -945,7 +944,7 @@ MonoBehaviour:
   _inventoryButton: {fileID: 3745565010407714904}
   _skillInventoryButton: {fileID: 1385875563291227863}
   _gainedGoodsButton: {fileID: 7356854275547976215}
-  _createDungeonPortalButton: {fileID: 2202831948260331011}
+  _createDungeonPortalButton: {fileID: 0}
   _silverCoinText: {fileID: 7008672487138290105}
   _gemText: {fileID: 2694038106008095932}
   _autoToggle: {fileID: 7389231475503108680}
@@ -3115,18 +3114,17 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 7463760733180704710}
-  - component: {fileID: 7101755317602310612}
-  - component: {fileID: 7524437784640927232}
-  - component: {fileID: 2202831948260331011}
+  - component: {fileID: 1544274254527936468}
+  - component: {fileID: 5680153402753391656}
+  - component: {fileID: 3977909027526970250}
   m_Layer: 5
-  m_Name: Button - EnterDungeon
+  m_Name: SkillIconImage
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!224 &7463760733180704710
+--- !u!224 &1544274254527936468
 RectTransform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
