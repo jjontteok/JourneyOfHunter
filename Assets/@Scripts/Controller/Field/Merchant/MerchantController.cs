@@ -2,15 +2,11 @@ using UnityEngine;
 
 public class MerchantController : MonoBehaviour
 {
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
+    private void OnCollisionEnter(Collision collision)
     {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
+        if (collision.collider.CompareTag(Define.PlayerTag))
+        {
+            PopupUIManager.Instance.ActivateMerchantPanel();
+        }
     }
 }

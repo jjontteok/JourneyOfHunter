@@ -8,10 +8,10 @@ using Unity.VisualScripting;
 public class SpawnController : MonoBehaviour
 {
     Dictionary<string, GameObject> _fieldObjectSpawnSpotList;
+    Dictionary<string, GameObject> _fieldObjectList;
     private NormalSpawnerController _normalSpawner;
     private NamedSpawnerController _namedSpawner;
-    private TreasureBoxSpawnerController _treasureBoxSpawner;
-    private MerchantSpawnerController _merchantSpawner; 
+
 
     [SerializeField] float _spawnInterval = 3f;
     [SerializeField] float _monsterInterval = 2f;
@@ -28,13 +28,28 @@ public class SpawnController : MonoBehaviour
 
     void Initialize()
     {
+        _fieldObjectSpawnSpotList = new Dictionary<string, GameObject>();
+        _fieldObjectList = new Dictionary<string, GameObject>();
+
         _fieldObjectSpawnSpotList = ObjectManager.Instance.FieldObjectSpawnSpotList;
+        foreach (var obj in ObjectManager.Instance.FieldObjectList)
+        {
+            GameObject newObj = Instantiate(obj.Value);
+            _fieldObjectList.Add(obj.Key, newObj);
+        }
+
+        DeactivateObject();
         GenerateNormalSpawner();
         GenerateNamedSpawner();
-        GenerateTreasureBoxSpawner();
-        GenerateMerchantSpanwer();
     }
 
+    void DeactivateObject()
+    {
+        foreach (var obj in _fieldObjectList)
+        {
+            obj.Value.SetActive(false);
+        }
+    }
     private void OnEnable()
     {
         Subscribe();
@@ -57,16 +72,6 @@ public class SpawnController : MonoBehaviour
     void GenerateNamedSpawner()
     {
         _namedSpawner = new GameObject("NamedMonsterSpawner").GetOrAddComponent<NamedSpawnerController>();
-    }
-
-    void GenerateTreasureBoxSpawner()
-    {
-        _treasureBoxSpawner = new GameObject("TreasureBoxSpawner").GetOrAddComponent<TreasureBoxSpawnerController>();
-    }
-
-    void GenerateMerchantSpanwer()
-    {
-        _merchantSpawner = new GameObject("MerchantSpawner").GetOrAddComponent<MerchantSpawnerController>();
     }
     #endregion
 
@@ -99,30 +104,34 @@ public class SpawnController : MonoBehaviour
     }
     #endregion
 
-    //FieldManager에서 이벤트 발생
+    //FieldManager에서 이벤트 발생 -> PlayerManager로 받아와 FieldManager를 거치지 않고 할까??????
+    //현재대로만 한다면 PlayerManager의 Player 프로퍼티를 받아 바로 이벤트 구독하자
     void SetEvent(Define.JourneyEventType type)
     {
+        DeactivateObject();
 
+        //필드 지날 때 발생하는 이벤트가 던전이 아닐 때만
+        if (type != Define.JourneyEventType.Dungeon)
+            ActivateObject(type);
     }
 
-    void SetTreasureBoxSpawnerOn()
+    void ActivateObject(Define.JourneyEventType type)
     {
-        string spawnNumber = Random.Range(0, 4).ToString();
-        _treasureBoxSpawner.gameObject.SetActive(true);
-        _treasureBoxSpawner.SetSpawnerPos(_fieldObjectSpawnSpotList["FieldObjectSpawnSpot"+spawnNumber].transform.position);
-        _treasureBoxSpawner.SetSpawnerOn("TreasureBox");
-    }
+        string spawnNumber = Random.Range(1, 6).ToString();
 
-    void SetTreasureBoxSpawnerOff()
-    {
-        _treasureBoxSpawner.gameObject.SetActive(false);
-    }
+        //랜덤 위치 받기
+        Vector3 spawnPos = _fieldObjectSpawnSpotList["FieldObjectSpawnSpot" + spawnNumber].transform.position;
 
-    void SetMerchantSpanwerOn()
-    {
-        string spawnNumber = Random.Range(0, 4).ToString();
-        _merchantSpawner.gameObject.SetActive(true);
-        _merchantSpawner.SetSpawnerPos(_fieldObjectSpawnSpotList["FieldObjectSpawnSpot" + spawnNumber].transform.position);
-        _merchantSpawner.SetSpawnerOn("Merchant");
+        string objectName = "TreasureBox";
+        switch (type)
+        {
+            case Define.JourneyEventType.Merchant:
+                objectName = "Merchant"; break;
+            case Define.JourneyEventType.OtherObject:
+                //우선은 그냥 확률 똑같이
+                objectName = "OtherObject" + Random.Range(1, 4).ToString(); break;
+        }
+        _fieldObjectList[objectName].transform.position = spawnPos;
+        _fieldObjectList[objectName].SetActive(true);
     }
 }

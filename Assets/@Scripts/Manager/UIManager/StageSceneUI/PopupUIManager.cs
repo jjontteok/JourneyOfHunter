@@ -15,8 +15,14 @@ public class PopupUIManager : Singleton<PopupUIManager>, IEventSubscriber, IDeac
     private GameObject _panelStatus;
     private GameObject _panelInventory;
     private GameObject _panelSkillInventory;
+    private GameObject _panelMerchant;
 
     private GameObject _activePopup;
+
+    public GameObject PanelSkillInventory
+    {
+        get { return _panelSkillInventory; }
+    }
 
     #region Initialize
     protected override void Initialize()
@@ -29,6 +35,7 @@ public class PopupUIManager : Singleton<PopupUIManager>, IEventSubscriber, IDeac
         _panelStatus = Instantiate(ObjectManager.Instance.PopupStatusPanel, _canvasPopupUI.transform);
         _panelInventory = Instantiate(ObjectManager.Instance.PopupInventoryPanel, _canvasPopupUI.transform);
         _panelSkillInventory = Instantiate(ObjectManager.Instance.PopupSkillInventory, _canvasPopupUI.transform);
+        _panelMerchant = Instantiate(ObjectManager.Instance.PopupMerchantPanel, _canvasPopupUI.transform);
     }
     #endregion
 
@@ -49,6 +56,7 @@ public class PopupUIManager : Singleton<PopupUIManager>, IEventSubscriber, IDeac
         _panelStatus.GetComponent<PopupUI_Status>().OnExitButtonClicked += DeactivatePopup;
         _panelInventory.GetComponent<PopupUI_Inventory>().OnExitButtonClicked += DeactivatePopup;
         _panelSkillInventory.GetComponent<PopupUI_SkillInventory>().OnExitButtonClicked += DeactivatePopup;
+        _panelMerchant.GetComponent<PopupUI_Merchant>().OnExitButtonClicked += DeactivatePopup;
     }
     #endregion
 
@@ -73,6 +81,7 @@ public class PopupUIManager : Singleton<PopupUIManager>, IEventSubscriber, IDeac
         _panelStatus.SetActive(false);
         _panelInventory.SetActive(false);
         _panelSkillInventory.SetActive(false);
+        _panelMerchant.SetActive(false);
     }
     #endregion
 
@@ -102,6 +111,13 @@ public class PopupUIManager : Singleton<PopupUIManager>, IEventSubscriber, IDeac
         _activePopup = _panelSkillInventory;
         _panelSkillInventory.SetActive(!_panelSkillInventory.activeSelf);
     }
+    
+    public void ActivateMerchantPanel()
+    {
+        ActivatePopupPanel();
+        _activePopup = _panelMerchant;
+        _panelMerchant.SetActive(true);
+    }
 
     public void ActivateJourneyInfo()
     {
@@ -113,7 +129,7 @@ public class PopupUIManager : Singleton<PopupUIManager>, IEventSubscriber, IDeac
         _popupStageInfo.SetActive(true);
         if(PlayerManager.Instance.IsAuto)
         {
-            StageManager.Instance.StageActionStatus = Define.StageActionStatus.AutoChallenge;
+            FieldManager.Instance.StageController.StageActionStatus = Define.StageActionStatus.AutoChallenge;
         }
     }
 

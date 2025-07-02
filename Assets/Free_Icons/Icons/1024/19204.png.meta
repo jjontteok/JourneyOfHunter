@@ -1,5 +1,9 @@
 fileFormatVersion: 2
+<<<<<<<< HEAD:Assets/MoCapCentral/MC_FixBuild/Characters/MCUnity/Textures/T_BodyR_Color.png.meta
+guid: 141b379cdb045e4499f2510d1ff89e71
+========
 guid: 76cbeb51dd042f845b7b7f7348852e34
+>>>>>>>> Develop:Assets/Free_Icons/Icons/1024/19204.png.meta
 TextureImporter:
   internalIDToNameTable: []
   externalObjects: {}
@@ -127,8 +131,16 @@ TextureImporter:
   assetBundleVariant: 
 AssetOrigin:
   serializedVersion: 1
+<<<<<<<< HEAD:Assets/MoCapCentral/MC_FixBuild/Characters/MCUnity/Textures/T_BodyR_Color.png.meta
+  productId: 290463
+  packageName: MC Fix & Build - Believable 3D Animations by MoCap Central
+  packageVersion: 1.1.0
+  assetPath: Assets/MoCapCentral/MC_FixBuild/Characters/MCUnity/Textures/T_BodyR_Color.png
+  uploadId: 677937
+========
   productId: 290500
   packageName: 60 free icons pack
   packageVersion: 1.0
   assetPath: Assets/Free_Icons/Icons/1024/19204.png
   uploadId: 678006
+>>>>>>>> Develop:Assets/Free_Icons/Icons/1024/19204.png.meta

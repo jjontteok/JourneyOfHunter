@@ -22,6 +22,7 @@ public class ObjectManager : Singleton<ObjectManager>
     private Dictionary<string, JourneyRankData> _journeyRankResourceList;
     private Dictionary<string, GameObject> _fieldObjectSpawnSpotList;
     private Dictionary<string, GameObject> _itemSlotList;
+    private Dictionary<string, GameObject> _fieldObjectList;
 
     // * GameObject : 인게임 오브젝트
     private GameObject _playerResource;
@@ -29,8 +30,6 @@ public class ObjectManager : Singleton<ObjectManager>
     private GameObject _dungeonPortalResource;
     private GameObject _shieldEffectResource;
     private GameObject _monsterGateResource;
-    private GameObject _treasureBoxResource;
-    private GameObject _merchantResource;
     private GameObject _backgroundResource;
 
     // * UI Object
@@ -44,11 +43,16 @@ public class ObjectManager : Singleton<ObjectManager>
     private GameObject _popupStatusPanel;
     private GameObject _popupInventoryPanel;
     private GameObject _popupSkillInventory;
+    private GameObject _popupMerchantPanel;
 
     private GameObject _systemTextResource;
+    private GameObject _treasureTextResource;
 
     private GameObject _playerVitalCanvas;
     private GameObject _playerVitalResource;
+
+    // * TreasureBox Effect 어디에 놓을가요
+    private GameObject _treasureBoxOpenEffectResource;
 
     // * CutScene
     private GameObject _goblinKingCutScene;
@@ -157,6 +161,16 @@ public class ObjectManager : Singleton<ObjectManager>
         }
     }
 
+
+    public Dictionary<string, GameObject> FieldObjectList
+    {
+        get
+        {
+            if (NullCheck(_fieldObjectList))
+                return null;
+            return _fieldObjectList;
+        }
+    }
     public GameObject PlayerResource 
     { 
         get 
@@ -204,26 +218,6 @@ public class ObjectManager : Singleton<ObjectManager>
         }
     }
 
-    public GameObject TreasureBoxResource
-    {
-        get
-        {
-            if (NullCheck(_treasureBoxResource))
-                return null;
-            return _treasureBoxResource;
-        }
-    }
-
-    public GameObject MerchantResource
-    {
-        get
-        {
-            if (NullCheck(_merchantResource))
-                return null;
-            return _merchantResource;
-        }
-    }
-
     public GameObject BackgroundResource
     {
         get
@@ -251,6 +245,16 @@ public class ObjectManager : Singleton<ObjectManager>
             if (NullCheck(_systemTextResource))
                 return null;
             return _systemTextResource;
+        }
+    }
+
+    public GameObject TreasureTextResource
+    {
+        get
+        {
+            if (NullCheck(_treasureTextResource))
+                return null;
+            return _treasureTextResource;
         }
     }
 
@@ -341,6 +345,16 @@ public class ObjectManager : Singleton<ObjectManager>
         }
     }
 
+    public GameObject PopupMerchantPanel
+    {
+        get
+        {
+            if (NullCheck(_popupMerchantPanel))
+                return null;
+            return _popupMerchantPanel;
+        }
+    }
+
     public GameObject PlayerVitalCanvas
     {
         get
@@ -358,6 +372,16 @@ public class ObjectManager : Singleton<ObjectManager>
             if (NullCheck(_playerVitalResource))
                 return null;
             return _playerVitalResource;
+        }
+    }
+
+    public GameObject TreasureBoxOpenEffectResource
+    {
+        get
+        {
+            if (NullCheck(_treasureBoxOpenEffectResource))
+                return null;
+            return _treasureBoxOpenEffectResource;
         }
     }
 
@@ -408,6 +432,7 @@ public class ObjectManager : Singleton<ObjectManager>
         _journeyRankResourceList = new Dictionary<string, JourneyRankData>();
         _fieldObjectSpawnSpotList = new Dictionary<string, GameObject>();
         _itemSlotList = new Dictionary<string, GameObject>();
+        _fieldObjectList = new Dictionary<string, GameObject>();
     }
     #endregion
 
@@ -421,6 +446,7 @@ public class ObjectManager : Singleton<ObjectManager>
         MonsterResourceLoad();
         FieldObjectResourceLoad();
         FieldObjectSpawnSpotLoad();
+        TreasureBoxOpenEffectLoad();
         DamageTextResourceLoad();
         SkyBoxResourceLoad();
         JourneyRankResourceLoad();
@@ -478,8 +504,14 @@ public class ObjectManager : Singleton<ObjectManager>
     // * 필드 리소스 로드 메서드
     private void FieldObjectResourceLoad()
     {
-        _treasureBoxResource = Resources.Load<GameObject>(Define.TreasureBoxPath);
-        _merchantResource = Resources.Load<GameObject>(Define.MerchantPath);
+        if (!NullCheck(_fieldObjectList))
+        {
+            Resources.LoadAll<GameObject>(Define.FieldObjectsPath).ToList(_fieldObjectList);
+        }
+        else
+        {
+            Debug.Log("Can't Load because of field object list is null");
+        }
     }
 
     // * 필드 오브젝트 스폰 스팟 로드 메서드
@@ -493,6 +525,11 @@ public class ObjectManager : Singleton<ObjectManager>
         {
             Debug.Log("Can't Load because of field object spawn spot list is null");
         }
+    }
+
+    private void TreasureBoxOpenEffectLoad()
+    {
+        _treasureBoxOpenEffectResource = Resources.Load<GameObject>(Define.TreasureOpenEffectPath);
     }
 
     // * 데미지 텍스트 리소스 로드 메서드
@@ -550,6 +587,7 @@ public class ObjectManager : Singleton<ObjectManager>
     {
         _uiGame = Resources.Load<GameObject>(Define.UIGamePath);
         _systemTextResource = Resources.Load<GameObject>(Define.SystemTextPath);
+        _treasureTextResource = Resources.Load<GameObject>(Define.TreasureTextPath);
     }
 
     // * 팝업 UI 리소스 로드 메서드
@@ -563,6 +601,7 @@ public class ObjectManager : Singleton<ObjectManager>
         _popupStatusPanel = Resources.Load<GameObject>(Define.PopupStatusPanelPath);
         _popupInventoryPanel = Resources.Load<GameObject>(Define.PopupInventoryPanelPath);
         _popupSkillInventory = Resources.Load<GameObject>(Define.PopupSkillInventoryPath);
+        _popupMerchantPanel = Resources.Load<GameObject>(Define.PopupMerchantPanelPath);
     }
 
     private void PlayerVitalResourceLoad()
@@ -629,6 +668,11 @@ public class ObjectManager : Singleton<ObjectManager>
         else if(type == typeof(ItemSlot))
         {
             GameObject obj = Instantiate(ItemSlotList[name], parent);
+            return obj;
+        }
+        else if(type == typeof(RewardTextController))
+        {
+            GameObject obj = Instantiate(TreasureTextResource, spawnPos, Quaternion.identity);
             return obj;
         }
         return null;

@@ -10,17 +10,18 @@ public class UI_Game : MonoBehaviour
     [SerializeField] TMP_Text _playerLevelText;
     [SerializeField] Button _statusButton;
     [SerializeField] Button _inventoryButton;
-    [SerializeField] Button _createDungeonPortalButton;
+    [SerializeField] Button _skillInventoryButton;
+    [SerializeField] Button _gainedGoodsButton;
     [SerializeField] TMP_Text _silverCoinText;
     [SerializeField] TMP_Text _gemText;
     [SerializeField] Toggle _autoToggle;
     [SerializeField] Toggle _doubleSpeedToggle;
-    [SerializeField] PlayerInventoryData _inventoryData;
     [SerializeField] GameObject _systemTextPanel;
 
     private List<UI_PlayerVital> _playerVitalList; 
     private GameObject _playerVitalCanvas;
     private PlayerController _player;
+    private PlayerInventoryData _inventoryData;
 
     private int _currentPlayers;
 
@@ -34,28 +35,30 @@ public class UI_Game : MonoBehaviour
     void Initialize()
     {
         ReleaseEvent();
+        _player = PlayerManager.Instance.Player;
+        _inventoryData = _player.PlayerInventoryData;
 
         MonsterController.OnMonsterDead += GainGoods;
         //_inventoryData.OnValueChanged += UpdateGoods;
 
         _statusButton.onClick.AddListener(OnStatusButtonClick);
         _inventoryButton.onClick.AddListener(OnInventoryButtonClick);
-        _createDungeonPortalButton.onClick.AddListener(OnCreateDungeonButtonClick);
-        _silverCoinText.text = _inventoryData.SilverCoin.ToString();
+        _skillInventoryButton.onClick.AddListener(OnSkillInventoryButtonClick);
+        _gainedGoodsButton.onClick.AddListener(OnGainedGoodsButtonClick);
+        _silverCoinText.text = _inventoryData.silverCoin.ToString();
         _autoToggle.onValueChanged.AddListener(OnAutoToggleClick);
         _doubleSpeedToggle.onValueChanged.AddListener(OnDoubleSpeedToggleClick);
         _inventoryButton.onClick.AddListener(OnInventoryButtonClick);
 
-        _player = PlayerManager.Instance.Player;
         OnAutoChanged += (flag) => PlayerManager.Instance.IsAuto = flag;
         _player.OnAutoOff += OnAutoToggleOff;
-        _player.OnAutoDungeonChallenge += () =>
-        {
-            if (PlayerManager.Instance.IsAuto)
-            {
-                OnCreateDungeonButtonClick();
-            }
-        };
+        //_player.OnAutoDungeonChallenge += () =>
+        //{
+        //    if (PlayerManager.Instance.IsAuto)
+        //    {
+        //        OnCreateDungeonButtonClick();
+        //    }
+        //};
 
         OnDoubleSpeedChanged += (flag) => TimeManager.Instance.IsDoubleSpeed = flag;
         _player.OnJourneyExpChanged += OnSystemMessage;
@@ -127,12 +130,14 @@ public class UI_Game : MonoBehaviour
         PopupUIManager.Instance.ActivateInventoryPanel();
     }
 
-    void OnCreateDungeonButtonClick()
+    void OnSkillInventoryButtonClick()
     {
-        FieldManager.Instance.DungeonController.CreateDungeon();
-        FieldManager.Instance.DungeonController.OnDungeonExit -= ActivateDungeonPortalButton;
-        FieldManager.Instance.DungeonController.OnDungeonExit += ActivateDungeonPortalButton;
-        _createDungeonPortalButton.gameObject.SetActive(false);
+        PopupUIManager.Instance.ActivateSkillInventoryPanel();
+    }
+
+    void OnGainedGoodsButtonClick()
+    {
+        PopupUIManager.Instance.ActivateGainedRecordPanel(Define.GoodsType.None, 0);
     }
 
     void OnAutoToggleClick(bool flag)
@@ -152,13 +157,13 @@ public class UI_Game : MonoBehaviour
         _autoToggle.isOn = false;
     }
 
-    void ActivateDungeonPortalButton()
-    {
-        if(!PlayerManager.Instance.IsAuto)
-        {
-            _createDungeonPortalButton.gameObject.SetActive(true);
-        }
-    }
+    //void ActivateDungeonPortalButton()
+    //{
+    //    if(!PlayerManager.Instance.IsAuto)
+    //    {
+    //        _createDungeonPortalButton.gameObject.SetActive(true);
+    //    }
+    //}
 
     void OnSystemMessage(float score)
     {
