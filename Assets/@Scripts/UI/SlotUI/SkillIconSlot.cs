@@ -1,5 +1,4 @@
 using System;
-using System.Collections;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
@@ -14,6 +13,8 @@ public class SkillIconSlot : MonoBehaviour
 
     // 스킬 아이콘 클릭 시 스킬 발동하는 이벤트
     public Action OnClickSkillIcon;
+
+    public Sprite SkillIconSprite { get { return _skillIconImage.sprite; } }
 
     bool _isCoolTime = false;
     float _currentTime = 0f;
@@ -39,11 +40,12 @@ public class SkillIconSlot : MonoBehaviour
             {
                 _skillCoolTimeImage.color = Color.clear;
                 _isCoolTime = false;
+                FinishIconCoolTime();
             }
         }
     }
 
-    public void StartIconCoolTime()
+    public virtual void StartIconCoolTime()
     {
         var reduction = PlayerManager.Instance.Player.PlayerStatus.GetCoolTimeDecrease();
         if(!Mathf.Approximately(reduction, 0f))
@@ -59,7 +61,7 @@ public class SkillIconSlot : MonoBehaviour
         _isCoolTime = true;
     }
 
-    public void SetIconSlot(SkillData skillData)
+    public virtual void SetIconSlot(SkillData skillData)
     {
         _skillIconImage.sprite = skillData.SkillIcon;
         _skillIconImage.color = Color.white;
@@ -68,7 +70,7 @@ public class SkillIconSlot : MonoBehaviour
         _isCoolTime = false;
     }
 
-    public void ReleaseIconSlot()
+    public virtual void ReleaseIconSlot()
     {
         _skillIconImage.sprite = null;
         _skillIconImage.color = Color.clear;
@@ -76,7 +78,7 @@ public class SkillIconSlot : MonoBehaviour
         _skillIntervalTimeImage.color = Color.clear;
     }
 
-    public void LockIconSlot()
+    public virtual void LockIconSlot()
     {
         _skillIconImage.sprite = _lockImage;
         _skillIconImage.color = Color.white;
@@ -86,5 +88,10 @@ public class SkillIconSlot : MonoBehaviour
     public void OnOffSkillIntervalImage(bool flag)
     {
         _skillIntervalTimeImage.color = flag ? _intervalColor : Color.clear;
+    }
+
+    protected virtual void FinishIconCoolTime()
+    {
+
     }
 }

@@ -55,16 +55,6 @@ public class SkillSlot : MonoBehaviour
             return false;
         }
         _skill = Instantiate(skill) as ActiveSkill;
-
-        // 타겟이 필요한 스킬인지 아닌지 체크
-        //if (_skill.SkillData.TargetExistence)
-        //{
-        //    _isTargetExist = true;
-        //}
-        //else
-        //{
-        //    _isTargetExist = false;
-        //}
         _skill.Initialize(_player.PlayerData);
 
         // 질풍참 처럼 캐릭터가 함께 이동하는 스킬
@@ -83,6 +73,7 @@ public class SkillSlot : MonoBehaviour
         _skill.gameObject.SetActive(false);
 
         OnGenerateSlot?.Invoke(data);
+        PopupUI_SkillInventory.OnCurrentSkillIconSet?.Invoke(SkillManager.Instance.CurrentSkillIcons());
         return true;
     }
 
@@ -90,7 +81,7 @@ public class SkillSlot : MonoBehaviour
     {
         float realCoolTime = _skill.SkillData.CoolTime;
         realCoolTime *= 1 + _player.PlayerStatus.GetCoolTimeDecrease() / 100;
-        Debug.Log($"Current cooltime reduction: {_player.PlayerStatus.GetCoolTimeDecrease()}%");
+        //Debug.Log($"Current cooltime reduction: {_player.PlayerStatus.GetCoolTimeDecrease()}%");
         yield return new WaitForSeconds(realCoolTime);
         IsActivatePossible = true;
     }
@@ -118,6 +109,7 @@ public class SkillSlot : MonoBehaviour
     public void DestroySkillSlot()
     {
         OnRemoveSkill?.Invoke();
+        PopupUI_SkillInventory.OnCurrentSkillIconSet?.Invoke(SkillManager.Instance.CurrentSkillIcons());
         Destroy(_skill.gameObject);
         Destroy(gameObject);
     }
