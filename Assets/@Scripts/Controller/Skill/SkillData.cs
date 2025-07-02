@@ -19,6 +19,7 @@ public class SkillData : ScriptableObject
     public bool IsPassive;
     public Vector3 Offset;
 
+    public Define.SkillAttribute SkillAttribute;
     public Define.StatusType BuffStatus;
     public float BuffAmount;
 

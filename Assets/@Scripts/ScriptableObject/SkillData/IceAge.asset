@@ -28,6 +28,7 @@ MonoBehaviour:
   IsPlayerSkill: 1
   IsPassive: 0
   Offset: {x: 0, y: 0, z: 0}
+  SkillAttribute: 2
   BuffStatus: 8
   BuffAmount: 0
   IsUltimate: 1

@@ -57,6 +57,8 @@ public class EnvironmentManager : Singleton<EnvironmentManager>, IEventSubscribe
         }
     }
 
+    public Define.TimeOfDayType CurrentType { get { return _currentType; } }
+
     //임시 방편
     protected override void Initialize()
     {

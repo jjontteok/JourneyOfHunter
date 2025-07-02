@@ -14771,7 +14771,7 @@ GameObject:
   - component: {fileID: 4813944128789761426}
   - component: {fileID: 3981727372058785287}
   - component: {fileID: 5980430428207214041}
-  - component: {fileID: 7037269647022962730}
+  - component: {fileID: 6024931407296734959}
   m_Layer: 0
   m_Name: HolySword
   m_TagString: Untagged
@@ -19696,7 +19696,7 @@ ParticleSystemRenderer:
   m_MeshWeighting2: 1
   m_MeshWeighting3: 1
   m_MaskInteraction: 0
---- !u!114 &7037269647022962730
+--- !u!114 &6024931407296734959
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -19705,7 +19705,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1537106281437959699}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fe093ee1a2d6aea47a122c67f7c60f6d, type: 3}
+  m_Script: {fileID: 11500000, guid: ac813e25b884fb240b01d3d64850b15a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   _skillData: {fileID: 11400000, guid: 5606e010ca7b71447adfd98bba35fd09, type: 2}

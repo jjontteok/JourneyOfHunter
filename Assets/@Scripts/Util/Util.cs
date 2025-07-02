@@ -79,4 +79,58 @@ public class Util
             return false;
         }
     }
+
+    // 스킬 속성에 따라 현재 시간대와 날씨에 의한 대미지 증감 효과 계산
+    public static float GetEnhancedDamage(SkillData data)
+    {
+        float damage = data.Damage;
+        switch(EnvironmentManager.Instance.CurrentType)
+        {
+            // <최종 기획>
+            // 일단 대미지 20퍼 증가
+            // 아침 - 물, 빛
+            // 낮 - 불, 빛
+            // 저녁 - 어둠, 불
+            // 밤 - 어둠, 물
+            // <환경 기획>
+            // 일출 - 빛 10퍼
+            // 낮 - 빛 20퍼
+            // 일몰 - 어둠 10퍼
+            // 밤 - 어둠 20퍼
+            // 비 - 물 +20퍼, 불 -20퍼
+            // 폭풍? - 없애도될듯?
+            // 맑음 - 불 +30퍼
+            case Define.TimeOfDayType.Morning:
+                if(data.SkillAttribute==Define.SkillAttribute.Water|| data.SkillAttribute == Define.SkillAttribute.Light)
+                {
+                    damage *= 1.2f;
+                }
+                break;
+
+            case Define.TimeOfDayType.Noon:
+                if (data.SkillAttribute == Define.SkillAttribute.Fire || data.SkillAttribute == Define.SkillAttribute.Light)
+                {
+                    damage *= 1.2f;
+                }
+                break;
+
+            case Define.TimeOfDayType.Evening:
+                if (data.SkillAttribute == Define.SkillAttribute.Fire || data.SkillAttribute == Define.SkillAttribute.Dark)
+                {
+                    damage *= 1.2f;
+                }
+                break;
+
+            case Define.TimeOfDayType.Night:
+                if (data.SkillAttribute == Define.SkillAttribute.Water || data.SkillAttribute == Define.SkillAttribute.Dark)
+                {
+                    damage *= 1.2f;
+                }
+                break;
+
+            default:
+                break;
+        }
+        return damage;
+    }
 }

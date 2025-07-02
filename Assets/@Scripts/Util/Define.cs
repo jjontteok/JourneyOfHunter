@@ -99,17 +99,13 @@ public class Define : MonoBehaviour
         DirectionNonTarget,
         Buff,
     }
-    public enum MotionType
+    public enum SkillAttribute
     {
         None,
-        Sword,
-        Spell,
-    }
-    public enum HandlerType
-    {
-        Player,
-        Monster,
-        Skill,
+        Fire,
+        Water,
+        Light,
+        Dark,
     }
     public enum StatusType
     {
