@@ -9,10 +9,9 @@ public struct PlayerStatus
     public float Damage;
     public float HP;
     public float HPRecoveryPerSec;
-    public float MP;
-    public float MPRecoveryPerSec;
     public float CoolTimeDecrease;
     public float JourneyExp;
+    public float Speed;
 
     public PlayerStatus(PlayerData playerData)
     {
@@ -21,10 +20,9 @@ public struct PlayerStatus
         Damage = playerData.Damage;
         HP = playerData.HP;
         HPRecoveryPerSec = playerData.HPRecoveryPerSec;
-        MP = playerData.MP;
-        MPRecoveryPerSec = playerData.MPRecoveryPerSec;
         CoolTimeDecrease = playerData.CoolTimeDecrease;
         JourneyExp = playerData.JourneyExp;
+        Speed = playerData.Speed;
     }
 
     public float GetCoolTimeDecrease()
@@ -50,7 +48,7 @@ public class PlayerController : MonoBehaviour, IDamageable
     Vector3 _direction;
     float _mp;
     float _hp;
-    
+
     float _shortestSkillDistance;       //자동일 때, 이동 멈추는 범위
 
     bool _isSwifting;                   //질풍참 사용 여부
@@ -63,10 +61,10 @@ public class PlayerController : MonoBehaviour, IDamageable
     [SerializeField] PlayerData _playerData;
     [SerializeField] PlayerInventoryData _playerInventoryData;
     [SerializeField] Inventory _inventory;
-    [SerializeField] float _speed;
-
 
     #region Properties
+
+    public PlayerInventoryData PlayerInventoryData { get { return _playerInventoryData; } }
 
     public bool IsKeyBoard
     {
@@ -106,7 +104,7 @@ public class PlayerController : MonoBehaviour, IDamageable
 
     // 데이터는 getter만 되도록?
     public PlayerData PlayerData { get { return _playerData; } }
-    public Inventory Inventory{ get { return _inventory; } }
+    public Inventory Inventory { get { return _inventory; } }
     public PlayerStatus PlayerStatus { get { return _runtimeData; } }
 
     public float HP
@@ -116,16 +114,6 @@ public class PlayerController : MonoBehaviour, IDamageable
         {
             _hp = value;
             OnHPValueChanged?.Invoke(_hp, _playerData.HP);
-        }
-    }
-
-    public float MP
-    {
-        get { return _mp; }
-        set
-        {
-            _mp = value;
-            OnMPValueChanged?.Invoke(_mp, _playerData.MP);
         }
     }
 
@@ -140,7 +128,7 @@ public class PlayerController : MonoBehaviour, IDamageable
             {
                 //현재 메달 변경
                 _playerData.JourneyRankData =
-                    ObjectManager.Instance.JourneyRankResourceList[(_playerData.JourneyRankData.Index+1).ToString()];
+                    ObjectManager.Instance.JourneyRankResourceList[(_playerData.JourneyRankData.Index + 1).ToString()];
 
                 OnJourneyRankChanged?.Invoke(_playerData.JourneyRankData.Index);
             }
@@ -168,7 +156,6 @@ public class PlayerController : MonoBehaviour, IDamageable
     void Initialize()
     {
         _hp = _playerData.HP;
-        _mp = _playerData.MP;
         _animator = GetComponent<Animator>();
         _rigidbody = GetComponent<Rigidbody>();
         _runtimeData = new PlayerStatus(_playerData);
@@ -263,10 +250,10 @@ public class PlayerController : MonoBehaviour, IDamageable
         {
             if (!_animator.GetBool(Define.IsAttacking) && _direction != Vector3.zero)
             {
-                _rigidbody.MovePosition(_rigidbody.position + _direction.normalized * _speed * 1 * Time.fixedDeltaTime);
+                _rigidbody.MovePosition(_rigidbody.position + _direction.normalized * _playerData.Speed * Time.fixedDeltaTime);
 
                 _animator.SetFloat(Define.Speed, _direction.magnitude);
-                transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(_direction), _speed * Time.deltaTime);
+                transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(_direction), _playerData.Speed * Time.deltaTime);
             }
             else
             {
@@ -305,15 +292,16 @@ public class PlayerController : MonoBehaviour, IDamageable
                 _direction.y = 0;
             }
 
-            _rigidbody.MovePosition(_rigidbody.position + _direction.normalized * _speed * Time.fixedDeltaTime);
+            _rigidbody.MovePosition(_rigidbody.position + _direction.normalized * _playerData.Speed * Time.fixedDeltaTime);
 
             _animator.SetFloat(Define.Speed, _direction.magnitude);
             //타겟 바라보게 회전
-            transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(_direction), _speed * Time.deltaTime);
+            transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(_direction), _playerData.Speed * Time.deltaTime);
             return true;
         }
     }
 
+    // 가운데 길 따라 이동
     void MoveAlongRoad()
     {
         if (Mathf.Abs(_rigidbody.position.x) > 0.1f)
@@ -324,10 +312,10 @@ public class PlayerController : MonoBehaviour, IDamageable
         {
             _direction = Vector3.forward;
         }
-        _rigidbody.MovePosition(_rigidbody.position + _direction.normalized * _speed * Time.fixedDeltaTime);
+        _rigidbody.MovePosition(_rigidbody.position + _direction.normalized * _playerData.Speed * Time.fixedDeltaTime);
         _animator.SetFloat(Define.Speed, _direction.magnitude);
         //타겟 바라보게 회전
-        transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(_direction), _speed * Time.deltaTime);
+        transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(_direction), _playerData.Speed * Time.deltaTime);
     }
 
     void ClampPosition()
@@ -386,11 +374,6 @@ public class PlayerController : MonoBehaviour, IDamageable
         if (_hp > _runtimeData.HP)
         {
             _hp = _runtimeData.HP;
-        }
-        MP += _runtimeData.MPRecoveryPerSec * Time.deltaTime;
-        if (MP > _runtimeData.MP)
-        {
-            MP = _runtimeData.MP;
         }
     }
 
@@ -475,7 +458,7 @@ public class PlayerController : MonoBehaviour, IDamageable
 
             case Define.StatusType.CoolTimeDecrease:
                 _runtimeData.CoolTimeDecrease += amount;
-                Debug.Log($"After cooltime reduction changed: {_runtimeData.CoolTimeDecrease}%");
+                //Debug.Log($"After cooltime reduction changed: {_runtimeData.CoolTimeDecrease}%");
                 break;
 
             default:

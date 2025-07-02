@@ -5,12 +5,13 @@ using UnityEngine;
 public class DamageTextController : MonoBehaviour
 {
     WaitForSeconds _deActiveTime = new WaitForSeconds(1.0f);
-    public Vector3 _originPos;
+    private Vector3 _originPos;
 
-    //private void Awake()
-    //{
-    //    _originPos = transform.position;
-    //}
+    public Vector3 OriginPos 
+    { 
+        get { return _originPos;  }
+        set { _originPos = value; }  
+    }
 
     private void OnEnable()
     {

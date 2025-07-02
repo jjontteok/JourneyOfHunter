@@ -68,8 +68,8 @@ public class SkillSystem : MonoBehaviour
     bool IsBasicAttackPossible()
     {
         // skill interval이거나
-        // 모든 스킬이 쿨타임 중이거나 마나 부족일 때
-        return SkillManager.Instance.IsSkillInterval || _activeSkillSlotList.All(slot => !slot || !slot.IsActivatePossible || _player.MP < slot.SkillData.MP);
+        // 모든 스킬 슬롯이 쿨타임 중이거나 스킬이 없을 때
+        return SkillManager.Instance.IsSkillInterval || _activeSkillSlotList.All(slot => !slot || !slot.IsActivatePossible);
     }
 
     public void SetSkillSlotList()
@@ -133,19 +133,6 @@ public class SkillSystem : MonoBehaviour
                     _activeSkillSlotList.Add(slot);
                     SkillManager.Instance.SubscribeEvents(slot, _activeSkillSlotList.Count - 1);
                     slot.OnActivateSkill += StartSkillInterval;
-                    //// 슬롯리스트 아직 덜 찼으면 add
-                    //if (_activeSkillSlotList.Count < _player.PlayerData.UnlockedSkillSlotCount)
-                    //{
-                    //    _activeSkillSlotList.Add(slot);
-                    //    SkillManager.Instance.SubscribeEvents(slot, _activeSkillSlotList.Count - 1);
-                    //    slot.OnActivateSkill += StartSkillInterval;
-                    //}
-                    //// 슬롯리스트 꽉 찼으면 실행 x
-                    //else
-                    //{
-                    //    Debug.Log("Slot list is already full!!!");
-                    //    return;
-                    //}
                 }
                 else
                 {
@@ -153,7 +140,7 @@ public class SkillSystem : MonoBehaviour
                     SkillManager.Instance.SubscribeEvents(slot, idx);
                     slot.OnActivateSkill += StartSkillInterval;
                 }
-                if(slot.SetSkill(data))
+                if (slot.SetSkill(data))
                 {
                     _skillSlotCount++;
                 }

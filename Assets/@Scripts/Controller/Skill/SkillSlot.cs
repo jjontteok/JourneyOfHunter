@@ -97,7 +97,7 @@ public class SkillSlot : MonoBehaviour
 
     public virtual void ActivateSlotSkill()
     {
-        if (IsActivatePossible && _player.MP >= _skill.SkillData.MP)
+        if (IsActivatePossible)
         {
             ProcessSkill();
         }
@@ -108,7 +108,6 @@ public class SkillSlot : MonoBehaviour
     {
         if (_skill.ActivateSkill(transform.position))
         {
-            _player.MP = Mathf.Max(_player.MP - _skill.SkillData.MP, 0);
             IsActivatePossible = false;
             StartCoroutine(CoStartCoolTime());
             OnActivateSkill?.Invoke();

@@ -35,8 +35,8 @@ public class UI_StatusSlot : MonoBehaviour
         _eventTrigger = upgradeButton.GetOrAddComponent<EventTrigger>();
         EventTrigger.Entry entryPointerDown = new EventTrigger.Entry();
         entryPointerDown.eventID = EventTriggerType.PointerDown;
-        entryPointerDown.callback.AddListener((eventData) => 
-        { 
+        entryPointerDown.callback.AddListener((eventData) =>
+        {
             if (!_isSilverCoinLack)
             {
                 _isButtonDown = true; UpgradeStatus();
@@ -115,12 +115,6 @@ public class UI_StatusSlot : MonoBehaviour
                 break;
             case Define.StatusType.Def:
                 _playerData.Def = amount;
-                break;
-            case Define.StatusType.MP:
-                _playerData.MP = amount;
-                break;
-            case Define.StatusType.MPRecoveryPerSec:
-                _playerData.MPRecoveryPerSec = amount;
                 break;
         }
     }
