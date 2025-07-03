@@ -126,7 +126,7 @@ public class PopupUI_Inventory : MonoBehaviour
 
         if (isFirstOpen)
         {
-            CreateSlot(itemType);
+            //CreateSlot(itemType);
             // 첫 오픈 플래그 false 처리 필요
             SetFirstOpenFlag(itemType, false);
         }
