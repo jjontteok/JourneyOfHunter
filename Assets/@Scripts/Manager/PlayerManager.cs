@@ -67,6 +67,7 @@ public class PlayerManager : Singleton<PlayerManager>
         set
         {
             _isAutoMoving = value;
+            Debug.Log($"AutoMoving: {_isAutoMoving}, {Time.frameCount}");
         }
     }
 

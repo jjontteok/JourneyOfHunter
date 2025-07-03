@@ -207,19 +207,28 @@ public class PlayerController : MonoBehaviour, IDamageable
         // 자동 모드일 때
         if (!_isSwifting && PlayerManager.Instance.IsAuto)
         {
+            // 타겟 생기면 IsAutoMoving=false
             if (PlayerManager.Instance.IsAutoMoving)
-            {
-                MoveAlongRoad();
-            }
-            else
             {
                 SetTarget();
                 if (_target == null)
                 {
                     MoveAlongRoad();
                 }
+            }
+            else
+            {
+                if (_target == null)
+                {
+                    SetTarget();
+                    if (_target == null)
+                    {
+                        MoveAlongRoad();
+                    }
+                }
                 else
                 {
+                    // 거리가 아니라 trigger 발생 시 IsAutoMoving 관리로 해야할듯
                     if (!MoveToTarget(0.5f))
                     {
                         // 오브젝트 접촉 후엔 다시 제갈길 가는 거로
@@ -409,7 +418,7 @@ public class PlayerController : MonoBehaviour, IDamageable
             // 없으면 
             if (_target == null || !_target.gameObject.activeSelf)
             {
-                
+
                 //쵸비상 몬스터 풀 어케 가져옴
                 //stage info에서 현재 스테이지의 몬스터 정보를 받아와서 이름으로
                 _target = Util.GetNearestTarget(transform.position, 100f)?.transform;
@@ -418,12 +427,28 @@ public class PlayerController : MonoBehaviour, IDamageable
                     Debug.Log("No target on field!!!");
                     PlayerManager.Instance.IsAutoMoving = true;
                     _target = FindAnyObjectByType<DungeonPortalController>()?.transform;
+                    if (_target != null)
+                    {
+                        PlayerManager.Instance.IsAutoMoving = false;
+                    }
                 }
+                else
+                {
+                    PlayerManager.Instance.IsAutoMoving = false;
+                }
+            }
+            else
+            {
+                PlayerManager.Instance.IsAutoMoving = false;
             }
         }
         // 던전이 아닌 경우, 필드 오브젝트 찾기
         {
             _target = GameObject.FindGameObjectWithTag(Define.FieldObjectTag)?.transform;
+            if (_target != null)
+            {
+                PlayerManager.Instance.IsAutoMoving = false;
+            }
         }
     }
 
