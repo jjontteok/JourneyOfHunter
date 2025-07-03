@@ -38,26 +38,26 @@ public class SkillIconSlot : MonoBehaviour
             _skillCoolTimeImage.fillAmount = _currentTime / _coolTime;
             if (_currentTime <= 0f)
             {
-                _skillCoolTimeImage.color = Color.clear;
-                _isCoolTime = false;
                 FinishIconCoolTime();
             }
         }
     }
 
-    public virtual void StartIconCoolTime()
+    public virtual void StartIconCoolTime(float cool)
     {
-        var reduction = PlayerManager.Instance.Player.PlayerStatus.GetCoolTimeDecrease();
-        if(!Mathf.Approximately(reduction, 0f))
-        {
-            _coolTime = _defaultCoolTime * (1 + reduction / 100);
-        }
-        else
-        {
-            _coolTime = _defaultCoolTime;
-        }
-        _currentTime = _coolTime;
-            _skillCoolTimeImage.color = _coolTimeColor;
+        //var reduction = PlayerManager.Instance.Player.PlayerStatus.GetCoolTimeDecrease();
+        //if(!Mathf.Approximately(reduction, 0f))
+        //{
+        //    _coolTime = _defaultCoolTime * (1 + reduction / 100);
+        //}
+        //else
+        //{
+        //    _coolTime = _defaultCoolTime;
+        //}
+        //_currentTime = _coolTime;
+        _currentTime = cool;
+        _coolTime = cool;
+        _skillCoolTimeImage.color = _coolTimeColor;
         _isCoolTime = true;
     }
 
@@ -92,6 +92,7 @@ public class SkillIconSlot : MonoBehaviour
 
     protected virtual void FinishIconCoolTime()
     {
-
+        _skillCoolTimeImage.color = Color.clear;
+        _isCoolTime = false;
     }
 }

@@ -11,11 +11,13 @@ public class UI_Game : MonoBehaviour
     [SerializeField] Button _statusButton;
     [SerializeField] Button _inventoryButton;
     [SerializeField] Button _skillInventoryButton;
+    [SerializeField] Button _storeButton;
     [SerializeField] TMP_Text _silverCoinText;
     [SerializeField] TMP_Text _gemText;
     [SerializeField] Toggle _autoToggle;
     [SerializeField] Toggle _doubleSpeedToggle;
     [SerializeField] GameObject _systemTextPanel;
+    [SerializeField] Image _hpBar;
 
     private List<UI_PlayerVital> _playerVitalList; 
     private GameObject _playerVitalCanvas;
@@ -24,10 +26,10 @@ public class UI_Game : MonoBehaviour
 
     private int _currentPlayers;
 
-    private void Awake()
-    {
-        _playerVitalList = new List<UI_PlayerVital>();
-    }
+    //private void Awake()
+    //{
+    //    _playerVitalList = new List<UI_PlayerVital>();
+    //}
     public Action<bool> OnAutoChanged;
     public Action<bool> OnDoubleSpeedChanged;
 
@@ -38,11 +40,14 @@ public class UI_Game : MonoBehaviour
         _inventoryData = _player.PlayerInventoryData;
 
         MonsterController.OnMonsterDead += GainGoods;
+        PlayerManager.Instance.Player.OnHPValueChanged += UpdatePlayerHp;
         //_inventoryData.OnValueChanged += UpdateGoods;
 
         _statusButton.onClick.AddListener(OnStatusButtonClick);
         _inventoryButton.onClick.AddListener(OnInventoryButtonClick);
         _skillInventoryButton.onClick.AddListener(OnSkillInventoryButtonClick);
+        _storeButton.onClick.AddListener(OnStoreButtoneClick);
+
         _silverCoinText.text = _inventoryData.SilverCoin.ToString();
         _autoToggle.onValueChanged.AddListener(OnAutoToggleClick);
         _doubleSpeedToggle.onValueChanged.AddListener(OnDoubleSpeedToggleClick);
@@ -72,23 +77,23 @@ public class UI_Game : MonoBehaviour
     private void Start()
     {
         Initialize();
-        _playerVitalCanvas = Instantiate(ObjectManager.Instance.PlayerVitalCanvas);
-        Canvas canvas = _playerVitalCanvas.GetOrAddComponent<Canvas>();
+        //_playerVitalCanvas = Instantiate(ObjectManager.Instance.PlayerVitalCanvas);
+        //Canvas canvas = _playerVitalCanvas.GetOrAddComponent<Canvas>();
         
-        //다 모듈화해주세용
-        //플레이어 리스트를 받아와서
-        GameObject[] players = GameObject.FindGameObjectsWithTag(Define.PlayerTag);
-        _currentPlayers = players.Length;
+        ////다 모듈화해주세용
+        ////플레이어 리스트를 받아와서
+        //GameObject[] players = GameObject.FindGameObjectsWithTag(Define.PlayerTag);
+        //_currentPlayers = players.Length;
 
-        //플레이어 수대로 playerVital을 만들어서 리스트에 넣기
-        for(int i =0; i< _currentPlayers; i++)
-        {
-            GameObject playerVital = Instantiate(ObjectManager.Instance.PlayerVitalResource);
-            playerVital.transform.SetParent(_playerVitalCanvas.transform);
-            UI_PlayerVital uiPlayerVital = playerVital.GetOrAddComponent<UI_PlayerVital>();
-            uiPlayerVital.Initialize(players[i].transform);
-            _playerVitalList.Add(uiPlayerVital);
-        }
+        ////플레이어 수대로 playerVital을 만들어서 리스트에 넣기
+        //for(int i =0; i< _currentPlayers; i++)
+        //{
+        //    GameObject playerVital = Instantiate(ObjectManager.Instance.PlayerVitalResource);
+        //    playerVital.transform.SetParent(_playerVitalCanvas.transform);
+        //    UI_PlayerVital uiPlayerVital = playerVital.GetOrAddComponent<UI_PlayerVital>();
+        //    uiPlayerVital.Initialize(players[i].transform);
+        //    _playerVitalList.Add(uiPlayerVital);
+        //}
 
     }
 
@@ -133,6 +138,11 @@ public class UI_Game : MonoBehaviour
         PopupUIManager.Instance.ActivateSkillInventoryPanel();
     }
 
+    void OnStoreButtoneClick()
+    {
+
+    }
+
     void OnAutoToggleClick(bool flag)
     {
         //Debug.Log($"Auto: {flag}");
@@ -170,5 +180,10 @@ public class UI_Game : MonoBehaviour
         GameObject systemText = PoolManager.Instance.GetObjectFromPool<SystemTextController>(new Vector3(50, 378, 0), "SystemText");
         systemText.gameObject.transform.SetParent(_systemTextPanel.transform, true);
         systemText.GetComponent<SystemTextController>().SetText(text);
+    }
+
+    void UpdatePlayerHp(float currentHP, float maxHP)
+    {
+        _hpBar.fillAmount = currentHP / maxHP;
     }
 }

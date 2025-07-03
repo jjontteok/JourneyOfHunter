@@ -1,5 +1,4 @@
 using extension;
-using System;
 using UnityEngine;
 
 public class PlayerManager : Singleton<PlayerManager>
@@ -59,7 +58,9 @@ public class PlayerManager : Singleton<PlayerManager>
         }
     }
 
-    // 포탈을 향해 가야할 때(target==portal), 몬스터랑 포탈 다 없는 잠깐의 순간(target==null)
+    // 하나의 필드 내에서 이벤트가 끝나고 다음 필드로 향할 때
+    // 던전 => 포탈을 향해 가야할 때(target==portal), 몬스터랑 포탈 다 없는 잠깐의 순간(target==null)
+    // 오브젝트 => 상호작용을 통해 보상을 얻고 난 후
     public bool IsAutoMoving
     {
         get { return _isAutoMoving; }

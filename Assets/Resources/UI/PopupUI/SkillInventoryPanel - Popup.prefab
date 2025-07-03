@@ -550,13 +550,16 @@ MonoBehaviour:
   _slot: {fileID: 4754245036469045879, guid: ef5b0940f6c9f8646b8e5f6ce6e54dfb, type: 3}
   _generalSkillScrollView: {fileID: 2459282534855715460}
   _ultimateSkillScrollView: {fileID: 5534633147892190874}
+  _passiveSkillScrollView: {fileID: 7313228808569616655}
   _generalSkillContainer: {fileID: 6213923944698934143}
   _ultimateSkillContainer: {fileID: 1152821455992924975}
+  _passiveSkillContainer: {fileID: 1790335552622687356}
   _equipButton: {fileID: 9119011814625517346}
   _releaseButton: {fileID: 4630224279044435458}
   _exitButton: {fileID: 4346521422690066315}
   _generalButton: {fileID: 2042387078926210508}
   _ultimateButton: {fileID: 2499543103895390711}
+  _passiveButton: {fileID: 4771561283220346875}
   _skillNameText: {fileID: 3914503553757673965}
   _skillDescriptionText: {fileID: 7727783020876764893}
   _skillIconImage: {fileID: 2926447713440421613}
@@ -934,12 +937,12 @@ GameObject:
   - component: {fileID: 8559703501332444456}
   - component: {fileID: 4771561283220346875}
   m_Layer: 5
-  m_Name: EtcButton
+  m_Name: PassiveButton
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &2300474934590172868
 RectTransform:
   m_ObjectHideFlags: 0
@@ -1755,7 +1758,7 @@ GameObject:
   - component: {fileID: 3732103624388130709}
   - component: {fileID: 5835433257587892694}
   m_Layer: 5
-  m_Name: Content
+  m_Name: Content - Passive
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1778,7 +1781,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: -590}
+  m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &3732103624388130709
 MonoBehaviour:
@@ -3961,7 +3964,7 @@ GameObject:
   - component: {fileID: 2099749118135234762}
   - component: {fileID: 621837110413101742}
   m_Layer: 5
-  m_Name: Viewport
+  m_Name: Viewport - Passive
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3983,9 +3986,9 @@ RectTransform:
   m_Father: {fileID: 1653501194383015934}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 1, y: 1}
+  m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: -2, y: 0}
+  m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &7856913886411063645
 CanvasRenderer:
@@ -4249,12 +4252,12 @@ GameObject:
   - component: {fileID: 8131470175217780000}
   - component: {fileID: 8873056801720870693}
   m_Layer: 5
-  m_Name: Scroll View - Others
+  m_Name: Scroll View - Passive
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &1653501194383015934
 RectTransform:
   m_ObjectHideFlags: 0
@@ -4409,7 +4412,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: "\uAE30\uD0C0"
+  m_text: "\uD328\uC2DC\uBE0C"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 90d5069cf8ee8f342a57cbb798f0eb7e, type: 2}
   m_sharedMaterial: {fileID: -7867324468927197065, guid: 90d5069cf8ee8f342a57cbb798f0eb7e, type: 2}
@@ -5273,7 +5276,7 @@ RectTransform:
   m_Father: {fileID: 2709140659639953682}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 1, y: 1}
+  m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: 0, y: 28.831665}
   m_SizeDelta: {x: 20, y: -26.420532}
   m_Pivot: {x: 0.5, y: 0.5}

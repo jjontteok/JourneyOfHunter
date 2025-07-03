@@ -241,7 +241,7 @@ public class SkillSystem : MonoBehaviour
         return min;
     }
 
-    void StartSkillInterval()
+    void StartSkillInterval(float cool = default)
     {
         StartCoroutine(CoSkillInterval());
     }

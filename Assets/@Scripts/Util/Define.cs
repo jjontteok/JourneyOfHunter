@@ -10,6 +10,8 @@ public class Define : MonoBehaviour
     public readonly static int IsAttacking = Animator.StringToHash("IsAttacking");
     public readonly static int Walk = Animator.StringToHash("Walk");
     public readonly static int UltimateReady = Animator.StringToHash("UltimateReady");
+    public readonly static int Die = Animator.StringToHash("Die");
+    public readonly static int DieType = Animator.StringToHash("DieType");
 
     public readonly static int CloseAttack = Animator.StringToHash("CloseAttack");
     public readonly static int LongAttack = Animator.StringToHash("LongAttack");

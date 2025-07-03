@@ -51,6 +51,8 @@ public class TreasureBoxController : MonoBehaviour
     void OpenTreasureBox()
     {
         PlayOpenAnimation();
+
+        PlayerManager.Instance.IsAutoMoving = true;
         
         Vector3 pos = transform.position + Vector3.up;
         TextManager.Instance.ActivateRewardText(pos, "은화", 100);

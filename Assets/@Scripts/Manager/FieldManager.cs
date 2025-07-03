@@ -25,6 +25,11 @@ public class FieldManager : Singleton<FieldManager>, IEventSubscriber, IDeactiva
         get { return _dungeonController; }
     }
 
+    public Define.JourneyEventType CurrentEventType
+    {
+        get { return _currentEventType; }
+    }
+
     protected override void Initialize()
     {
         _dungeonController = new GameObject("DungeonController").AddComponent<DungeonController>();
@@ -50,7 +55,7 @@ public class FieldManager : Singleton<FieldManager>, IEventSubscriber, IDeactiva
     //플레이어가 구역을 지나면 호출될 함수
     void OnPlayerCross()
     {
-        int rnd = 20;
+        int rnd = UnityEngine.Random.Range(0, 50);
         if(rnd < 25)
             rnd = (int)Define.JourneyEventType.Dungeon;
         else if(rnd < 50)
@@ -62,6 +67,7 @@ public class FieldManager : Singleton<FieldManager>, IEventSubscriber, IDeactiva
 
         _currentEventType = (Define.JourneyEventType)rnd;
         OnJourneyEvent?.Invoke(_currentEventType);
+        PlayerManager.Instance.IsAutoMoving = false;
     }
 
     public void Deactivate()

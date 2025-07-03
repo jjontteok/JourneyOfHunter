@@ -19709,6 +19709,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _skillData: {fileID: 11400000, guid: 5606e010ca7b71447adfd98bba35fd09, type: 2}
+  _lastExplosion: {fileID: 6592834772503164787}
 --- !u!1 &1888581081291000608
 GameObject:
   m_ObjectHideFlags: 0
@@ -24653,7 +24654,7 @@ ParticleSystem:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2462869249165285757}
   serializedVersion: 8
-  lengthInSec: 5
+  lengthInSec: 6
   simulationSpeed: 1
   stopAction: 0
   cullingMode: 0

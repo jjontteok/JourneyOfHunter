@@ -48,7 +48,7 @@ public class PlayerController : MonoBehaviour, IDamageable
     Vector3 _direction;
     float _mp;
     float _hp;
-    
+
     float _shortestSkillDistance;       //자동일 때, 이동 멈추는 범위
 
     bool _isSwifting;                   //질풍참 사용 여부
@@ -227,41 +227,41 @@ public class PlayerController : MonoBehaviour, IDamageable
                     }
                 }
             }// 던전 클리어해서 포탈 향해 가는 상황 / target==portal or null 일 때
-            if (PlayerManager.Instance.IsAutoMoving)
-            {
-                if (_target == null)
-                {
-                    SetTarget();
-                    // target 찾으면 autoMoving 스탑
-                    if (_target?.CompareTag(Define.MonsterTag) != null)
-                    {
-                        PlayerManager.Instance.IsAutoMoving = false;
-                    }
-                }
-                else if (!MoveToTarget(0.5f))
-                {
-                    // 포탈에 닿으면 IsAutoMoving false시키고 target 초기화
-                    PlayerManager.Instance.IsAutoMoving = false;
-                    _target = null;
-                    return;
-                }
-            }
-            else
-            {
-                // 타겟 없으면
-                if (_target == null || !_target.gameObject.activeSelf)
-                {
-                    // 타겟 찾고
-                    SetTarget();
-                    // 찾았는데도 없으면 다음 스테이지 자동 이동?
-                    if (PlayerManager.Instance.IsAutoMoving)
-                    {
-                        return;
-                    }
-                    Debug.Log($"Current Target: {_target.name}");
-                }
-                MoveToTarget(_shortestSkillDistance);
-            }
+            //if (PlayerManager.Instance.IsAutoMoving)
+            //{
+            //    if (_target == null)
+            //    {
+            //        SetTarget();
+            //        // target 찾으면 autoMoving 스탑
+            //        if (_target?.CompareTag(Define.MonsterTag) != null)
+            //        {
+            //            PlayerManager.Instance.IsAutoMoving = false;
+            //        }
+            //    }
+            //    else if (!MoveToTarget(0.5f))
+            //    {
+            //        // 포탈에 닿으면 IsAutoMoving false시키고 target 초기화
+            //        PlayerManager.Instance.IsAutoMoving = false;
+            //        _target = null;
+            //        return;
+            //    }
+            //}
+            //else
+            //{
+            //    // 타겟 없으면
+            //    if (_target == null || !_target.gameObject.activeSelf)
+            //    {
+            //        // 타겟 찾고
+            //        SetTarget();
+            //        // 찾았는데도 없으면 다음 스테이지 자동 이동?
+            //        if (PlayerManager.Instance.IsAutoMoving)
+            //        {
+            //            return;
+            //        }
+            //        Debug.Log($"Current Target: {_target.name}");
+            //    }
+            //    MoveToTarget(_shortestSkillDistance);
+            //}
         }
         // 수동 모드일 때
         else
@@ -310,7 +310,7 @@ public class PlayerController : MonoBehaviour, IDamageable
                 _direction.y = 0;
             }
             // 공격 모션 중이지 않을 때 이동
-            if(!_animator.GetBool(Define.IsAttacking))
+            if (!_animator.GetBool(Define.IsAttacking))
             {
                 _rigidbody.MovePosition(_rigidbody.position + _direction.normalized * _playerData.Speed * Time.fixedDeltaTime);
 
@@ -318,7 +318,7 @@ public class PlayerController : MonoBehaviour, IDamageable
                 //타겟 바라보게 회전
                 transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(_direction), _playerData.Speed * Time.deltaTime);
             }
-            
+
             return true;
         }
     }
@@ -401,16 +401,17 @@ public class PlayerController : MonoBehaviour, IDamageable
 
     void SetTarget()
     {
-        // 1. 필드 오브젝트 찾기
-        _target = GameObject.FindGameObjectWithTag(Define.FieldObjectTag)?.transform;
-        // 2. 몬스터 찾기
-        if(_target == null)
+        // 던전인 경우, 몬스터 찾기
+        if (FieldManager.Instance.CurrentEventType == Define.JourneyEventType.Dungeon)
         {
+            // 우선 최단거리 기준으로 찾아보고
             _target = Util.GetNearestTarget(transform.position, _shortestSkillDistance)?.transform;
+            // 없으면 
             if (_target == null || !_target.gameObject.activeSelf)
             {
+                
                 //쵸비상 몬스터 풀 어케 가져옴
-                //stage info에서 현재 스테이지의 몬스터 정보를 받아와서 이름으로 
+                //stage info에서 현재 스테이지의 몬스터 정보를 받아와서 이름으로
                 _target = Util.GetNearestTarget(transform.position, 100f)?.transform;
                 if (_target == null)
                 {
@@ -419,16 +420,12 @@ public class PlayerController : MonoBehaviour, IDamageable
                     _target = FindAnyObjectByType<DungeonPortalController>()?.transform;
                 }
             }
-        }        
+        }
+        // 던전이 아닌 경우, 필드 오브젝트 찾기
+        {
+            _target = GameObject.FindGameObjectWithTag(Define.FieldObjectTag)?.transform;
+        }
     }
-
-    //void SkillInventoryOnOff()
-    //{
-    //    if (Input.GetKeyDown(KeyCode.K))
-    //    {
-    //        PopupUIManager.Instance.ActivateSkillInventoryPanel();
-    //    }
-    //}
 
     public void SetAuto(bool flag)
     {
@@ -494,6 +491,12 @@ public class PlayerController : MonoBehaviour, IDamageable
         }
     }
 
+    void Die()
+    {
+        _animator.SetTrigger(Define.Die);
+        _animator.SetInteger(Define.DieType, UnityEngine.Random.Range(0, 2));
+    }
+
     #endregion
 
     #region IDamageable Methods
@@ -503,9 +506,10 @@ public class PlayerController : MonoBehaviour, IDamageable
         float finalDamage = CalculateFinalDamage(damage, _runtimeData.Def);
         HP -= finalDamage;
         DamageTextEvent.Invoke(Util.GetDamageTextPosition(gameObject.GetComponent<Collider>()), finalDamage, false);
-        //Debug.Log($"Damaged: {finalDamage}, Current Player HP: {_hp}");
-        //if (_runtimeData.HP <= 0)
-        //    Die();
+        if (HP <= 0)
+        {
+            Die();
+        }
     }
 
     public float CalculateFinalDamage(float damage, float def)
