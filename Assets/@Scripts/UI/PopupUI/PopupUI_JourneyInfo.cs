@@ -16,9 +16,6 @@ public class PopupUI_JourneyInfo : MonoBehaviour
     JourneyRankData _journeyRankData;   //플레이어 데이터의 여정 랭크 데이터
     float _currentJourneyExp;
     int _currentJourneyRank;
-
-    bool _isRankChanged = false;
-
     private void Awake()
     {
         Initialize();
@@ -26,7 +23,6 @@ public class PopupUI_JourneyInfo : MonoBehaviour
     private void OnEnable()
     {
         PlayerManager.Instance.Player.OnJourneyExpChanged += UpdateJourneyExp;
-        PlayerManager.Instance.Player.OnJourneyRankChanged += UpdateJourneyRank;
     }
 
     private void OnDisable()
@@ -34,7 +30,6 @@ public class PopupUI_JourneyInfo : MonoBehaviour
         if(PlayerManager.Instance.Player != null)
         {
             PlayerManager.Instance.Player.OnJourneyExpChanged -= UpdateJourneyExp;
-            PlayerManager.Instance.Player.OnJourneyRankChanged -= UpdateJourneyRank;
         }
     }
     void Initialize()
@@ -54,8 +49,8 @@ public class PopupUI_JourneyInfo : MonoBehaviour
     // * 모험 게이지를 업데이트 하는 함수
     void UpdateJourneyExp(float journeyExp)
     {
-        _currentJourneyExp += journeyExp; //증가 EXP량 더해줌
-        _journeyExpText.text = _currentJourneyExp.ToString();
+        _currentJourneyExp += journeyExp;
+        _journeyExpText.text = (_currentJourneyExp).ToString();
         _journeyExpText.color = Color.white;
 
         //EXP가 점진적으로 차오르도록
@@ -71,7 +66,6 @@ public class PopupUI_JourneyInfo : MonoBehaviour
             StartCoroutine(_rankImage.GetComponent<UIEffectsManager>().PerformEffect(0));
             _currentJourneyRank = medal;
             _journeyRankData = Instantiate(ObjectManager.Instance.JourneyRankResourceList[medal.ToString()]);
-            _isRankChanged = true;
         }
     }
 
@@ -91,19 +85,38 @@ public class PopupUI_JourneyInfo : MonoBehaviour
         float end = (journeyExp - _journeyRankData.MinJourneyExp)
             / (_journeyRankData.MaxJourneyExp-_journeyRankData.MinJourneyExp);
         float start = _journeyGaugeBarImage.fillAmount;
-        while (Mathf.Abs(_journeyGaugeBarImage.fillAmount - end) > 0.001f)
+
+        //증가량이 현재 메달의 최대게이지보다 높으면
+        if (end >= 1)
         {
-            t += Time.deltaTime * (end - _journeyGaugeBarImage.fillAmount) * 20;
-            _journeyGaugeBarImage.fillAmount = Mathf.Lerp(start, end, t);
-            yield return null;
-        }
-        if (_isRankChanged)
-        {
-            _isRankChanged = false;
-            _journeyGaugeBarImage.fillAmount = 0;
+            //다 채우고
+            while (_journeyGaugeBarImage.fillAmount < 1)
+            {
+                t += Time.deltaTime * (end - start) * 20;
+                _journeyGaugeBarImage.fillAmount = Mathf.Lerp(start, end, t);
+                yield return null;
+            }
+            t = 0;
+            //다음 메달로 갱신
+            UpdateJourneyRank(_currentJourneyRank+1);
+
             StartCoroutine(_rankText.GetComponent<UIEffectsManager>().PerformEffect(1));
             StartCoroutine(_rankImage.GetComponent<UIEffectsManager>().PerformEffect(1));
             UpdateJourneyUI();
+
+            //현재의 fillAmount를 0으로 하고
+            start = 0;
+            //새로 갱신된 최대최소게이지 비율로 맞춤
+            end = (journeyExp - _journeyRankData.MinJourneyExp)
+                / (_journeyRankData.MaxJourneyExp - _journeyRankData.MinJourneyExp);
         }
+
+        while (Mathf.Abs(end-_journeyGaugeBarImage.fillAmount)>0.001f)
+        {
+            t += Time.deltaTime * Mathf.Abs(end - start) * 20;
+            _journeyGaugeBarImage.fillAmount = Mathf.Lerp(start, end, t);
+            yield return null;
+        }
+        t = 0;
     }
 }

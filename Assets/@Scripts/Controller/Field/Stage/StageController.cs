@@ -2,9 +2,10 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 
+
 public class StageController : MonoBehaviour
 {
-    [SerializeField] StageInfo _stageInfo;
+    StageInfo _stageInfo;
 
     private string _stageName;
     private Define.StageActionStatus _stageActionStatus;
@@ -31,6 +32,12 @@ public class StageController : MonoBehaviour
         }
     }
 
+    public int StageCount
+    {
+        get { return _stageInfo.StageCount; }
+        set { _stageInfo.StageCount = value; }
+    }
+
     public event Action<Define.StageActionStatus> OnStageActionChanged;
 
     private void Awake()
@@ -40,6 +47,8 @@ public class StageController : MonoBehaviour
 
     void Initialize()
     {
+        _stageInfo = new StageInfo();
+        _stageInfo.StageCount = 0;
         _stageActionStatus = Define.StageActionStatus.NotChallenge;
     }
 

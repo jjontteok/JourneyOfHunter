@@ -123,10 +123,10 @@ public class EnvironmentManager : Singleton<EnvironmentManager>, IEventSubscribe
 
         _skyBoxDurationList = new Dictionary<string, float>()
         {
-            { Morning, 10f },
-            { Noon, 16f },
-            { Evening, 10f },
-            { Night, 16f }
+            { Morning, 90f },
+            { Noon, 90f },
+            { Evening, 90f },
+            { Night, 90f }
         };
 
         SetEnvironmentObject();
@@ -264,13 +264,13 @@ public class EnvironmentManager : Singleton<EnvironmentManager>, IEventSubscribe
     
     void LerpLight(string current, float t)
     {
-        _currentLightValue = Mathf.Lerp(_currentLightValue, _targetLightList[current], t / 5);
+        _currentLightValue = Mathf.Lerp(_currentLightValue, _targetLightList[current], t / 6);
         _currentLight.color = new Color(_currentLightValue, _currentLightValue, _currentLightValue, 1);
     }
 
     void LerpMountain(string current, float t)
     {
-        _currentMountainValue = Mathf.Lerp(_currentMountainValue, _targetMountainList[current], t / 5);
+        _currentMountainValue = Mathf.Lerp(_currentMountainValue, _targetMountainList[current], t / 6);
         _mountain.SetColor("_Color", new Color(_currentMountainValue, _currentMountainValue, _currentMountainValue, 1));
     }
 

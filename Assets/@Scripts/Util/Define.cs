@@ -48,7 +48,7 @@ public class Define : MonoBehaviour
     public const string BackgroundPath = "Environment/Background";
     public const string DamageTextPath = "UI/Text/DamageText";
     public const string SystemTextPath = "UI/Text/SystemText/Text - SystemMessage";
-    public const string TreasureTextPath = "UI/Text/TreasureText/Text - Treasure";
+    public const string RewardTextPath = "UI/Text/TreasureText/Text - Reward";
     public const string PlayerVitalCanvasPath = "UI/PlayerVital/UI_Vital";
     public const string PlayerVitalPath = "UI/PlayerVital/PlayerVital";
     public const string ItemSlotPath = "UI/PopupUI/IconSlotResources";
@@ -63,6 +63,7 @@ public class Define : MonoBehaviour
     public const string PopupStageInfoPanelPath = "UI/PopupUI/Panel - StageInfo";
     public const string PopupNamedMonsterInfoPanelPath = "UI/PopupUI/Panel - NamedMonsterInfo";
     public const string PopupMerchantPanelPath = "UI/PopupUI/MerchantPanel - Popup";
+    public const string PopupTreasureAppearPanelPath = "UI/PopupUI/Panel - TreasureAppear";
 
     public const string GoblinKingCutScenePath = "CutScene/GoblinCutScene";
     public const string FollowCameraPath = "Camera/FollowPlayerCamera";
@@ -155,21 +156,14 @@ public class Define : MonoBehaviour
 
     public enum JourneyType
     {
-        Default,    //초당
         Explore,    //구역 통과시
         Dungeon,    //던전 클리어
-        Treasure,   //보물
-    }
-
-    public enum JourneyEventType
-    {
-        Dungeon,
-        OtherObject,
-        TreasureBox,
+        TreasureBox,   //보물
         Merchant,
+        OtherObject,
     }
 
-    public enum TreasureRewardType
+    public enum RewardType
     {
         JourneyExp,
         SilverCoin,
@@ -178,10 +172,10 @@ public class Define : MonoBehaviour
     
     public enum ItemValue
     {
-        Normal,
+        Common,
+        Uncommon,
         Rare,
         Epic,
-        Unique,
         Legendary
     }
     public enum ItemType

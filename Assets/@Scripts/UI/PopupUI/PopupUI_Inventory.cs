@@ -65,10 +65,10 @@ public class PopupUI_Inventory : MonoBehaviour
         {
             string slotName = itemData.Value switch
             {
-                Define.ItemValue.Normal => "ItemSlot - Normal",
+                Define.ItemValue.Common => "ItemSlot - Common",
+                Define.ItemValue.Uncommon => "ItemSlot - Uncommon",
                 Define.ItemValue.Rare => "ItemSlot - Rare",
                 Define.ItemValue.Epic => "ItemSlot - Epic",
-                Define.ItemValue.Unique => "ItemSlot - Unique",
                 Define.ItemValue.Legendary => "ItemSlot - Legendary",
                 _ => "ItemSlot - Normal"
             };

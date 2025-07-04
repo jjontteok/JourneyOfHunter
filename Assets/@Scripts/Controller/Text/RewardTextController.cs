@@ -29,7 +29,6 @@ public class RewardTextController : MonoBehaviour
     public void UpdateTextPos()
     {
         _originPos += Vector3.up * 0.5f;
-        Debug.Log($"오리진 포스 : {_originPos}");
     }
 
     void UpEffect()

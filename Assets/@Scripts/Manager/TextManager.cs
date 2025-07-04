@@ -53,8 +53,6 @@ public class TextManager : Singleton<TextManager>, IEventSubscriber, IDeactivate
 
     public void ActivateRewardText(Vector3 pos, string treasure, int amount)
     {
-        //실제 획득량 -> 플레이어 레벨에 따라 지급하게 추후 수정 필요
-        int rewardAmount = (int)_player.PlayerData.JourneyRankData.Index  * amount;
 
         //활성화 되어 있는 텍스트 찾기 -> 이미 활성화된 텍스트 위로 올려줌
         RewardTextController[] activeTexts = _treasureTextPool.GetComponentsInChildren<RewardTextController>(false);
@@ -69,6 +67,6 @@ public class TextManager : Singleton<TextManager>, IEventSubscriber, IDeactivate
         treasureText.GetComponent<RewardTextController>().OriginPos = pos;
         treasureText.transform.SetParent(_treasureTextPool.transform, true);
         TMP_Text textMeshPro = treasureText.GetComponent<TMP_Text>();
-        textMeshPro.text = $"{treasure} 획득 +{rewardAmount}";
+        textMeshPro.text = $"{treasure} 획득 +{amount}";
     }
 }

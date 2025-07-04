@@ -16,7 +16,7 @@ public class OtherObjectController : MonoBehaviour
             if (!_isObtained)
             {
                 _isObtained = true;
-                TextManager.Instance.ActivateRewardText(transform.position + Vector3.up, "여정의 증표", 5);
+                FieldManager.Instance.RewardSystem.GainReward(transform.position + Vector3.up);
             }
         }
     }

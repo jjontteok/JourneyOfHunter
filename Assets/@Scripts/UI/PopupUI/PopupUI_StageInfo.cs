@@ -8,6 +8,7 @@ public class PopupUI_StageInfo : MonoBehaviour
     [SerializeField] private Button _actionButton;
     [SerializeField] private Image _monsterCountBarImage;
     [SerializeField] private TMP_Text _monsterCountText;
+    [SerializeField] private TMP_Text _buffStackText;
 
     private Image[] _statusImages;
     private Image _currentStatusImage;
@@ -33,6 +34,25 @@ public class PopupUI_StageInfo : MonoBehaviour
         _statusImages[2].gameObject.SetActive(false);
         _statusImages[3].gameObject.SetActive(false);
         _statusImages[4].gameObject.SetActive(false);
+    }
+
+    private void OnEnable()
+    {
+        if (FieldManager.Instance.FailedCount != 0)
+        {
+            _buffStackText.text = $"버프 효과 {FieldManager.Instance.FailedCount * 10}%";
+            _buffStackText.enabled = true;
+            StartCoroutine(_buffStackText.GetComponent<UIEffectsManager>().PerformEffect(0));
+        }
+    }
+
+    private void OnDisable()
+    {
+        if (_buffStackText.enabled)
+        {
+            StopCoroutine(_buffStackText.GetComponent<UIEffectsManager>().PerformEffect(0));
+        }
+        _buffStackText.enabled = false;
     }
 
     private void SetMonsterCountBarClear()

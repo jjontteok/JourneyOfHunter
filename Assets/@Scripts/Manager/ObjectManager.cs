@@ -44,9 +44,10 @@ public class ObjectManager : Singleton<ObjectManager>
     private GameObject _popupInventoryPanel;
     private GameObject _popupSkillInventory;
     private GameObject _popupMerchantPanel;
+    private GameObject _popupTreasureAppear;
 
     private GameObject _systemTextResource;
-    private GameObject _treasureTextResource;
+    private GameObject _rewardTextResource;
 
     private GameObject _playerVitalCanvas;
     private GameObject _playerVitalResource;
@@ -248,13 +249,13 @@ public class ObjectManager : Singleton<ObjectManager>
         }
     }
 
-    public GameObject TreasureTextResource
+    public GameObject RewardTextResource
     {
         get
         {
-            if (NullCheck(_treasureTextResource))
+            if (NullCheck(_rewardTextResource))
                 return null;
-            return _treasureTextResource;
+            return _rewardTextResource;
         }
     }
 
@@ -352,6 +353,16 @@ public class ObjectManager : Singleton<ObjectManager>
             if (NullCheck(_popupMerchantPanel))
                 return null;
             return _popupMerchantPanel;
+        }
+    }
+
+    public GameObject PopupTreasureAppear
+    {
+        get
+        {
+            if (NullCheck(_popupTreasureAppear))
+                return null;
+            return _popupTreasureAppear;
         }
     }
 
@@ -587,7 +598,7 @@ public class ObjectManager : Singleton<ObjectManager>
     {
         _uiGame = Resources.Load<GameObject>(Define.UIGamePath);
         _systemTextResource = Resources.Load<GameObject>(Define.SystemTextPath);
-        _treasureTextResource = Resources.Load<GameObject>(Define.TreasureTextPath);
+        _rewardTextResource = Resources.Load<GameObject>(Define.RewardTextPath);
     }
 
     // * 팝업 UI 리소스 로드 메서드
@@ -602,6 +613,7 @@ public class ObjectManager : Singleton<ObjectManager>
         _popupInventoryPanel = Resources.Load<GameObject>(Define.PopupInventoryPanelPath);
         _popupSkillInventory = Resources.Load<GameObject>(Define.PopupSkillInventoryPath);
         _popupMerchantPanel = Resources.Load<GameObject>(Define.PopupMerchantPanelPath);
+        _popupTreasureAppear = Resources.Load<GameObject>(Define.PopupTreasureAppearPanelPath);
     }
 
     private void PlayerVitalResourceLoad()
@@ -672,7 +684,7 @@ public class ObjectManager : Singleton<ObjectManager>
         }
         else if(type == typeof(RewardTextController))
         {
-            GameObject obj = Instantiate(TreasureTextResource, spawnPos, Quaternion.identity);
+            GameObject obj = Instantiate(RewardTextResource, spawnPos, Quaternion.identity);
             return obj;
         }
         return null;

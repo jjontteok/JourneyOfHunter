@@ -67,7 +67,7 @@ public class CutSceneController : MonoBehaviour
         //트랙 연결
         SetBinding();
 
-        _monsterAppearEffect.transform.position = _monsterTransform.position - Vector3.up * 3;
+        _monsterAppearEffect.transform.position = _monsterTransform.position - Vector3.up * 2.5f;
         _monsterAppearEffect.SetActive(true);
         _playableDirector.Play();
 

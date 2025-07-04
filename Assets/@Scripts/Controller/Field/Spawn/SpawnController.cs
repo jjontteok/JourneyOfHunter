@@ -12,6 +12,7 @@ public class SpawnController : MonoBehaviour
     private NormalSpawnerController _normalSpawner;
     private NamedSpawnerController _namedSpawner;
 
+    private GameObject _monsterParentPool;
 
     [SerializeField] float _spawnInterval = 3f;
     [SerializeField] float _monsterInterval = 2f;
@@ -28,6 +29,8 @@ public class SpawnController : MonoBehaviour
 
     void Initialize()
     {
+        _monsterParentPool = new GameObject("MonsterPool");
+
         _fieldObjectSpawnSpotList = new Dictionary<string, GameObject>();
         _fieldObjectList = new Dictionary<string, GameObject>();
 
@@ -62,6 +65,8 @@ public class SpawnController : MonoBehaviour
         FieldManager.Instance.DungeonController.OnSpawnNamedMonster += SetNamedSpawnerOn;
         FieldManager.Instance.DungeonController.OnDungeonExit += SetNamedSpawnerOff;
         FieldManager.Instance.OnJourneyEvent += SetEvent;
+        FieldManager.Instance.OnFailedDungeonClear += SetNamedSpawnerOff;
+        FieldManager.Instance.OnFailedDungeonClear += SetNormalSpawnerOff;
     }
 
     #region GenerateSpawner
@@ -83,7 +88,7 @@ public class SpawnController : MonoBehaviour
         _normalSpawner.SetSpawnerPos(FieldManager.Instance.DungeonController.DungeonOffSet);
         _normalSpawner.SetSpawnerOn("Demon", _spawnInterval, _monsterInterval);
     }
-    
+
     void SetNormalSpawnerOff()
     {
         _normalSpawner.SetSpawnerOff();
@@ -93,29 +98,29 @@ public class SpawnController : MonoBehaviour
     void SetNamedSpawnerOn()
     {
         _namedSpawner.gameObject.SetActive(true);
-        _namedSpawner.SetSpawnerPos(FieldManager.Instance.DungeonController.DungeonOffSet);
+        _namedSpawner.SetSpawnerPos(FieldManager.Instance.DungeonController.DungeonOffSet, _monsterParentPool);
         _namedSpawner.SetSpawnerOn("Goblin");
     }
 
     void SetNamedSpawnerOff()
     {
-        _namedSpawner.SetSpawnerOff();
         _namedSpawner.gameObject.SetActive(false);
+        _namedSpawner.SetSpawnerOff();
     }
     #endregion
 
     //FieldManager에서 이벤트 발생 -> PlayerManager로 받아와 FieldManager를 거치지 않고 할까??????
     //현재대로만 한다면 PlayerManager의 Player 프로퍼티를 받아 바로 이벤트 구독하자
-    void SetEvent(Define.JourneyEventType type)
+    void SetEvent(Define.JourneyType type, Define.ItemValue treasureRank)
     {
         DeactivateObject();
 
         //필드 지날 때 발생하는 이벤트가 던전이 아닐 때만
-        if (type != Define.JourneyEventType.Dungeon)
-            ActivateObject(type);
+        if (type != Define.JourneyType.Dungeon)
+            ActivateObject(type, treasureRank);
     }
 
-    void ActivateObject(Define.JourneyEventType type)
+    void ActivateObject(Define.JourneyType type, Define.ItemValue treasureRank)
     {
         string spawnNumber = Random.Range(1, 6).ToString();
 
@@ -125,11 +130,14 @@ public class SpawnController : MonoBehaviour
         string objectName = "TreasureBox";
         switch (type)
         {
-            case Define.JourneyEventType.Merchant:
+            case Define.JourneyType.Merchant:
                 objectName = "Merchant"; break;
-            case Define.JourneyEventType.OtherObject:
+            case Define.JourneyType.OtherObject:
                 //우선은 그냥 확률 똑같이
                 objectName = "OtherObject" + Random.Range(1, 4).ToString(); break;
+            case Define.JourneyType.TreasureBox:
+                _fieldObjectList[objectName].GetComponent<TreasureBoxController>().TreasureRank = treasureRank;
+                break;
         }
         _fieldObjectList[objectName].transform.position = spawnPos;
         _fieldObjectList[objectName].SetActive(true);
