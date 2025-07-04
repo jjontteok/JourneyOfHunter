@@ -30,12 +30,12 @@ public class RewardSystem
             else if(reward.Key == Define.RewardType.SilverCoin)
             {
                 rewardName = "은화";
-                PlayerManager.Instance.Player.Inventory.AddGoods(GoodsType.SilverCoin, reward.Value);
+                PlayerManager.Instance.Player.Inventory.AddGoods(Define.GoodsType.SilverCoin, reward.Value);
             }
             else if(reward.Key == Define.RewardType.Gem)
             {
                 rewardName = "젬";
-                PlayerManager.Instance.Player.Inventory.AddGoods(GoodsType.SilverCoin, reward.Value);
+                PlayerManager.Instance.Player.Inventory.AddGoods(Define.GoodsType.SilverCoin, reward.Value);
             }
             TextManager.Instance.ActivateRewardText(pos, rewardName, reward.Value);
         }
@@ -84,9 +84,9 @@ public class FieldManager : Singleton<FieldManager>, IEventSubscriber, IDeactiva
         get { return _failedCount; }
     }
 
-    public Define.JourneyEventType CurrentEventType
+    public Define.JourneyType CurrentEventType
     {
-        get { return _currentEventType; }
+        get { return _currentType; }
     }
 
     protected override void Initialize()

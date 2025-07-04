@@ -1140,8 +1140,6 @@ MonoBehaviour:
   - {fileID: 8392959117673499354}
   - {fileID: 5060078805515267934}
   - {fileID: 6424576536212309645}
-  - {fileID: 0}
-  - {fileID: 0}
   _exitButton: {fileID: 7787745397248007018}
 --- !u!1 &1843832302421717289
 GameObject:
@@ -1399,8 +1397,8 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 2569037991782463109}
   m_HandleRect: {fileID: 3512256571124359079}
   m_Direction: 2
-  m_Value: 1
-  m_Size: 0.6735751
+  m_Value: 0
+  m_Size: 1
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:

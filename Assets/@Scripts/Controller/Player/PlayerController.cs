@@ -394,7 +394,7 @@ public class PlayerController : MonoBehaviour, IDamageable
         //        break;
         //}
         // 던전인 경우, 몬스터 찾기
-        if (FieldManager.Instance.CurrentEventType == Define.JourneyEventType.Dungeon)
+        if (FieldManager.Instance.CurrentEventType == Define.JourneyType.Dungeon)
         {
             // 우선 최단거리 기준으로 찾아보고
             _target = Util.GetNearestTarget(transform.position, _shortestSkillDistance)?.transform;
@@ -432,7 +432,7 @@ public class PlayerController : MonoBehaviour, IDamageable
 
             if (_target != null)
             {
-                if (FieldManager.Instance.CurrentEventType == Define.JourneyEventType.TreasureBox)
+                if (FieldManager.Instance.CurrentEventType == Define.JourneyType.TreasureBox)
                 {
                     if (_target.GetComponent<Animator>().GetBool(Define.Open))
                     {
@@ -444,11 +444,11 @@ public class PlayerController : MonoBehaviour, IDamageable
                         PlayerManager.Instance.IsAutoMoving = false;
                     }
                 }
-                else if (FieldManager.Instance.CurrentEventType == Define.JourneyEventType.Merchant)
+                else if (FieldManager.Instance.CurrentEventType == Define.JourneyType.Merchant)
                 {
                     // TBD
                 }
-                else if (FieldManager.Instance.CurrentEventType == Define.JourneyEventType.OtherObject)
+                else if (FieldManager.Instance.CurrentEventType == Define.JourneyType.OtherObject)
                 {
                     // TBD
                 }
