@@ -1,5 +1,4 @@
 using System;
-using UnityEditor.Rendering;
 using UnityEngine;
 
 public class FieldManager : Singleton<FieldManager>, IEventSubscriber, IDeactivateObject
@@ -55,7 +54,6 @@ public class FieldManager : Singleton<FieldManager>, IEventSubscriber, IDeactiva
     //플레이어가 구역을 지나면 호출될 함수
     void OnPlayerCross()
     {
-        //int rnd = UnityEngine.Random.Range(0, 50);
         int rnd = 20;
         if(rnd < 25)
             rnd = (int)Define.JourneyEventType.Dungeon;

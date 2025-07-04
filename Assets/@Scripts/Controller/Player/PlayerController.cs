@@ -60,7 +60,7 @@ public class PlayerController : MonoBehaviour, IDamageable
 
     [SerializeField] PlayerData _playerData;
     [SerializeField] PlayerInventoryData _playerInventoryData;
-    [SerializeField] Inventory _inventory;
+    private Inventory _inventory;
 
     #region Properties
 

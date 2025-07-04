@@ -19,8 +19,12 @@ public class PopupUI_Inventory : MonoBehaviour
     [SerializeField] Button _otherItemButton;
     [SerializeField] Button _exitButton;
 
+    // 아이템 슬롯 리스트
+    Dictionary<Define.ItemType, List<GameObject>> _itemSlots = new Dictionary<Define.ItemType, List<GameObject>>();
+
     // PopupUIManager에서 DeactivatePopup 연결
     public event Action OnExitButtonClicked;
+    public event Action<Define.ItemType> OnUpdateInventory;
 
     // 아이템 타입 별 뷰포트 첫 오픈 체크 변수
     bool _isFirstOpenEquipment = true;
@@ -35,6 +39,7 @@ public class PopupUI_Inventory : MonoBehaviour
         _equipmentItemButton.onClick.AddListener(OnEquipmentButtonClick);
         _consumeItemButton.onClick.AddListener(OnConsumeButtonClick);
         _otherItemButton.onClick.AddListener(OnOtherButtonClick);
+        gameObject.SetActive(false);
     }
 
     // * 파괴 주기함수
@@ -65,15 +70,17 @@ public class PopupUI_Inventory : MonoBehaviour
         {
             string slotName = itemData.Value switch
             {
-                Define.ItemValue.Normal => "ItemSlot - Normal",
+                Define.ItemValue.Common => "ItemSlot - Common",
+                Define.ItemValue.Uncommon => "ItemSlot - Uncommon",
                 Define.ItemValue.Rare => "ItemSlot - Rare",
                 Define.ItemValue.Epic => "ItemSlot - Epic",
-                Define.ItemValue.Unique => "ItemSlot - Unique",
                 Define.ItemValue.Legendary => "ItemSlot - Legendary",
                 _ => "ItemSlot - Normal"
             };
 
-            PoolManager.Instance.GetObjectFromPool<ItemSlot>(Vector3.zero, slotName, viewPort);
+            GameObject itemSlot = PoolManager.Instance.GetObjectFromPool<ItemSlot>(Vector3.zero, slotName, viewPort.GetChild(0).GetChild(0));
+            itemSlot.GetComponent<ItemSlot>().SetData(itemData);
+            //_itemSlots[itemType].Add
         }
     }
     // * 아이템 타입에 따른 뷰포트 return 메서드
@@ -93,7 +100,7 @@ public class PopupUI_Inventory : MonoBehaviour
     //- 변경 사항 대기 큐에 존재하는 작업 내용을 수행
     void UpdateInventory(Define.ItemType itemType)
     {
-
+        OnUpdateInventory?.Invoke(itemType);
     }
 
     // * 각 버튼 클릭 리스너 이벤트에서 메서드 실행
@@ -126,9 +133,10 @@ public class PopupUI_Inventory : MonoBehaviour
 
         if (isFirstOpen)
         {
-            CreateSlot(itemType);
+            //CreateSlot(itemType);
             // 첫 오픈 플래그 false 처리 필요
             SetFirstOpenFlag(itemType, false);
+            CreateSlot(itemType);
         }
         else
         {
