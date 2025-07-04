@@ -178,10 +178,10 @@ public class Define : MonoBehaviour
     
     public enum ItemValue
     {
-        Normal,
+        Common,
+        Uncommon,
         Rare,
         Epic,
-        Unique,
         Legendary
     }
     public enum ItemType
@@ -210,7 +210,9 @@ public class Define : MonoBehaviour
 
     public enum PendingTaskType
     {
-        ItemTask,
+        ItemAddTask,
+        ItemRemoveTask,
+        ItemUpdateTask,
         SkillTask,
     }
     #endregion

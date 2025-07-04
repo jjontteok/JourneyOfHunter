@@ -12,9 +12,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d659629e91875b340bb073fa107da346, type: 3}
   m_Name: PlayerInventoryData
   m_EditorClassIdentifier: 
-  level: 0
-  silverCoin: 9985
+  SilverCoin: 0
   Gem: 0
-  exp: 0
-  enhancementStone: 500
-  Items: []
+  Items:
+  - {fileID: 11400000, guid: 5251f5be332561249964cee2f4d97fb0, type: 2}
+  - {fileID: 11400000, guid: 6b59a8f4dda163143a9ec1fa9c8088fc, type: 2}
+  - {fileID: 11400000, guid: ee5a6f97d2fcc7e4fbf46cd4c23accc9, type: 2}
+  - {fileID: 11400000, guid: 9b0e62fc288619246973882705f29799, type: 2}
+  - {fileID: 11400000, guid: d9c4e06036e2c7b40acdd5abf5a04ef2, type: 2}

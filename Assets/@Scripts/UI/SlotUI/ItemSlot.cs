@@ -6,7 +6,14 @@ using UnityEngine.UI;
 [RequireComponent(typeof(EventTrigger))]
 public class ItemSlot : MonoBehaviour
 {
-    [SerializeField] Image _itemImage; 
+    [SerializeField] Sprite _itemImage; 
 
     ItemData _itemData;
+
+    public void SetData(ItemData itemData)
+    {
+        _itemData = itemData;
+        _itemImage = _itemData.IconImage;
+        gameObject.transform.GetChild(0).GetComponent<Image>().sprite = _itemImage;
+    }
 }
