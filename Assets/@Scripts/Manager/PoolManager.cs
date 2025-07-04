@@ -39,7 +39,7 @@ public class PoolManager : Singleton<PoolManager>
             }
             // 오브젝트 매니저의 Spawn 메서드로 동적 생성 및 풀 리스트 등록
             GameObject obj = ObjectManager.Instance.GetObject<T>(spawnPos, name, parent);
-            obj.transform.SetParent(_parentObjectList[name].transform, false);
+            obj.transform.SetParent((parent == default) ? _parentObjectList[name].transform : parent, false);
             _poolList[name].Add(obj);
             return obj;
         }
@@ -54,7 +54,7 @@ public class PoolManager : Singleton<PoolManager>
             }
             // 동적으로 오브젝트 생성 후 풀링리스트 동적 생성 및 추가
             var obj = ObjectManager.Instance.GetObject<T>(spawnPos, name, parent);
-            obj.transform.SetParent(_parentObjectList[name].transform, false);
+            obj.transform.SetParent((parent == default) ? _parentObjectList[name].transform : parent, false);
             List<GameObject> newList = new List<GameObject>();
             newList.Add(obj);
             _poolList.Add(name, newList);
