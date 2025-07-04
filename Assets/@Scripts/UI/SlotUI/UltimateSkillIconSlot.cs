@@ -7,9 +7,9 @@ public class UltimateSkillIconSlot : SkillIconSlot
     // 0번이 회색(==쿨타임), 1번이 금색(==사용 가능)
     [SerializeField] Sprite[] _skillIconBoundSprites = new Sprite[2];
 
-    public override void StartIconCoolTime()
+    public override void StartIconCoolTime(float cool)
     {
-        base.StartIconCoolTime();
+        base.StartIconCoolTime(cool);
         _skillIconBoundImage.sprite = _skillIconBoundSprites[0];
     }
 
@@ -33,6 +33,7 @@ public class UltimateSkillIconSlot : SkillIconSlot
 
     protected override void FinishIconCoolTime()
     {
+        base.FinishIconCoolTime();
         _skillIconBoundImage.sprite = _skillIconBoundSprites[1];
     }
 }

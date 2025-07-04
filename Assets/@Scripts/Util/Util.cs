@@ -6,7 +6,7 @@ public class Util
 {
     static public bool NullCheck<T>(T t) where T : Object
     {
-        if(t == null)
+        if (t == null)
         {
             Debug.Log(t.ToString() + " : Null Reference Exception");
             return true;
@@ -17,8 +17,8 @@ public class Util
     public static GameObject GetNearestTarget(Vector3 origin, float distance, bool isPlayerSkill = true)
     {
         Collider[] targets;
-        
-        if(isPlayerSkill)
+
+        if (isPlayerSkill)
         {
             //거리 내의 monster collider 탐색
             targets = Physics.OverlapSphere(origin, distance, 1 << LayerMask.NameToLayer(Define.MonsterTag));
@@ -66,9 +66,9 @@ public class Util
     }
 
     // 콜라이더가 각도 내에 있는지 판별
-    public static bool IsColliderInRange(Collider collider,Transform origin, float angle)
+    public static bool IsColliderInRange(Collider collider, Transform origin, float angle)
     {
-        Vector3 toMonster = (collider.transform.position -origin.position).normalized;
+        Vector3 toMonster = (collider.transform.position - origin.position).normalized;
         float degree = GetAngleBetweenDirections(toMonster, origin.forward);
         if (degree <= angle / 2)
         {
@@ -78,5 +78,100 @@ public class Util
         {
             return false;
         }
+    }
+
+    // 스킬 속성에 따라 현재 시간대에 의한 대미지 증감 효과 계산
+    public static float GetEnhancedDamage(float damage, SkillData data)
+    {
+        float newDamage = damage;
+        //Debug.Log($"Current Damage: {newDamage}, Current DayType: {EnvironmentManager.Instance.CurrentType}, Current SkillType: {data.SkillAttribute}");
+        switch (EnvironmentManager.Instance.CurrentType)
+        {
+            // <최종 기획>
+            // 일단 대미지 20퍼 증가
+            // 아침 - 물, 빛
+            // 낮 - 불, 빛
+            // 저녁 - 어둠, 불
+            // 밤 - 어둠, 물
+            case Define.TimeOfDayType.Morning:
+                if (data.SkillAttribute == Define.SkillAttribute.Water || data.SkillAttribute == Define.SkillAttribute.Light)
+                {
+                    newDamage *= 1.2f;
+                }
+                break;
+
+            case Define.TimeOfDayType.Noon:
+                if (data.SkillAttribute == Define.SkillAttribute.Fire || data.SkillAttribute == Define.SkillAttribute.Light)
+                {
+                    newDamage *= 1.2f;
+                }
+                break;
+
+            case Define.TimeOfDayType.Evening:
+                if (data.SkillAttribute == Define.SkillAttribute.Fire || data.SkillAttribute == Define.SkillAttribute.Dark)
+                {
+                    newDamage *= 1.2f;
+                }
+                break;
+
+            case Define.TimeOfDayType.Night:
+                if (data.SkillAttribute == Define.SkillAttribute.Water || data.SkillAttribute == Define.SkillAttribute.Dark)
+                {
+                    newDamage *= 1.2f;
+                }
+                break;
+
+            default:
+                break;
+        }
+        //Debug.Log("Enhanced damage: " + newDamage);
+        return newDamage;
+    }
+
+    // 스킬 속성에 따라 현재 시간대에 의한 쿨타임 감소 효과 수치 계산
+    public static float GetCoolTimeReductionByDayType(SkillData data)
+    {
+        Debug.Log($"Current Day Type: {EnvironmentManager.Instance.CurrentType}, Current Skill Attribut: {data.SkillAttribute}");
+        float reduction = 0f;
+        switch (EnvironmentManager.Instance.CurrentType)
+        {
+            // <최종 기획>
+            // 일단 대미지 20퍼 증가
+            // 아침 - 물, 빛
+            // 낮 - 불, 빛
+            // 저녁 - 어둠, 불
+            // 밤 - 어둠, 물
+            case Define.TimeOfDayType.Morning:
+                if (data.SkillAttribute == Define.SkillAttribute.Water || data.SkillAttribute == Define.SkillAttribute.Light)
+                {
+                    reduction = -20;
+                }
+                break;
+
+            case Define.TimeOfDayType.Noon:
+                if (data.SkillAttribute == Define.SkillAttribute.Fire || data.SkillAttribute == Define.SkillAttribute.Light)
+                {
+                    reduction = -20;
+                }
+                break;
+
+            case Define.TimeOfDayType.Evening:
+                if (data.SkillAttribute == Define.SkillAttribute.Fire || data.SkillAttribute == Define.SkillAttribute.Dark)
+                {
+                    reduction = -20;
+                }
+                break;
+
+            case Define.TimeOfDayType.Night:
+                if (data.SkillAttribute == Define.SkillAttribute.Water || data.SkillAttribute == Define.SkillAttribute.Dark)
+                {
+                    reduction = -20;
+                }
+                break;
+
+            default:
+                break;
+        }
+        return reduction;
     }
 }

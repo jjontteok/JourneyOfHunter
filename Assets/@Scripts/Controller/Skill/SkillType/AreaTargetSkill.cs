@@ -3,8 +3,8 @@ using UnityEngine;
 public class AreaTargetSkill : ActiveSkill, ITargetSkill, IPositioningSkill
 {
     protected SkillColliderController _coll;
+    protected Transform _target;
     Rigidbody _rigidbody;
-    Transform _target;
     Vector3 _offset;
 
     public override void Initialize(Status status)

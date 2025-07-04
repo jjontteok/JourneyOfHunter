@@ -31,11 +31,11 @@ ModelImporter:
     extraUserProperties: []
     clipAnimations:
     - serializedVersion: 16
-      name: HumanM@Attack1H01_R
+      name: Attack1
       takeName: Untitled
       internalID: 3094330708855449807
-      firstFrame: 10.6
-      lastFrame: 20.8
+      firstFrame: 1.3
+      lastFrame: 22
       wrapMode: 0
       orientationOffsetY: 0
       level: 0

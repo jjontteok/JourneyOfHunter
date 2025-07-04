@@ -19,22 +19,28 @@ public class PopupUI_SkillInventory : MonoBehaviour
     [SerializeField] GameObject _slot;
     [SerializeField] GameObject _generalSkillScrollView;
     [SerializeField] GameObject _ultimateSkillScrollView;
+    [SerializeField] GameObject _passiveSkillScrollView;
+
     [SerializeField] Transform _generalSkillContainer;
     [SerializeField] Transform _ultimateSkillContainer;
+    [SerializeField] Transform _passiveSkillContainer;
 
     [SerializeField] Button _equipButton;
     [SerializeField] Button _releaseButton;
     [SerializeField] Button _exitButton;
     [SerializeField] Button _generalButton;
     [SerializeField] Button _ultimateButton;
+    [SerializeField] Button _passiveButton;
 
     [SerializeField] TMP_Text _skillNameText;
     [SerializeField] TMP_Text _skillDescriptionText;
+    [SerializeField] TMP_Text _skillAttributeText;
     [SerializeField] Image _skillIconImage;
     [SerializeField] Image[] _currentSkillIconImage = new Image[6];
 
     SkillItemSlot[] _slots = new SkillItemSlot[24];
-    SkillItemSlot[] _ultimateSlots = new SkillItemSlot[4];
+    SkillItemSlot[] _ultimateSlots = new SkillItemSlot[12];
+    SkillItemSlot[] _passiveSlots = new SkillItemSlot[12];
 
     SkillData _selectedSkillData;
 
@@ -120,9 +126,25 @@ public class PopupUI_SkillInventory : MonoBehaviour
             _slotUIs.Add(go, _ultimateSlots[i]);
             go.name = "UltimateSkillItemSlot " + i;
         }
+        for (int i = 0; i < _passiveSlots.Length; i++)
+        {
+            GameObject go = Instantiate(_slot, _passiveSkillContainer);
+
+            go.AddComponent<EventTrigger>();
+
+            AddEvent(go, EventTriggerType.PointerClick, (data) => { OnClick(go, (PointerEventData)data); });
+            AddEvent(go, EventTriggerType.PointerEnter, delegate { OnEnterSlot(go); });
+            AddEvent(go, EventTriggerType.PointerExit, delegate { OnEnterSlot(go); });
+
+            _passiveSlots[i] = go.GetComponent<SkillItemSlot>();
+
+            _slotUIs.Add(go, _passiveSlots[i]);
+            go.name = "PassiveSkillItemSlot " + i;
+        }
 
         int skillCount = 0;
         int ultimateSkillCount = 0;
+        int passiveSkillCount = 0;
         // 플레이어가 보유 중인 스킬리스트를 스킬 인벤토리에 등록
         foreach (var skill in PlayerManager.Instance.SkillSystem.SkillList)
         {
@@ -133,6 +155,10 @@ public class PopupUI_SkillInventory : MonoBehaviour
             if (skill.SkillData.IsUltimate)
             {
                 _ultimateSlots[ultimateSkillCount++].UpdateSlot(skill.SkillData);
+            }
+            else if (skill.SkillData.IsPassive)
+            {
+                _passiveSlots[passiveSkillCount++].UpdateSlot(skill.SkillData);
             }
             else
             {
@@ -146,8 +172,7 @@ public class PopupUI_SkillInventory : MonoBehaviour
         // 스킬 설명 초기화
         ActivateDescription();
         // 일반스킬 뷰포트 활성화
-        _generalSkillScrollView.SetActive(true);
-        _ultimateSkillScrollView.SetActive(false);
+        OnGeneralButtonClick();
     }
 
     private void Awake()
@@ -170,6 +195,7 @@ public class PopupUI_SkillInventory : MonoBehaviour
         _exitButton.onClick.AddListener(OnExitButtonClick);
         _generalButton.onClick.AddListener(OnGeneralButtonClick);
         _ultimateButton.onClick.AddListener(OnUltimateButtonClick);
+        _passiveButton.onClick.AddListener(OnPassiveButtonClick);
 
         // 스킬 장착 및 해제 이벤트 구독?
         SkillSystem skillSystem = PlayerManager.Instance.SkillSystem;
@@ -181,11 +207,13 @@ public class PopupUI_SkillInventory : MonoBehaviour
 
     void ActivateDescription(SkillData data = null)
     {
+        bool isEmpty = data == null;
         _selectedSkillData = data;
-        _skillNameText.text = (data == null) ? String.Empty : data.SkillName;
-        _skillDescriptionText.text = (data == null) ? String.Empty : data.SkillDescription;
-        _skillIconImage.sprite = (data == null) ? null : data.SkillIcon;
-        _skillIconImage.color = (data == null) ? Color.clear : Color.white;
+        _skillNameText.text = isEmpty ? string.Empty : data.SkillName;
+        _skillDescriptionText.text = isEmpty ? string.Empty : data.SkillDescription;
+        _skillAttributeText.text = isEmpty ? string.Empty : Define.SkillAttributes[(int)data.SkillAttribute];
+        _skillIconImage.sprite = isEmpty ? null : data.SkillIcon;
+        _skillIconImage.color = isEmpty ? Color.clear : Color.white;
         // 액티브스킬에 대해서만 장착 및 해제 버튼 활성화
         if (data != null && !data.IsPassive)
         {
@@ -221,17 +249,26 @@ public class PopupUI_SkillInventory : MonoBehaviour
     {
         _generalSkillScrollView.gameObject.SetActive(true);
         _ultimateSkillScrollView.gameObject.SetActive(false);
+        _passiveSkillScrollView.gameObject.SetActive(false);
     }
 
     void OnUltimateButtonClick()
     {
         _generalSkillScrollView.gameObject.SetActive(false);
         _ultimateSkillScrollView.gameObject.SetActive(true);
+        _passiveSkillScrollView.gameObject.SetActive(false);
+    }
+
+    void OnPassiveButtonClick()
+    {
+        _generalSkillScrollView.gameObject.SetActive(false);
+        _ultimateSkillScrollView.gameObject.SetActive(false);
+        _passiveSkillScrollView.gameObject.SetActive(true);
     }
 
     void UpdateCurrentSkillIcon(Sprite[] sprites)
     {
-        for(int i=0;i<sprites.Length;i++)
+        for (int i = 0; i < sprites.Length; i++)
         {
             _currentSkillIconImage[i].sprite = sprites[i];
             _currentSkillIconImage[i].color = sprites[i] == null ? Color.clear : Color.white;

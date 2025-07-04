@@ -24,6 +24,11 @@ public class FieldManager : Singleton<FieldManager>, IEventSubscriber, IDeactiva
         get { return _dungeonController; }
     }
 
+    public Define.JourneyEventType CurrentEventType
+    {
+        get { return _currentEventType; }
+    }
+
     protected override void Initialize()
     {
         _dungeonController = new GameObject("DungeonController").AddComponent<DungeonController>();
@@ -61,6 +66,8 @@ public class FieldManager : Singleton<FieldManager>, IEventSubscriber, IDeactiva
 
         _currentEventType = (Define.JourneyEventType)rnd;
         OnJourneyEvent?.Invoke(_currentEventType);
+        Debug.Log("Current Event Type: " + _currentEventType);
+        PlayerManager.Instance.IsAutoMoving = false;
     }
 
     public void Deactivate()
