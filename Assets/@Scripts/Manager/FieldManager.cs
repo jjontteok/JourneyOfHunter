@@ -120,7 +120,8 @@ public class FieldManager : Singleton<FieldManager>, IEventSubscriber, IDeactiva
         int rnd;
         _stageCount = ++StageCount;
         //5의 배수마다 던전 두두둥장
-        if (_stageCount % 5 == 0)
+        //if (_stageCount % 5 == 0)
+        if(true)
         {
             rnd = (int)Define.JourneyType.Dungeon;
             _rewardSystem.SetReward(Define.RewardType.JourneyExp, 2 * _stageCount);
