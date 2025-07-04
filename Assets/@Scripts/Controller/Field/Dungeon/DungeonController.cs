@@ -105,16 +105,6 @@ public class DungeonController : MonoBehaviour
         _portalEnterController = _dungeonEnterPortal.GetComponent<DungeonPortalController>();
         _portalExitController = _dungeonExitPortal.GetComponent<DungeonPortalController>();
 
-        _portalEnterController.OnPotalEnter += EnterDungeon;
-        _portalEnterController.OnPotalClose += SetWallUp;
-
-        _portalExitController.OnPotalEnter += ExitDungeon;
-        //_portalExitController.OnPotalClose += ExitDungeon;
-
-        OnSpawnNamedMonster += SetNormalMonsterOff;
-
-        OnDungeonEnter += () => IsDungeonExist = true;
-        OnDungeonExit += () => IsDungeonExist = false;
     }
     #endregion
 
@@ -128,6 +118,18 @@ public class DungeonController : MonoBehaviour
         NormalMonsterController.s_OnNormalMonsterDie += CountMonsterDeath;
         NamedMonsterController.s_OnNamedMonsterDie += ClearDungeon;
         FieldManager.Instance.OnJourneyEvent += CreateDungeon;
+        FieldManager.Instance.OnFailedDungeonClear += ExitDungeon;
+        
+        _portalEnterController.OnPotalEnter += EnterDungeon;
+        _portalEnterController.OnPotalClose += SetWallUp;
+
+        _portalExitController.OnPotalEnter += ExitDungeon;
+        //_portalExitController.OnPotalClose += ExitDungeon;
+
+        //OnSpawnNamedMonster += SetNormalMonsterOff;
+
+        OnDungeonEnter += () => IsDungeonExist = true;
+        OnDungeonExit += () => IsDungeonExist = false;
     }
 
     public void Deactivate()
@@ -145,9 +147,9 @@ public class DungeonController : MonoBehaviour
     }
 
     // * 던전 생성 메서드
-    public void CreateDungeon(Define.JourneyEventType type)
+    public void CreateDungeon(Define.JourneyType type, Define.ItemValue value = default)
     {
-        if (type == Define.JourneyEventType.Dungeon)
+        if (type == Define.JourneyType.Dungeon)
         {
             DungeonOffSet = new Vector3(0, 0, Define.DungeonEnterPortalSpot.z);
 
@@ -182,7 +184,7 @@ public class DungeonController : MonoBehaviour
     //- 던전 클리어 후처리
     private void ClearDungeon()
     {
-        OnDungeonClear?.Invoke();
+        OnDungeonClear?.Invoke(); //네임드 인포 비활성화, 보상획득
         SetClearPortalOn();
     }
 
@@ -215,14 +217,14 @@ public class DungeonController : MonoBehaviour
         _dungeonWallFront.SetActive(true);
         _dungeonWallBack.SetActive(true);
     }
-    private void SetNormalMonsterOff()
-    {
-        List<GameObject> normalMonsterPool = PoolManager.Instance.PoolList["Demon"];
-        for (int i = 0; i < normalMonsterPool.Count; i++)
-        {
-            normalMonsterPool[i].SetActive(false);
-        }
-    }
+    //private void SetNormalMonsterOff()
+    //{
+    //    List<GameObject> normalMonsterPool = PoolManager.Instance.PoolList["Demon"];
+    //    for (int i = 0; i < normalMonsterPool.Count; i++)
+    //    {
+    //        normalMonsterPool[i].SetActive(false);
+    //    }
+    //}
 
     // * 던전 몬스터 관리 메서드
     private void CountMonsterDeath()

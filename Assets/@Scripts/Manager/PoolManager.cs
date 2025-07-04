@@ -26,10 +26,10 @@ public class PoolManager : Singleton<PoolManager>
         if (_poolList.ContainsKey(name))
         {
             // 해당 name의 풀 리스트 모든 오브젝트 검사
-            for(int i = 0; i<_poolList[name].Count; i++)
+            for (int i = 0; i < _poolList[name].Count; i++)
             {
                 // 풀 리스트의 오브젝트 활성화 여부 검사 및 비활성화 객체 활성화 및 좌표 초기화
-                if(!_poolList[name][i].activeSelf)
+                if (!_poolList[name][i].activeSelf)
                 {
                     _poolList[name][i].SetActive(true);
                     _poolList[name][i].transform.position = spawnPos;
@@ -47,7 +47,7 @@ public class PoolManager : Singleton<PoolManager>
         else
         {
             // 풀링 관리 딕셔너리에 해당 타입 오브젝트가 존재하지 않을 시
-            if(!_parentObjectList.ContainsKey(name))
+            if (!_parentObjectList.ContainsKey(name))
             {
                 GameObject go = new GameObject(name + "Pool");
                 _parentObjectList.Add(name, go);

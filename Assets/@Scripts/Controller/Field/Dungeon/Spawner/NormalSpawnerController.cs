@@ -14,6 +14,7 @@ public class NormalSpawnerController : MonoBehaviour
     private int _limitOfNormalMonsterCount = 80;
 
     private Coroutine _spawnCoroutine;
+    private GameObject _monsterParentPool;
 
     // 스포너 위치 설정
     public void SetSpawnerPos(Vector3 offSet)
@@ -70,10 +71,10 @@ public class NormalSpawnerController : MonoBehaviour
     void SpawnMonsters(Vector3 spawnPos)
     {
         spawnPos -= Vector3.up * 3;
-        PoolManager.Instance.GetObjectFromPool<NormalMonsterController>(spawnPos + _monsterInterval * Vector3.right, _monsterName);
-        PoolManager.Instance.GetObjectFromPool<NormalMonsterController>(spawnPos + _monsterInterval * Vector3.left, _monsterName);
-        PoolManager.Instance.GetObjectFromPool<NormalMonsterController>(spawnPos + _monsterInterval * Vector3.forward, _monsterName);
-        PoolManager.Instance.GetObjectFromPool<NormalMonsterController>(spawnPos + _monsterInterval * Vector3.back, _monsterName);
+        PoolManager.Instance.GetObjectFromPool<NormalMonsterController>(spawnPos + _monsterInterval * Vector3.right, _monsterName, transform);
+        PoolManager.Instance.GetObjectFromPool<NormalMonsterController>(spawnPos + _monsterInterval * Vector3.left, _monsterName, transform);
+        PoolManager.Instance.GetObjectFromPool<NormalMonsterController>(spawnPos + _monsterInterval * Vector3.forward, _monsterName, transform);
+        PoolManager.Instance.GetObjectFromPool<NormalMonsterController>(spawnPos + _monsterInterval * Vector3.back, _monsterName, transform);
     }
 
     // * 랜덤 스폰 위치 제공 메서드

@@ -41,8 +41,8 @@ public class PlayerController : MonoBehaviour, IDamageable
     public Action<float, float> OnHPValueChanged;
     public Action<float, float> OnMPValueChanged;
     public Action<float> OnJourneyExpChanged;
-    public Action<int> OnJourneyRankChanged;
     public Action OnPlayerCrossed;
+    public Action OnPlayerDead;
 
     PlayerStatus _runtimeData;
     Vector3 _direction;
@@ -50,6 +50,9 @@ public class PlayerController : MonoBehaviour, IDamageable
     float _hp;
 
     float _shortestSkillDistance;       //자동일 때, 이동 멈추는 범위
+
+    float _atkBuff = 0;                 //던전 클리어 실패 시 주어질 버프
+    float _hpBuff = 0;
 
     bool _isSwifting;                   //질풍참 사용 여부
     bool _isKeyBoard;
@@ -129,8 +132,6 @@ public class PlayerController : MonoBehaviour, IDamageable
                 //현재 메달 변경
                 _playerData.JourneyRankData =
                     ObjectManager.Instance.JourneyRankResourceList[(_playerData.JourneyRankData.Index + 1).ToString()];
-
-                OnJourneyRankChanged?.Invoke(_playerData.JourneyRankData.Index);
             }
         }
     }
@@ -166,27 +167,20 @@ public class PlayerController : MonoBehaviour, IDamageable
 
     #region Player Moving
 
-    public void GainJourneyExp(Define.JourneyType type)
+    public void GainJourneyExp(int amount = default)
     {
-        float journeyExp = 1;
-        switch (type)
-        {
-            case Define.JourneyType.Default:
-                break;
-            case Define.JourneyType.Explore:
-                journeyExp = 10;
-                break;
-            case Define.JourneyType.Dungeon:
-                journeyExp = 100;
-                break;
-            case Define.JourneyType.Treasure:
-                journeyExp = 50;
-                break;
-        }
-        journeyExp *= _playerData.JourneyRankData.Index;
+        float journeyExp = 5; //기본 증가량
+        
+        //구역을 지날 때에는 해당 메달의 랭크대로 여정의 증표 증가
+        if (amount == default)
+            journeyExp *= _playerData.JourneyRankData.Index;
+        //그냥 일반 획득이라면 스테이지대로 여정의 증표 증가
+        else
+            journeyExp *= amount;
+
         OnJourneyExpChanged?.Invoke(journeyExp);
         JourneyExp += journeyExp;
-
+        Debug.Log("여정의 증표 획득 " + journeyExp);
     }
 
     public void Move()
@@ -205,7 +199,7 @@ public class PlayerController : MonoBehaviour, IDamageable
             transform.position = pos;
 
             //구역 통과 시 여정 경험치? 증가
-            GainJourneyExp(Define.JourneyType.Explore);
+            GainJourneyExp();
 
             OnPlayerCrossed?.Invoke();
         }
@@ -528,11 +522,34 @@ public class PlayerController : MonoBehaviour, IDamageable
 
     void Die()
     {
+        OnPlayerDead?.Invoke();
         _animator.SetTrigger(Define.Die);
         _animator.SetInteger(Define.DieType, UnityEngine.Random.Range(0, 2));
     }
 
     #endregion
+
+    public void SetPlayerBuff()
+    {
+        if (_atkBuff == 0)
+            _atkBuff = _runtimeData.Atk / 10;
+        if (_hpBuff == 0)
+            _hpBuff = _runtimeData.HP / 10;
+            
+        OnOffStatusUpgrade(Define.StatusType.Atk, _atkBuff);
+        OnOffStatusUpgrade(Define.StatusType.HP, _hpBuff);
+    }
+
+    public void RemovePlayerBuff(int buffCount)
+    {
+        for(int i = 0; i < buffCount; i++)
+        {
+            OnOffStatusUpgrade(Define.StatusType.Atk, -_atkBuff);
+            OnOffStatusUpgrade(Define.StatusType.HP, -_hpBuff);
+        }
+        _atkBuff = 0;
+        _hpBuff = 0;
+    }
 
     #region IDamageable Methods
     // * 방어력 적용 데미지 계산 메서드
@@ -541,10 +558,9 @@ public class PlayerController : MonoBehaviour, IDamageable
         float finalDamage = CalculateFinalDamage(damage, _runtimeData.Def);
         HP -= finalDamage;
         DamageTextEvent.Invoke(Util.GetDamageTextPosition(gameObject.GetComponent<Collider>()), finalDamage, false);
+        Debug.Log($"Damaged: {finalDamage}, Current Player HP: {_hp}");
         if (HP <= 0)
-        {
             Die();
-        }
     }
 
     public float CalculateFinalDamage(float damage, float def)

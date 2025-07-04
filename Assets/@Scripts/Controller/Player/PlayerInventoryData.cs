@@ -112,4 +112,9 @@ public class Inventory
             list.Remove(item);
         OnItemRemove?.Invoke(item.Type);
     }
+
+    public void AddGoods(Define.GoodsType type, int amount)
+    {
+        _goods[type] += amount;
+    }
 }

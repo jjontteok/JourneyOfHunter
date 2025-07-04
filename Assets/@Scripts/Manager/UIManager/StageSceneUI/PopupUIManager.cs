@@ -2,6 +2,8 @@ using System;
 using UnityEngine;
 using UnityEngine.UI;
 using extension;
+using TMPro;
+using System.Collections;
 
 // * 팝업 UI 매니저 스크립트
 //- 특정 이벤트 발생 시 팝업 UI 생성
@@ -12,12 +14,15 @@ public class PopupUIManager : Singleton<PopupUIManager>, IEventSubscriber, IDeac
     private GameObject _popupJourneyInfo;
     private GameObject _popupStageInfo;
     private GameObject _popupNamedMonsterInfo;
+    private GameObject _popupTreasureAppear;
     private GameObject _panelStatus;
     private GameObject _panelInventory;
     private GameObject _panelSkillInventory;
     private GameObject _panelMerchant;
 
     private GameObject _activePopup;
+
+    WaitForSeconds _deactivateTreasureAppear = new WaitForSeconds(1.5f);
 
     public GameObject PanelSkillInventory
     {
@@ -32,6 +37,7 @@ public class PopupUIManager : Singleton<PopupUIManager>, IEventSubscriber, IDeac
         _popupJourneyInfo = Instantiate(ObjectManager.Instance.PopupJourneyInfo, _canvasPopupUI.transform);
         _popupStageInfo = Instantiate(ObjectManager.Instance.PopupStageInfo, _canvasPopupUI.transform);
         _popupNamedMonsterInfo = Instantiate(ObjectManager.Instance.PopupNamedMonsterInfo, _canvasPopupUI.transform);
+        _popupTreasureAppear = Instantiate(ObjectManager.Instance.PopupTreasureAppear, _canvasPopupUI.transform);
         _panelStatus = Instantiate(ObjectManager.Instance.PopupStatusPanel, _canvasPopupUI.transform);
         _panelInventory = Instantiate(ObjectManager.Instance.PopupInventoryPanel, _canvasPopupUI.transform);
         _panelSkillInventory = Instantiate(ObjectManager.Instance.PopupSkillInventory, _canvasPopupUI.transform);
@@ -51,6 +57,7 @@ public class PopupUIManager : Singleton<PopupUIManager>, IEventSubscriber, IDeac
         //CameraManager.Instance.OnCutSceneEnded += ActivateNamedMonsterInfo;
         //DungeonController.Instance.OnSpawnNamedMonster += ActivateNamedMonsterInfo;
         FieldManager.Instance.DungeonController.OnDungeonClear += DeactivateNamedMonsterInfo;
+        FieldManager.Instance.OnFailedDungeonClear += DeactivateNamedMonsterInfo;
 
         _popupPanel.GetComponent<PopupUI_Panel>().OnPopupPanelClicked += DeactivatePopup;
         _panelStatus.GetComponent<PopupUI_Status>().OnExitButtonClicked += DeactivatePopup;
@@ -78,6 +85,7 @@ public class PopupUIManager : Singleton<PopupUIManager>, IEventSubscriber, IDeac
         _popupJourneyInfo.SetActive(false);
         _popupStageInfo.SetActive(false);
         _popupNamedMonsterInfo.SetActive(false);
+        _popupTreasureAppear.SetActive(false);
         _panelStatus.SetActive(false);
         _panelInventory.SetActive(false);
         _panelSkillInventory.SetActive(false);
@@ -111,6 +119,7 @@ public class PopupUIManager : Singleton<PopupUIManager>, IEventSubscriber, IDeac
         _activePopup = _panelSkillInventory;
         _panelSkillInventory.SetActive(!_panelSkillInventory.activeSelf);
     }
+
     
     public void ActivateMerchantPanel()
     {
@@ -137,6 +146,17 @@ public class PopupUIManager : Singleton<PopupUIManager>, IEventSubscriber, IDeac
     {
         _popupNamedMonsterInfo.SetActive(true);
     }
+
+    public void ActivateTreasureAppear()
+    {
+        if (_popupTreasureAppear != null)
+        {
+            _popupTreasureAppear.SetActive(true);
+            TMP_Text text = _popupTreasureAppear.GetComponentInChildren<TMP_Text>();
+            StartCoroutine(text.GetComponent<UIEffectsManager>().PerformEffect(0));
+            StartCoroutine(DeactivateTreasureAppear());
+        }
+    }
     #endregion
 
     #region Deactivate UI
@@ -160,6 +180,12 @@ public class PopupUIManager : Singleton<PopupUIManager>, IEventSubscriber, IDeac
     public void DeactivateNamedMonsterInfo()
     {
         _popupNamedMonsterInfo.SetActive(false);
+    }
+
+    public IEnumerator DeactivateTreasureAppear()
+    {
+        yield return _deactivateTreasureAppear;
+        _popupTreasureAppear.SetActive(false);
     }
     #endregion
 

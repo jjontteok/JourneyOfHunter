@@ -5,15 +5,36 @@ using static UnityEngine.ParticleSystem;
 
 public class TreasureBoxController : MonoBehaviour
 {
+    Dictionary<Define.ItemValue, Color> _effectColorList = new()
+    {
+        { Define.ItemValue.Common, new Color(0, 0, 0, 0) },
+        { Define.ItemValue.Uncommon, new Color(0.2f, 1, 0, 1) },
+        { Define.ItemValue.Rare, new Color(0, 0.35f, 1, 1) },
+        { Define.ItemValue.Epic, new Color(0.5f, 0, 1, 1) },
+        { Define.ItemValue.Legendary, new Color(1, 0.11f, 0, 1) }
+    };
 
-    Dictionary<Define.TreasureRewardType, string> _treasureRewardList;
     ParticleSystem[] _particles;
 
-    Define.TreasureRewardType[]  _treasureRewardArray;
     Animator _animator;
 
+    ParticleSystem[] _treasureEffectList;
     GameObject _openEffect;
+    Define.ItemValue _treasureRank;
+    int _hitCount;
+    int _count;
+    Define.ItemValue _initEffectColor;
     bool _isObtained;
+
+    public Define.ItemValue TreasureRank 
+    { 
+        get { return _treasureRank;  } 
+        set 
+        { 
+            _treasureRank = value;
+            _count = (int)_treasureRank * 3;
+        }
+    }
 
     private void Awake()
     {
@@ -22,27 +43,55 @@ public class TreasureBoxController : MonoBehaviour
 
     void Initialize()
     {
+        _treasureEffectList = GetComponentsInChildren<ParticleSystem>();
+
         _openEffect = Instantiate(ObjectManager.Instance.TreasureBoxOpenEffectResource, transform);
         _particles = _openEffect.GetComponentsInChildren<ParticleSystem>();
 
-        _treasureRewardArray = (Define.TreasureRewardType[])Enum.GetValues(typeof(Define.TreasureRewardType));
         _animator = GetComponent<Animator>();
     }
 
     private void OnEnable()
     {
+        PopupUIManager.Instance.ActivateTreasureAppear();
+        _initEffectColor = Define.ItemValue.Uncommon;
+        SetTreasureEffect(_initEffectColor);
         _openEffect.SetActive(false);
         _isObtained = false;
+        _hitCount = 0;
     }
 
-    private void OnCollisionEnter(Collision collision)
+    // * 보물상자 이펙트의 색을 설정하는 메서드 
+    void SetTreasureEffect(Define.ItemValue treasureRank)
     {
-        if (collision.collider.CompareTag(Define.PlayerTag))
+        foreach(var particle in _treasureEffectList)
         {
-            if (!_isObtained)
+            ParticleSystem.MainModule main = particle.main;
+            main.startColor = _effectColorList[treasureRank];
+        }
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if(other.gameObject.layer == LayerMask.NameToLayer(Define.PlayerSkillLayer))
+        {
+            UpHitCount(); 
+        }
+    }
+
+    // * 플레이어가 보물상자를 때릴 때 실행되는 함수
+    void UpHitCount()
+    {
+        _hitCount++; //때린 횟수 증가
+        if (_hitCount % 3 == 0) //3번 때릴 때마다 상자 색 변경
+        {
+            if (_hitCount == _count) //때린 횟수가 현재 상자 랭크와 같다면
             {
-                _isObtained = true;
-                OpenTreasureBox();
+                OpenTreasureBox(); //보물 상자 오픈
+            }
+            else
+            {
+                SetTreasureEffect(++_initEffectColor);
             }
         }
     }
@@ -51,13 +100,9 @@ public class TreasureBoxController : MonoBehaviour
     void OpenTreasureBox()
     {
         PlayOpenAnimation();
-
+        FieldManager.Instance.RewardSystem.
+            GainReward(transform.position + Vector3.up * 2);
         PlayerManager.Instance.IsAutoMoving = true;
-        
-        Vector3 pos = transform.position + Vector3.up;
-        TextManager.Instance.ActivateRewardText(pos, "은화", 100);
-        TextManager.Instance.ActivateRewardText(pos, "젬", 10);
-        TextManager.Instance.ActivateRewardText(pos, "여정의 증표", 10);
     }
 
     void PlayOpenAnimation()

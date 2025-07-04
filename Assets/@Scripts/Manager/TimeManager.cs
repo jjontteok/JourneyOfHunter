@@ -52,10 +52,10 @@ public class TimeManager : Singleton<TimeManager>, IEventSubscriber
         base.Initialize();
         _colorChangeTransitions = new()
         {
-            { 12f, Define.TimeOfDayType.Noon }, //7초에 낮 색 변경
-            { 22f, Define.TimeOfDayType.Evening },
-            { 37f, Define.TimeOfDayType.Night },
-            { 51f, Define.TimeOfDayType.Morning }
+            { 86f, Define.TimeOfDayType.Noon }, //7초에 낮 색 변경
+            { 176f, Define.TimeOfDayType.Evening },
+            { 265f, Define.TimeOfDayType.Night },
+            { 358f, Define.TimeOfDayType.Morning }
         };
     }
 
@@ -85,7 +85,11 @@ public class TimeManager : Singleton<TimeManager>, IEventSubscriber
             yield return _standardTime;
             _monsterTime -= 1;
             if (_monsterTime <= 0)
+            {
+                //던전 클리어 실패 함수 호출
+                FieldManager.Instance.FailedDungeonClear();
                 break;
+            }
             OnNamedMonsterTimeChanged?.Invoke(_monsterTime);
         }
     }
@@ -112,7 +116,7 @@ public class TimeManager : Singleton<TimeManager>, IEventSubscriber
                 _currentTime = Extension.GetNextType(newColorTimeOfDay);
             }
 
-            if (_dayTime >= 53f)
+            if (_dayTime >= 360f)
             {
                 _dayTime = 0f;
             }
