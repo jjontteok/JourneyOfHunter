@@ -12,16 +12,17 @@ public class Define : MonoBehaviour
     public readonly static int UltimateReady = Animator.StringToHash("UltimateReady");
     public readonly static int Die = Animator.StringToHash("Die");
     public readonly static int DieType = Animator.StringToHash("DieType");
+    public readonly static int IsDead = Animator.StringToHash("IsDead");  
 
     public readonly static int CloseAttack = Animator.StringToHash("CloseAttack");
     public readonly static int LongAttack = Animator.StringToHash("LongAttack");
     public readonly static int IsInteractionPossible = Animator.StringToHash("IsInteractionPossible");
 
     public readonly static int Contact = Animator.StringToHash("Contact");
+    public readonly static int Open = Animator.StringToHash("Open");
 
     public const string EndAttack = "EndAttack";
     public const string WalkSpeed = "WalkSpeed";
-    public const string Open = "Open";
     #endregion
 
     #region Tag
@@ -223,5 +224,6 @@ public class Define : MonoBehaviour
     public const float MaxDef = 100f;
     public const float SkillInterval = 0.5f;
     public const int TotalSkillIconSlotNum = 6;
+    public readonly static string[] SkillAttributes = { "", "불", "물", "빛", "암" };
     #endregion
 }

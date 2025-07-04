@@ -18,11 +18,11 @@ MonoBehaviour:
   Level: 1
   Exp: 0
   Damage: 0
-  HP: 215
+  HP: 111
   HPRecoveryPerSec: 1
   CoolTimeDecrease: 0
   UnlockedSkillSlotCount: 4
-  JourneyExp: 5850
+  JourneyExp: 7810
   Speed: 10
   JourneyRankData: {fileID: 11400000, guid: f5a873afb681d9e418319684cb70de1b, type: 2}
   CurrentSkillData:

@@ -191,6 +191,12 @@ public class PlayerController : MonoBehaviour, IDamageable
 
     public void Move()
     {
+        if (PlayerManager.Instance.IsDead)
+        {
+            _rigidbody.linearVelocity = new Vector3(0, _rigidbody.linearVelocity.y, 0);
+            _animator.SetFloat(Define.Speed, 0);
+            return;
+        }
         //던전에 들어가지 않았을 때 플레이어의 위치를 이동시킴
         if (!FieldManager.Instance.DungeonController.IsDungeonExist && transform.position.z >= 113.2)
         {
@@ -235,42 +241,7 @@ public class PlayerController : MonoBehaviour, IDamageable
                         PlayerManager.Instance.IsAutoMoving = true;
                     }
                 }
-            }// 던전 클리어해서 포탈 향해 가는 상황 / target==portal or null 일 때
-            //if (PlayerManager.Instance.IsAutoMoving)
-            //{
-            //    if (_target == null)
-            //    {
-            //        SetTarget();
-            //        // target 찾으면 autoMoving 스탑
-            //        if (_target?.CompareTag(Define.MonsterTag) != null)
-            //        {
-            //            PlayerManager.Instance.IsAutoMoving = false;
-            //        }
-            //    }
-            //    else if (!MoveToTarget(0.5f))
-            //    {
-            //        // 포탈에 닿으면 IsAutoMoving false시키고 target 초기화
-            //        PlayerManager.Instance.IsAutoMoving = false;
-            //        _target = null;
-            //        return;
-            //    }
-            //}
-            //else
-            //{
-            //    // 타겟 없으면
-            //    if (_target == null || !_target.gameObject.activeSelf)
-            //    {
-            //        // 타겟 찾고
-            //        SetTarget();
-            //        // 찾았는데도 없으면 다음 스테이지 자동 이동?
-            //        if (PlayerManager.Instance.IsAutoMoving)
-            //        {
-            //            return;
-            //        }
-            //        Debug.Log($"Current Target: {_target.name}");
-            //    }
-            //    MoveToTarget(_shortestSkillDistance);
-            //}
+            }
         }
         // 수동 모드일 때
         else
@@ -410,6 +381,24 @@ public class PlayerController : MonoBehaviour, IDamageable
 
     void SetTarget()
     {
+        //switch(FieldManager.Instance.CurrentEventType)
+        //{
+        //    case Define.JourneyEventType.Dungeon:
+
+        //        break;
+
+        //    case Define.JourneyEventType.Merchant:
+
+        //        break;
+
+        //    case Define.JourneyEventType.TreasureBox:
+
+        //        break;
+
+        //    case Define.JourneyEventType.OtherObject:
+
+        //        break;
+        //}
         // 던전인 경우, 몬스터 찾기
         if (FieldManager.Instance.CurrentEventType == Define.JourneyEventType.Dungeon)
         {
@@ -442,12 +431,33 @@ public class PlayerController : MonoBehaviour, IDamageable
                 PlayerManager.Instance.IsAutoMoving = false;
             }
         }
+        else
         // 던전이 아닌 경우, 필드 오브젝트 찾기
         {
             _target = GameObject.FindGameObjectWithTag(Define.FieldObjectTag)?.transform;
+
             if (_target != null)
             {
-                PlayerManager.Instance.IsAutoMoving = false;
+                if (FieldManager.Instance.CurrentEventType == Define.JourneyEventType.TreasureBox)
+                {
+                    if (_target.GetComponent<Animator>().GetBool(Define.Open))
+                    {
+                        PlayerManager.Instance.IsAutoMoving = true;
+                        _target = null;
+                    }
+                    else
+                    {
+                        PlayerManager.Instance.IsAutoMoving = false;
+                    }
+                }
+                else if (FieldManager.Instance.CurrentEventType == Define.JourneyEventType.Merchant)
+                {
+                    // TBD
+                }
+                else if (FieldManager.Instance.CurrentEventType == Define.JourneyEventType.OtherObject)
+                {
+                    // TBD
+                }
             }
         }
     }

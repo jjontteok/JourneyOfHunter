@@ -24,8 +24,6 @@ public class SkillSystem : MonoBehaviour
 
     public Action<float> OnShortestSkillDistanceChanged;
 
-    public bool IsAuto { get; set; }
-
     public List<Skill> SkillList { get { return _skillList; } }
 
     public BasicSkillSlot BasicSkillSlot
@@ -50,7 +48,7 @@ public class SkillSystem : MonoBehaviour
 
     private void Update()
     {
-        if (IsAuto)
+        if (PlayerManager.Instance.IsAuto && !PlayerManager.Instance.IsDead)
         {
             // 기본 공격할 타이밍인지 체크
             if (IsBasicAttackPossible())

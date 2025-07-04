@@ -34,6 +34,7 @@ public class PopupUI_SkillInventory : MonoBehaviour
 
     [SerializeField] TMP_Text _skillNameText;
     [SerializeField] TMP_Text _skillDescriptionText;
+    [SerializeField] TMP_Text _skillAttributeText;
     [SerializeField] Image _skillIconImage;
     [SerializeField] Image[] _currentSkillIconImage = new Image[6];
 
@@ -155,7 +156,7 @@ public class PopupUI_SkillInventory : MonoBehaviour
             {
                 _ultimateSlots[ultimateSkillCount++].UpdateSlot(skill.SkillData);
             }
-            else if(skill.SkillData.IsPassive)
+            else if (skill.SkillData.IsPassive)
             {
                 _passiveSlots[passiveSkillCount++].UpdateSlot(skill.SkillData);
             }
@@ -206,11 +207,13 @@ public class PopupUI_SkillInventory : MonoBehaviour
 
     void ActivateDescription(SkillData data = null)
     {
+        bool isEmpty = data == null;
         _selectedSkillData = data;
-        _skillNameText.text = (data == null) ? String.Empty : data.SkillName;
-        _skillDescriptionText.text = (data == null) ? String.Empty : data.SkillDescription;
-        _skillIconImage.sprite = (data == null) ? null : data.SkillIcon;
-        _skillIconImage.color = (data == null) ? Color.clear : Color.white;
+        _skillNameText.text = isEmpty ? string.Empty : data.SkillName;
+        _skillDescriptionText.text = isEmpty ? string.Empty : data.SkillDescription;
+        _skillAttributeText.text = isEmpty ? string.Empty : Define.SkillAttributes[(int)data.SkillAttribute];
+        _skillIconImage.sprite = isEmpty ? null : data.SkillIcon;
+        _skillIconImage.color = isEmpty ? Color.clear : Color.white;
         // 액티브스킬에 대해서만 장착 및 해제 버튼 활성화
         if (data != null && !data.IsPassive)
         {
