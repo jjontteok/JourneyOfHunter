@@ -39,6 +39,7 @@ public class DungeonPortalController : MonoBehaviour
         if(other.CompareTag("Player"))
         {
             OnPotalEnter?.Invoke();
+            PlayerManager.Instance.IsAutoMoving = false;
             StartCoroutine(ActiveFalseSelf());
         }
     }

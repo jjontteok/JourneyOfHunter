@@ -16,7 +16,7 @@ public class SkillSlot : MonoBehaviour
     // 스킬 슬롯 생성 시 스킬 아이콘 슬롯에 등록하는 이벤트
     public Action<SkillData> OnGenerateSlot;
     // 스킬 발동 시 스킬 아이콘 슬롯에 쿨타임 적용하는 이벤트
-    public Action OnActivateSkill;
+    public Action<float> OnActivateSkill;
     // 스킬 제거 시 스킬 아이콘 슬롯에서 사라지게 적용하는 이벤트
     public Action OnRemoveSkill;
 
@@ -80,28 +80,31 @@ public class SkillSlot : MonoBehaviour
     protected IEnumerator CoStartCoolTime()
     {
         float realCoolTime = _skill.SkillData.CoolTime;
-        realCoolTime *= 1 + _player.PlayerStatus.GetCoolTimeDecrease() / 100;
-        //Debug.Log($"Current cooltime reduction: {_player.PlayerStatus.GetCoolTimeDecrease()}%");
+        Debug.Log($"Real Cool Time: {realCoolTime}");
+        realCoolTime *= 1 + (_player.PlayerStatus.GetCoolTimeDecrease() + Util.GetCoolTimeReductionByDayType(_skill.SkillData)) / 100;
+        Debug.Log($"Reduced Cool Time: {realCoolTime}");
+
+        OnActivateSkill?.Invoke(realCoolTime);
         yield return new WaitForSeconds(realCoolTime);
         IsActivatePossible = true;
     }
 
     public virtual void ActivateSlotSkill()
     {
-        if(IsActivatePossible)
+        if (IsActivatePossible)
         {
             ProcessSkill();
         }
     }
 
-    // 스킬 발동 & 마나 계산 & 쿨타임 시작
+    // 스킬 발동 & 쿨타임 시작
     void ProcessSkill()
     {
         if (_skill.ActivateSkill(transform.position))
         {
             IsActivatePossible = false;
             StartCoroutine(CoStartCoolTime());
-            OnActivateSkill?.Invoke();
+            //OnActivateSkill?.Invoke();
         }
 
     }

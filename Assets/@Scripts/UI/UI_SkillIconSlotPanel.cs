@@ -11,7 +11,6 @@ public class UI_SkillIconSlotPanel : MonoBehaviour
     const int _numOfColumn = 3;
     readonly Vector2 _start = new Vector2(-170, 70);
     readonly Vector2 _space = new Vector2(160, 150);
-    readonly Vector2 _size = new Vector2(160, 160);
 
     private void Awake()
     {
@@ -40,7 +39,6 @@ public class UI_SkillIconSlotPanel : MonoBehaviour
 
             RectTransform rect = go.GetComponent<RectTransform>();
             rect.anchoredPosition = CalculateSlotPosition(i);
-            rect.sizeDelta = _size;
             AddEvent(go, EventTriggerType.PointerClick, (data) => { OnClick(go, (PointerEventData)data); });
             if (i == 0)
             {

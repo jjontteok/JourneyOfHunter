@@ -1,5 +1,4 @@
 using extension;
-using System;
 using UnityEngine;
 
 public class PlayerManager : Singleton<PlayerManager>
@@ -22,21 +21,20 @@ public class PlayerManager : Singleton<PlayerManager>
         set
         {
             _isAuto = value;
-            _skillSystem.IsAuto = value;
             // 자동 모드 꺼지면 타겟도 초기화
             // AutoChallenge 중이면 NotChallenge로 변화
             if (!value)
             {
                 _player.Target = null;
                 _isAutoMoving = false;
-                if(FieldManager.Instance.StageController.StageActionStatus == Define.StageActionStatus.AutoChallenge)
+                if (FieldManager.Instance.StageController.StageActionStatus == Define.StageActionStatus.AutoChallenge)
                 {
                     FieldManager.Instance.StageController.StageActionStatus = Define.StageActionStatus.NotChallenge;
                 }
             }
             else
             {
-                if(FieldManager.Instance.StageController.StageActionStatus == Define.StageActionStatus.NotChallenge)
+                if (FieldManager.Instance.StageController.StageActionStatus == Define.StageActionStatus.NotChallenge)
                 {
                     // 던전 생성 버튼이 활성화되어있는데 자동 모드 켜질때
                     if (!FieldManager.Instance.DungeonController.IsDungeonExist)
@@ -59,15 +57,23 @@ public class PlayerManager : Singleton<PlayerManager>
         }
     }
 
-    // 포탈을 향해 가야할 때(target==portal), 몬스터랑 포탈 다 없는 잠깐의 순간(target==null)
+    // 하나의 필드 내에서 이벤트가 끝나고 다음 필드로 향할 때
+    // 던전 => 포탈을 향해 가야할 때(target==portal), 몬스터랑 포탈 다 없는 잠깐의 순간(target==null)
+    // 오브젝트 => 상호작용을 통해 보상을 얻고 난 후
     public bool IsAutoMoving
     {
         get { return _isAutoMoving; }
         set
         {
-            _isAutoMoving = value;
+            if (_isAutoMoving != value)
+            {
+                _isAutoMoving = value;
+                Debug.Log($"AutoMoving: {_isAutoMoving}, {Time.frameCount}" );
+            }
         }
     }
+
+    public bool IsDead { get; set; }
 
     public PlayerController Player
     {

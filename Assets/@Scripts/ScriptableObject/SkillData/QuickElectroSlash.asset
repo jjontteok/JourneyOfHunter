@@ -22,12 +22,14 @@ MonoBehaviour:
   Damage: 5
   Speed: 0
   Angle: 180
-  MP: 3
   ConnectedSkillPrefab: {fileID: 0}
   HitEffectPrefab: {fileID: 6823302871133167919, guid: cd974dacb07f86b4ebe991d1822d05ea, type: 3}
   TargetExistence: 0
   IsPlayerSkill: 1
   IsPassive: 0
   Offset: {x: 0, y: 0, z: 0}
+  SkillAttribute: 3
   BuffStatus: 8
   BuffAmount: 0
+  IsUltimate: 0
+  SkillAnimationName: 

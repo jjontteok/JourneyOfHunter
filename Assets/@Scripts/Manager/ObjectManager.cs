@@ -679,7 +679,7 @@ public class ObjectManager : Singleton<ObjectManager>
         }
         else if(type == typeof(ItemSlot))
         {
-            GameObject obj = Instantiate(ItemSlotList[name], parent);
+            GameObject obj = Instantiate(ItemSlotList[name]);
             return obj;
         }
         else if(type == typeof(RewardTextController))

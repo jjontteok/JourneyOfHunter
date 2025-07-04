@@ -48,7 +48,7 @@ public class PlayerController : MonoBehaviour, IDamageable
     Vector3 _direction;
     float _mp;
     float _hp;
-    
+
     float _shortestSkillDistance;       //자동일 때, 이동 멈추는 범위
 
     float _atkBuff = 0;                 //던전 클리어 실패 시 주어질 버프
@@ -63,7 +63,7 @@ public class PlayerController : MonoBehaviour, IDamageable
 
     [SerializeField] PlayerData _playerData;
     [SerializeField] PlayerInventoryData _playerInventoryData;
-    [SerializeField] Inventory _inventory;
+    private Inventory _inventory;
 
     #region Properties
 
@@ -185,6 +185,12 @@ public class PlayerController : MonoBehaviour, IDamageable
 
     public void Move()
     {
+        if (PlayerManager.Instance.IsDead)
+        {
+            _rigidbody.linearVelocity = new Vector3(0, _rigidbody.linearVelocity.y, 0);
+            _animator.SetFloat(Define.Speed, 0);
+            return;
+        }
         //던전에 들어가지 않았을 때 플레이어의 위치를 이동시킴
         if (!FieldManager.Instance.DungeonController.IsDungeonExist && transform.position.z >= 113.2)
         {
@@ -201,60 +207,34 @@ public class PlayerController : MonoBehaviour, IDamageable
         // 자동 모드일 때
         if (!_isSwifting && PlayerManager.Instance.IsAuto)
         {
+            // 타겟 생기면 IsAutoMoving=false
             if (PlayerManager.Instance.IsAutoMoving)
-            {
-                MoveAlongRoad();
-            }
-            else
             {
                 SetTarget();
                 if (_target == null)
                 {
                     MoveAlongRoad();
                 }
+            }
+            else
+            {
+                if (_target == null)
+                {
+                    SetTarget();
+                    if (_target == null)
+                    {
+                        MoveAlongRoad();
+                    }
+                }
                 else
                 {
+                    // 거리가 아니라 trigger 발생 시 IsAutoMoving 관리로 해야할듯
                     if (!MoveToTarget(0.5f))
                     {
                         // 오브젝트 접촉 후엔 다시 제갈길 가는 거로
                         PlayerManager.Instance.IsAutoMoving = true;
                     }
                 }
-            }// 던전 클리어해서 포탈 향해 가는 상황 / target==portal or null 일 때
-            if (PlayerManager.Instance.IsAutoMoving)
-            {
-                if (_target == null)
-                {
-                    SetTarget();
-                    // target 찾으면 autoMoving 스탑
-                    if (_target?.CompareTag(Define.MonsterTag) != null)
-                    {
-                        PlayerManager.Instance.IsAutoMoving = false;
-                    }
-                }
-                else if (!MoveToTarget(0.5f))
-                {
-                    // 포탈에 닿으면 IsAutoMoving false시키고 target 초기화
-                    PlayerManager.Instance.IsAutoMoving = false;
-                    _target = null;
-                    return;
-                }
-            }
-            else
-            {
-                // 타겟 없으면
-                if (_target == null || !_target.gameObject.activeSelf)
-                {
-                    // 타겟 찾고
-                    SetTarget();
-                    // 찾았는데도 없으면 다음 스테이지 자동 이동?
-                    if (PlayerManager.Instance.IsAutoMoving)
-                    {
-                        return;
-                    }
-                    Debug.Log($"Current Target: {_target.name}");
-                }
-                MoveToTarget(_shortestSkillDistance);
             }
         }
         // 수동 모드일 때
@@ -304,7 +284,7 @@ public class PlayerController : MonoBehaviour, IDamageable
                 _direction.y = 0;
             }
             // 공격 모션 중이지 않을 때 이동
-            if(!_animator.GetBool(Define.IsAttacking))
+            if (!_animator.GetBool(Define.IsAttacking))
             {
                 _rigidbody.MovePosition(_rigidbody.position + _direction.normalized * _playerData.Speed * Time.fixedDeltaTime);
 
@@ -312,7 +292,7 @@ public class PlayerController : MonoBehaviour, IDamageable
                 //타겟 바라보게 회전
                 transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(_direction), _playerData.Speed * Time.deltaTime);
             }
-            
+
             return true;
         }
     }
@@ -395,25 +375,85 @@ public class PlayerController : MonoBehaviour, IDamageable
 
     void SetTarget()
     {
-        // 1. 필드 오브젝트 찾기
-        _target = GameObject.FindGameObjectWithTag(Define.FieldObjectTag)?.transform;
-        // 2. 몬스터 찾기
-        if(_target == null)
+        //switch(FieldManager.Instance.CurrentEventType)
+        //{
+        //    case Define.JourneyEventType.Dungeon:
+
+        //        break;
+
+        //    case Define.JourneyEventType.Merchant:
+
+        //        break;
+
+        //    case Define.JourneyEventType.TreasureBox:
+
+        //        break;
+
+        //    case Define.JourneyEventType.OtherObject:
+
+        //        break;
+        //}
+        // 던전인 경우, 몬스터 찾기
+        if (FieldManager.Instance.CurrentEventType == Define.JourneyEventType.Dungeon)
         {
+            // 우선 최단거리 기준으로 찾아보고
             _target = Util.GetNearestTarget(transform.position, _shortestSkillDistance)?.transform;
+            // 없으면 
             if (_target == null || !_target.gameObject.activeSelf)
             {
+
                 //쵸비상 몬스터 풀 어케 가져옴
-                //stage info에서 현재 스테이지의 몬스터 정보를 받아와서 이름으로 
+                //stage info에서 현재 스테이지의 몬스터 정보를 받아와서 이름으로
                 _target = Util.GetNearestTarget(transform.position, 100f)?.transform;
                 if (_target == null)
                 {
                     Debug.Log("No target on field!!!");
                     PlayerManager.Instance.IsAutoMoving = true;
                     _target = FindAnyObjectByType<DungeonPortalController>()?.transform;
+                    if (_target != null)
+                    {
+                        PlayerManager.Instance.IsAutoMoving = false;
+                    }
+                }
+                else
+                {
+                    PlayerManager.Instance.IsAutoMoving = false;
                 }
             }
-        }        
+            else
+            {
+                PlayerManager.Instance.IsAutoMoving = false;
+            }
+        }
+        else
+        // 던전이 아닌 경우, 필드 오브젝트 찾기
+        {
+            _target = GameObject.FindGameObjectWithTag(Define.FieldObjectTag)?.transform;
+
+            if (_target != null)
+            {
+                if (FieldManager.Instance.CurrentEventType == Define.JourneyEventType.TreasureBox)
+                {
+                    if (_target.GetComponent<Animator>().GetBool(Define.Open))
+                    {
+                        PlayerManager.Instance.IsAutoMoving = true;
+                        _target = null;
+                    }
+                    else
+                    {
+                        PlayerManager.Instance.IsAutoMoving = false;
+                    }
+                }
+                else if (FieldManager.Instance.CurrentEventType == Define.JourneyEventType.Merchant)
+                {
+                    // TBD
+                }
+                else if (FieldManager.Instance.CurrentEventType == Define.JourneyEventType.OtherObject)
+                {
+                    // TBD
+                }
+            }
+        }
     }
 
     public void SetAuto(bool flag)
@@ -479,6 +519,14 @@ public class PlayerController : MonoBehaviour, IDamageable
                 break;
         }
     }
+
+    void Die()
+    {
+        OnPlayerDead?.Invoke();
+        _animator.SetTrigger(Define.Die);
+        _animator.SetInteger(Define.DieType, UnityEngine.Random.Range(0, 2));
+    }
+
     #endregion
 
     public void SetPlayerBuff()
@@ -513,12 +561,6 @@ public class PlayerController : MonoBehaviour, IDamageable
         Debug.Log($"Damaged: {finalDamage}, Current Player HP: {_hp}");
         if (HP <= 0)
             Die();
-    }
-
-    // * 플레이어가 죽으면 실행되는 메서드
-    void Die()
-    {
-        OnPlayerDead?.Invoke();
     }
 
     public float CalculateFinalDamage(float damage, float def)

@@ -1,8 +1,7 @@
 using System;
 using System.Collections.Generic;
-using UnityEditor.Rendering;
 using UnityEngine;
-using static Define;
+
 
 public class RewardSystem
 {
@@ -85,6 +84,11 @@ public class FieldManager : Singleton<FieldManager>, IEventSubscriber, IDeactiva
         get { return _failedCount; }
     }
 
+    public Define.JourneyEventType CurrentEventType
+    {
+        get { return _currentEventType; }
+    }
+
     protected override void Initialize()
     {
         _dungeonController = new GameObject("DungeonController").AddComponent<DungeonController>();
@@ -116,7 +120,7 @@ public class FieldManager : Singleton<FieldManager>, IEventSubscriber, IDeactiva
         int rnd;
         _stageCount = ++StageCount;
         //5의 배수마다 던전 두두둥장
-        if(_stageCount % 5 == 0) 
+        if (_stageCount % 5 == 0)
         {
             rnd = (int)Define.JourneyType.Dungeon;
             _rewardSystem.SetReward(Define.RewardType.JourneyExp, 2 * _stageCount);
@@ -126,13 +130,13 @@ public class FieldManager : Singleton<FieldManager>, IEventSubscriber, IDeactiva
             rnd = UnityEngine.Random.Range(0, 100);
             rnd = 80;
             //80% 확률로 기타 오브젝트 등장
-            if(rnd < 80)
+            if (rnd < 80)
             {
                 rnd = (int)Define.JourneyType.OtherObject;
                 _rewardSystem.SetReward(Define.RewardType.JourneyExp, 5 * _stageCount);
             }
             //10%의 확률로 보물 상자 등장
-            else if(rnd < 90)
+            else if (rnd < 90)
             {
                 rnd = (int)Define.JourneyType.TreasureBox;
                 Define.ItemValue treasureRank = SetTreasureRank();
@@ -145,13 +149,14 @@ public class FieldManager : Singleton<FieldManager>, IEventSubscriber, IDeactiva
                 return;
             }
             //10%의 확률로 상인 등장
-            else if(rnd < 100)
+            else if (rnd < 100)
             {
                 rnd = (int)Define.JourneyType.Merchant;
             }
         }
         _currentType = (Define.JourneyType)rnd;
         OnJourneyEvent?.Invoke(_currentType, Define.ItemValue.Common);
+        PlayerManager.Instance.IsAutoMoving = false;
     }
     #endregion
 

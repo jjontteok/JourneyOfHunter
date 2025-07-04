@@ -38,7 +38,7 @@ public class DamageOverTimeColliderController : PenetrationColliderController, I
     {
         if (_currentTime >= _timeInterval)
         {
-            other.GetComponent<IDamageable>().GetDamage(_damage);
+            other.GetComponent<IDamageable>().GetDamage(Util.GetEnhancedDamage(_damage, _skillData));
         }
     }
 }

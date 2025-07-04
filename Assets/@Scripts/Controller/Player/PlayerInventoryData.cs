@@ -18,24 +18,34 @@ public class PlayerInventoryData : ScriptableObject
 // 3. 
 public struct PendingChange
 {
-
+    public Define.PendingTaskType TaskType;
+    // UI상 아이템정보?
 }
 
 // 대기중인 변경사항 관리 클래스
-public class PendingChangeTaskManager
+// 작업 별 큐에 변경사항 작업 내용 저장
+// 해당 인벤토리 탭 오픈 시에 작업 내용 pop 및 적용
+// 우선 아이템 타입별로 작업 내용이 존재하는 지를 확인할 수 있어야 함 -> 이걸 체크해서 불필요한 과정을 줄이자. 그냥 queue의 사이즈를 보고 판단하면 될듯?
+public class InventoryChangeQueue
 {
-    private Dictionary<Define.PendingTaskType, Queue<PendingChange>> _pendingChangeList;
+    private Dictionary<Define.ItemType, Queue<PendingChange>> _pendingChangeList;
 
-    PendingChangeTaskManager()
+    InventoryChangeQueue()
     {
-        _pendingChangeList = new Dictionary<Define.PendingTaskType, Queue<PendingChange>>();
+        _pendingChangeList = new Dictionary<Define.ItemType, Queue<PendingChange>>();
 
-        foreach(Define.PendingTaskType taskType in Enum.GetValues(typeof(Define.PendingTaskType)))
+        foreach(Define.ItemType itemType in Enum.GetValues(typeof(Define.ItemType)))
         {
-            _pendingChangeList.Add(taskType, new Queue<PendingChange>());
+            _pendingChangeList.Add(itemType, new Queue<PendingChange>());
         }
     }
 
+    private bool IsExistTask(Define.ItemType itemType)
+    {
+        if (_pendingChangeList[itemType].Count > 0)
+            return true;
+        return false;
+    }
 }
 
 // 실제 인벤토리 클래스
@@ -68,11 +78,17 @@ public class Inventory
         _goods[Define.GoodsType.SilverCoin] = so.SilverCoin;
         _goods[Define.GoodsType.Gem] = so.Gem;
 
+        // 아이템이 존재하지 않더라도 모든 타입의 인벤토리는 미리 생성을 해둬야 함
+        foreach (Define.ItemType itemType in Enum.GetValues(typeof(Define.ItemType)))
+        {
+            _items[itemType] = new List<ItemData>();
+        }
+
+        // DB의 아이템 리스트를 모두 순회하며 클라이언트 타입별 인벤토리에 데이터 저장
         foreach (var item in so.Items)
         {
-            if (!_items.ContainsKey(item.Type))
-                _items[item.Type] = new List<ItemData>();
-            _items[item.Type].Add(item);
+            if (_items.ContainsKey(item.Type))
+                _items[item.Type].Add(item);
         }
 
         OnInventorySet?.Invoke(_items);
@@ -82,7 +98,11 @@ public class Inventory
     {
         if (!_items.ContainsKey(item.Type))
             _items[item.Type] = new List<ItemData>();
-        _items[item.Type].Add(item);
+        int index = _items[item.Type].IndexOf(item);
+        if (index == -1)
+            _items[item.Type].Add(item);
+        else
+            _items[item.Type][index].Count++;
         OnItemAdd?.Invoke(item.Type);
     }
 

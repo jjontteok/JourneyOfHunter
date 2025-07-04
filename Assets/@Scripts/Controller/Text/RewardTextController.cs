@@ -1,7 +1,5 @@
 using System.Collections;
-using System.Runtime.InteropServices.WindowsRuntime;
 using UnityEngine;
-using static UnityEditor.PlayerSettings;
 
 public class RewardTextController : MonoBehaviour
 {
