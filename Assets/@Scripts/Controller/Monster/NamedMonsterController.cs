@@ -134,21 +134,19 @@ public class NamedMonsterController : MonsterController
 
     void ActivateCloseAttack()
     {
-        if (!_target.GetComponent<Animator>().GetBool(Define.IsDead))
-        {
-            _animator.SetTrigger(Define.CloseAttack);
-        }
+        if (_target.GetComponent<Animator>().GetInteger(Define.DieType) > 0)
+            return;
+        _animator.SetTrigger(Define.CloseAttack);
     }
 
     //원거리 공격 활성화
     void ActivateLongAttack(float distance)
     {
-        if (!_target.GetComponent<Animator>().GetBool(Define.IsDead))
-        {
-            _animator.SetTrigger(Define.LongAttack);
-            // Offset = (0,0,3)
-            _bulletSkill.ActivateSkill(transform.position + Vector3.up * 2f);
-        }
+        if (_target.GetComponent<Animator>().GetInteger(Define.DieType) > 0)
+            return;
+        _animator.SetTrigger(Define.LongAttack);
+        // Offset = (0,0,3)
+        _bulletSkill.ActivateSkill(transform.position + Vector3.up * 2f);
     }
 
 
