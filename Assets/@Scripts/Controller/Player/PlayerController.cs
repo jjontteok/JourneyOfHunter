@@ -170,7 +170,7 @@ public class PlayerController : MonoBehaviour, IDamageable
     public void GainJourneyExp(int amount = default)
     {
         float journeyExp = 5; //기본 증가량
-        
+
         //구역을 지날 때에는 해당 메달의 랭크대로 여정의 증표 증가
         if (amount == default)
             journeyExp *= _playerData.JourneyRankData.Index;
@@ -185,7 +185,7 @@ public class PlayerController : MonoBehaviour, IDamageable
 
     public void Move()
     {
-        if (PlayerManager.Instance.IsDead)
+        if (_animator.GetInteger(Define.DieType) > 0)
         {
             _rigidbody.linearVelocity = new Vector3(0, _rigidbody.linearVelocity.y, 0);
             _animator.SetFloat(Define.Speed, 0);
@@ -228,11 +228,19 @@ public class PlayerController : MonoBehaviour, IDamageable
                 }
                 else
                 {
-                    // 거리가 아니라 trigger 발생 시 IsAutoMoving 관리로 해야할듯
-                    if (!MoveToTarget(0.5f))
+                    if (_target.CompareTag(Define.MonsterTag))
                     {
-                        // 오브젝트 접촉 후엔 다시 제갈길 가는 거로
-                        PlayerManager.Instance.IsAutoMoving = true;
+                        if (!MoveToTarget(_shortestSkillDistance))
+                        {
+                            PlayerManager.Instance.IsAutoMoving = true;
+                        }
+                    }
+                    else
+                    {
+                        if (!MoveToTarget(0.5f))
+                        {
+                            PlayerManager.Instance.IsAutoMoving = true;
+                        }
                     }
                 }
             }
@@ -264,7 +272,9 @@ public class PlayerController : MonoBehaviour, IDamageable
         targetPos.y = 0;
         Vector3 playerPos = transform.position;
         playerPos.y = 0;
-        if (Vector3.Distance(targetPos, playerPos) <= distance)
+        float tmp = Vector3.Distance(targetPos, playerPos);
+        //Debug.Log($"Current distance to target: {tmp}");
+        if (tmp <= distance)
         {
             _direction = Vector3.zero;
             _rigidbody.linearVelocity = new Vector3(0, _rigidbody.linearVelocity.y, 0);
@@ -375,24 +385,6 @@ public class PlayerController : MonoBehaviour, IDamageable
 
     void SetTarget()
     {
-        //switch(FieldManager.Instance.CurrentEventType)
-        //{
-        //    case Define.JourneyEventType.Dungeon:
-
-        //        break;
-
-        //    case Define.JourneyEventType.Merchant:
-
-        //        break;
-
-        //    case Define.JourneyEventType.TreasureBox:
-
-        //        break;
-
-        //    case Define.JourneyEventType.OtherObject:
-
-        //        break;
-        //}
         // 던전인 경우, 몬스터 찾기
         if (FieldManager.Instance.CurrentEventType == Define.JourneyType.Dungeon)
         {
@@ -456,6 +448,11 @@ public class PlayerController : MonoBehaviour, IDamageable
         }
     }
 
+    public void ReleaseTarget()
+    {
+        _target = null;
+    }
+
     public void SetAuto(bool flag)
     {
         PlayerManager.Instance.IsAuto = flag;
@@ -512,7 +509,6 @@ public class PlayerController : MonoBehaviour, IDamageable
 
             case Define.StatusType.CoolTimeDecrease:
                 _runtimeData.CoolTimeDecrease += amount;
-                //Debug.Log($"After cooltime reduction changed: {_runtimeData.CoolTimeDecrease}%");
                 break;
 
             default:
@@ -523,7 +519,7 @@ public class PlayerController : MonoBehaviour, IDamageable
     void Die()
     {
         _animator.SetInteger(Define.DieType, UnityEngine.Random.Range(0, 2));
-        PlayerManager.Instance.IsDead = true;
+        //PlayerManager.Instance.IsDead = true;
         _animator.SetTrigger(Define.Die);
         Invoke("Revive", 2f);
     }
@@ -532,8 +528,9 @@ public class PlayerController : MonoBehaviour, IDamageable
     {
         HP = _playerData.HP;
         OnPlayerDead?.Invoke();
-        PlayerManager.Instance.IsDead = false;
-        _animator.SetBool(Define.IsDead, false);
+        _animator.SetInteger(Define.DieType, 0);
+        //PlayerManager.Instance.IsDead = false;
+        //_animator.SetBool(Define.IsDead, false);
     }
 
     #endregion
@@ -544,14 +541,14 @@ public class PlayerController : MonoBehaviour, IDamageable
             _atkBuff = _runtimeData.Atk / 10;
         if (_hpBuff == 0)
             _hpBuff = _runtimeData.HP / 10;
-            
+
         OnOffStatusUpgrade(Define.StatusType.Atk, _atkBuff);
         OnOffStatusUpgrade(Define.StatusType.HP, _hpBuff);
     }
 
     public void RemovePlayerBuff(int buffCount)
     {
-        for(int i = 0; i < buffCount; i++)
+        for (int i = 0; i < buffCount; i++)
         {
             OnOffStatusUpgrade(Define.StatusType.Atk, -_atkBuff);
             OnOffStatusUpgrade(Define.StatusType.HP, -_hpBuff);
@@ -564,16 +561,17 @@ public class PlayerController : MonoBehaviour, IDamageable
     // * 방어력 적용 데미지 계산 메서드
     public void GetDamage(float damage)
     {
+        if (_animator.GetInteger(Define.DieType) > 0)
+            return;
         float finalDamage = CalculateFinalDamage(damage, _runtimeData.Def);
-        if(!PlayerManager.Instance.IsDead)
+        HP -= finalDamage;
+        DamageTextEvent.Invoke(Util.GetDamageTextPosition(gameObject.GetComponent<Collider>()), finalDamage, false);
+        Debug.Log($"Damaged: {finalDamage}, Current Player HP: {_hp}");
+        if (HP <= 0)
         {
-            HP -= finalDamage;
-            DamageTextEvent.Invoke(Util.GetDamageTextPosition(gameObject.GetComponent<Collider>()), finalDamage, false);
-            Debug.Log($"Damaged: {finalDamage}, Current Player HP: {_hp}");
-            if (HP <= 0)
-                Die();
+            Die();
         }
-        
+
     }
 
     public float CalculateFinalDamage(float damage, float def)

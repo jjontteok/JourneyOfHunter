@@ -102,6 +102,7 @@ public class TreasureBoxController : MonoBehaviour
         PlayOpenAnimation();
         FieldManager.Instance.RewardSystem.
             GainReward(transform.position + Vector3.up * 2);
+        //PlayerManager.Instance.Player.ReleaseTarget();
         PlayerManager.Instance.IsAutoMoving = true;
     }
 
