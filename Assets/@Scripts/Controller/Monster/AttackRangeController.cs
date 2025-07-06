@@ -26,7 +26,7 @@ public class AttackRangeController : MonoBehaviour
     private void OnTriggerStay(Collider other)
     {
         //Debug.Log($"충돌 발생: {other.Name}, 태그: {other.tag}, 기대 태그: {Define.PlayerTag}");
-        if(other.CompareTag(Define.PlayerTag))
+        if (other.CompareTag(Define.PlayerTag) && other.GetComponent<Animator>().GetInteger(Define.DieType) == 0)
         {
             //Debug.Log("충돌");
             OnAttack.Invoke();

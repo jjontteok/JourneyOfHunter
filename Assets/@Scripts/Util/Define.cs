@@ -30,6 +30,7 @@ public class Define : MonoBehaviour
     public const string GroundTag = "Ground";
     public const string MonsterTag = "Monster";
     public const string FieldObjectTag = "FieldObject";
+    public const string PortalTag = "Portal";
     #endregion
 
     #region Path
@@ -214,6 +215,7 @@ public class Define : MonoBehaviour
     public const string PlayerSkillLayer = "PlayerSkill";
     public const string MonsterSkillLayer = "MonsterSkill";
     public const string MonsterAttackRangeLayer = "MonsterAttackRange";
+    public const string TreasureBoxLayer = "TreasureBox";
     #endregion
 
     #region Constants

@@ -12,7 +12,7 @@ public class CrashColliderController : SkillColliderController
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.CompareTag(Define.PlayerTag) || other.CompareTag(Define.MonsterTag))
+        if (other.CompareTag(Define.PlayerTag) || other.CompareTag(Define.MonsterTag) || other.CompareTag(Define.FieldObjectTag))
         {
             //ActivateConnectedSkill();
             ProcessTrigger(other);

@@ -25,6 +25,6 @@ public class NamedSpawnerController : MonoBehaviour
 
     public void SetSpawnerOff()
     {
-        _monster.SetActive(false);
+        _monster?.SetActive(false);
     }
 }

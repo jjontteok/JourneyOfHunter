@@ -52,7 +52,7 @@ public class FieldManager : Singleton<FieldManager>, IEventSubscriber, IDeactiva
     DungeonController _dungeonController;
     PlayerData _playerData;
     RewardSystem _rewardSystem;
-
+    [SerializeField]
     Define.JourneyType _currentType;
 
     int _stageCount;
@@ -121,14 +121,14 @@ public class FieldManager : Singleton<FieldManager>, IEventSubscriber, IDeactiva
         _stageCount = ++StageCount;
         //5의 배수마다 던전 두두둥장
         //if (_stageCount % 5 == 0)
-        if(true)
+        if (UnityEngine.Random.Range(0, 2) == 0)
         {
             rnd = (int)Define.JourneyType.Dungeon;
             _rewardSystem.SetReward(Define.RewardType.JourneyExp, 2 * _stageCount);
         }
         else
         {
-            rnd = UnityEngine.Random.Range(0, 100);
+            //rnd = UnityEngine.Random.Range(0, 100);
             rnd = 80;
             //80% 확률로 기타 오브젝트 등장
             if (rnd < 80)
