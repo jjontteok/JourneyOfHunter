@@ -1,5 +1,6 @@
 using System;
 using System.Collections;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public struct PlayerStatus
@@ -46,7 +47,6 @@ public class PlayerController : MonoBehaviour, IDamageable
 
     PlayerStatus _runtimeData;
     Vector3 _direction;
-    float _mp;
     float _hp;
 
     float _shortestSkillDistance;       //자동일 때, 이동 멈추는 범위
@@ -145,7 +145,6 @@ public class PlayerController : MonoBehaviour, IDamageable
     void Update()
     {
         Recover();
-        //SkillInventoryOnOff();
     }
 
     private void FixedUpdate()
@@ -228,19 +227,25 @@ public class PlayerController : MonoBehaviour, IDamageable
                 }
                 else
                 {
-                    if (_target.CompareTag(Define.MonsterTag))
+                    if (_target == null || !_target.gameObject.activeSelf)
                     {
-                        if (!MoveToTarget(_shortestSkillDistance))
-                        {
-                            PlayerManager.Instance.IsAutoMoving = true;
-                        }
+                        SetTarget();
+                    }
+                    if ((!_target.CompareTag(Define.PortalTag) && FieldManager.Instance.CurrentEventType == Define.JourneyType.Dungeon) || FieldManager.Instance.CurrentEventType == Define.JourneyType.TreasureBox)
+                    {
+                        //if (!MoveToTarget(_shortestSkillDistance))
+                        //{
+                        //    PlayerManager.Instance.IsAutoMoving = true;
+                        //}
+                        MoveToTarget(_shortestSkillDistance);
                     }
                     else
                     {
-                        if (!MoveToTarget(0.5f))
-                        {
-                            PlayerManager.Instance.IsAutoMoving = true;
-                        }
+                        //if (!MoveToTarget(0.5f))
+                        //{
+                        //    PlayerManager.Instance.IsAutoMoving = true;
+                        //}
+                        MoveToTarget(0.5f);
                     }
                 }
             }
@@ -518,8 +523,7 @@ public class PlayerController : MonoBehaviour, IDamageable
 
     void Die()
     {
-        _animator.SetInteger(Define.DieType, UnityEngine.Random.Range(0, 2));
-        //PlayerManager.Instance.IsDead = true;
+        _animator.SetInteger(Define.DieType, UnityEngine.Random.Range(1, 3));
         _animator.SetTrigger(Define.Die);
         Invoke("Revive", 2f);
     }
@@ -529,8 +533,6 @@ public class PlayerController : MonoBehaviour, IDamageable
         HP = _playerData.HP;
         OnPlayerDead?.Invoke();
         _animator.SetInteger(Define.DieType, 0);
-        //PlayerManager.Instance.IsDead = false;
-        //_animator.SetBool(Define.IsDead, false);
     }
 
     #endregion

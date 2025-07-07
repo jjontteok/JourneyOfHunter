@@ -36,21 +36,25 @@ public class SkillColliderController : MonoBehaviour
 
     protected virtual void InstantiateHitEffect(Collider other)
     {
-        if (_hitEffect!=null)
+        if (_hitEffect != null)
         {
             GameObject effect = Instantiate(_hitEffect);
             effect.name = $"{_hitEffect.name} effect";
 
             effect.transform.position = Util.GetEffectPosition(other);
             Destroy(effect, 0.5f);
-        }        
+        }
     }
 
     // 트리거 충돌 시 메서드
     protected virtual void ProcessTrigger(Collider other)
     {
-        other.GetComponent<IDamageable>().GetDamage(Util.GetEnhancedDamage(_damage, _skillData));
-        InstantiateHitEffect(other);
+        IDamageable damageable = other.GetComponent<IDamageable>();
+        if (damageable != null)
+        {
+            damageable.GetDamage(Util.GetEnhancedDamage(_damage, _skillData));
+            InstantiateHitEffect(other);
+        }
         //ActivateConnectedSkill();
     }
 

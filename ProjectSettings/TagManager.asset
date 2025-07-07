@@ -8,6 +8,7 @@ TagManager:
   - Ground
   - FxTemporaire
   - FieldObject
+  - Portal
   layers:
   - Default
   - TransparentFX
@@ -21,7 +22,7 @@ TagManager:
   - MonsterSkill
   - MonsterAttackRange
   - Ground
-  - 
+  - TreasureBox
   - 
   - 
   - 

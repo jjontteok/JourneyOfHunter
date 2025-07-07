@@ -49,6 +49,8 @@ public class EnvironmentManager : Singleton<EnvironmentManager>, IEventSubscribe
     string _currentTime;
     bool _isMorning = false;
 
+    public Action<Define.TimeOfDayType> OnTypeChanged;
+
     public float ToKey
     {
         set 
@@ -57,7 +59,15 @@ public class EnvironmentManager : Singleton<EnvironmentManager>, IEventSubscribe
         }
     }
 
-    public Define.TimeOfDayType CurrentType { get { return _currentType; } }
+    public Define.TimeOfDayType CurrentType 
+    {
+        get { return _currentType; }
+        set
+        {
+            _currentType = value;
+            OnTypeChanged?.Invoke(_currentType);
+        }
+    }
 
     //임시 방편
     protected override void Initialize()
@@ -283,7 +293,7 @@ public class EnvironmentManager : Singleton<EnvironmentManager>, IEventSubscribe
     {
         string skyBoxName = GetSkyBoxKey(skyBox);
         _currentSkyBox = _skyBoxList[skyBoxName];
-        _currentType =  SetCurrentProperty(skyBoxName);
+        CurrentType =  SetCurrentProperty(skyBoxName);
         _currentTime = skyBoxName;
 
         //바꿀 스카이박스가 저녁이면

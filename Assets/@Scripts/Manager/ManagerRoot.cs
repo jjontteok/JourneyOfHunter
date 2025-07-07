@@ -77,5 +77,6 @@ public class ManagerRoot : MonoBehaviour
         Physics.IgnoreLayerCollision(LayerMask.NameToLayer(Define.MonsterTag), LayerMask.NameToLayer(Define.MonsterSkillLayer));
         Physics.IgnoreLayerCollision(LayerMask.NameToLayer(Define.MonsterAttackRangeLayer), LayerMask.NameToLayer(Define.MonsterSkillLayer));
         Physics.IgnoreLayerCollision(LayerMask.NameToLayer(Define.MonsterAttackRangeLayer), LayerMask.NameToLayer(Define.PlayerSkillLayer));
+        Physics.IgnoreLayerCollision(LayerMask.NameToLayer(Define.MonsterAttackRangeLayer), LayerMask.NameToLayer(Define.MonsterAttackRangeLayer));
     }    
 }
