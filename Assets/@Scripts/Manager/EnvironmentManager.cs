@@ -10,13 +10,6 @@ public class EnvironmentManager : Singleton<EnvironmentManager>, IEventSubscribe
 
     #region Dictionary
     private Dictionary<string, Material> _skyBoxList;
-    private Dictionary<string, Color> _colorList;
-    private Dictionary<string, Color> _targetColorList;
-    private Dictionary<string, float> _targetLightList;
-    private Dictionary<string, float> _targetMountainList;
-    private Dictionary<string, float> _rotateSkyBoxList;
-    private Dictionary<string, float> _rotateLightList;
-    private Dictionary<string, float> _skyBoxDurationList;
 
     #endregion
     private Material _currentSkyBox;
@@ -30,11 +23,6 @@ public class EnvironmentManager : Singleton<EnvironmentManager>, IEventSubscribe
 
     //더 좋은 방법 어디 없나?
     Color _betterColor;
-
-    const string Morning = "MorningSkyBox";
-    const string Noon = "NoonSkyBox";
-    const string Evening = "EveningSkyBox";
-    const string Night = "NightSkyBox";
 
     float _currentLightValue = 1;
     float _currentMountainValue = 1;
@@ -74,63 +62,6 @@ public class EnvironmentManager : Singleton<EnvironmentManager>, IEventSubscribe
 
         _currentLight = GameObject.Find("Directional Light").GetComponent<Light>();
 
-        _colorList = new Dictionary<string, Color>()
-        {
-            { Morning,  new Color(0.5f, 0.5f, 0.5f, 1) },
-            { Noon, new Color(0.5f, 0.5f, 0.5f, 1) },
-            { Evening, new Color(0, 0, 0, 1) },
-            { Night, new Color(0.26f, 0.34f, 0.415f, 1) }
-            //{ Night, new Color(0.426f, 0.611f, 0.896f, 1) }
-        };
-
-        _targetColorList = new Dictionary<string, Color>()
-        {
-            { Morning, new Color(0.36f, 0.446f, 0.5f, 1) },
-            { Noon, new Color(0.29f, 0.221f, 0.221f, 1) },
-            { Evening, new Color(0.011f, 0.08f, 0.08f, 1) },
-            { Night, new Color(0.9f, 0.9f, 0.9f, 1) }
-        };
-
-        _targetLightList = new Dictionary<string, float>()
-        {
-            { Morning, 1f },
-            { Noon, 0.5f },
-            { Evening, 0.1f },
-            { Night, 0.5f }
-        };
-
-        _targetMountainList = new Dictionary<string, float>()
-        {
-            { Morning, 0.9f},
-            { Noon, 0.5f},
-            { Evening, 0.33f},
-            { Night, 0.66f}
-        };
-
-        _rotateSkyBoxList = new Dictionary<string, float>()
-        {
-            { Morning, 270 },
-            { Noon, 0 },
-            { Evening, 50 },
-            { Night, 312 }
-        };
-
-        _rotateLightList = new Dictionary<string, float>()
-        {
-            { Morning, 20 },
-            { Noon, 40 },
-            { Evening, 20 },
-            { Night, 40 }
-        };
-
-        _skyBoxDurationList = new Dictionary<string, float>()
-        {
-            { Morning, 90f },
-            { Noon, 90f },
-            { Evening, 90f },
-            { Night, 90f }
-        };
-
         SetEnvironmentObject();
         SetInitLightRotateSpeed();
         SetInitAllSkyBoxRotate();
@@ -142,7 +73,7 @@ public class EnvironmentManager : Singleton<EnvironmentManager>, IEventSubscribe
     {
         foreach(var skyBox in _skyBoxList)
         {
-            skyBox.Value.SetFloat("_Rotation", _rotateSkyBoxList[skyBox.Key]);
+            skyBox.Value.SetFloat("_Rotation", Define.RotateSkyBoxList[skyBox.Key]);
         }
     }
 
@@ -161,8 +92,8 @@ public class EnvironmentManager : Singleton<EnvironmentManager>, IEventSubscribe
 
     void SetInitLightRotateSpeed()
     {
-        _skyBoxRotateValue = _rotateSkyBoxList[Noon];
-        _rotateSpeed = _rotateLightList[Noon] / ( _skyBoxDurationList[Noon] * _toKey);
+        _skyBoxRotateValue = Define.RotateSkyBoxList[Define.Noon];
+        _rotateSpeed = Define.RotateLightList[Define.Noon] / ( Define.SkyBoxDurationList[Define.Noon] * _toKey);
     }
     #endregion
 
@@ -247,7 +178,7 @@ public class EnvironmentManager : Singleton<EnvironmentManager>, IEventSubscribe
         _time += Time.deltaTime;
 
         float t = (_time / _duration) * 10 / _toKey;
-        Color changeColor = Color.Lerp(_colorList[_currentTime], _targetColorList[_currentTime], t);
+        Color changeColor = Color.Lerp(Define.ColorList[_currentTime], Define.TargetColorList[_currentTime], t);
         _currentSkyBox.SetColor("_Tint", changeColor);
 
         LerpLight(current, t);
@@ -258,7 +189,7 @@ public class EnvironmentManager : Singleton<EnvironmentManager>, IEventSubscribe
         {
             _time = 0;
             _changeType = Define.TimeOfDayType.None;    
-            if (current == Noon) _betterColor = changeColor;
+            if (current == Define.Noon) _betterColor = changeColor;
 
             ChangeSkyBox(Extension.GetNextType(type));
         }
@@ -266,13 +197,13 @@ public class EnvironmentManager : Singleton<EnvironmentManager>, IEventSubscribe
     
     void LerpLight(string current, float t)
     {
-        _currentLightValue = Mathf.Lerp(_currentLightValue, _targetLightList[current], t / 6);
+        _currentLightValue = Mathf.Lerp(_currentLightValue, Define.TargetLightList[current], t / 7);
         _currentLight.color = new Color(_currentLightValue, _currentLightValue, _currentLightValue, 1);
     }
 
     void LerpMountain(string current, float t)
     {
-        _currentMountainValue = Mathf.Lerp(_currentMountainValue, _targetMountainList[current], t / 6);
+        _currentMountainValue = Mathf.Lerp(_currentMountainValue, Define.TargetMountainList[current], t / 7);
         _mountain.SetColor("_Color", new Color(_currentMountainValue, _currentMountainValue, _currentMountainValue, 1));
     }
 
@@ -287,27 +218,27 @@ public class EnvironmentManager : Singleton<EnvironmentManager>, IEventSubscribe
         _currentTime = skyBoxName;
 
         //바꿀 스카이박스가 저녁이면
-        if (skyBoxName == Evening)
+        if (skyBoxName == Define.Evening)
         {
             //초기 저녁 색을 낮의 마지막 색으로 변경
-            _colorList[Evening] = _betterColor;
+            Define.ColorList[Define.Evening] = _betterColor;
 
             //초기 저녁 회전값을 낮의 마지막 회전값으로 변경
             _currentSkyBox.SetFloat("_Rotation", _skyBoxRotateValue + Time.deltaTime);
-            _currentSkyBox.SetColor("_Tint", _colorList[skyBoxName]);
+            _currentSkyBox.SetColor("_Tint", Define.ColorList[skyBoxName]);
         }
-        else if(skyBoxName == Morning)
+        else if(skyBoxName == Define.Morning)
         {
             _isMorning = true;
-            _skyBoxRotateValue = _rotateSkyBoxList[skyBoxName];
+            _skyBoxRotateValue = Define.RotateSkyBoxList[skyBoxName];
         }
         else
         {
             //바꿀 스카이박스의 시작 회전값으로 초기화
-            _skyBoxRotateValue = _rotateSkyBoxList[skyBoxName];
-            _currentSkyBox.SetColor("_Tint", _colorList[skyBoxName]);
+            _skyBoxRotateValue = Define.RotateSkyBoxList[skyBoxName];
+            _currentSkyBox.SetColor("_Tint", Define.ColorList[skyBoxName]);
         }
-        _duration = _skyBoxDurationList[skyBoxName];
+        _duration = Define.SkyBoxDurationList[skyBoxName];
 
         //실제로 스카이박스 변경
         ChangeRenderSettings();
@@ -317,7 +248,7 @@ public class EnvironmentManager : Singleton<EnvironmentManager>, IEventSubscribe
     {
         string skyBox = GetSkyBoxKey(type);
         //현재 스카이박스의 회전할 총량을 스카이박스가 유지될 시간으로 나눠 속력을 구함
-        _rotateSpeed = _rotateLightList[skyBox] / (_duration * _toKey);
+        _rotateSpeed = Define.RotateLightList[skyBox] / (_duration * _toKey);
         Debug.Log(_rotateSpeed);
     }
 
@@ -326,7 +257,7 @@ public class EnvironmentManager : Singleton<EnvironmentManager>, IEventSubscribe
         _time += Time.deltaTime;
         float t = (_time / _duration) * 10 / _toKey;
         
-        Color changeColor = Color.Lerp(_morningColor, _colorList[Morning], t);
+        Color changeColor = Color.Lerp(_morningColor, Define.ColorList[Define.Morning], t);
         _currentSkyBox.SetColor("_Tint", changeColor);
 
         if (t >= 1f)
@@ -339,10 +270,10 @@ public class EnvironmentManager : Singleton<EnvironmentManager>, IEventSubscribe
     {
         return skyBox switch
         {
-            Morning => Define.TimeOfDayType.Morning,
-            Noon => Define.TimeOfDayType.Noon,
-            Evening => Define.TimeOfDayType.Evening,
-            Night => Define.TimeOfDayType.Night,
+            Define.Morning => Define.TimeOfDayType.Morning,
+            Define.Noon => Define.TimeOfDayType.Noon,
+            Define.Evening => Define.TimeOfDayType.Evening,
+            Define.Night => Define.TimeOfDayType.Night,
             _ => Define.TimeOfDayType.Noon
         };
     }
@@ -356,11 +287,11 @@ public class EnvironmentManager : Singleton<EnvironmentManager>, IEventSubscribe
     {
         return type switch
         {
-            Define.TimeOfDayType.Morning => Morning,
-            Define.TimeOfDayType.Noon => Noon,
-            Define.TimeOfDayType.Evening => Evening,
-            Define.TimeOfDayType.Night => Night,
-            _ => Noon,
+            Define.TimeOfDayType.Morning => Define.Morning,
+            Define.TimeOfDayType.Noon => Define.Noon,
+            Define.TimeOfDayType.Evening => Define.Evening,
+            Define.TimeOfDayType.Night => Define.Night,
+            _ => Define.Noon,
         };
     }
 }

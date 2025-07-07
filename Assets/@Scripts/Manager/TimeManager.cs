@@ -12,8 +12,7 @@ public class TimeManager : Singleton<TimeManager>, IEventSubscriber
     public event Action<Define.TimeOfDayType> OnTimeSpeedChanged;
 
     WaitForSeconds _standardTime = new WaitForSeconds(1f);
-
-    private Dictionary<float, Define.TimeOfDayType> _colorChangeTransitions;
+    private Coroutine _namedMonsterCoroutine;
 
     float _monsterTime;
     public float _dayTime;
@@ -50,13 +49,6 @@ public class TimeManager : Singleton<TimeManager>, IEventSubscriber
     protected override void Initialize()
     {
         base.Initialize();
-        _colorChangeTransitions = new()
-        {
-            { 86f, Define.TimeOfDayType.Noon }, //7초에 낮 색 변경
-            { 176f, Define.TimeOfDayType.Evening },
-            { 265f, Define.TimeOfDayType.Night },
-            { 358f, Define.TimeOfDayType.Morning }
-        };
     }
 
     private void OnEnable()
@@ -75,7 +67,7 @@ public class TimeManager : Singleton<TimeManager>, IEventSubscriber
     public void StartNamedMonsterStage()
     {
         _monsterTime = 100;
-        StartCoroutine(NamedMonsterTimer());
+        _namedMonsterCoroutine = StartCoroutine(NamedMonsterTimer());
     }
 
     IEnumerator NamedMonsterTimer()
@@ -93,6 +85,12 @@ public class TimeManager : Singleton<TimeManager>, IEventSubscriber
             OnNamedMonsterTimeChanged?.Invoke(_monsterTime);
         }
     }
+
+    public void StopNamedMonsterTimer()
+    {
+        StopCoroutine(_namedMonsterCoroutine);
+        _namedMonsterCoroutine = null;
+    }
     #endregion
 
     #region DayTimer
@@ -109,7 +107,7 @@ public class TimeManager : Singleton<TimeManager>, IEventSubscriber
             _dayTime += 1;
             //Debug.Log(_dayTime);
             
-            if (_colorChangeTransitions.TryGetValue(_dayTime, out var newColorTimeOfDay))
+            if (Define.ColorChangeTimeList.TryGetValue(_dayTime, out var newColorTimeOfDay))
             {
                 //현재 스카이박스 색 변경
                 OnColorChanged?.Invoke(newColorTimeOfDay);

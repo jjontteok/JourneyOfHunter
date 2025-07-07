@@ -18,7 +18,7 @@ public class UI_StatusSlot : MonoBehaviour
 
     EventTrigger _eventTrigger;
     PlayerData _playerData;
-    PlayerInventoryData _inventoryData;
+    Inventory _inventoryData;
 
     bool _isButtonDown = false;
     bool _isSilverCoinLack = false;
@@ -51,7 +51,7 @@ public class UI_StatusSlot : MonoBehaviour
         _eventTrigger.triggers.Add(entryPointerUp);
     }
 
-    public void Initialize(PlayerData playerData, PlayerInventoryData inventoryData)
+    public void Initialize(PlayerData playerData, Inventory inventoryData)
     {
         _playerData = playerData;
         _inventoryData = inventoryData;

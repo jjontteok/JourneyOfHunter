@@ -20,7 +20,7 @@ public class SpawnController : MonoBehaviour
     public NormalSpawnerController NormalSpawner
     {
         get { return _normalSpawner; }
-    }    
+    }
 
     void Awake()
     {
@@ -64,9 +64,8 @@ public class SpawnController : MonoBehaviour
         FieldManager.Instance.DungeonController.OnSpawnNamedMonster += SetNormalSpawnerOff;
         FieldManager.Instance.DungeonController.OnSpawnNamedMonster += SetNamedSpawnerOn;
         FieldManager.Instance.DungeonController.OnDungeonExit += SetNamedSpawnerOff;
+        FieldManager.Instance.DungeonController.OnDungeonExit += SetNormalSpawnerOff;
         FieldManager.Instance.OnJourneyEvent += SetEvent;
-        FieldManager.Instance.OnFailedDungeonClear += SetNamedSpawnerOff;
-        FieldManager.Instance.OnFailedDungeonClear += SetNormalSpawnerOff;
     }
 
     #region GenerateSpawner
@@ -80,8 +79,7 @@ public class SpawnController : MonoBehaviour
     }
     #endregion
 
-
-    #region MonsterSpawn Function
+    #region Spawner
     void SetNormalSpawnerOn()
     {
         _normalSpawner.gameObject.SetActive(true);
@@ -109,8 +107,6 @@ public class SpawnController : MonoBehaviour
     }
     #endregion
 
-    //FieldManager에서 이벤트 발생 -> PlayerManager로 받아와 FieldManager를 거치지 않고 할까??????
-    //현재대로만 한다면 PlayerManager의 Player 프로퍼티를 받아 바로 이벤트 구독하자
     void SetEvent(Define.JourneyType type, Define.ItemValue treasureRank)
     {
         DeactivateObject();
@@ -133,8 +129,7 @@ public class SpawnController : MonoBehaviour
             case Define.JourneyType.Merchant:
                 objectName = "Merchant"; break;
             case Define.JourneyType.OtherObject:
-                //우선은 그냥 확률 똑같이
-                objectName = "OtherObject" + Random.Range(1, 4).ToString(); break;
+                objectName = "OtherObject-" + (treasureRank).ToString(); break;
             case Define.JourneyType.TreasureBox:
                 _fieldObjectList[objectName].GetComponent<TreasureBoxController>().TreasureRank = treasureRank;
                 break;

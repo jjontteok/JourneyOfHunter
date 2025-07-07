@@ -36,13 +36,19 @@ public class NormalSpawnerController : MonoBehaviour
     public void SetSpawnerOff()
     {
         StopCoroutine(_spawnCoroutine);
+
+        List<GameObject> normalMonsterPool = PoolManager.Instance.PoolList["Demon"];
+        for (int i = 0; i < normalMonsterPool.Count; i++)
+        {
+            normalMonsterPool[i].SetActive(false);
+        }
     }
 
     //* 스폰 시작 코루틴
     //- 게이트 생성 -> 게이트 최대 크기 달성 시 몬스터 스폰
     IEnumerator StartSpawn()
     {
-        while(true)
+        while (true)
         {
             SpawnGate();
             yield return new WaitForSeconds(0.5f);
@@ -55,7 +61,7 @@ public class NormalSpawnerController : MonoBehaviour
     //- 활성화된 몬스터 수의 최대 마릿 수 검사 및 생성 결정
     void SpawnGate()
     {
-        if(NormalMonsterController.s_AliveCount <= _limitOfNormalMonsterCount)
+        if (NormalMonsterController.s_AliveCount <= _limitOfNormalMonsterCount)
         {
             _spawnPos = GetRandomPos();
 

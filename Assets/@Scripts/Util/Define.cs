@@ -1,4 +1,6 @@
+using System.Collections.Generic;
 using UnityEngine;
+using static Unity.Burst.Intrinsics.Arm;
 
 public class Define : MonoBehaviour
 {
@@ -12,7 +14,7 @@ public class Define : MonoBehaviour
     public readonly static int UltimateReady = Animator.StringToHash("UltimateReady");
     public readonly static int Die = Animator.StringToHash("Die");
     public readonly static int DieType = Animator.StringToHash("DieType");
-    public readonly static int IsDead = Animator.StringToHash("IsDead");  
+    public readonly static int IsDead = Animator.StringToHash("IsDead");
 
     public readonly static int CloseAttack = Animator.StringToHash("CloseAttack");
     public readonly static int LongAttack = Animator.StringToHash("LongAttack");
@@ -66,7 +68,10 @@ public class Define : MonoBehaviour
     public const string PopupStageInfoPanelPath = "UI/PopupUI/Panel - StageInfo";
     public const string PopupNamedMonsterInfoPanelPath = "UI/PopupUI/Panel - NamedMonsterInfo";
     public const string PopupMerchantPanelPath = "UI/PopupUI/MerchantPanel - Popup";
-    public const string PopupTreasureAppearPanelPath = "UI/PopupUI/Panel - TreasureAppear";
+    public const string PopupStageTextPanelPath = "UI/PopupUI/Panel - StageText";
+    public const string PopupTreasureAppearPanelPath = "UI/PopupUI/Panel - TreasureAppearText";
+    public const string PopupBuffPanelPath = "UI/PopupUI/Panel - BuffText";
+    public const string PopupDungeonClearPanelPath = "UI/PopupUI/Panel - DungeonClearText";
 
     public const string GoblinKingCutScenePath = "CutScene/GoblinCutScene";
     public const string FollowCameraPath = "Camera/FollowPlayerCamera";
@@ -77,12 +82,12 @@ public class Define : MonoBehaviour
 
     #region DungeonSpots
     public static Vector3 FirstEnterSpot = new Vector3(0, 3, 0);
-    public static Vector3 DungeonEnterSpot = new Vector3(0, 5, 30);
-    public static Vector3 DungeonExitSpot = new Vector3(0, 5, 100);
-    public static Vector3 DungeonEnterPortalSpot = new Vector3(0, 2.5f, 60);
-    public static Vector3 DungeonExitPortalSpot = new Vector3(0, 2.5f, 99f);
+    public static Vector3 DungeonEnterSpot = new Vector3(0, 5, 20);
+    public static Vector3 DungeonExitSpot = new Vector3(0, 5, 90);
+    public static Vector3 DungeonEnterPortalSpot = new Vector3(0, 2.5f, 50);
+    public static Vector3 DungeonExitPortalSpot = new Vector3(0, 2.5f, 89f);
     #endregion
-    
+
     #region MonsterSpawnSpots
     public static Vector3 SpawnSpot1 = new Vector3(-7, 7, 0);
     public static Vector3 SpawnSpot2 = new Vector3(7, 7, 0);
@@ -168,7 +173,7 @@ public class Define : MonoBehaviour
         SilverCoin,
         Gem,
     }
-    
+
     public enum ItemValue
     {
         Common,
@@ -221,5 +226,95 @@ public class Define : MonoBehaviour
     public const float SkillInterval = 0.5f;
     public const int TotalSkillIconSlotNum = 6;
     public readonly static string[] SkillAttributes = { "", "불", "물", "빛", "암" };
+
+    public const string Morning = "MorningSkyBox";
+    public const string Noon = "NoonSkyBox";
+    public const string Evening = "EveningSkyBox";
+    public const string Night = "NightSkyBox";
+    #endregion
+
+    #region Dictionary
+
+    #region SkyBoxTime
+    public static Dictionary<float, Define.TimeOfDayType> ColorChangeTimeList = new()
+    {
+        { 86f, Define.TimeOfDayType.Noon }, //7초에 낮 색 변경
+        { 176f, Define.TimeOfDayType.Evening },
+        { 265f, Define.TimeOfDayType.Night },
+        { 358f, Define.TimeOfDayType.Morning }
+    };
+    #endregion
+
+    #region Environment
+    public static Dictionary<string, Color> ColorList = new()
+    {
+        { Morning,  new Color(0.5f, 0.5f, 0.5f, 1) },
+        { Noon, new Color(0.5f, 0.5f, 0.5f, 1) },
+        { Evening, new Color(0, 0, 0, 1) },
+        { Night, new Color(0.26f, 0.34f, 0.415f, 1) }
+        //{ Night, new Color(0.426f, 0.611f, 0.896f, 1) }
+    };
+
+    public static Dictionary<string, Color> TargetColorList = new()
+    {
+         { Morning,  new Color(0.36f, 0.446f, 0.5f, 1) },
+        { Noon, new Color(0.29f, 0.221f, 0.221f, 1) },
+        { Evening, new Color(0.011f, 0.08f, 0.08f, 1) },
+        { Night, new Color(0.9f, 0.9f, 0.9f, 1)}
+    };
+
+    public static Dictionary<string, float> TargetLightList = new()
+    {
+        { Morning,  1f },
+        { Noon, 0.5f },
+        { Evening, 0.1f },
+        { Night, 0.5f}
+    };
+
+    public static Dictionary<string, float> TargetMountainList = new()
+    {
+        { Morning,  0.9f },
+        { Noon, 0.5f },
+        { Evening, 0.33f },
+        { Night, 0.66f}
+    };
+
+    public static Dictionary<string, float> RotateSkyBoxList = new()
+    {
+        { Morning,  270 },
+        { Noon, 0 },
+        { Evening, 50 },
+        { Night, 312}
+    };
+
+    public static Dictionary<string, float> RotateLightList = new()
+    {
+        { Morning,  20 },
+        { Noon, 40 },
+        { Evening, 20 },
+        { Night, 40 }
+    };
+
+    public static Dictionary<string, float> SkyBoxDurationList = new()
+    {
+        { Morning,  90f },
+        { Noon, 90f },
+        { Evening, 90f },
+        { Night, 90f }
+    };
+#endregion
+
+#region TreasureBoxColor
+public static Dictionary<Define.ItemValue, Color> EffectColorList = new()
+    {
+        { Define.ItemValue.Common, new Color(0, 0, 0, 0) },
+        { Define.ItemValue.Uncommon, new Color(0.2f, 1, 0, 1) },
+        { Define.ItemValue.Rare, new Color(0, 0.35f, 1, 1) },
+        { Define.ItemValue.Epic, new Color(0.5f, 0, 1, 1) },
+        { Define.ItemValue.Legendary, new Color(1, 0.11f, 0, 1) }
+    };
+    #endregion
+
+
     #endregion
 }

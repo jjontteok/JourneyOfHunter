@@ -44,15 +44,14 @@ public class ObjectManager : Singleton<ObjectManager>
     private GameObject _popupInventoryPanel;
     private GameObject _popupSkillInventory;
     private GameObject _popupMerchantPanel;
-    private GameObject _popupTreasureAppear;
+    private GameObject _popupStageTextPanel;
+    private GameObject _popupTreasureAppearText;
+    private GameObject _popupBuffText;
+    private GameObject _popupDungeonClearText;
 
     private GameObject _systemTextResource;
     private GameObject _rewardTextResource;
 
-    private GameObject _playerVitalCanvas;
-    private GameObject _playerVitalResource;
-
-    // * TreasureBox Effect 어디에 놓을가요
     private GameObject _treasureBoxOpenEffectResource;
 
     // * CutScene
@@ -356,35 +355,46 @@ public class ObjectManager : Singleton<ObjectManager>
         }
     }
 
-    public GameObject PopupTreasureAppear
+    public GameObject PopupStageTextPanel
     {
         get
         {
-            if (NullCheck(_popupTreasureAppear))
+            if (NullCheck(_popupStageTextPanel))
                 return null;
-            return _popupTreasureAppear;
+            return _popupStageTextPanel;
         }
     }
 
-    public GameObject PlayerVitalCanvas
+    public GameObject PopupTreasureAppearText
     {
         get
         {
-            if (NullCheck(_playerVitalCanvas))
+            if (NullCheck(_popupTreasureAppearText))
                 return null;
-            return _playerVitalCanvas;
+            return _popupTreasureAppearText;
         }
     }
 
-    public GameObject PlayerVitalResource
+    public GameObject PopupBuffText
     {
         get
         {
-            if (NullCheck(_playerVitalResource))
+            if (NullCheck(_popupBuffText))
                 return null;
-            return _playerVitalResource;
+            return _popupBuffText;
         }
     }
+
+    public GameObject PopupDungeonClearText
+    {
+        get
+        {
+            if (NullCheck(_popupDungeonClearText))
+                return null;
+            return _popupDungeonClearText;
+        }
+    }
+
 
     public GameObject TreasureBoxOpenEffectResource
     {
@@ -464,7 +474,6 @@ public class ObjectManager : Singleton<ObjectManager>
         EnvironmentResourceLoad();
         UIResourceLoad();
         PopupUIResourceLoad();
-        PlayerVitalResourceLoad();
         CutSceneResourceLoad();
         CameraResourceLoad();
         ItemSlotResourceLoad();
@@ -613,13 +622,10 @@ public class ObjectManager : Singleton<ObjectManager>
         _popupInventoryPanel = Resources.Load<GameObject>(Define.PopupInventoryPanelPath);
         _popupSkillInventory = Resources.Load<GameObject>(Define.PopupSkillInventoryPath);
         _popupMerchantPanel = Resources.Load<GameObject>(Define.PopupMerchantPanelPath);
-        _popupTreasureAppear = Resources.Load<GameObject>(Define.PopupTreasureAppearPanelPath);
-    }
-
-    private void PlayerVitalResourceLoad()
-    {
-        _playerVitalCanvas = Resources.Load<GameObject>(Define.PlayerVitalCanvasPath);
-        _playerVitalResource = Resources.Load<GameObject>(Define.PlayerVitalPath);
+        _popupStageTextPanel = Resources.Load<GameObject>(Define.PopupStageTextPanelPath);
+        _popupTreasureAppearText = Resources.Load<GameObject>(Define.PopupTreasureAppearPanelPath);
+        _popupBuffText = Resources.Load<GameObject>(Define.PopupBuffPanelPath);
+        _popupDungeonClearText = Resources.Load<GameObject>(Define.PopupDungeonClearPanelPath);
     }
 
     // * 컷신 리소스 로드 메서드
