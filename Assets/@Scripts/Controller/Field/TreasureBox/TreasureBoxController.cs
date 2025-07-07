@@ -8,15 +8,6 @@ public class TreasureBoxController : MonoBehaviour, IDamageable
 {
     AudioSource _rewardSound;
 
-    Dictionary<Define.ItemValue, Color> _effectColorList = new()
-    {
-        { Define.ItemValue.Common, new Color(0, 0, 0, 0) },
-        { Define.ItemValue.Uncommon, new Color(0.2f, 1, 0, 1) },
-        { Define.ItemValue.Rare, new Color(0, 0.35f, 1, 1) },
-        { Define.ItemValue.Epic, new Color(0.5f, 0, 1, 1) },
-        { Define.ItemValue.Legendary, new Color(1, 0.11f, 0, 1) }
-    };
-
     ParticleSystem[] _particles;
 
     Animator _animator;
@@ -27,7 +18,6 @@ public class TreasureBoxController : MonoBehaviour, IDamageable
     int _hitCount;
     int _count;
     Define.ItemValue _initEffectColor;
-    bool _isObtained;
 
     public Define.ItemValue TreasureRank
     {
@@ -36,6 +26,9 @@ public class TreasureBoxController : MonoBehaviour, IDamageable
         {
             _treasureRank = value;
             _count = (int)_treasureRank * 3;
+
+            _initEffectColor = Define.ItemValue.Common;
+            SetTreasureEffect(_initEffectColor);
         }
     }
 
@@ -57,11 +50,8 @@ public class TreasureBoxController : MonoBehaviour, IDamageable
 
     private void OnEnable()
     {
-        PopupUIManager.Instance.ActivateTreasureAppear();
-        _initEffectColor = Define.ItemValue.Uncommon;
-        SetTreasureEffect(_initEffectColor);
+        PopupUIManager.Instance.ActivateTreasureAppearText();
         _openEffect.SetActive(false);
-        _isObtained = false;
         _hitCount = 0;
     }
 
@@ -71,7 +61,7 @@ public class TreasureBoxController : MonoBehaviour, IDamageable
         foreach (var particle in _treasureEffectList)
         {
             ParticleSystem.MainModule main = particle.main;
-            main.startColor = _effectColorList[treasureRank];
+            main.startColor = Define.EffectColorList[treasureRank];
         }
     }
 

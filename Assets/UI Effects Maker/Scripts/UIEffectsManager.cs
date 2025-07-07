@@ -10,6 +10,8 @@ public class UIEffectsManager : MonoBehaviour
     //Effects Settings
     public List<UIEffect> Settings = new List<UIEffect>();
 
+    Image _targetObj;
+
     void Start()
     {
         //Run initial effects
@@ -167,9 +169,9 @@ public class UIEffectsManager : MonoBehaviour
                     brightness.localPosition = Vector3.zero;
                     brightness.localRotation = Quaternion.Euler(Vector3.zero);
                     brightness.localScale = Vector3.one;
-                    Image targetObj = brightness.gameObject.AddComponent<Image>();
+                    _targetObj = brightness.gameObject.AddComponent<Image>();
                     Color initColor = Settings[index].color;
-                    targetObj.color = initColor;
+                    _targetObj.color = initColor;
                     //Wait till the brightness duration
                     while (t < Settings[index].BrightnessDuration)
                     {
@@ -187,7 +189,7 @@ public class UIEffectsManager : MonoBehaviour
                     initColor.a = 0.0f;
                     t = 0.0f;
                     //Fade the brightness
-                    while (targetObj.color != initColor)
+                    while (_targetObj.color != initColor)
                     {
                         if (Settings[index].killed)
                         {
@@ -197,7 +199,7 @@ public class UIEffectsManager : MonoBehaviour
                             yield break;
                         }
                         t += Time.deltaTime * Settings[index].Speed * 0.25f;
-                        targetObj.color = Color.Lerp(targetObj.color, initColor, Mathf.SmoothStep(0.0f, 1.0f, t));
+                        _targetObj.color = Color.Lerp(_targetObj.color, initColor, Mathf.SmoothStep(0.0f, 1.0f, t));
                         yield return null;
                     }
 
@@ -348,6 +350,11 @@ public class UIEffectsManager : MonoBehaviour
         }
     }
 	
+    public void InitShineColor()
+    {
+        if(_targetObj!=null)
+            _targetObj.color = new Color(1, 1, 1, 0);
+    }
 	bool Approximately(float valueA, float valueB, float epsilon)
     {
         return Mathf.Abs(valueA - valueB) < epsilon;

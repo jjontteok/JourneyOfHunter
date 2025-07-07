@@ -14,7 +14,7 @@ public class PopupUI_Status : MonoBehaviour
     [SerializeField] Button _exitButton;
 
     PlayerController _player;
-    PlayerInventoryData _inventoryData;
+    Inventory _inventoryData;
 
 
     private void Awake()
@@ -34,8 +34,8 @@ public class PopupUI_Status : MonoBehaviour
 
     void Initialize() {
         _player = PlayerManager.Instance.Player;
-        _inventoryData = _player.PlayerInventoryData;
-        _silverCoinText.text = _inventoryData.SilverCoin.ToString();
+        _inventoryData = _player.Inventory;
+        _silverCoinText.text = _inventoryData.Goods[Define.GoodsType.SilverCoin].ToString();
         foreach (var slot in _statusList)
         {
             slot.Initialize(_player.PlayerData, _inventoryData);
@@ -46,7 +46,7 @@ public class PopupUI_Status : MonoBehaviour
     private void UpdateStatusUI(Define.GoodsType type)
     {
         if(type == Define.GoodsType.SilverCoin)
-            _silverCoinText.text = _inventoryData.SilverCoin.ToString();
+            _silverCoinText.text = _inventoryData.Goods[Define.GoodsType.SilverCoin].ToString();
     }
 
     void OnExitButtonClick()

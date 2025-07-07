@@ -44,13 +44,14 @@ public class RewardSystem
 
 public class FieldManager : Singleton<FieldManager>, IEventSubscriber, IDeactivateObject
 {
+    public event Action<int> OnStageChanged;
     public event Action<Define.JourneyType, Define.ItemValue> OnJourneyEvent;
     public event Action OnFailedDungeonClear;
+    public event Action<int> OnUpgradeMonsterStatus;
 
     StageController _stageController;
     SpawnController _spawnController;
     DungeonController _dungeonController;
-    PlayerData _playerData;
     RewardSystem _rewardSystem;
     [SerializeField]
     Define.JourneyType _currentType;
@@ -95,7 +96,6 @@ public class FieldManager : Singleton<FieldManager>, IEventSubscriber, IDeactiva
         _stageController = new GameObject("StageController").AddComponent<StageController>();
         _spawnController = new GameObject("SpawnController").AddComponent<SpawnController>();
 
-        _playerData = PlayerManager.Instance.Player.PlayerData;
         _rewardSystem = new RewardSystem();
         _stageCount = StageCount;
     }
@@ -119,34 +119,43 @@ public class FieldManager : Singleton<FieldManager>, IEventSubscriber, IDeactiva
     {
         int rnd;
         _stageCount = ++StageCount;
+        OnStageChanged?.Invoke(_stageCount);
+
+        if (_stageCount % 10 == 0)
+        {
+            OnUpgradeMonsterStatus?.Invoke(_stageCount/10);
+        }
+
         //5의 배수마다 던전 두두둥장
-        //if (_stageCount % 5 == 0)
-        if (UnityEngine.Random.Range(0, 2) == 0)
+        if (_stageCount % 5 == 0)
+        //if(true)
         {
             rnd = (int)Define.JourneyType.Dungeon;
-            _rewardSystem.SetReward(Define.RewardType.JourneyExp, 2 * _stageCount);
+            _rewardSystem.SetReward(Define.RewardType.JourneyExp, 10 * _stageCount);
         }
         else
         {
-            //rnd = UnityEngine.Random.Range(0, 100);
-            rnd = 80;
-            //80% 확률로 기타 오브젝트 등장
-            if (rnd < 80)
+            rnd = UnityEngine.Random.Range(0, 100);
+            if (rnd < 90)
             {
-                rnd = (int)Define.JourneyType.OtherObject;
-                _rewardSystem.SetReward(Define.RewardType.JourneyExp, 5 * _stageCount);
-            }
-            //10%의 확률로 보물 상자 등장
-            else if (rnd < 90)
-            {
-                rnd = (int)Define.JourneyType.TreasureBox;
-                Define.ItemValue treasureRank = SetTreasureRank();
-                _rewardSystem.SetReward(Define.RewardType.JourneyExp, 10 * _stageCount * (int)treasureRank);
-                _rewardSystem.SetReward(Define.RewardType.Gem, 10 * _stageCount * (int)treasureRank);
-                _rewardSystem.SetReward(Define.RewardType.SilverCoin, 100 * _stageCount * (int)treasureRank);
+                Define.ItemValue rank = SetRank();
 
+                //80% 확률로 기타 오브젝트 등장
+                if (rnd < 80)
+                {
+                    rnd = (int)Define.JourneyType.OtherObject;
+                    _rewardSystem.SetReward(Define.RewardType.JourneyExp, 25 * _stageCount * (int)(rank+1));
+                }
+                //10% 확률로 보물상자 등장
+                else
+                {
+                    rnd = (int)Define.JourneyType.TreasureBox;
+                    _rewardSystem.SetReward(Define.RewardType.JourneyExp, 50 * _stageCount * (int)(rank + 1));
+                    _rewardSystem.SetReward(Define.RewardType.Gem, 10 * _stageCount * (int)(rank + 1));
+                    _rewardSystem.SetReward(Define.RewardType.SilverCoin, 100 * _stageCount * (int)(rank + 1));
+                }
                 _currentType = (Define.JourneyType)rnd;
-                OnJourneyEvent?.Invoke(_currentType, treasureRank);
+                OnJourneyEvent?.Invoke(_currentType, rank);
                 return;
             }
             //10%의 확률로 상인 등장
@@ -162,28 +171,24 @@ public class FieldManager : Singleton<FieldManager>, IEventSubscriber, IDeactiva
     #endregion
 
     // * 보물상자의 등급을 정하는 함수
-    Define.ItemValue SetTreasureRank()
+    Define.ItemValue SetRank()
     {
         int treasureRank = UnityEngine.Random.Range(1, 101);
-
-        if (treasureRank < 65)
-        {
-            return Define.ItemValue.Uncommon;       //65% : Uncommon
-        }
-        else if (treasureRank < 85)
-        {
-            return Define.ItemValue.Rare;       //20% : Rare
-        }
+        if(treasureRank < 50)                       
+            return Define.ItemValue.Common;         //50% : Common
+        else if (treasureRank < 70)                  
+            return Define.ItemValue.Uncommon;       //20% : Uncommon
+        else if (treasureRank < 85)                 
+            return Define.ItemValue.Rare;           //15% : Rare
         else if (treasureRank < 95)
-        {
-            return Define.ItemValue.Epic;     //10% : Epic
-        }
+            return Define.ItemValue.Epic;           //10% : Epic
         else
-            return Define.ItemValue.Legendary;  //5% : Legendary
+            return Define.ItemValue.Legendary;      //5% : Legendary
     }
 
     void SuccessDungeonClear()
     {
+        DungeonClear(true);
         _rewardSystem.GainReward(PlayerManager.Instance.Player.transform.position + Vector3.up * 3);
         PlayerManager.Instance.Player.RemovePlayerBuff(_failedCount);
         _failedCount = 0;
@@ -192,7 +197,8 @@ public class FieldManager : Singleton<FieldManager>, IEventSubscriber, IDeactiva
     // * 던전을 깨지 못했을 떄 실행되는 함수
     public void FailedDungeonClear()
     {
-        StageCount -= 4;
+        DungeonClear(false);
+        StageCount -= 5;
         _stageCount = StageCount;
         OnFailedDungeonClear?.Invoke();
         if(_failedCount < 3)
@@ -200,6 +206,15 @@ public class FieldManager : Singleton<FieldManager>, IEventSubscriber, IDeactiva
             _failedCount++;
             PlayerManager.Instance.Player.SetPlayerBuff();
         }
+    }
+
+    void DungeonClear(bool isClear)
+    {
+        PopupUIManager.Instance.ActivateDungeonClearText(isClear);
+        //플레이어 체력 초기화
+        PlayerManager.Instance.Player.HP = PlayerManager.Instance.Player.PlayerData.HP;
+        //타이머 초기화
+        TimeManager.Instance.StopNamedMonsterTimer();
     }
 
     public void Deactivate()

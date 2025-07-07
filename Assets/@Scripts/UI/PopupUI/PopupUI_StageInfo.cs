@@ -15,6 +15,8 @@ public class PopupUI_StageInfo : MonoBehaviour
 
     StageController _stageController;
 
+    
+
     private void Awake()
     {
         Initialize();
@@ -34,25 +36,6 @@ public class PopupUI_StageInfo : MonoBehaviour
         _statusImages[2].gameObject.SetActive(false);
         _statusImages[3].gameObject.SetActive(false);
         _statusImages[4].gameObject.SetActive(false);
-    }
-
-    private void OnEnable()
-    {
-        if (FieldManager.Instance.FailedCount != 0)
-        {
-            _buffStackText.text = $"버프 효과 {FieldManager.Instance.FailedCount * 10}%";
-            _buffStackText.enabled = true;
-            StartCoroutine(_buffStackText.GetComponent<UIEffectsManager>().PerformEffect(0));
-        }
-    }
-
-    private void OnDisable()
-    {
-        if (_buffStackText.enabled)
-        {
-            StopCoroutine(_buffStackText.GetComponent<UIEffectsManager>().PerformEffect(0));
-        }
-        _buffStackText.enabled = false;
     }
 
     private void SetMonsterCountBarClear()

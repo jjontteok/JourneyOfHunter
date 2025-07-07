@@ -17,17 +17,17 @@ public class PopupUI_NamedMonsterInfo : MonoBehaviour
     {
         TimeManager.Instance.OnNamedMonsterTimeChanged += UpdateNamedMonsterTime;
         NamedMonsterController.s_OnNamedMonsterGetDamage += UpdateNamedMonsterHpBar;
-        NamedMonsterController.s_OnNamedMonsterSet += SetNamedMonsterHpBar;
+        //NamedMonsterController.s_OnNamedMonsterSet += SetNamedMonsterHpBar;
     }
 
     private void OnDisable()
     {
         TimeManager.Instance.OnNamedMonsterTimeChanged -= UpdateNamedMonsterTime;
         NamedMonsterController.s_OnNamedMonsterGetDamage -= UpdateNamedMonsterHpBar;
-        NamedMonsterController.s_OnNamedMonsterSet -= SetNamedMonsterHpBar;
+       // NamedMonsterController.s_OnNamedMonsterSet -= SetNamedMonsterHpBar;
     }
 
-    void SetNamedMonsterHpBar(float currentHp, float maxHp)
+    public void SetNamedMonsterHpBar(float currentHp, float maxHp)
     {
         _hpText.text = $"{currentHp} / {maxHp}";
         _hpBar.fillAmount = currentHp / maxHp;

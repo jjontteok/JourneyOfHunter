@@ -175,7 +175,7 @@ public class PlayerController : MonoBehaviour, IDamageable
             journeyExp *= _playerData.JourneyRankData.Index;
         //그냥 일반 획득이라면 스테이지대로 여정의 증표 증가
         else
-            journeyExp *= amount;
+            journeyExp = amount;
 
         OnJourneyExpChanged?.Invoke(journeyExp);
         JourneyExp += journeyExp;
@@ -523,6 +523,7 @@ public class PlayerController : MonoBehaviour, IDamageable
 
     void Die()
     {
+        OnPlayerDead?.Invoke();
         _animator.SetInteger(Define.DieType, UnityEngine.Random.Range(1, 3));
         _animator.SetTrigger(Define.Die);
         Invoke("Revive", 2f);
@@ -531,12 +532,13 @@ public class PlayerController : MonoBehaviour, IDamageable
     void Revive()
     {
         HP = _playerData.HP;
-        OnPlayerDead?.Invoke();
         _animator.SetInteger(Define.DieType, 0);
     }
 
     #endregion
 
+
+    #region SetBuff
     public void SetPlayerBuff()
     {
         if (_atkBuff == 0)
@@ -558,6 +560,7 @@ public class PlayerController : MonoBehaviour, IDamageable
         _atkBuff = 0;
         _hpBuff = 0;
     }
+    #endregion
 
     #region IDamageable Methods
     // * 방어력 적용 데미지 계산 메서드

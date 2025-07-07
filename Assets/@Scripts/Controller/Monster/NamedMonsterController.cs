@@ -38,7 +38,8 @@ public class NamedMonsterController : MonsterController
         _moveRangeController.OnMoveToTarget += OnMoveToTarget;
         _moveRangeController.OnMoveToOrigin += StopMove;
         _attackRangeController.OffAttack += EndAttack;
-        s_OnNamedMonsterSet?.Invoke(_runtimeData.CurrentHP, _runtimeData.MaxHP);
+        //s_OnNamedMonsterSet?.Invoke(_runtimeData.CurrentHP, _runtimeData.MaxHP);
+        PopupUIManager.Instance.SetNamedMonster(_runtimeData.CurrentHP, _runtimeData.MaxHP);
     }
 
     private void Start()
