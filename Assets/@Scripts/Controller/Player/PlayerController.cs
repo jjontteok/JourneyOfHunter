@@ -231,7 +231,7 @@ public class PlayerController : MonoBehaviour, IDamageable
                     {
                         SetTarget();
                     }
-                    if ((!_target.CompareTag(Define.PortalTag) && FieldManager.Instance.CurrentEventType == Define.JourneyType.Dungeon) || FieldManager.Instance.CurrentEventType == Define.JourneyType.TreasureBox)
+                    if (((_target != null && !_target.CompareTag(Define.PortalTag)) && FieldManager.Instance.CurrentEventType == Define.JourneyType.Dungeon) || FieldManager.Instance.CurrentEventType == Define.JourneyType.TreasureBox)
                     {
                         //if (!MoveToTarget(_shortestSkillDistance))
                         //{
@@ -272,6 +272,9 @@ public class PlayerController : MonoBehaviour, IDamageable
     // target과의 거리가 distance 이하가 될 때까지 움직임
     bool MoveToTarget(float distance)
     {
+        if (_target == null)
+            return true;
+
         //타겟과 거리가 distance 이하로 되면 정지
         Vector3 targetPos = _target.position;
         targetPos.y = 0;
