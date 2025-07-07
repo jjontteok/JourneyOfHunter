@@ -35,11 +35,7 @@ public class PopupUI_Inventory : MonoBehaviour
     //- 버튼 리스너 이벤트 연결
     private void Awake()
     {
-        _exitButton.onClick.AddListener(OnExitButtonClick);
-        _equipmentItemButton.onClick.AddListener(OnEquipmentButtonClick);
-        _consumeItemButton.onClick.AddListener(OnConsumeButtonClick);
-        _otherItemButton.onClick.AddListener(OnOtherButtonClick);
-        gameObject.SetActive(false);
+        Initialize();
     }
 
     // * 파괴 주기함수
@@ -56,6 +52,14 @@ public class PopupUI_Inventory : MonoBehaviour
     private void OnEnable()
     {
         OnTabButtonClick(Define.ItemType.Equipment);
+    }
+
+    private void Initialize()
+    {
+        _exitButton.onClick.AddListener(OnExitButtonClick);
+        _equipmentItemButton.onClick.AddListener(OnEquipmentButtonClick);
+        _consumeItemButton.onClick.AddListener(OnConsumeButtonClick);
+        _otherItemButton.onClick.AddListener(OnOtherButtonClick);
     }
 
     // * 슬롯 생성 메서드
@@ -140,7 +144,7 @@ public class PopupUI_Inventory : MonoBehaviour
         }
         else
         {
-            UpdateInventory(itemType);
+            //UpdateInventory(itemType);
         }
     }
     // * 아이템 타입 별 bool 변수 Set

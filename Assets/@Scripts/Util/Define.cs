@@ -59,6 +59,7 @@ public class Define : MonoBehaviour
     public const string UIGamePath = "UI/MainUI/UI_Game";
     public const string PopupUICanvasPath = "UI/PopupUI/Canvas - Popup";
     public const string PopupPanelPath = "UI/PopupUI/Panel - Popup";
+    public const string ToolTipPanelPath = "UI/PopupUI/Panel - ToolTip";
     public const string PopupStatusPanelPath = "UI/PopupUI/StatusPanel - Popup";
     public const string PopupInventoryPanelPath = "UI/PopupUI/InventoryPanel - Popup";
     public const string PopupSkillInventoryPath = "UI/PopupUI/SkillInventoryPanel - Popup";
@@ -67,6 +68,7 @@ public class Define : MonoBehaviour
     public const string PopupNamedMonsterInfoPanelPath = "UI/PopupUI/Panel - NamedMonsterInfo";
     public const string PopupMerchantPanelPath = "UI/PopupUI/MerchantPanel - Popup";
     public const string PopupTreasureAppearPanelPath = "UI/PopupUI/Panel - TreasureAppear";
+    public const string PopupGachaPanelPath = "UI/PopupUI/RandomSummonPanel - Popup";
 
     public const string GoblinKingCutScenePath = "CutScene/GoblinCutScene";
     public const string FollowCameraPath = "Camera/FollowPlayerCamera";
@@ -177,6 +179,13 @@ public class Define : MonoBehaviour
         Epic,
         Legendary
     }
+
+    public enum DrawItemType
+    {
+        Equipment,
+        Skill
+    }
+
     public enum ItemType
     {
         Equipment,
