@@ -136,6 +136,7 @@ public class FieldManager : Singleton<FieldManager>, IEventSubscriber, IDeactiva
         else
         {
             rnd = UnityEngine.Random.Range(0, 100);
+            rnd = 80;
             if (rnd < 90)
             {
                 Define.ItemValue rank = SetRank();
