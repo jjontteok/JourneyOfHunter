@@ -29,7 +29,7 @@ public class TimeManager : Singleton<TimeManager>, IEventSubscriber
         set
         {
             _isDoubleSpeed = value;
-            _toKey = _isDoubleSpeed ? 0.5f : 1;
+            _toKey = _isDoubleSpeed ? 0.1f : 1;
             _standardTime = new WaitForSeconds(_toKey);
             EnvironmentManager.Instance.ToKey = _toKey;
             OnTimeSpeedChanged?.Invoke(_currentTime);

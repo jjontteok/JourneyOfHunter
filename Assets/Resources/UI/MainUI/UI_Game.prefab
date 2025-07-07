@@ -913,6 +913,7 @@ GameObject:
   - component: {fileID: 2585142473333534383}
   - component: {fileID: 2986572111415876811}
   - component: {fileID: 2621801269752866024}
+  - component: {fileID: 6807577729366610082}
   m_Layer: 5
   m_Name: UI_Game
   m_TagString: Untagged
@@ -1031,6 +1032,18 @@ MonoBehaviour:
   - {fileID: 7467138595030381139}
   - {fileID: 6063080787886175492}
   _hpBar: {fileID: 5180121511979986491}
+--- !u!225 &6807577729366610082
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1367592993224921265}
+  m_Enabled: 1
+  m_Alpha: 1
+  m_Interactable: 1
+  m_BlocksRaycasts: 1
+  m_IgnoreParentGroups: 0
 --- !u!1 &1731468910533020233
 GameObject:
   m_ObjectHideFlags: 0
