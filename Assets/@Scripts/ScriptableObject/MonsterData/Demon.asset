@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b5a2bd60270c28542a965d0ea4006cc1, type: 3}
   m_Name: Demon
   m_EditorClassIdentifier: 
-  Atk: 5
+  Atk: 2
   Def: 1
   SpawnEffect: {fileID: 0}
   DeadEffect: {fileID: 0}

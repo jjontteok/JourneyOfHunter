@@ -88,6 +88,7 @@ GameObject:
   - component: {fileID: 4542775232480277047}
   - component: {fileID: 3887081351144250836}
   - component: {fileID: 3088075329658974244}
+  - component: {fileID: 2437653051485507096}
   m_Layer: 5
   m_Name: SkillIconSlot_Ultimate
   m_TagString: Untagged
@@ -189,6 +190,53 @@ MonoBehaviour:
   _skillIconBoundSprites:
   - {fileID: 21300000, guid: 94748788aab687c478c2c0dda4bcea09, type: 3}
   - {fileID: 21300000, guid: 67c64d5703b52904093c23a01a37ca17, type: 3}
+--- !u!114 &2437653051485507096
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4110326737881420490}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5645c5a5179ee2646805f14c5d7e8ceb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Settings:
+  - showSettings: 1
+    Name: effect1
+    nodePos: {x: 52, y: 175}
+    Outputs: []
+    spacing: 0
+    TargetType: 0
+    targetObj: {fileID: 0}
+    RunAtStart: 0
+    Loop: 1
+    EffectType: 7
+    Delay: 0
+    Speed: 0.3
+    initialState: 0
+    startVector: {x: 0, y: 0, z: 0}
+    targetVector: {x: 0, y: 0, z: 0}
+    Duration: 1
+    color: {r: 0.990566, g: 0, b: 0.14439394, a: 0.39607844}
+    RotationType: 0
+    RotationDirection: 2
+    FadeType: 0
+    ApplyToChildren: 0
+    startAlpha: 0
+    startColor: {r: 1, g: 1, b: 1, a: 1}
+    BrightnessDuration: 0
+    ShakeOrJellyDirection: 0
+    Amplitude: 1
+    running: 0
+    killed: 0
+    OnStart:
+      m_PersistentCalls:
+        m_Calls: []
+    OnFinished:
+      m_PersistentCalls:
+        m_Calls: []
 --- !u!1 &5357271919949941749
 GameObject:
   m_ObjectHideFlags: 0

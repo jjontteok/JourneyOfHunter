@@ -31,6 +31,16 @@ public class SkillSystem : MonoBehaviour
         get { return _basicSkillSlot; }
     }
 
+    public List<SkillSlot> ActiveSkillSlotList
+    {
+        get { return _activeSkillSlotList; }
+    }
+
+    public SkillSlot UltimateSkillSlot
+    {
+        get { return _ultimateSkillSlot; }
+    }
+
     public void InitializeSkillSystem()
     {
         _player = PlayerManager.Instance.Player;

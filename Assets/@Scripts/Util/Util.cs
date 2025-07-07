@@ -152,7 +152,7 @@ public class Util
     }
 
     // 스킬 속성에 따라 현재 시간대에 의한 쿨타임 감소 효과 수치 계산
-    public static float GetCoolTimeReductionByDayType(SkillData data)
+    public static float GetCoolTimeDecreaseByDayType(SkillData data)
     {
         Debug.Log($"Current Day Type: {EnvironmentManager.Instance.CurrentType}, Current Skill Attribut: {data.SkillAttribute}");
         float reduction = 0f;

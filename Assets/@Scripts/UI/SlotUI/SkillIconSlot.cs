@@ -19,8 +19,8 @@ public class SkillIconSlot : MonoBehaviour
     bool _isCoolTime = false;
     float _currentTime = 0f;
     float _coolTime;
-    // 쿨타임 감소 효과 적용 전의 진짜 쿨타임
-    float _defaultCoolTime;
+    Define.SkillAttribute _skillAttribute;
+    UIEffectsManager _effectsManager;
 
     readonly Color _coolTimeColor = new Color(0, 0, 0, 150f / 255);
     readonly Color _intervalColor = new Color(0, 0, 150f / 255, 150f / 255);
@@ -28,6 +28,7 @@ public class SkillIconSlot : MonoBehaviour
     private void Awake()
     {
         ReleaseIconSlot();
+        _effectsManager = GetComponent<UIEffectsManager>();
     }
 
     void Update()
@@ -66,8 +67,9 @@ public class SkillIconSlot : MonoBehaviour
         _skillIconImage.sprite = skillData.SkillIcon;
         _skillIconImage.color = Color.white;
         _skillCoolTimeImage.color = Color.clear;
-        _defaultCoolTime = skillData.CoolTime;
+        //_defaultCoolTime = skillData.CoolTime;
         _isCoolTime = false;
+        _skillAttribute = skillData.SkillAttribute;
     }
 
     public virtual void ReleaseIconSlot()
@@ -76,6 +78,7 @@ public class SkillIconSlot : MonoBehaviour
         _skillIconImage.color = Color.clear;
         _skillCoolTimeImage.color = Color.clear;
         _skillIntervalTimeImage.color = Color.clear;
+        _skillAttribute = Define.SkillAttribute.None;
     }
 
     public virtual void LockIconSlot()
@@ -94,5 +97,52 @@ public class SkillIconSlot : MonoBehaviour
     {
         _skillCoolTimeImage.color = Color.clear;
         _isCoolTime = false;
+    }
+
+    public void UpdateAttributeEffect(Define.TimeOfDayType type)
+    {
+        switch (type)
+        {
+            case Define.TimeOfDayType.Morning:
+                if (_skillAttribute == Define.SkillAttribute.Water || _skillAttribute == Define.SkillAttribute.Light)
+                {
+                    _effectsManager.Run(_effectsManager.Settings[0].Name);
+                }
+                else
+                {
+                    _effectsManager.Kill(_effectsManager.Settings[0].Name);
+                }
+                break;
+            case Define.TimeOfDayType.Noon:
+                if (_skillAttribute == Define.SkillAttribute.Fire || _skillAttribute == Define.SkillAttribute.Light)
+                {
+                    _effectsManager.Run(_effectsManager.Settings[0].Name);
+                }
+                else
+                {
+                    _effectsManager.Kill(_effectsManager.Settings[0].Name);
+                }
+                break;
+            case Define.TimeOfDayType.Evening:
+                if (_skillAttribute == Define.SkillAttribute.Fire || _skillAttribute == Define.SkillAttribute.Dark)
+                {
+                    _effectsManager.Run(_effectsManager.Settings[0].Name);
+                }
+                else
+                {
+                    _effectsManager.Kill(_effectsManager.Settings[0].Name);
+                }
+                break;
+            case Define.TimeOfDayType.Night:
+                if (_skillAttribute == Define.SkillAttribute.Water || _skillAttribute == Define.SkillAttribute.Dark)
+                {
+                    _effectsManager.Run(_effectsManager.Settings[0].Name);
+                }
+                else
+                {
+                    _effectsManager.Kill(_effectsManager.Settings[0].Name);
+                }
+                break;
+        }
     }
 }
