@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 
 public class WeaponColliderController : MonoBehaviour
@@ -10,6 +11,7 @@ public class WeaponColliderController : MonoBehaviour
     {
         _damage = damage;
         _animator = GetComponentInParent<Animator>();
+        StartCoroutine(EnableAttackCollider());
     }
 
     void InstantiateHitEffect(Collider other)
@@ -21,10 +23,17 @@ public class WeaponColliderController : MonoBehaviour
 
         Destroy(effect, 0.5f);
     }
+    IEnumerator EnableAttackCollider()
+    {
+        GetComponent<Collider>().enabled = false;
+        yield return null; // 한 프레임 대기
+        GetComponent<Collider>().enabled = true;
+    }
 
 
     private void OnTriggerEnter(Collider other)
     {
+        Debug.Log("Collision!");
         if (other.CompareTag(Define.PlayerTag) || other.CompareTag(Define.MonsterTag))
         {
             // 상호작용 가능 시간 확인 변수

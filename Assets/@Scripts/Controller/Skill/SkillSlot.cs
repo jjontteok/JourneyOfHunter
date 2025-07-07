@@ -10,9 +10,6 @@ public class SkillSlot : MonoBehaviour
     protected PlayerController _player;
     public ActiveSkill Skill { get { return _skill; } }
 
-    //Transform _target;
-    //bool _isTargetExist;
-
     // 스킬 슬롯 생성 시 스킬 아이콘 슬롯에 등록하는 이벤트
     public Action<SkillData> OnGenerateSlot;
     // 스킬 발동 시 스킬 아이콘 슬롯에 쿨타임 적용하는 이벤트
@@ -81,7 +78,7 @@ public class SkillSlot : MonoBehaviour
     {
         float realCoolTime = _skill.SkillData.CoolTime;
         Debug.Log($"Real Cool Time: {realCoolTime}");
-        realCoolTime *= 1 + (_player.PlayerStatus.GetCoolTimeDecrease() + Util.GetCoolTimeReductionByDayType(_skill.SkillData)) / 100;
+        realCoolTime *= 1 + (_player.PlayerStatus.GetCoolTimeDecrease() + Util.GetCoolTimeDecreaseByDayType(_skill.SkillData)) / 100;
         Debug.Log($"Reduced Cool Time: {realCoolTime}");
 
         OnActivateSkill?.Invoke(realCoolTime);
@@ -104,7 +101,6 @@ public class SkillSlot : MonoBehaviour
         {
             IsActivatePossible = false;
             StartCoroutine(CoStartCoolTime());
-            //OnActivateSkill?.Invoke();
         }
 
     }

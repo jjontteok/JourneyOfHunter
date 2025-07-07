@@ -19,7 +19,7 @@ public class DamageOverTimeColliderController : PenetrationColliderController, I
     // Unity Life Cycle 상, trigger 먼저 처리 후 update
     protected void OnTriggerStay(Collider other)
     {
-        if (other.CompareTag(Define.PlayerTag) || other.CompareTag(Define.MonsterTag))
+        if (other.CompareTag(Define.PlayerTag) || other.CompareTag(Define.MonsterTag) || other.CompareTag(Define.FieldObjectTag))
         {
             TickDamage(other);
         }
@@ -38,7 +38,7 @@ public class DamageOverTimeColliderController : PenetrationColliderController, I
     {
         if (_currentTime >= _timeInterval)
         {
-            other.GetComponent<IDamageable>().GetDamage(Util.GetEnhancedDamage(_damage, _skillData));
+            other.GetComponent<IDamageable>()?.GetDamage(Util.GetEnhancedDamage(_damage, _skillData));
         }
     }
 }

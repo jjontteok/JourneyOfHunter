@@ -3,12 +3,14 @@ using UnityEngine;
 
 public class NormalMonsterController : MonsterController
 {
+    [SerializeField] WeaponColliderController _weapon;
     public static Action s_OnNormalMonsterDie;
     public static int s_AliveCount = 0;
 
     private void Awake()
     {
         base.Initialize();
+        _weapon.SetColliderInfo(_runtimeData.Atk);
     }
 
     protected override void OnEnable()

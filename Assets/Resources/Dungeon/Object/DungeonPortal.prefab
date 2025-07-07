@@ -64,6 +64,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: DungeonPortal
       objectReference: {fileID: 0}
+    - target: {fileID: 5607819269926399345, guid: 45e0f06c750176947862c10346226439, type: 3}
+      propertyPath: m_TagString
+      value: Portal
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -89,3 +93,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a1ebf716bb32e7e4787622d3f50cb352, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  IsEnterPortal: 0

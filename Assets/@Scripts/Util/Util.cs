@@ -16,6 +16,16 @@ public class Util
 
     public static GameObject GetNearestTarget(Vector3 origin, float distance, bool isPlayerSkill = true)
     {
+        if (FieldManager.Instance.CurrentEventType == Define.JourneyType.TreasureBox)
+        {
+            GameObject go = GameObject.FindGameObjectWithTag(Define.FieldObjectTag);
+            if (go.GetComponent<Animator>().GetBool(Define.Open) || Vector3.Distance(origin, go.transform.position) > distance)
+            {
+                return null;
+            }
+            return go;
+        }
+
         Collider[] targets;
 
         if (isPlayerSkill)
@@ -50,14 +60,27 @@ public class Util
     public static Vector3 GetEffectPosition(Collider other)
     {
         // 캐릭터들의 콜라이더는 capsule로 고정
-        float height = other.GetComponent<CapsuleCollider>().height;
+        float height;
+        if (other is CapsuleCollider)
+        {
+            height = other.GetComponent<CapsuleCollider>().height;
+        }
+        else if (other is BoxCollider)
+        {
+            height = other.GetComponent<BoxCollider>().size.y;
+        }
+        else
+        {
+            // 땅속에 박아버리기
+            return Vector3.down * -5;
+        }
         height *= other.transform.lossyScale.y;
         Vector3 pos = other.transform.position;
-        pos.y = height * 0.7f;
+        pos.y = (float)height * 0.7f;
         return pos;
     }
 
-    // Get Angle between two normalized vectors
+    // 두 벡터 사이의 각도 계산
     public static float GetAngleBetweenDirections(Vector3 from, Vector3 to)
     {
         float dot = Vector3.Dot(from, to);
@@ -129,7 +152,7 @@ public class Util
     }
 
     // 스킬 속성에 따라 현재 시간대에 의한 쿨타임 감소 효과 수치 계산
-    public static float GetCoolTimeReductionByDayType(SkillData data)
+    public static float GetCoolTimeDecreaseByDayType(SkillData data)
     {
         Debug.Log($"Current Day Type: {EnvironmentManager.Instance.CurrentType}, Current Skill Attribut: {data.SkillAttribute}");
         float reduction = 0f;

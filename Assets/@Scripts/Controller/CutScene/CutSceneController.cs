@@ -13,6 +13,8 @@ public class CutSceneController : MonoBehaviour
     GameObject _monsterAppearEffect;
     Transform _monsterTransform;
 
+    bool _checkAuto;
+
     private void Awake()
     {
         Initialize();
@@ -73,6 +75,9 @@ public class CutSceneController : MonoBehaviour
 
         UIManager.Instance.DeactivateUIGame();
         PopupUIManager.Instance.DeactivateNamedMonsterInfo();
+
+        _checkAuto = PlayerManager.Instance.IsAuto;
+        PlayerManager.Instance.IsAuto = false;
     }
 
     void FinishCutScene(PlayableDirector pd)
@@ -83,5 +88,7 @@ public class CutSceneController : MonoBehaviour
 
         UIManager.Instance.ActivateUIGame();
         PopupUIManager.Instance.ActivateNamedMonsterInfo();
+
+        PlayerManager.Instance.IsAuto = _checkAuto;
     }
 }

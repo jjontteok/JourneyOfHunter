@@ -8,8 +8,11 @@ public class SkillManager : Singleton<SkillManager>
 {
     SkillIconSlot[] _skillIconSlots;
     UltimateSkillIconSlot _ultimateSkillIconSlot;
+    UIEffectsManager[] _iconEffects = new UIEffectsManager[6];
 
     bool _isSkillInterval;
+
+    public event Action<Define.TimeOfDayType> OnDayTypeChanged;
 
     public bool IsSkillInterval
     {
@@ -46,6 +49,13 @@ public class SkillManager : Singleton<SkillManager>
     {
         _skillIconSlots = slots;
         _ultimateSkillIconSlot = ultimate;
+        for (int i = 0; i < _skillIconSlots.Length; i++)
+        {
+            _iconEffects[i] = _skillIconSlots[i].GetComponent<UIEffectsManager>();
+        }
+        _iconEffects[5] = _ultimateSkillIconSlot.GetComponent<UIEffectsManager>();
+
+        EnvironmentManager.Instance.OnTypeChanged += UpdateEnhancedAttribute;
     }
 
     public void LockIconSlots(int idx)
@@ -95,5 +105,20 @@ public class SkillManager : Singleton<SkillManager>
             skillSlot.OnOffSkillIntervalImage(flag);
         }
         _ultimateSkillIconSlot.OnOffSkillIntervalImage(flag);
+    }
+
+    public void UpdateEnhancedAttribute(Define.TimeOfDayType type)
+    {
+        for (int i = 0; i < _iconEffects.Length; i++)
+        {
+            if (i == _iconEffects.Length - 1)
+            {
+                _ultimateSkillIconSlot.UpdateAttributeEffect(type);
+            }
+            else
+            {
+                _skillIconSlots[i].UpdateAttributeEffect(type);
+            }
+        }
     }
 }

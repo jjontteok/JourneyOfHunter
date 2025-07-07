@@ -1,10 +1,13 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using static UnityEngine.ParticleSystem;
 
-public class TreasureBoxController : MonoBehaviour
+public class TreasureBoxController : MonoBehaviour, IDamageable
 {
+    AudioSource _rewardSound;
+
     Dictionary<Define.ItemValue, Color> _effectColorList = new()
     {
         { Define.ItemValue.Common, new Color(0, 0, 0, 0) },
@@ -26,11 +29,11 @@ public class TreasureBoxController : MonoBehaviour
     Define.ItemValue _initEffectColor;
     bool _isObtained;
 
-    public Define.ItemValue TreasureRank 
-    { 
-        get { return _treasureRank;  } 
-        set 
-        { 
+    public Define.ItemValue TreasureRank
+    {
+        get { return _treasureRank; }
+        set
+        {
             _treasureRank = value;
             _count = (int)_treasureRank * 3;
         }
@@ -49,6 +52,7 @@ public class TreasureBoxController : MonoBehaviour
         _particles = _openEffect.GetComponentsInChildren<ParticleSystem>();
 
         _animator = GetComponent<Animator>();
+        _rewardSound = GetComponent<AudioSource>();
     }
 
     private void OnEnable()
@@ -64,20 +68,20 @@ public class TreasureBoxController : MonoBehaviour
     // * 보물상자 이펙트의 색을 설정하는 메서드 
     void SetTreasureEffect(Define.ItemValue treasureRank)
     {
-        foreach(var particle in _treasureEffectList)
+        foreach (var particle in _treasureEffectList)
         {
             ParticleSystem.MainModule main = particle.main;
             main.startColor = _effectColorList[treasureRank];
         }
     }
 
-    private void OnTriggerEnter(Collider other)
-    {
-        if(other.gameObject.layer == LayerMask.NameToLayer(Define.PlayerSkillLayer))
-        {
-            UpHitCount(); 
-        }
-    }
+    //private void OnTriggerEnter(Collider other)
+    //{
+    //    if(other.gameObject.layer == LayerMask.NameToLayer(Define.PlayerSkillLayer))
+    //    {
+    //        UpHitCount(); 
+    //    }
+    //}
 
     // * 플레이어가 보물상자를 때릴 때 실행되는 함수
     void UpHitCount()
@@ -100,8 +104,14 @@ public class TreasureBoxController : MonoBehaviour
     void OpenTreasureBox()
     {
         PlayOpenAnimation();
-        FieldManager.Instance.RewardSystem.
-            GainReward(transform.position + Vector3.up * 2);
+        FieldManager.Instance.RewardSystem.GainReward(transform.position + Vector3.up * 2);
+        StartCoroutine(CoSetAutoMoving());
+        _rewardSound.Play();
+    }
+
+    IEnumerator CoSetAutoMoving()
+    {
+        yield return new WaitForSeconds(2f);
         PlayerManager.Instance.IsAutoMoving = true;
     }
 
@@ -114,5 +124,15 @@ public class TreasureBoxController : MonoBehaviour
         {
             particle.GetComponent<ParticleSystem>().Play();
         }
+    }
+
+    public void GetDamage(float damage)
+    {
+        UpHitCount();
+    }
+
+    public float CalculateFinalDamage(float damage, float def)
+    {
+        throw new NotImplementedException();
     }
 }
