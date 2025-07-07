@@ -1019,7 +1019,7 @@ MonoBehaviour:
   _statusButton: {fileID: 6657925903750937385}
   _inventoryButton: {fileID: 3745565010407714904}
   _skillInventoryButton: {fileID: 1385875563291227863}
-  _storeButton: {fileID: 1139296657370517066}
+  _gachaButton: {fileID: 1139296657370517066}
   _silverCoinText: {fileID: 7008672487138290105}
   _gemText: {fileID: 2694038106008095932}
   _autoToggle: {fileID: 7389231475503108680}
@@ -1720,7 +1720,7 @@ GameObject:
   - component: {fileID: 2148015941149840530}
   - component: {fileID: 1139296657370517066}
   m_Layer: 5
-  m_Name: StoreButton
+  m_Name: GachaButton
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

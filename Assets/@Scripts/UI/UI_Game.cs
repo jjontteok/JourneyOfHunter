@@ -11,7 +11,7 @@ public class UI_Game : MonoBehaviour
     [SerializeField] Button _statusButton;
     [SerializeField] Button _inventoryButton;
     [SerializeField] Button _skillInventoryButton;
-    [SerializeField] Button _storeButton;
+    [SerializeField] Button _gachaButton;
     [SerializeField] TMP_Text _silverCoinText;
     [SerializeField] TMP_Text _gemText;
     [SerializeField] Toggle _autoToggle;
@@ -50,7 +50,7 @@ public class UI_Game : MonoBehaviour
         _statusButton.onClick.AddListener(OnStatusButtonClick);
         _inventoryButton.onClick.AddListener(OnInventoryButtonClick);
         _skillInventoryButton.onClick.AddListener(OnSkillInventoryButtonClick);
-        _storeButton.onClick.AddListener(OnStoreButtoneClick);
+        _gachaButton.onClick.AddListener(OnGachaButtoneClick);
 
         _silverCoinText.text = _inventoryData.SilverCoin.ToString();
         _autoToggle.onValueChanged.AddListener(OnAutoToggleClick);
@@ -142,9 +142,9 @@ public class UI_Game : MonoBehaviour
         PopupUIManager.Instance.ActivateSkillInventoryPanel();
     }
 
-    void OnStoreButtoneClick()
+    void OnGachaButtoneClick()
     {
-
+        PopupUIManager.Instance.ActivateGachaPanel();
     }
 
     void OnAutoToggleClick(bool flag)
