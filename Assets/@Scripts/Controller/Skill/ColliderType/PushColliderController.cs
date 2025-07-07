@@ -18,7 +18,7 @@ public class PushColliderController : PenetrationColliderController, IGravityCol
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.CompareTag(Define.PlayerTag) || other.CompareTag(Define.MonsterTag))
+        if (other.CompareTag(Define.PlayerTag) || other.CompareTag(Define.MonsterTag) || other.CompareTag(Define.FieldObjectTag))
         {
             // 스킬 시전 후 대미지 중복 적용 방지
             if (!_damagedObjects.Contains(other.gameObject))

@@ -158,6 +158,7 @@ public abstract class MonsterController : MonoBehaviour, IDamageable
         //Instantiate(_monsterData.DeadEffect);
         OnMonsterDead?.Invoke();
         gameObject.SetActive(false);
+        PlayerManager.Instance.Player.ReleaseTarget();
     }
 
     // * 생성 메서드

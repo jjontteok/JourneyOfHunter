@@ -11,6 +11,7 @@ public class PopupUIManager : Singleton<PopupUIManager>, IEventSubscriber, IDeac
 {
     private GameObject _canvasPopupUI;
     private GameObject _popupPanel;
+    private GameObject _toolTipPanel;
     private GameObject _popupJourneyInfo;
     private GameObject _popupStageInfo;
     private GameObject _popupNamedMonsterInfo;
@@ -22,6 +23,7 @@ public class PopupUIManager : Singleton<PopupUIManager>, IEventSubscriber, IDeac
     private GameObject _panelInventory;
     private GameObject _panelSkillInventory;
     private GameObject _panelMerchant;
+    private GameObject _panelGacha;
 
     private GameObject _activePopup;
 
@@ -50,6 +52,10 @@ public class PopupUIManager : Singleton<PopupUIManager>, IEventSubscriber, IDeac
         _panelInventory = Instantiate(ObjectManager.Instance.PopupInventoryPanel, _canvasPopupUI.transform);
         _panelSkillInventory = Instantiate(ObjectManager.Instance.PopupSkillInventory, _canvasPopupUI.transform);
         _panelMerchant = Instantiate(ObjectManager.Instance.PopupMerchantPanel, _canvasPopupUI.transform);
+        _panelGacha = Instantiate(ObjectManager.Instance.PopupGachaPanel, _canvasPopupUI.transform);
+
+        // 진짜 바보같은 코드... 가장 마지막으로보내버림
+        _toolTipPanel = Instantiate(ObjectManager.Instance.ToolTipPanel, _canvasPopupUI.transform);
     }
     #endregion
 
@@ -74,6 +80,7 @@ public class PopupUIManager : Singleton<PopupUIManager>, IEventSubscriber, IDeac
         _panelInventory.GetComponent<PopupUI_Inventory>().OnExitButtonClicked += DeactivatePopup;
         _panelSkillInventory.GetComponent<PopupUI_SkillInventory>().OnExitButtonClicked += DeactivatePopup;
         _panelMerchant.GetComponent<PopupUI_Merchant>().OnExitButtonClicked += DeactivatePopup;
+        _panelGacha.GetComponent<PopupUI_RandomSummon>().OnExitButtonClicked += DeactivatePopup;    
     }
     #endregion
 
@@ -92,6 +99,7 @@ public class PopupUIManager : Singleton<PopupUIManager>, IEventSubscriber, IDeac
     public void Deactivate()
     {
         _popupPanel.SetActive(false);
+        _toolTipPanel.SetActive(false);
         _popupJourneyInfo.SetActive(false);
         _popupStageInfo.SetActive(false);
         _popupNamedMonsterInfo.SetActive(false);
@@ -103,6 +111,7 @@ public class PopupUIManager : Singleton<PopupUIManager>, IEventSubscriber, IDeac
         _panelInventory.SetActive(false);
         _panelSkillInventory.SetActive(false);
         _panelMerchant.SetActive(false);
+        _panelGacha.SetActive(false);
     }
     #endregion
 
@@ -111,7 +120,11 @@ public class PopupUIManager : Singleton<PopupUIManager>, IEventSubscriber, IDeac
     {
         _popupPanel.SetActive(true);
     }
-
+    public void ActivateToolTipPanel(Vector2 pos, string name, string content)
+    {
+        _toolTipPanel.SetActive(true);
+        _toolTipPanel.GetComponent<PopupUI_ToolTip>().SetToolTip(pos, name, content);
+    }
     public void ActivateStatusPanel()
     {
         ActivatePopupPanel();
@@ -190,7 +203,6 @@ public class PopupUIManager : Singleton<PopupUIManager>, IEventSubscriber, IDeac
         }
     }
 
-
     public void ActivateBuffText()
     {
         if(FieldManager.Instance.FailedCount != 0 &&_popupBuffText != null)
@@ -203,6 +215,13 @@ public class PopupUIManager : Singleton<PopupUIManager>, IEventSubscriber, IDeac
     {
         _popupDungeonClearText.GetComponent<PopupUI_DungeonClearText>().IsClear = isClear;
         _popupDungeonClearText.SetActive(true);
+    }
+
+    public void ActivateGachaPanel()
+    {
+        ActivatePopupPanel();
+        _activePopup = _panelGacha;
+        _panelGacha.SetActive(true);
     }
     #endregion
 
@@ -232,6 +251,11 @@ public class PopupUIManager : Singleton<PopupUIManager>, IEventSubscriber, IDeac
         _activePopup.SetActive(false);
         _popupPanel.SetActive(false);
         _activePopup = null;
+    }
+    
+    public void DeactivateToolTipPanel()
+    {
+        _toolTipPanel.SetActive(false);
     }
 
     public void DeactivateJourneyInfo()

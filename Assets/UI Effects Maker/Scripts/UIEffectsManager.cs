@@ -35,6 +35,10 @@ public class UIEffectsManager : MonoBehaviour
 
     public void Run(string effectName)
     {
+        if (Settings[indexOfEffect(effectName)].running)
+        {
+            return;
+        }
         StartCoroutine(PerformEffect(indexOfEffect(effectName)));
     }
 
@@ -262,11 +266,35 @@ public class UIEffectsManager : MonoBehaviour
                     Vector3 startScale = Settings[index].targetObj.transform.localScale;
                     //Each delta size for the corresponding frame
                     Vector3[] deltaSizes = {
-                        new Vector3(0.8f, 0.8f, 0.0f) * Settings[index].Amplitude * 0.07f,
-                        new Vector3(-1.1f, -1.1f, 0.0f) * Settings[index].Amplitude * 0.07f,
-                        new Vector3(0.8f, 0.8f, 0.0f) * Settings[index].Amplitude * 0.07f,
-                        new Vector3(-0.7f, -0.7f, 0.0f) * Settings[index].Amplitude * 0.07f,
-                        new Vector3(0.4f, 0.4f, 0.0f) * Settings[index].Amplitude * 0.07f
+                        new Vector3(0.2f, 0.2f, 0.0f) * Settings[index].Amplitude * 0.07f,
+                        new Vector3(0.2f, 0.2f, 0.0f) * Settings[index].Amplitude * 0.07f,
+                        new Vector3(0.2f, 0.2f, 0.0f) * Settings[index].Amplitude * 0.07f,
+                        new Vector3(0.2f, 0.2f, 0.0f) * Settings[index].Amplitude * 0.07f,
+                        new Vector3(-0.2f, -0.2f, 0.0f) * Settings[index].Amplitude * 0.07f,
+                        new Vector3(-0.2f, -0.2f, 0.0f) * Settings[index].Amplitude * 0.07f,
+                        new Vector3(-0.2f, -0.2f, 0.0f) * Settings[index].Amplitude * 0.07f,
+                        new Vector3(-0.2f, -0.2f, 0.0f) * Settings[index].Amplitude * 0.07f,
+                        new Vector3(0.2f, 0.2f, 0.0f) * Settings[index].Amplitude * 0.07f,
+                        new Vector3(0.2f, 0.2f, 0.0f) * Settings[index].Amplitude * 0.07f,
+                        new Vector3(0.2f, 0.2f, 0.0f) * Settings[index].Amplitude * 0.07f,
+                        new Vector3(0.2f, 0.2f, 0.0f) * Settings[index].Amplitude * 0.07f,
+                        new Vector3(-0.2f, -0.2f, 0.0f) * Settings[index].Amplitude * 0.07f,
+                        new Vector3(-0.2f, -0.2f, 0.0f) * Settings[index].Amplitude * 0.07f,
+                        new Vector3(-0.2f, -0.2f, 0.0f) * Settings[index].Amplitude * 0.07f,
+                        new Vector3(-0.2f, -0.2f, 0.0f) * Settings[index].Amplitude * 0.07f,
+                        //new Vector3(0.8f, 0.8f, 0.0f) * Settings[index].Amplitude * 0.07f,
+                        //new Vector3(0.6f, 0.6f, 0.0f) * Settings[index].Amplitude * 0.07f,
+                        //new Vector3(0.4f, 0.4f, 0.0f) * Settings[index].Amplitude * 0.07f,
+                        //new Vector3(0.2f, 0.2f, 0.0f) * Settings[index].Amplitude * 0.07f,
+                        //new Vector3(-1.1f, -1.1f, 0.0f) * Settings[index].Amplitude * 0.07f,
+                        //new Vector3(-0.9f, -0.9f, 0.0f) * Settings[index].Amplitude * 0.07f,
+                        //new Vector3(-0.7f, -0.7f, 0.0f) * Settings[index].Amplitude * 0.07f,
+                        //new Vector3(-0.5f, -0.5f, 0.0f) * Settings[index].Amplitude * 0.07f,
+                        //new Vector3(-0.3f, -0.3f, 0.0f) * Settings[index].Amplitude * 0.07f,
+                        //new Vector3(-0.1f, -0.1f, 0.0f) * Settings[index].Amplitude * 0.07f,
+                        //new Vector3(0.8f, 0.8f, 0.0f) * Settings[index].Amplitude * 0.07f,
+                        //new Vector3(-0.7f, -0.7f, 0.0f) * Settings[index].Amplitude * 0.07f,
+                        //new Vector3(0.4f, 0.4f, 0.0f) * Settings[index].Amplitude * 0.07f
                     };
 
                     int counter = 0;

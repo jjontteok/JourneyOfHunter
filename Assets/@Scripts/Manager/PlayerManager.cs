@@ -7,6 +7,7 @@ public class PlayerManager : Singleton<PlayerManager>
     private SkillSystem _skillSystem;
 
     private bool _isAuto = false;
+    [SerializeField]
     private bool _isAutoMoving = false;
 
     readonly Vector3 _originPos = new Vector3(0f, 0.1f, 0.5f);

@@ -36,6 +36,7 @@ public class ObjectManager : Singleton<ObjectManager>
     private GameObject _uiGame;
     private GameObject _popupCanvas;
     private GameObject _popupPanel;
+    private GameObject _toolTipPanel;
     private GameObject _popupGainedRecordInfo;
     private GameObject _popupJourneyInfo;
     private GameObject _popupStageInfo;
@@ -48,6 +49,7 @@ public class ObjectManager : Singleton<ObjectManager>
     private GameObject _popupTreasureAppearText;
     private GameObject _popupBuffText;
     private GameObject _popupDungeonClearText;
+    private GameObject _popupGachaPanel;
 
     private GameObject _systemTextResource;
     private GameObject _rewardTextResource;
@@ -276,7 +278,15 @@ public class ObjectManager : Singleton<ObjectManager>
             return _popupPanel;
         }
     }
-
+    public GameObject ToolTipPanel
+    {
+        get
+        {
+            if (NullCheck(_toolTipPanel))
+                return null;
+            return _toolTipPanel;
+        }
+    }
     public GameObject PopupJourneyInfo
     {
         get
@@ -364,6 +374,17 @@ public class ObjectManager : Singleton<ObjectManager>
             return _popupStageTextPanel;
         }
     }
+
+    public GameObject PopupGachaPanel
+    {
+        get
+        {
+            if (NullCheck(_popupGachaPanel))
+                return null;
+            return _popupGachaPanel;
+        }
+    }
+
 
     public GameObject PopupTreasureAppearText
     {
@@ -615,6 +636,7 @@ public class ObjectManager : Singleton<ObjectManager>
     {
         _popupCanvas = Resources.Load<GameObject>(Define.PopupUICanvasPath);
         _popupPanel = Resources.Load<GameObject>(Define.PopupPanelPath);
+        _toolTipPanel = Resources.Load<GameObject>(Define.ToolTipPanelPath);
         _popupJourneyInfo = Resources.Load<GameObject>(Define.PopupJourneyInfoPanelPath);
         _popupStageInfo = Resources.Load<GameObject>(Define.PopupStageInfoPanelPath);
         _popupNamedMonsterInfo = Resources.Load<GameObject>(Define.PopupNamedMonsterInfoPanelPath);
@@ -626,7 +648,10 @@ public class ObjectManager : Singleton<ObjectManager>
         _popupTreasureAppearText = Resources.Load<GameObject>(Define.PopupTreasureAppearPanelPath);
         _popupBuffText = Resources.Load<GameObject>(Define.PopupBuffPanelPath);
         _popupDungeonClearText = Resources.Load<GameObject>(Define.PopupDungeonClearPanelPath);
+        _popupGachaPanel = Resources.Load<GameObject>(Define.PopupGachaPanelPath);
     }
+
+
 
     // * 컷신 리소스 로드 메서드
     private void CutSceneResourceLoad()

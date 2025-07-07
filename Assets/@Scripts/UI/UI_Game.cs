@@ -11,15 +11,17 @@ public class UI_Game : MonoBehaviour
     [SerializeField] Button _statusButton;
     [SerializeField] Button _inventoryButton;
     [SerializeField] Button _skillInventoryButton;
-    [SerializeField] Button _storeButton;
+    [SerializeField] Button _gachaButton;
     [SerializeField] TMP_Text _silverCoinText;
     [SerializeField] TMP_Text _gemText;
     [SerializeField] Toggle _autoToggle;
     [SerializeField] Toggle _doubleSpeedToggle;
     [SerializeField] GameObject _systemTextPanel;
+    // 불/물/빛/암
+    [SerializeField] GameObject[] _attributePrefab = new GameObject[4];
     [SerializeField] Image _hpBar;
 
-    private List<UI_PlayerVital> _playerVitalList; 
+    private List<UI_PlayerVital> _playerVitalList;
     private GameObject _playerVitalCanvas;
     private PlayerController _player;
     private PlayerInventoryData _inventoryData;
@@ -41,12 +43,14 @@ public class UI_Game : MonoBehaviour
 
         MonsterController.OnMonsterDead += GainGoods;
         PlayerManager.Instance.Player.OnHPValueChanged += UpdatePlayerHp;
+        EnvironmentManager.Instance.OnTypeChanged += UpdateAttribute;
+        EnvironmentManager.Instance.OnTypeChanged?.Invoke(EnvironmentManager.Instance.CurrentType);
         //_inventoryData.OnValueChanged += UpdateGoods;
 
         _statusButton.onClick.AddListener(OnStatusButtonClick);
         _inventoryButton.onClick.AddListener(OnInventoryButtonClick);
         _skillInventoryButton.onClick.AddListener(OnSkillInventoryButtonClick);
-        _storeButton.onClick.AddListener(OnStoreButtoneClick);
+        _gachaButton.onClick.AddListener(OnGachaButtoneClick);
 
         _silverCoinText.text = _inventoryData.SilverCoin.ToString();
         _autoToggle.onValueChanged.AddListener(OnAutoToggleClick);
@@ -79,7 +83,7 @@ public class UI_Game : MonoBehaviour
         Initialize();
         //_playerVitalCanvas = Instantiate(ObjectManager.Instance.PlayerVitalCanvas);
         //Canvas canvas = _playerVitalCanvas.GetOrAddComponent<Canvas>();
-        
+
         ////다 모듈화해주세용
         ////플레이어 리스트를 받아와서
         //GameObject[] players = GameObject.FindGameObjectsWithTag(Define.PlayerTag);
@@ -138,9 +142,9 @@ public class UI_Game : MonoBehaviour
         PopupUIManager.Instance.ActivateSkillInventoryPanel();
     }
 
-    void OnStoreButtoneClick()
+    void OnGachaButtoneClick()
     {
-
+        PopupUIManager.Instance.ActivateGachaPanel();
     }
 
     void OnAutoToggleClick(bool flag)
@@ -185,5 +189,42 @@ public class UI_Game : MonoBehaviour
     void UpdatePlayerHp(float currentHP, float maxHP)
     {
         _hpBar.fillAmount = currentHP / maxHP;
+    }
+
+    void UpdateAttribute(Define.TimeOfDayType type)
+    {
+        switch (type)
+        {
+            // 아침 - 물, 빛
+            case Define.TimeOfDayType.Morning:
+                _attributePrefab[0].SetActive(false);
+                _attributePrefab[1].SetActive(true);
+                _attributePrefab[2].SetActive(true);
+                _attributePrefab[3].SetActive(false);
+                break;
+            // 낮 - 불, 빛
+            case Define.TimeOfDayType.Noon:
+                _attributePrefab[0].SetActive(true);
+                _attributePrefab[1].SetActive(false);
+                _attributePrefab[2].SetActive(true);
+                _attributePrefab[3].SetActive(false);
+                break;
+            // 저녁 - 어둠, 불
+            case Define.TimeOfDayType.Evening:
+                _attributePrefab[0].SetActive(true);
+                _attributePrefab[1].SetActive(false);
+                _attributePrefab[2].SetActive(false);
+                _attributePrefab[3].SetActive(true);
+                break;
+            // 밤 - 어둠, 물
+            case Define.TimeOfDayType.Night:
+                _attributePrefab[0].SetActive(false);
+                _attributePrefab[1].SetActive(true);
+                _attributePrefab[2].SetActive(false);
+                _attributePrefab[3].SetActive(true);
+                break;
+            default:
+                break;
+        }
     }
 }

@@ -53,7 +53,7 @@ public class FieldManager : Singleton<FieldManager>, IEventSubscriber, IDeactiva
     SpawnController _spawnController;
     DungeonController _dungeonController;
     RewardSystem _rewardSystem;
-
+    [SerializeField]
     Define.JourneyType _currentType;
 
     int _stageCount;

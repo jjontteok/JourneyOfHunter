@@ -32,6 +32,7 @@ public class Define : MonoBehaviour
     public const string GroundTag = "Ground";
     public const string MonsterTag = "Monster";
     public const string FieldObjectTag = "FieldObject";
+    public const string PortalTag = "Portal";
     #endregion
 
     #region Path
@@ -61,6 +62,7 @@ public class Define : MonoBehaviour
     public const string UIGamePath = "UI/MainUI/UI_Game";
     public const string PopupUICanvasPath = "UI/PopupUI/Canvas - Popup";
     public const string PopupPanelPath = "UI/PopupUI/Panel - Popup";
+    public const string ToolTipPanelPath = "UI/PopupUI/Panel - ToolTip";
     public const string PopupStatusPanelPath = "UI/PopupUI/StatusPanel - Popup";
     public const string PopupInventoryPanelPath = "UI/PopupUI/InventoryPanel - Popup";
     public const string PopupSkillInventoryPath = "UI/PopupUI/SkillInventoryPanel - Popup";
@@ -68,10 +70,12 @@ public class Define : MonoBehaviour
     public const string PopupStageInfoPanelPath = "UI/PopupUI/Panel - StageInfo";
     public const string PopupNamedMonsterInfoPanelPath = "UI/PopupUI/Panel - NamedMonsterInfo";
     public const string PopupMerchantPanelPath = "UI/PopupUI/MerchantPanel - Popup";
+
     public const string PopupStageTextPanelPath = "UI/PopupUI/Panel - StageText";
     public const string PopupTreasureAppearPanelPath = "UI/PopupUI/Panel - TreasureAppearText";
     public const string PopupBuffPanelPath = "UI/PopupUI/Panel - BuffText";
     public const string PopupDungeonClearPanelPath = "UI/PopupUI/Panel - DungeonClearText";
+    public const string PopupGachaPanelPath = "UI/PopupUI/RandomSummonPanel - Popup";
 
     public const string GoblinKingCutScenePath = "CutScene/GoblinCutScene";
     public const string FollowCameraPath = "Camera/FollowPlayerCamera";
@@ -182,6 +186,13 @@ public class Define : MonoBehaviour
         Epic,
         Legendary
     }
+
+    public enum DrawItemType
+    {
+        Equipment,
+        Skill
+    }
+
     public enum ItemType
     {
         Equipment,
@@ -219,6 +230,7 @@ public class Define : MonoBehaviour
     public const string PlayerSkillLayer = "PlayerSkill";
     public const string MonsterSkillLayer = "MonsterSkill";
     public const string MonsterAttackRangeLayer = "MonsterAttackRange";
+    public const string TreasureBoxLayer = "TreasureBox";
     #endregion
 
     #region Constants
