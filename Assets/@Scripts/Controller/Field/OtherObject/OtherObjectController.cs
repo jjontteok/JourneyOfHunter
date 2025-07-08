@@ -17,6 +17,7 @@ public class OtherObjectController : MonoBehaviour
             {
                 _isObtained = true;
                 FieldManager.Instance.RewardSystem.GainReward(transform.position + Vector3.up);
+                PlayerManager.Instance.IsAutoMoving = true;
             }
         }
     }

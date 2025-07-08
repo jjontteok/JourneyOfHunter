@@ -16,7 +16,7 @@ GameObject:
   - component: {fileID: -1287824311080065819}
   m_Layer: 0
   m_Name: OtherObject-Rare
-  m_TagString: Untagged
+  m_TagString: FieldObject
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
