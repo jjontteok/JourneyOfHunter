@@ -12,8 +12,9 @@ public class CameraManager : Singleton<CameraManager>
 
     public Action OnCutSceneEnded;
 
-    GameObject _followCam;
-    GameObject _cutSceneCam;
+    CinemachineCamera _startCam;
+    CinemachineCamera _followCam;
+    CinemachineCamera _cutSceneCam;
 
     int highPriority = 20;
     int lowPriority = 10;
@@ -23,31 +24,45 @@ public class CameraManager : Singleton<CameraManager>
     protected override void Initialize()
     {
         base.Initialize();
-        _followCam = Instantiate(ObjectManager.Instance.FollowCam);
-        _cutSceneCam = Instantiate(ObjectManager.Instance.CutSceneCam);
+        _startCam = Instantiate(ObjectManager.Instance.StartCam).GetComponent<CinemachineCamera>();
+        _followCam = Instantiate(ObjectManager.Instance.FollowCam).GetComponent<CinemachineCamera>();
+        _cutSceneCam = Instantiate(ObjectManager.Instance.CutSceneCam).GetComponent<CinemachineCamera>();
 
         _mainCamera = Camera.main;
 
         Transform playerTransform = PlayerManager.Instance.Player.transform;
         _cinemachineBrain = _mainCamera.GetOrAddComponent<CinemachineBrain>();
-        _followCam.GetComponent<CinemachineCamera>().Follow = playerTransform;
-        _followCam.GetComponent<CinemachineCamera>().LookAt = playerTransform;
-        SetFollowPlayerCam();
+        _followCam.Follow = playerTransform;
+        _followCam.LookAt = playerTransform;
+        SetStartCam();
+    }
+
+    private void OnEnable()
+    {
+        UIManager.Instance.UI_Main.OnStartButtonClicked += SetFollowPlayerCam;
+    }
+
+    public void SetStartCam()
+    {
+        _startCam.Priority = highPriority;
+        _cutSceneCam.Priority = lowPriority;
+        _followCam.Priority = lowPriority;
     }
 
     public void SetFollowPlayerCam()
     {
-        _cutSceneCam.GetComponentInChildren<CinemachineCamera>(true).Priority = lowPriority;
-        _followCam.GetComponent<CinemachineCamera>().Priority = highPriority;
+        _startCam.Priority = lowPriority;
+        _cutSceneCam.Priority = lowPriority;
+        _followCam.Priority = highPriority;
     }
 
     public void SetCutSceneCam()
     {
         Transform monster = FindAnyObjectByType<NamedMonsterController>().transform;
-        _cutSceneCam.GetComponentInChildren<CinemachineCamera>(true).Follow = monster;
-        _cutSceneCam.GetComponentInChildren<CinemachineCamera>(true).LookAt = monster;
+        _cutSceneCam.Follow = monster;
+        _cutSceneCam.LookAt = monster;
         CinemachineCamera cim = _cutSceneCam.GetComponentInChildren<CinemachineCamera>(true);
         cim.Priority = highPriority;
-        _followCam.GetComponent<CinemachineCamera>().Priority = lowPriority;
+        _followCam.Priority = lowPriority;
     }
 }

@@ -7,6 +7,7 @@ using UnityEngine.UI;
 
 public class UI_Game : MonoBehaviour
 {
+    [SerializeField] TMP_Text _playerNameText;
     [SerializeField] TMP_Text _playerLevelText;
     [SerializeField] Button _statusButton;
     [SerializeField] Button _inventoryButton;
@@ -27,6 +28,18 @@ public class UI_Game : MonoBehaviour
     private PlayerInventoryData _inventoryData;
 
     private int _currentPlayers;
+
+    private string _playerName;
+
+    public string PlayerName
+    {
+        get { return _playerName; }
+        set
+        {
+            _playerName = value;
+            _playerNameText.text = _playerName;
+        }
+    }
 
     //private void Awake()
     //{

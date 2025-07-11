@@ -1016,6 +1016,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b3cdc8512acd0a3498635a487300c1da, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _playerNameText: {fileID: 4574545389139888773}
   _playerLevelText: {fileID: 0}
   _statusButton: {fileID: 6657925903750937385}
   _inventoryButton: {fileID: 3745565010407714904}

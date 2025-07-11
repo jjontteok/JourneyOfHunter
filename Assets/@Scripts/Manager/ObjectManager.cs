@@ -33,6 +33,7 @@ public class ObjectManager : Singleton<ObjectManager>
     private GameObject _backgroundResource;
 
     // * UI Object
+    private GameObject _uiMain;
     private GameObject _uiGame;
     private GameObject _popupCanvas;
     private GameObject _popupPanel;
@@ -48,6 +49,7 @@ public class ObjectManager : Singleton<ObjectManager>
     private GameObject _popupStageTextPanel;
     private GameObject _popupTreasureAppearText;
     private GameObject _popupBuffText;
+    private GameObject _popupDungeonAppear;
     private GameObject _popupDungeonClearText;
     private GameObject _popupGachaPanel;
 
@@ -58,6 +60,7 @@ public class ObjectManager : Singleton<ObjectManager>
 
     // * CutScene
     private GameObject _goblinKingCutScene;
+    private GameObject _startCam;
     private GameObject _followCam;
     private GameObject _cutSceneCam;
     
@@ -227,6 +230,16 @@ public class ObjectManager : Singleton<ObjectManager>
             if (NullCheck(_backgroundResource))
                 return null;
             return _backgroundResource;
+        }
+    }
+
+    public GameObject UIMain
+    {
+        get
+        {
+            if (NullCheck(_uiMain))
+                return null;
+            return _uiMain;
         }
     }
 
@@ -406,6 +419,16 @@ public class ObjectManager : Singleton<ObjectManager>
         }
     }
 
+    public GameObject PopupDungeonAppear
+    {
+        get
+        {
+            if (NullCheck(_popupDungeonAppear))
+                return null;
+            return _popupDungeonAppear;
+        }
+    }
+
     public GameObject PopupDungeonClearText
     {
         get
@@ -434,6 +457,16 @@ public class ObjectManager : Singleton<ObjectManager>
             if (NullCheck(_goblinKingCutScene))
                 return null;
             return _goblinKingCutScene;
+        }
+    }
+
+    public GameObject StartCam
+    {
+        get
+        {
+            if (NullCheck(_startCam))
+                return null;
+            return _startCam;
         }
     }
 
@@ -626,6 +659,7 @@ public class ObjectManager : Singleton<ObjectManager>
     // * UI 리소스 로드 메서드
     private void UIResourceLoad()
     {
+        _uiMain = Resources.Load<GameObject>(Define.UIMainPath);
         _uiGame = Resources.Load<GameObject>(Define.UIGamePath);
         _systemTextResource = Resources.Load<GameObject>(Define.SystemTextPath);
         _rewardTextResource = Resources.Load<GameObject>(Define.RewardTextPath);
@@ -647,6 +681,7 @@ public class ObjectManager : Singleton<ObjectManager>
         _popupStageTextPanel = Resources.Load<GameObject>(Define.PopupStageTextPanelPath);
         _popupTreasureAppearText = Resources.Load<GameObject>(Define.PopupTreasureAppearPanelPath);
         _popupBuffText = Resources.Load<GameObject>(Define.PopupBuffPanelPath);
+        _popupDungeonAppear = Resources.Load<GameObject>(Define.PopupDungeonAppearPanelPath);
         _popupDungeonClearText = Resources.Load<GameObject>(Define.PopupDungeonClearPanelPath);
         _popupGachaPanel = Resources.Load<GameObject>(Define.PopupGachaPanelPath);
     }
@@ -661,6 +696,7 @@ public class ObjectManager : Singleton<ObjectManager>
 
     private void CameraResourceLoad()
     {
+        _startCam = Resources.Load<GameObject>(Define.StartCameraPath);
         _followCam = Resources.Load<GameObject>(Define.FollowCameraPath);
         _cutSceneCam = Resources.Load<GameObject>(Define.CutSceneCameraPath);
     }

@@ -15,7 +15,7 @@ MonoBehaviour:
   Index: 3
   RankType: 0
   Name: "\uB3D9\uBA54\uB2EC3"
-  MinJourneyExp: 120
-  MaxJourneyExp: 420
+  MinJourneyExp: 200
+  MaxJourneyExp: 500
   TextColor: {r: 0.6117647, g: 0.2509804, b: 0.2509804, a: 1}
   RankImage: {fileID: 21300000, guid: a492c1b8237fc3746baddcd0cb2a7439, type: 3}

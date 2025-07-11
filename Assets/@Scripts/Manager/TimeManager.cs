@@ -88,7 +88,10 @@ public class TimeManager : Singleton<TimeManager>, IEventSubscriber
 
     public void StopNamedMonsterTimer()
     {
-        StopCoroutine(_namedMonsterCoroutine);
+        if (_namedMonsterCoroutine != null)
+        {
+            StopCoroutine(_namedMonsterCoroutine);
+        }
         _namedMonsterCoroutine = null;
     }
     #endregion

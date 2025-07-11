@@ -19,6 +19,8 @@ public class TreasureBoxController : MonoBehaviour, IDamageable
     int _count;
     Define.ItemValue _initEffectColor;
 
+    bool _isObtained;
+
     public Define.ItemValue TreasureRank
     {
         get { return _treasureRank; }
@@ -53,6 +55,7 @@ public class TreasureBoxController : MonoBehaviour, IDamageable
         PopupUIManager.Instance.ActivateTreasureAppearText();
         _openEffect.SetActive(false);
         _hitCount = 0;
+        _isObtained = false;
     }
 
     // * 보물상자 이펙트의 색을 설정하는 메서드 
@@ -76,10 +79,12 @@ public class TreasureBoxController : MonoBehaviour, IDamageable
     // * 플레이어가 보물상자를 때릴 때 실행되는 함수
     void UpHitCount()
     {
+        if (_isObtained) return;
+
         _hitCount++; //때린 횟수 증가
         if (_hitCount % 3 == 0) //3번 때릴 때마다 상자 색 변경
         {
-            if (_hitCount == _count) //때린 횟수가 현재 상자 랭크와 같다면
+            if (_hitCount >= _count) //때린 횟수가 현재 상자 랭크와 같다면
             {
                 OpenTreasureBox(); //보물 상자 오픈
             }
@@ -93,6 +98,7 @@ public class TreasureBoxController : MonoBehaviour, IDamageable
     // * 보물상자를 열었을 때 실행되는 함수
     void OpenTreasureBox()
     {
+        _isObtained = true;
         PlayOpenAnimation();
         FieldManager.Instance.RewardSystem.GainReward(transform.position + Vector3.up * 2);
         StartCoroutine(CoSetAutoMoving());
