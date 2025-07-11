@@ -138,6 +138,7 @@ public class NamedMonsterController : MonsterController
         if (_target.GetComponent<Animator>().GetInteger(Define.DieType) > 0)
             return;
         _animator.SetTrigger(Define.CloseAttack);
+        _animator.SetBool(Define.IsAttacking, true);
     }
 
     //원거리 공격 활성화
@@ -146,6 +147,7 @@ public class NamedMonsterController : MonsterController
         if (_target.GetComponent<Animator>().GetInteger(Define.DieType) > 0)
             return;
         _animator.SetTrigger(Define.LongAttack);
+        _animator.SetBool(Define.IsAttacking, true);
         // Offset = (0,0,3)
         _bulletSkill.ActivateSkill(transform.position + Vector3.up * 2f);
     }
