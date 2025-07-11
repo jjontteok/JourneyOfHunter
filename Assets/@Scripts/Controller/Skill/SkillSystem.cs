@@ -46,6 +46,7 @@ public class SkillSystem : MonoBehaviour
         _player = PlayerManager.Instance.Player;
         _animator = _player.GetComponent<Animator>();
         OnShortestSkillDistanceChanged += _player.SetShortestSkillDistance;
+        _player.OnPlayerCrossed += OnPlayerCross;
 
         // 오브젝트매니저가 보유 중인 스킬 프리팹들을 플레이어의 스킬리스트에 넣기
         Dictionary<string, GameObject> skillList = ObjectManager.Instance.PlayerSkillResourceList;
@@ -259,5 +260,16 @@ public class SkillSystem : MonoBehaviour
         SkillManager.Instance.IsSkillInterval = true;
         yield return new WaitForSeconds(Define.SkillInterval);
         SkillManager.Instance.IsSkillInterval = false;
+    }
+
+    void OnPlayerCross()
+    {
+        foreach (var slot in _activeSkillSlotList)
+        {
+            if(slot.Skill.gameObject.activeSelf)
+            {
+                slot.Skill.transform.Translate(Vector3.back * 108.2f);
+            }
+        }
     }
 }
