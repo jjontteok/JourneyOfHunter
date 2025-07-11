@@ -18,6 +18,7 @@ public class PopupUIManager : Singleton<PopupUIManager>, IEventSubscriber, IDeac
     private GameObject _popupStageText;
     private GameObject _popupTreasureAppearText;
     private GameObject _popupBuffText;
+    private GameObject _popupDungeonAppear;
     private GameObject _popupDungeonClearText;
     private GameObject _panelStatus;
     private GameObject _panelInventory;
@@ -27,7 +28,8 @@ public class PopupUIManager : Singleton<PopupUIManager>, IEventSubscriber, IDeac
 
     private GameObject _activePopup;
 
-    WaitForSeconds _deactivateText = new WaitForSeconds(1.5f);
+    WaitForSeconds _oneFiveSecondsTime = new WaitForSeconds(1.5f);
+    WaitForSeconds _twoSecondsTime= new WaitForSeconds(2f);
 
     bool _isDownBuffTextPos = false;
 
@@ -47,6 +49,7 @@ public class PopupUIManager : Singleton<PopupUIManager>, IEventSubscriber, IDeac
         _popupStageText = Instantiate(ObjectManager.Instance.PopupStageTextPanel, _canvasPopupUI.transform);
         _popupTreasureAppearText = Instantiate(ObjectManager.Instance.PopupTreasureAppearText, _canvasPopupUI.transform);
         _popupBuffText = Instantiate(ObjectManager.Instance.PopupBuffText, _canvasPopupUI.transform);
+        _popupDungeonAppear = Instantiate(ObjectManager.Instance.PopupDungeonAppear, _canvasPopupUI.transform);
         _popupDungeonClearText = Instantiate(ObjectManager.Instance.PopupDungeonClearText, _canvasPopupUI.transform);
         _panelStatus = Instantiate(ObjectManager.Instance.PopupStatusPanel, _canvasPopupUI.transform);
         _panelInventory = Instantiate(ObjectManager.Instance.PopupInventoryPanel, _canvasPopupUI.transform);
@@ -63,6 +66,7 @@ public class PopupUIManager : Singleton<PopupUIManager>, IEventSubscriber, IDeac
     #region IEventSubscriber
     public void Subscribe()
     {
+        UIManager.Instance.UI_Main.OnStartButtonClicked += ActivateJourneyInfo;
         FieldManager.Instance.OnStageChanged += ActivateStageText;
         FieldManager.Instance.DungeonController.OnDungeonEnter += DeactivateJourneyInfo;
         FieldManager.Instance.DungeonController.OnDungeonEnter += ActivateStageInfo;
@@ -106,6 +110,7 @@ public class PopupUIManager : Singleton<PopupUIManager>, IEventSubscriber, IDeac
         _popupStageText.SetActive(false);
         _popupTreasureAppearText.SetActive(false);
         _popupBuffText.SetActive(false);
+        _popupDungeonAppear.SetActive(false);
         _popupDungeonClearText.SetActive(false);
         _panelStatus.SetActive(false);
         _panelInventory.SetActive(false);
@@ -181,6 +186,12 @@ public class PopupUIManager : Singleton<PopupUIManager>, IEventSubscriber, IDeac
 
     public void ActivateStageText(int stage)
     {
+        if (stage % 5 == 0)
+        {
+            _popupStageInfo.GetComponent<PopupUI_StageInfo>().Stage = stage;
+            ActivateDungeonAppear();
+            return;
+        }
         TMP_Text stageText = _popupStageText.GetComponentInChildren<TMP_Text>();
         stageText.text = $"- Stage {stage} -";
         _popupStageText.SetActive(true);
@@ -190,7 +201,7 @@ public class PopupUIManager : Singleton<PopupUIManager>, IEventSubscriber, IDeac
             stageText.color = Color.yellow;
             StartCoroutine(_popupStageText.GetComponentInChildren<UIEffectsManager>().PerformEffect(1));
         }
-        StartCoroutine(DeactivateText(_popupStageText));
+        StartCoroutine(DeactivatePopup(_popupStageText, _oneFiveSecondsTime));
     }
 
     public void ActivateTreasureAppearText()
@@ -199,7 +210,7 @@ public class PopupUIManager : Singleton<PopupUIManager>, IEventSubscriber, IDeac
         {
             _popupTreasureAppearText.SetActive(true);
             StartCoroutine(_popupTreasureAppearText.GetComponent<UIEffectsManager>().PerformEffect(0));
-            StartCoroutine(DeactivateText(_popupTreasureAppearText));
+            StartCoroutine(DeactivatePopup(_popupTreasureAppearText, _oneFiveSecondsTime));
         }
     }
 
@@ -209,6 +220,16 @@ public class PopupUIManager : Singleton<PopupUIManager>, IEventSubscriber, IDeac
         {
             _popupBuffText.SetActive(true);         
         }
+    }
+
+    public void ActivateDungeonAppear()
+    {
+        _popupDungeonAppear.SetActive(true);
+        foreach(var effect in _popupDungeonAppear.GetComponentsInChildren<UIEffectsManager>())
+        {
+            StartCoroutine(effect.PerformEffect(0));
+        }
+        StartCoroutine(DeactivatePopup(_popupDungeonAppear, _twoSecondsTime));
     }
 
     public void ActivateDungeonClearText(bool isClear)
@@ -273,9 +294,9 @@ public class PopupUIManager : Singleton<PopupUIManager>, IEventSubscriber, IDeac
         _popupNamedMonsterInfo.SetActive(false);
     }
 
-    public IEnumerator DeactivateText(GameObject go)
+    public IEnumerator DeactivatePopup(GameObject go, WaitForSeconds time)
     {
-        yield return _deactivateText;
+        yield return time;
         go.SetActive(false);
     }
 

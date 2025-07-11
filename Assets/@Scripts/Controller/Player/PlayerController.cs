@@ -184,6 +184,8 @@ public class PlayerController : MonoBehaviour, IDamageable
 
     public void Move()
     {
+        if (!PlayerManager.Instance.IsGameStart) return;
+
         if (_animator.GetInteger(Define.DieType) > 0)
         {
             _rigidbody.linearVelocity = new Vector3(0, _rigidbody.linearVelocity.y, 0);

@@ -99,10 +99,6 @@ public class FieldManager : Singleton<FieldManager>, IEventSubscriber, IDeactiva
         _rewardSystem = new RewardSystem();
         _stageCount = StageCount;
     }
-    void Start()
-    {
-        PopupUIManager.Instance.ActivateJourneyInfo();
-    }
 
     #region IEventSubscriber
     public void Subscribe()

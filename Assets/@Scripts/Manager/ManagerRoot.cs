@@ -55,6 +55,7 @@ public class ManagerRoot : MonoBehaviour
     // * 이벤트 구독 메서드
     private void EventSubscribeAll()
     {
+        PlayerManager.Instance.Subscribe();
         FieldManager.Instance.Subscribe();
         PopupUIManager.Instance.Subscribe();
         TextManager.Instance.Subscribe();

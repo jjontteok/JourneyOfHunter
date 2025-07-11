@@ -7,15 +7,27 @@ public class PopupUI_StageInfo : MonoBehaviour
 {
     [SerializeField] private Button _actionButton;
     [SerializeField] private Image _monsterCountBarImage;
+    [SerializeField] private TMP_Text _stageCountText;
     [SerializeField] private TMP_Text _monsterCountText;
-    [SerializeField] private TMP_Text _buffStackText;
 
     private Image[] _statusImages;
     private Image _currentStatusImage;
 
     StageController _stageController;
 
-    
+    int _stage;
+
+    public int Stage
+    {
+        get
+        {
+            return _stage;
+        }
+        set
+        {
+            _stage = value;
+        }
+    }
 
     private void Awake()
     {
@@ -36,6 +48,11 @@ public class PopupUI_StageInfo : MonoBehaviour
         _statusImages[2].gameObject.SetActive(false);
         _statusImages[3].gameObject.SetActive(false);
         _statusImages[4].gameObject.SetActive(false);
+    }
+
+    private void OnEnable()
+    {
+        _stageCountText.text = $"Stage {_stage}";
     }
 
     private void SetMonsterCountBarClear()

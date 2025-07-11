@@ -59,6 +59,7 @@ public class Define : MonoBehaviour
     public const string PlayerVitalPath = "UI/PlayerVital/PlayerVital";
     public const string ItemSlotPath = "UI/PopupUI/IconSlotResources";
 
+    public const string UIMainPath = "UI/MainUI/UI_Main";
     public const string UIGamePath = "UI/MainUI/UI_Game";
     public const string PopupUICanvasPath = "UI/PopupUI/Canvas - Popup";
     public const string PopupPanelPath = "UI/PopupUI/Panel - Popup";
@@ -74,10 +75,12 @@ public class Define : MonoBehaviour
     public const string PopupStageTextPanelPath = "UI/PopupUI/Panel - StageText";
     public const string PopupTreasureAppearPanelPath = "UI/PopupUI/Panel - TreasureAppearText";
     public const string PopupBuffPanelPath = "UI/PopupUI/Panel - BuffText";
+    public const string PopupDungeonAppearPanelPath = "UI/PopupUI/Panel - DungeonAppear";
     public const string PopupDungeonClearPanelPath = "UI/PopupUI/Panel - DungeonClearText";
     public const string PopupGachaPanelPath = "UI/PopupUI/RandomSummonPanel - Popup";
 
     public const string GoblinKingCutScenePath = "CutScene/GoblinCutScene";
+    public const string StartCameraPath = "Camera/StartCamera";
     public const string FollowCameraPath = "Camera/FollowPlayerCamera";
     public const string CutSceneCameraPath = "Camera/CutSceneCamera";
 
