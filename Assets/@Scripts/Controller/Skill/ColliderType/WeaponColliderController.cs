@@ -11,7 +11,7 @@ public class WeaponColliderController : MonoBehaviour
     {
         _damage = damage;
         _animator = GetComponentInParent<Animator>();
-        StartCoroutine(EnableAttackCollider());
+        //StartCoroutine(EnableAttackCollider());
     }
 
     void InstantiateHitEffect(Collider other)
@@ -23,13 +23,6 @@ public class WeaponColliderController : MonoBehaviour
 
         Destroy(effect, 0.5f);
     }
-    IEnumerator EnableAttackCollider()
-    {
-        GetComponent<Collider>().enabled = false;
-        yield return null; // 한 프레임 대기
-        GetComponent<Collider>().enabled = true;
-    }
-
 
     private void OnTriggerEnter(Collider other)
     {

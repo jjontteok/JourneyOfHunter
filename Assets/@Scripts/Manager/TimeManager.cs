@@ -38,10 +38,10 @@ public class TimeManager : Singleton<TimeManager>, IEventSubscriber
     public bool IsSkyBoxChange
     {
         get { return _isSkyBoxChange; }
-        set 
+        set
         {
-            _isSkyBoxChange = value; 
-            if(!_isSkyBoxChange)
+            _isSkyBoxChange = value;
+            if (!_isSkyBoxChange)
                 StartDay();
         }
     }
@@ -109,7 +109,7 @@ public class TimeManager : Singleton<TimeManager>, IEventSubscriber
             yield return _standardTime;
             _dayTime += 1;
             //Debug.Log(_dayTime);
-            
+
             if (Define.ColorChangeTimeList.TryGetValue(_dayTime, out var newColorTimeOfDay))
             {
                 //현재 스카이박스 색 변경
