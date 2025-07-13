@@ -1,8 +1,4 @@
-using System;
-using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Events;
-using UnityEngine.EventSystems;
 
 public class SkillManager : Singleton<SkillManager>
 {
@@ -11,8 +7,6 @@ public class SkillManager : Singleton<SkillManager>
     UIEffectsManager[] _iconEffects = new UIEffectsManager[6];
 
     bool _isSkillInterval;
-
-    public event Action<Define.TimeOfDayType> OnDayTypeChanged;
 
     public bool IsSkillInterval
     {

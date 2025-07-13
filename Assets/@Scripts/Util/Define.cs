@@ -1,6 +1,5 @@
 using System.Collections.Generic;
 using UnityEngine;
-using static Unity.Burst.Intrinsics.Arm;
 
 public class Define : MonoBehaviour
 {
@@ -239,7 +238,10 @@ public class Define : MonoBehaviour
     #region Constants
     public const float MaxDef = 100f;
     public const float SkillInterval = 0.5f;
+    public const float TeleportDistance = 108.2f;
     public const int TotalSkillIconSlotNum = 6;
+    public const int MinUnlockedSkillSlotCount = 2;
+    public const int MaxUnlockedSkillSlotCount = TotalSkillIconSlotNum - 1;
     public readonly static string[] SkillAttributes = { "", "불", "물", "빛", "암" };
 
     public const string Morning = "MorningSkyBox";

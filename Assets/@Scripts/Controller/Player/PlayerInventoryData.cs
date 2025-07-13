@@ -67,7 +67,7 @@ public class Inventory
     }
 
     public event Action<Dictionary<Define.ItemType, List<ItemData>>> OnInventorySet;
-    public event Action<Define.GoodsType> OnValueChanged;
+    //public event Action<Define.GoodsType> OnValueChanged;
     public event Action<Define.ItemType> OnItemAdd;
     public event Action<Define.ItemType> OnItemRemove;
 
