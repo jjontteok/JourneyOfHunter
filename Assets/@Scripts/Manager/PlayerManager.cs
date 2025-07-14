@@ -1,11 +1,12 @@
 using extension;
 using UnityEngine;
 
-public class PlayerManager : Singleton<PlayerManager>
+public class PlayerManager : Singleton<PlayerManager>, IEventSubscriber
 {
     private PlayerController _player;
     private SkillSystem _skillSystem;
 
+    private bool _isGameStart = false;
     private bool _isAuto = false;
     [SerializeField]
     private bool _isAutoMoving = false;
@@ -15,6 +16,12 @@ public class PlayerManager : Singleton<PlayerManager>
     #region Properties
 
     public SkillSystem SkillSystem { get { return _skillSystem; } }
+
+    public bool IsGameStart
+    {
+        get { return _isGameStart; }
+        set { _isGameStart = value; }
+    }
 
     public bool IsAuto
     {
@@ -88,4 +95,10 @@ public class PlayerManager : Singleton<PlayerManager>
         _skillSystem = _player.gameObject.GetOrAddComponent<SkillSystem>();
         _skillSystem.InitializeSkillSystem();
     }
+
+    public void Subscribe()
+    {
+        UIManager.Instance.UI_Main.OnStartButtonClicked += () => _isGameStart = true;
+    }
+
 }

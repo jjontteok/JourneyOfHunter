@@ -837,7 +837,7 @@ GameObject:
   - component: {fileID: 2585142473333534383}
   - component: {fileID: 2986572111415876811}
   - component: {fileID: 2621801269752866024}
-  - component: {fileID: 6203967470024878039}
+  - component: {fileID: 6807577729366610082}
   m_Layer: 5
   m_Name: UI_Game
   m_TagString: Untagged
@@ -940,6 +940,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b3cdc8512acd0a3498635a487300c1da, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _playerNameText: {fileID: 4574545389139888773}
   _playerLevelText: {fileID: 0}
   _statusButton: {fileID: 6657925903750937385}
   _inventoryButton: {fileID: 3745565010407714904}
@@ -956,7 +957,7 @@ MonoBehaviour:
   - {fileID: 7467138595030381139}
   - {fileID: 6063080787886175492}
   _hpBar: {fileID: 5180121511979986491}
---- !u!225 &6203967470024878039
+--- !u!225 &6807577729366610082
 CanvasGroup:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}

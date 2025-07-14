@@ -175,7 +175,7 @@ public class PlayerController : MonoBehaviour, IDamageable
             journeyExp *= _playerData.JourneyRankData.Index;
         //그냥 일반 획득이라면 스테이지대로 여정의 증표 증가
         else
-            journeyExp *= amount;
+            journeyExp = amount;
 
         OnJourneyExpChanged?.Invoke(journeyExp);
         JourneyExp += journeyExp;
@@ -184,6 +184,8 @@ public class PlayerController : MonoBehaviour, IDamageable
 
     public void Move()
     {
+        if (!PlayerManager.Instance.IsGameStart) return;
+
         if (_animator.GetInteger(Define.DieType) > 0)
         {
             _rigidbody.linearVelocity = new Vector3(0, _rigidbody.linearVelocity.y, 0);
@@ -231,7 +233,7 @@ public class PlayerController : MonoBehaviour, IDamageable
                     {
                         SetTarget();
                     }
-                    if ((!_target.CompareTag(Define.PortalTag) && FieldManager.Instance.CurrentEventType == Define.JourneyType.Dungeon) || FieldManager.Instance.CurrentEventType == Define.JourneyType.TreasureBox)
+                    if (((_target != null && !_target.CompareTag(Define.PortalTag)) && FieldManager.Instance.CurrentEventType == Define.JourneyType.Dungeon) || FieldManager.Instance.CurrentEventType == Define.JourneyType.TreasureBox)
                     {
                         //if (!MoveToTarget(_shortestSkillDistance))
                         //{
@@ -272,6 +274,9 @@ public class PlayerController : MonoBehaviour, IDamageable
     // target과의 거리가 distance 이하가 될 때까지 움직임
     bool MoveToTarget(float distance)
     {
+        if (_target == null)
+            return true;
+
         //타겟과 거리가 distance 이하로 되면 정지
         Vector3 targetPos = _target.position;
         targetPos.y = 0;
@@ -523,6 +528,7 @@ public class PlayerController : MonoBehaviour, IDamageable
 
     void Die()
     {
+        OnPlayerDead?.Invoke();
         _animator.SetInteger(Define.DieType, UnityEngine.Random.Range(1, 3));
         _animator.SetTrigger(Define.Die);
         Invoke("Revive", 2f);
@@ -531,12 +537,13 @@ public class PlayerController : MonoBehaviour, IDamageable
     void Revive()
     {
         HP = _playerData.HP;
-        OnPlayerDead?.Invoke();
         _animator.SetInteger(Define.DieType, 0);
     }
 
     #endregion
 
+
+    #region SetBuff
     public void SetPlayerBuff()
     {
         if (_atkBuff == 0)
@@ -558,6 +565,7 @@ public class PlayerController : MonoBehaviour, IDamageable
         _atkBuff = 0;
         _hpBuff = 0;
     }
+    #endregion
 
     #region IDamageable Methods
     // * 방어력 적용 데미지 계산 메서드

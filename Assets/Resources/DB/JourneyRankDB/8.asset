@@ -15,7 +15,7 @@ MonoBehaviour:
   Index: 8
   RankType: 2
   Name: "\uAE08\uBA54\uB2EC2"
-  MinJourneyExp: 5720
-  MaxJourneyExp: 8520
+  MinJourneyExp: 10000
+  MaxJourneyExp: 15000
   TextColor: {r: 0.8666667, g: 0.627451, b: 0.20784314, a: 1}
   RankImage: {fileID: 21300000, guid: 1429165a25fc15a47a4d197af4f8870c, type: 3}

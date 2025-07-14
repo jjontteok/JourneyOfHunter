@@ -7,13 +7,27 @@ public class PopupUI_StageInfo : MonoBehaviour
 {
     [SerializeField] private Button _actionButton;
     [SerializeField] private Image _monsterCountBarImage;
+    [SerializeField] private TMP_Text _stageCountText;
     [SerializeField] private TMP_Text _monsterCountText;
-    [SerializeField] private TMP_Text _buffStackText;
 
     private Image[] _statusImages;
     private Image _currentStatusImage;
 
     StageController _stageController;
+
+    int _stage;
+
+    public int Stage
+    {
+        get
+        {
+            return _stage;
+        }
+        set
+        {
+            _stage = value;
+        }
+    }
 
     private void Awake()
     {
@@ -38,21 +52,7 @@ public class PopupUI_StageInfo : MonoBehaviour
 
     private void OnEnable()
     {
-        if (FieldManager.Instance.FailedCount != 0)
-        {
-            _buffStackText.text = $"버프 효과 {FieldManager.Instance.FailedCount * 10}%";
-            _buffStackText.enabled = true;
-            StartCoroutine(_buffStackText.GetComponent<UIEffectsManager>().PerformEffect(0));
-        }
-    }
-
-    private void OnDisable()
-    {
-        if (_buffStackText.enabled)
-        {
-            StopCoroutine(_buffStackText.GetComponent<UIEffectsManager>().PerformEffect(0));
-        }
-        _buffStackText.enabled = false;
+        _stageCountText.text = $"Stage {_stage}";
     }
 
     private void SetMonsterCountBarClear()

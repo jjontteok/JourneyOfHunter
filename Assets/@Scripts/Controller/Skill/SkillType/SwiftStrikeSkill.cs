@@ -54,6 +54,12 @@ public class SwiftStrikeSkill : RotationTargetSkill, ICharacterMovingSkill
             //_coll.transform.position = _playerController.transform.position;
             _rigidbody.MovePosition(_rigidbody.position + _fixedDirection * _skillData.Speed * 1.3f * Time.fixedDeltaTime);
         }
+        else
+        {
+            Vector3 linearVelo = _playerRigidbody.linearVelocity;
+            linearVelo.y = 0;
+            _playerRigidbody.linearVelocity = linearVelo;
+        }
     }
 
     private void OnDrawGizmos()

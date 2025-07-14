@@ -1,12 +1,13 @@
+using System;
 using System.Linq;
-using Unity.Cinemachine;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Playables;
 using UnityEngine.Timeline;
 
 public class CutSceneController : MonoBehaviour
 {
+    public event Action OnCutSceneFinished;
+
     [SerializeField] GameObject _monsterAppearEffectPrefab;
 
     PlayableDirector _playableDirector;
@@ -51,6 +52,7 @@ public class CutSceneController : MonoBehaviour
         _playableDirector.SetGenericBinding(activateTrack, namedMonster);
         _playableDirector.SetGenericBinding(animationTrack, namedMonster.GetComponent<Animator>());
     }
+
     void SetAnimStartPos()
     {
         GameObject player = PlayerManager.Instance.Player.gameObject;
@@ -74,7 +76,6 @@ public class CutSceneController : MonoBehaviour
         _playableDirector.Play();
 
         UIManager.Instance.DeactivateUIGame();
-        PopupUIManager.Instance.DeactivateNamedMonsterInfo();
 
         _checkAuto = PlayerManager.Instance.IsAuto;
         PlayerManager.Instance.IsAuto = false;
@@ -88,7 +89,10 @@ public class CutSceneController : MonoBehaviour
 
         UIManager.Instance.ActivateUIGame();
         PopupUIManager.Instance.ActivateNamedMonsterInfo();
+        PopupUIManager.Instance.ModifyBuffTextPos();
 
         PlayerManager.Instance.IsAuto = _checkAuto;
+
+        OnCutSceneFinished?.Invoke();
     }
 }

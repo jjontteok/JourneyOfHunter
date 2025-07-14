@@ -61,6 +61,12 @@ public class Inventory
         set { _items = value; }
     }
 
+    public Dictionary<Define.GoodsType, int> Goods
+    {
+        get { return _goods; }
+        set { _goods = value; }
+    }
+
     public event Action<Dictionary<Define.ItemType, List<ItemData>>> OnInventorySet;
     public event Action<Define.GoodsType> OnValueChanged;
     public event Action<Define.ItemType> OnItemAdd;
