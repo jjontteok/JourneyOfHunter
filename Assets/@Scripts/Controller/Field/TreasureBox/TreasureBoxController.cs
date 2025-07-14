@@ -1,8 +1,6 @@
 using System;
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using static UnityEngine.ParticleSystem;
 
 public class TreasureBoxController : MonoBehaviour, IDamageable
 {
@@ -68,25 +66,17 @@ public class TreasureBoxController : MonoBehaviour, IDamageable
         }
     }
 
-    //private void OnTriggerEnter(Collider other)
-    //{
-    //    if(other.gameObject.layer == LayerMask.NameToLayer(Define.PlayerSkillLayer))
-    //    {
-    //        UpHitCount(); 
-    //    }
-    //}
-
     // * 플레이어가 보물상자를 때릴 때 실행되는 함수
     void UpHitCount()
     {
         if (_isObtained) return;
 
-        _hitCount++; //때린 횟수 증가
-        if (_hitCount % 3 == 0) //3번 때릴 때마다 상자 색 변경
+        _hitCount++;                    //때린 횟수 증가
+        if (_hitCount % 3 == 0)         //3번 때릴 때마다 상자 색 변경
         {
-            if (_hitCount >= _count) //때린 횟수가 현재 상자 랭크와 같다면
+            if (_hitCount >= _count)    //때린 횟수가 현재 상자 랭크와 같다면
             {
-                OpenTreasureBox(); //보물 상자 오픈
+                OpenTreasureBox();      //보물 상자 오픈
             }
             else
             {
@@ -128,8 +118,9 @@ public class TreasureBoxController : MonoBehaviour, IDamageable
         UpHitCount();
     }
 
+    // 보물상자는 대미지가 아닌 타격 횟수이므로 여기선 필요 없긴함
     public float CalculateFinalDamage(float damage, float def)
     {
-        throw new NotImplementedException();
+        return damage;
     }
 }

@@ -8,7 +8,6 @@ public class PlayerManager : Singleton<PlayerManager>, IEventSubscriber
 
     private bool _isGameStart = false;
     private bool _isAuto = false;
-    [SerializeField]
     private bool _isAutoMoving = false;
 
     readonly Vector3 _originPos = new Vector3(0f, 0.1f, 0.5f);
@@ -61,7 +60,6 @@ public class PlayerManager : Singleton<PlayerManager>, IEventSubscriber
                     FieldManager.Instance.StageController.IsSpawnNamedMonster = true;
                 }
             }
-            //Debug.Log("IsAuto: " + _isAuto);
         }
     }
 

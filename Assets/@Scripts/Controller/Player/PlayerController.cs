@@ -1,6 +1,5 @@
 using System;
 using System.Collections;
-using Unity.VisualScripting;
 using UnityEngine;
 
 public struct PlayerStatus
@@ -59,7 +58,10 @@ public class PlayerController : MonoBehaviour, IDamageable
     bool _isKeyBoard;
     bool _isJoyStick;
 
-    public Action OnAutoOff;
+    public event Action OnPageUp;
+    public event Action OnPageDown;
+
+    public event Action OnAutoOff;
     public Action OnAutoDungeonChallenge;
 
     [SerializeField] PlayerData _playerData;
@@ -146,6 +148,16 @@ public class PlayerController : MonoBehaviour, IDamageable
     void Update()
     {
         Recover();
+        if (Input.GetKeyDown(KeyCode.PageDown))
+        {
+            _playerData.UnlockedSkillSlotCount = Mathf.Max(_playerData.UnlockedSkillSlotCount - 1, Define.MinUnlockedSkillSlotCount);
+            OnPageDown?.Invoke();
+        }
+        if (Input.GetKeyDown(KeyCode.PageUp))
+        {
+            _playerData.UnlockedSkillSlotCount = Mathf.Min(_playerData.UnlockedSkillSlotCount + 1, Define.MaxUnlockedSkillSlotCount);
+            OnPageUp?.Invoke();
+        }
     }
 
     private void FixedUpdate()
@@ -186,9 +198,10 @@ public class PlayerController : MonoBehaviour, IDamageable
 
     public void Move()
     {
-        if (!PlayerManager.Instance.IsGameStart) return;
+        //if (!PlayerManager.Instance.IsGameStart) return;
 
-        if (_animator.GetInteger(Define.DieType) > 0)
+        // 죽은 상태이거나 공격 모션 중일 땐 움직이지 않도록
+        if (_animator.GetInteger(Define.DieType) > 0 || _animator.GetBool(Define.IsAttacking))
         {
             _rigidbody.linearVelocity = new Vector3(0, _rigidbody.linearVelocity.y, 0);
             _animator.SetFloat(Define.Speed, 0);
@@ -199,7 +212,8 @@ public class PlayerController : MonoBehaviour, IDamageable
         if (!FieldManager.Instance.DungeonController.IsDungeonExist && transform.position.z >= 113.2)
         {
             Vector3 pos = transform.position;
-            pos.z = 5;
+            // z = 5 로 이동
+            pos.z -= Define.TeleportDistance;
             transform.position = pos;
 
             //구역 통과 시 여정 경험치? 증가
@@ -209,7 +223,7 @@ public class PlayerController : MonoBehaviour, IDamageable
         }
 
         // 자동 모드일 때
-        if (!_isSwifting && PlayerManager.Instance.IsAuto)
+        if (!_isSwifting && PlayerManager.Instance.IsAuto && !_animator.GetBool(Define.IsAttacking))
         {
             // 타겟 생기면 IsAutoMoving=false
             if (PlayerManager.Instance.IsAutoMoving)

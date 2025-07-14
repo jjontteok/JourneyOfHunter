@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -15,8 +16,15 @@ public class PopupUI_RandomSummon : MonoBehaviour
     [SerializeField] GameObject _equipmentGachaPanel;
     [SerializeField] GameObject _skillGachaPanel;
     [SerializeField] GameObject _resultPanel;
+    [SerializeField] Transform _resultPanelViewport;
+    [SerializeField] Button _resultPanelExitButton;
+
+    [SerializeField] ItemList _randomItems;
+    [SerializeField] SkillItemList _randomSkillItems;
 
     public event Action OnExitButtonClicked;
+
+    private RandomSummonService _randomSummonService;
 
     private void Awake()
     {
@@ -34,6 +42,14 @@ public class PopupUI_RandomSummon : MonoBehaviour
         _exitButton.onClick.AddListener(OnExitButtonClick);
         _equipmentItemButton.onClick.AddListener(OnEquipmentGachaPanel);
         _skillItemButton.onClick.AddListener(OnSkillGachaPanel);
+        _resultPanelExitButton.onClick.AddListener(OnResultPanelExit);
+
+        _drawOneTimeEquipmentItemButton.onClick.AddListener(OnClick_DrawEquipment_One);
+        _drawTenTimeEquipmentItemButton.onClick.AddListener(OnClick_DrawEquipment_Ten);
+        //_drawOneTimeSkillButton.onClick.AddListener(OnClick_DrawSkill_One);
+        //_drawTenTimeSkillButton.onClick.AddListener(OnClick_DrawSkill_Ten);
+
+        _randomSummonService = new RandomSummonService(_randomItems, _randomSkillItems);
     }
 
     void OnExitButtonClick()
@@ -53,8 +69,65 @@ public class PopupUI_RandomSummon : MonoBehaviour
         _skillGachaPanel.SetActive(true);
     }
 
-    void OnClickDrawButton(int drawCount, Define.DrawItemType drawItemType)
+    void OnResultPanelExit()
+    {
+        _resultPanel.SetActive(false);
+    }
+
+    public void OnClickDrawButton(int drawCount, Define.DrawItemType drawItemType)
+    {
+        _resultPanel.SetActive(true);
+        List<ItemData> items;
+
+        switch (drawItemType)
+        {
+            case Define.DrawItemType.Equipment:
+                items = _randomSummonService.Draw(drawCount, drawItemType);
+                PlayerManager.Instance.Player.Inventory.AddItem(items);
+                SetResultPanel(items);
+                break;
+            case Define.DrawItemType.Skill:
+                break;
+            default:
+                break;
+        }
+    }
+
+    public void OnClick_DrawEquipment_One() => OnClickDrawButton(1, Define.DrawItemType.Equipment);
+    public void OnClick_DrawEquipment_Ten() => OnClickDrawButton(10, Define.DrawItemType.Equipment);
+    public void OnClick_DrawSkill_One() => OnClickDrawButton(1, Define.DrawItemType.Skill);
+    public void OnClick_DrawSkill_Ten() => OnClickDrawButton(10, Define.DrawItemType.Skill);
+
+    private void SetResultPanel(List<ItemData> items)
     {
 
     }
+
+    #region RandomSummonService
+    // 내부 클래스 정의
+    private class RandomSummonService
+    {
+        private ItemList _itemList;
+        private SkillItemList _skillList;
+
+        public RandomSummonService(ItemList itemList, SkillItemList skillItemList)
+        {
+            _itemList = itemList;
+            _skillList = skillItemList;
+        }
+
+        public List<ItemData> Draw(int count, Define.DrawItemType type)
+        {
+            var result = new List<ItemData>();
+            for (int i = 0; i < count; i++)
+            {
+                var item = (type == Define.DrawItemType.Equipment)
+                    ? _itemList.GetRandomItem()
+                    : _skillList.GetRandomSkillItem();
+                result.Add(item);
+            }
+            return result;
+        }
+    }
+    #endregion
 }

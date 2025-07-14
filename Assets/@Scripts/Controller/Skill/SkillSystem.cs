@@ -11,6 +11,7 @@ public class SkillSystem : MonoBehaviour
     List<Skill> _skillList = new List<Skill>();
 
     // 스킬 슬롯 리스트에 실질적으로 들어있는 스킬 개수 확인용
+    // 최소 2개, 최대 5개
     int _skillSlotCount = 0;
     // 스킬 슬롯 리스트 - 액티브형 스킬 보관 슬롯
     List<SkillSlot> _activeSkillSlotList = new List<SkillSlot>();
@@ -44,6 +45,8 @@ public class SkillSystem : MonoBehaviour
     public void InitializeSkillSystem()
     {
         _player = PlayerManager.Instance.Player;
+        _player.OnPageUp += IncreaseUnlockedSkillSlotCount;
+        _player.OnPageDown += DecreaseUnlockedSkillSlotCount;
         _animator = _player.GetComponent<Animator>();
         OnShortestSkillDistanceChanged += _player.SetShortestSkillDistance;
         _player.OnPlayerCrossed += OnPlayerCross;
@@ -77,6 +80,10 @@ public class SkillSystem : MonoBehaviour
                             slot.ActivateSlotSkill();
                         }
                     }
+                    if (_player.Target != null && _player.Target.gameObject.activeSelf && _player.Target.CompareTag(Define.MonsterTag) && !SkillManager.Instance.IsSkillInterval && _ultimateSkillSlot != null)
+                    {
+                        _ultimateSkillSlot.ActivateSlotSkill();
+                    }
                 }
             }
         }
@@ -94,6 +101,9 @@ public class SkillSystem : MonoBehaviour
         // 플레이어가 현재 보유 중인 스킬 중에서 열린 슬롯 개수만큼 가져와야함
         foreach (var skill in _skillList)
         {
+            // 이미 플레이어 세팅만큼 스킬 있으면 패스
+            if (!skill.SkillData.IsUltimate && _skillSlotCount == _player.PlayerData.UnlockedSkillSlotCount)
+                continue;
             AddSkill(skill.SkillData);
         }
     }
@@ -262,14 +272,39 @@ public class SkillSystem : MonoBehaviour
         SkillManager.Instance.IsSkillInterval = false;
     }
 
+    // 플레이어 텔레포트 시 스킬도 함께 텔포
     void OnPlayerCross()
     {
         foreach (var slot in _activeSkillSlotList)
         {
-            if(slot.Skill.gameObject.activeSelf)
+            if (slot.Skill != null && slot.Skill.gameObject.activeSelf)
             {
-                slot.Skill.transform.Translate(Vector3.back * 108.2f);
+                slot.Skill.transform.Translate(Vector3.back * Define.TeleportDistance);
             }
         }
+    }
+
+    public void IncreaseUnlockedSkillSlotCount()
+    {
+        if (_skillSlotCount >= Define.MaxUnlockedSkillSlotCount)
+        {
+            Debug.Log("Cannot increase skill slot any more!!!");
+            return;
+        }
+        SetSkillSlotList();
+        SkillManager.Instance.UpdateEnhancedAttribute(EnvironmentManager.Instance.CurrentType);
+    }
+
+    public void DecreaseUnlockedSkillSlotCount()
+    {
+        if (_skillSlotCount <= 2)
+        {
+            Debug.Log("Cannot decrease skill slot any more!!!");
+            return;
+        }
+        _activeSkillSlotList[_skillSlotCount - 1].DestroySkillSlot();
+        SkillManager.Instance.LockIconSlots(_skillSlotCount - 1);
+        SkillManager.Instance.UpdateEnhancedAttribute(EnvironmentManager.Instance.CurrentType);
+        _skillSlotCount--;
     }
 }
