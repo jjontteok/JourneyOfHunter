@@ -178,7 +178,8 @@ public class Define : MonoBehaviour
         Uncommon,
         Rare,
         Epic,
-        Legendary
+        Legendary,
+        None
     }
 
     public enum DrawItemType
