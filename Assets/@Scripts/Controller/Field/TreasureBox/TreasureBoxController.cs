@@ -103,6 +103,7 @@ public class TreasureBoxController : MonoBehaviour, IDamageable
         FieldManager.Instance.RewardSystem.GainReward(transform.position + Vector3.up * 2);
         StartCoroutine(CoSetAutoMoving());
         _rewardSound.Play();
+       
     }
 
     IEnumerator CoSetAutoMoving()
