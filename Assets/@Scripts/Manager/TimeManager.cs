@@ -18,7 +18,7 @@ public class TimeManager : Singleton<TimeManager>, IEventSubscriber
     public float _dayTime;
     Define.TimeOfDayType _currentTime;
     bool _isDoubleSpeed;
-    bool _isPlaying = true;
+    //bool _isPlaying = true;
     bool _isSkyBoxChange = false;
     float _toKey = 1;
 
