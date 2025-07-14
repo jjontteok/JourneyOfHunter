@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 [CreateAssetMenu(fileName = "PlayerInventoryData", menuName = "Scriptable Objects/PlayerInventoryData")]
@@ -100,18 +101,45 @@ public class Inventory
         OnInventorySet?.Invoke(_items);
     }
 
+    public void ApplyChangesToSO(PlayerInventoryData so)
+    {
+        so.SilverCoin = _goods[Define.GoodsType.SilverCoin];
+        so.Gem = _goods[Define.GoodsType.Gem];
+
+
+    }
+
     public void AddItem(ItemData item)
     {
         if (!_items.ContainsKey(item.Type))
             _items[item.Type] = new List<ItemData>();
-        int index = _items[item.Type].IndexOf(item);
-        if (index == -1)
+        if(item.Type == Define.ItemType.Equipment)
+        {
             _items[item.Type].Add(item);
+        }
         else
-            _items[item.Type][index].Count++;
+        {
+            List<ItemData> list = _items[item.Type];
+            ItemData existItem = list.FirstOrDefault(i => i.Id == item.Id);
+
+            if (existItem == null)
+                _items[item.Type].Add(item);
+            else
+                existItem.Count++;
+        }
         OnItemAdd?.Invoke(item.Type);
     }
 
+    public void AddItem(List<ItemData> items)
+    {
+        foreach (ItemData item in items)
+        {
+            AddItem(item);
+        }
+    }
+
+    // 개선필요
+    // 개수작업 안되어있음.
     public void RemoveItem(ItemData item)
     {
         if (_items.TryGetValue(item.Type, out var list))
