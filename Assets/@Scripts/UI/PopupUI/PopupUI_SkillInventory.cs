@@ -115,6 +115,7 @@ public class PopupUI_SkillInventory : MonoBehaviour
             AddEvent(go, EventTriggerType.PointerExit, delegate { OnEnterSlot(go); });
 
             _slots[i] = go.GetComponent<SkillItemSlot>();
+            _slots[i].UpdateSlot();
 
             _slotUIs.Add(go, _slots[i]);
             go.name = "SkillItemSlot " + i;
@@ -130,6 +131,7 @@ public class PopupUI_SkillInventory : MonoBehaviour
             AddEvent(go, EventTriggerType.PointerExit, delegate { OnEnterSlot(go); });
 
             _ultimateSlots[i] = go.GetComponent<SkillItemSlot>();
+            _ultimateSlots[i].UpdateSlot();
 
             _slotUIs.Add(go, _ultimateSlots[i]);
             go.name = "UltimateSkillItemSlot " + i;
@@ -145,6 +147,7 @@ public class PopupUI_SkillInventory : MonoBehaviour
             AddEvent(go, EventTriggerType.PointerExit, delegate { OnEnterSlot(go); });
 
             _passiveSlots[i] = go.GetComponent<SkillItemSlot>();
+            _passiveSlots[i].UpdateSlot();
 
             _slotUIs.Add(go, _passiveSlots[i]);
             go.name = "PassiveSkillItemSlot " + i;
@@ -154,22 +157,6 @@ public class PopupUI_SkillInventory : MonoBehaviour
         foreach (var skill in PlayerManager.Instance.SkillSystem.SkillList)
         {
             UpdateSkillItemSlotList(skill.SkillData);
-            //// 기본 공격은 등록하지 않음
-            //if (skill.SkillData.Name == "PlayerBasicAttack")
-            //    continue;
-            //// 궁극기는 궁극기 인벤토리 영역에 따로 저장
-            //if (skill.SkillData.IsUltimate)
-            //{
-            //    _ultimateSlots[ultimateSkillCount++].UpdateSlot(skill.SkillData);
-            //}
-            //else if (skill.SkillData.IsPassive)
-            //{
-            //    _passiveSlots[passiveSkillCount++].UpdateSlot(skill.SkillData);
-            //}
-            //else
-            //{
-            //    _slots[skillCount++].UpdateSlot(skill.SkillData);
-            //}
         }
     }
 
@@ -252,7 +239,7 @@ public class PopupUI_SkillInventory : MonoBehaviour
         _selectedSkillData = data;
         _skillNameText.text = isEmpty ? string.Empty : data.Name;
         _skillDescriptionText.text = isEmpty ? string.Empty : data.Description;
-        _skillAttributeText.text = $"속성: {(isEmpty ? Define.SkillAttributes[0] : Define.SkillAttributes[(int)data.SkillAttribute])}\t/\t개수: {(isEmpty ? 0 : data.Count)}";
+        _skillAttributeText.text = isEmpty ? string.Empty : $"속성: {Define.SkillAttributes[(int)data.SkillAttribute]}\t/\t개수: {data.Count}";
         _skillIconImage.sprite = isEmpty ? null : data.IconImage;
         _skillIconImage.color = isEmpty ? Color.clear : Color.white;
         // 액티브스킬에 대해서만 장착 및 해제 버튼 활성화

@@ -31,8 +31,10 @@ public class Util
         if (FieldManager.Instance.CurrentEventType == Define.JourneyType.TreasureBox)
         {
             GameObject go = GameObject.FindGameObjectWithTag(Define.FieldObjectTag);
-            if (go.GetComponent<Animator>().GetBool(Define.Open) || Vector3.Distance(origin, go.transform.position) > distance)
+            float current = Vector3.Distance(origin, go.transform.position);
+            if (go.GetComponent<Animator>().GetBool(Define.Open) || current > distance)
             {
+                Debug.Log("Current Distance: " + current);
                 return null;
             }
             return go;

@@ -90,6 +90,12 @@ public class FieldManager : Singleton<FieldManager>, IEventSubscriber, IDeactiva
         get { return _currentType; }
     }
 
+    public bool IsClear
+    {
+        get;
+        set;
+    }
+
     protected override void Initialize()
     {
         _dungeonController = new GameObject("DungeonController").AddComponent<DungeonController>();
@@ -113,57 +119,63 @@ public class FieldManager : Singleton<FieldManager>, IEventSubscriber, IDeactiva
     //플레이어가 구역을 지나면 호출될 함수
     void OnPlayerCross()
     {
-        int rnd;
         _stageCount = ++StageCount;
         OnStageChanged?.Invoke(_stageCount);
+        IsClear = false;
 
         if (_stageCount % 10 == 0)
         {
             OnUpgradeMonsterStatus?.Invoke(_stageCount/10);
         }
 
+        Define.ItemValue rank = SetRank();
         //5의 배수마다 던전 두두둥장
         if (_stageCount % 5 == 0)
         //if(true)
         {
-            rnd = (int)Define.JourneyType.Dungeon;
             _rewardSystem.SetReward(Define.RewardType.JourneyExp, 10 * _stageCount);
+            _currentType = Define.JourneyType.Dungeon;
+            rank = Define.ItemValue.Common;
         }
         else
         {
-            rnd = UnityEngine.Random.Range(0, 100);
+            int rnd = UnityEngine.Random.Range(0, 100);
             //rnd = 80;
             if (rnd < 90)
             {
-                Define.ItemValue rank = SetRank();
+                //Define.ItemValue rank = SetRank();
 
                 //80% 확률로 기타 오브젝트 등장
                 if (rnd < 80)
                 {
-                    rnd = (int)Define.JourneyType.OtherObject;
+                    //rnd = (int)Define.JourneyType.OtherObject;
+                    _currentType = Define.JourneyType.OtherObject;
                     _rewardSystem.SetReward(Define.RewardType.JourneyExp, 25 * _stageCount * (int)(rank+1));
                 }
                 //10% 확률로 보물상자 등장
                 else
                 {
-                    rnd = (int)Define.JourneyType.TreasureBox;
+                    //rnd = (int)Define.JourneyType.TreasureBox;
+                    _currentType = Define.JourneyType.TreasureBox;
                     _rewardSystem.SetReward(Define.RewardType.JourneyExp, 50 * _stageCount * (int)(rank + 1));
                     _rewardSystem.SetReward(Define.RewardType.Gem, 10 * _stageCount * (int)(rank + 1));
                     _rewardSystem.SetReward(Define.RewardType.SilverCoin, 100 * _stageCount * (int)(rank + 1));
                 }
-                _currentType = (Define.JourneyType)rnd;
-                OnJourneyEvent?.Invoke(_currentType, rank);
-                return;
+                //_currentType = (Define.JourneyType)rnd;
+                //OnJourneyEvent?.Invoke(_currentType, rank);
+                //return;
             }
             //10%의 확률로 상인 등장
             else if (rnd < 100)
             {
-                rnd = (int)Define.JourneyType.Merchant;
+                _currentType = Define.JourneyType.Merchant;
+                rank = Define.ItemValue.Common;
+                //OnJourneyEvent?.Invoke(_currentType, Define.ItemValue.Common);
             }
         }
-        _currentType = (Define.JourneyType)rnd;
-        OnJourneyEvent?.Invoke(_currentType, Define.ItemValue.Common);
+        OnJourneyEvent?.Invoke(_currentType, rank);
         PlayerManager.Instance.IsAutoMoving = false;
+        PlayerManager.Instance.Player.ReleaseTarget();
     }
     #endregion
 

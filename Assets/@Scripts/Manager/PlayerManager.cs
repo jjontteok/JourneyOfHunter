@@ -33,7 +33,7 @@ public class PlayerManager : Singleton<PlayerManager>, IEventSubscriber
             if (!value)
             {
                 _player.Target = null;
-                _isAutoMoving = false;
+                //_isAutoMoving = false;
                 if (FieldManager.Instance.StageController.StageActionStatus == Define.StageActionStatus.AutoChallenge)
                 {
                     FieldManager.Instance.StageController.StageActionStatus = Define.StageActionStatus.NotChallenge;

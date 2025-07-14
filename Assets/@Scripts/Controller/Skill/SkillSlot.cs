@@ -35,7 +35,7 @@ public class SkillSlot : MonoBehaviour
         _player = PlayerManager.Instance.Player;
     }
 
-    // 처음 슬롯 생성 시 스킬 등록
+    // 슬롯 생성 시 스킬 등록
     public bool SetSkill(SkillData data)
     {
         IsActivatePossible = true;
@@ -49,6 +49,7 @@ public class SkillSlot : MonoBehaviour
         else
         {
             Debug.Log("Cannot Find Skill Resource named " + data.Name);
+            Destroy(gameObject);
             return false;
         }
         _skill = Instantiate(skill) as ActiveSkill;

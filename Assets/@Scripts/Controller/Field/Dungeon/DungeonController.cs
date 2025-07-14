@@ -212,6 +212,7 @@ public class DungeonController : MonoBehaviour
     {
         _dungeonWallFront.SetActive(true);
         _dungeonWallBack.SetActive(true);
+        PlayerManager.Instance.Player.ReleaseTarget();
     }
 
     // * 던전 몬스터 관리 메서드

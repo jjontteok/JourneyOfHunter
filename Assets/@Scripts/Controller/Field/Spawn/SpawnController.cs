@@ -136,5 +136,7 @@ public class SpawnController : MonoBehaviour
         }
         _fieldObjectList[objectName].transform.position = spawnPos;
         _fieldObjectList[objectName].SetActive(true);
+        // 오브젝트 생성 시, 오토무빙 풀어주기
+        PlayerManager.Instance.IsAutoMoving = false;
     }
 }

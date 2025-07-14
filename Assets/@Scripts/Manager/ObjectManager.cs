@@ -63,10 +63,11 @@ public class ObjectManager : Singleton<ObjectManager>
     private GameObject _startCam;
     private GameObject _followCam;
     private GameObject _cutSceneCam;
-    
+
 
     // * 프로퍼티
-    public Dictionary<string, GameObject> NormalMonsterResourceList 
+    #region Dictionary
+    public Dictionary<string, GameObject> NormalMonsterResourceList
     {
         get
         {
@@ -76,24 +77,24 @@ public class ObjectManager : Singleton<ObjectManager>
         }
     }
     public Dictionary<string, GameObject> NamedMonsterResourceList
-    { 
-        get 
+    {
+        get
         {
             if (NullCheck(_namedMonsterResourceList))
                 return null;
             return _namedMonsterResourceList;
-        } 
+        }
     }
     public Dictionary<string, GameObject> MonsterSkillResourceList
-    { 
+    {
         get
         {
             if (NullCheck(_monsterSkillResourceList))
                 return null;
             return _monsterSkillResourceList;
-        } 
+        }
     }
-    public Dictionary <string, GameObject> MonsterSkillHitEffectResourceList
+    public Dictionary<string, GameObject> MonsterSkillHitEffectResourceList
     {
         get
         {
@@ -102,13 +103,13 @@ public class ObjectManager : Singleton<ObjectManager>
             return _monsterSkillHitEffectResourceList;
         }
     }
-    public Dictionary<string, GameObject> PlayerSkillResourceList 
+    public Dictionary<string, GameObject> PlayerSkillResourceList
     {
         get
         {
             if (NullCheck(_playerSkillResourceList))
                 return null;
-            return _playerSkillResourceList; 
+            return _playerSkillResourceList;
         }
     }
     public Dictionary<string, GameObject> PlayerSkillHitEffectResourceList
@@ -120,7 +121,7 @@ public class ObjectManager : Singleton<ObjectManager>
             return _playerSkillHitEffectResourceList;
         }
     }
-    public Dictionary<string, GameObject > DamageTextResourceList
+    public Dictionary<string, GameObject> DamageTextResourceList
     {
         get
         {
@@ -140,7 +141,7 @@ public class ObjectManager : Singleton<ObjectManager>
     }
     public Dictionary<string, JourneyRankData> JourneyRankResourceList
     {
-        get 
+        get
         {
             if (NullCheck(_journeyRankResourceList))
                 return null;
@@ -165,8 +166,6 @@ public class ObjectManager : Singleton<ObjectManager>
             return _itemSlotList;
         }
     }
-
-
     public Dictionary<string, GameObject> FieldObjectList
     {
         get
@@ -176,24 +175,29 @@ public class ObjectManager : Singleton<ObjectManager>
             return _fieldObjectList;
         }
     }
-    public GameObject PlayerResource 
-    { 
-        get 
+    #endregion
+
+    #region In-Game Object
+    public GameObject PlayerResource
+    {
+        get
         {
             if (NullCheck(_playerResource))
                 return null;
             return _playerResource;
-        } 
+        }
     }
+
     public GameObject DungeonWallResource
     {
         get
         {
-            if(NullCheck(_dungeonWallResource))
+            if (NullCheck(_dungeonWallResource))
                 return null;
             return _dungeonWallResource;
         }
     }
+
     public GameObject DungeonPortalResource
     {
         get
@@ -203,6 +207,7 @@ public class ObjectManager : Singleton<ObjectManager>
             return _dungeonPortalResource;
         }
     }
+
     public GameObject ShieldEffectResource
     {
         get
@@ -232,7 +237,9 @@ public class ObjectManager : Singleton<ObjectManager>
             return _backgroundResource;
         }
     }
+    #endregion
 
+    #region UI Object
     public GameObject UIMain
     {
         get
@@ -282,6 +289,7 @@ public class ObjectManager : Singleton<ObjectManager>
             return _popupCanvas;
         }
     }
+
     public GameObject PopupPanel
     {
         get
@@ -291,6 +299,7 @@ public class ObjectManager : Singleton<ObjectManager>
             return _popupPanel;
         }
     }
+
     public GameObject ToolTipPanel
     {
         get
@@ -300,6 +309,7 @@ public class ObjectManager : Singleton<ObjectManager>
             return _toolTipPanel;
         }
     }
+
     public GameObject PopupJourneyInfo
     {
         get
@@ -309,6 +319,7 @@ public class ObjectManager : Singleton<ObjectManager>
             return _popupJourneyInfo;
         }
     }
+
     public GameObject PopupStageInfo
     {
         get
@@ -338,6 +349,7 @@ public class ObjectManager : Singleton<ObjectManager>
             return _popupStatusPanel;
         }
     }
+
     public GameObject PopupInventoryPanel
     {
         get
@@ -347,6 +359,7 @@ public class ObjectManager : Singleton<ObjectManager>
             return _popupInventoryPanel;
         }
     }
+
     public GameObject PopupSkillInventory
     {
         get
@@ -356,6 +369,7 @@ public class ObjectManager : Singleton<ObjectManager>
             return _popupSkillInventory;
         }
     }
+
     public GameObject PopupGainedRecordPanel
     {
         get
@@ -398,7 +412,6 @@ public class ObjectManager : Singleton<ObjectManager>
         }
     }
 
-
     public GameObject PopupTreasureAppearText
     {
         get
@@ -439,7 +452,7 @@ public class ObjectManager : Singleton<ObjectManager>
         }
     }
 
-
+    #endregion
     public GameObject TreasureBoxOpenEffectResource
     {
         get
@@ -450,6 +463,7 @@ public class ObjectManager : Singleton<ObjectManager>
         }
     }
 
+    #region CutScene
     public GameObject GoblinKingCutScene
     {
         get
@@ -489,6 +503,7 @@ public class ObjectManager : Singleton<ObjectManager>
             return _cutSceneCam;
         }
     }
+    #endregion
     #endregion
 
     #region Override
@@ -549,7 +564,7 @@ public class ObjectManager : Singleton<ObjectManager>
     // * 스킬 리소스 로드 메서드
     private void SkillResourceLoad()
     {
-        if(!NullCheck(_monsterSkillResourceList, _monsterSkillHitEffectResourceList, _playerSkillResourceList, _playerSkillResourceList))
+        if (!NullCheck(_monsterSkillResourceList, _monsterSkillHitEffectResourceList, _playerSkillResourceList, _playerSkillResourceList))
         {
             Resources.LoadAll<GameObject>(Define.MonsterSkillPath).ToList(_monsterSkillResourceList);
             Resources.LoadAll<GameObject>(Define.MonsterSkillHitEffectPath).ToList(_monsterSkillHitEffectResourceList);
@@ -609,7 +624,7 @@ public class ObjectManager : Singleton<ObjectManager>
     // * 데미지 텍스트 리소스 로드 메서드
     private void DamageTextResourceLoad()
     {
-        if(!NullCheck(_damageTextResourceList))
+        if (!NullCheck(_damageTextResourceList))
         {
             Resources.LoadAll<GameObject>(Define.DamageTextPath).ToList(_damageTextResourceList);
         }
@@ -645,7 +660,7 @@ public class ObjectManager : Singleton<ObjectManager>
 
     private void ItemSlotResourceLoad()
     {
-        if(!NullCheck(_itemSlotList))
+        if (!NullCheck(_itemSlotList))
         {
             Resources.LoadAll<GameObject>(Define.ItemSlotPath).ToList(_itemSlotList);
         }
@@ -706,50 +721,50 @@ public class ObjectManager : Singleton<ObjectManager>
     public GameObject GetObject<T>(Vector3 spawnPos, string name, Transform parent = default) where T : MonoBehaviour
     {
         Type type = typeof(T);
-        if(type == typeof(PlayerController))
+        if (type == typeof(PlayerController))
         {
             GameObject obj = Instantiate(PlayerResource, spawnPos, Quaternion.identity);
             PlayerController playerController = obj.GetOrAddComponent<PlayerController>();
             return obj;
         }
-        else if(type == typeof(NormalMonsterController))
+        else if (type == typeof(NormalMonsterController))
         {
             GameObject obj = Instantiate(NormalMonsterResourceList[name], spawnPos, Quaternion.identity);
             NormalMonsterController normalMonsterController = obj.GetOrAddComponent<NormalMonsterController>();
             return obj;
         }
-        else if(type == typeof(NamedMonsterController))
+        else if (type == typeof(NamedMonsterController))
         {
             GameObject obj = Instantiate(NamedMonsterResourceList[name], spawnPos, Quaternion.identity);
             NamedMonsterController namedMonsterController = obj.GetOrAddComponent<NamedMonsterController>();
             return obj;
         }
-        else if(type == typeof(Skill))
+        else if (type == typeof(Skill))
         {
             GameObject obj = Instantiate(PlayerSkillResourceList[name], spawnPos, Quaternion.identity);
             return obj;
         }
-        else if(type == typeof(DamageTextController))
+        else if (type == typeof(DamageTextController))
         {
             GameObject obj = Instantiate(DamageTextResourceList[name], spawnPos, Quaternion.identity);
             return obj;
         }
-        else if(type == typeof(MonsterGateController))
+        else if (type == typeof(MonsterGateController))
         {
             GameObject obj = Instantiate(MonsterGateResource, spawnPos, Quaternion.identity);
             return obj;
         }
-        else if(type == typeof(SystemTextController))
+        else if (type == typeof(SystemTextController))
         {
             GameObject obj = Instantiate(SystemTextResource, spawnPos, Quaternion.identity);
             return obj;
         }
-        else if(type == typeof(ItemSlot))
+        else if (type == typeof(ItemSlot)||type==typeof(SkillItemSlot))
         {
             GameObject obj = Instantiate(ItemSlotList[name]);
             return obj;
         }
-        else if(type == typeof(RewardTextController))
+        else if (type == typeof(RewardTextController))
         {
             GameObject obj = Instantiate(RewardTextResource, spawnPos, Quaternion.identity);
             return obj;

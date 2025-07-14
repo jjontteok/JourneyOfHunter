@@ -121,11 +121,19 @@ public class PopupUI_RandomSummon : MonoBehaviour
                     Define.ItemValue.Legendary => "ItemSlot - Legendary",
                     _ => "ItemSlot - Normal"
                 };
-                GameObject itemSlot = PoolManager.Instance.GetObjectFromPool<ItemSlot>(Vector3.zero, slotName, _resultPanelViewport);
-                itemSlot.GetComponent<ItemSlot>().SetData(item.Key as ItemData);
+                for (int i = 0; i < item.Value; i++)
+                {
+                    GameObject itemSlot = PoolManager.Instance.GetObjectFromPool<ItemSlot>(Vector3.zero, slotName, _resultPanelViewport);
+                    itemSlot.GetComponent<ItemSlot>().SetData(item.Key as ItemData);
+                }
             }
             else if (item.Key is SkillData)
             {
+                for (int i = 0; i < item.Value; i++)
+                {
+                    GameObject skillSlot = PoolManager.Instance.GetObjectFromPool<SkillItemSlot>(Vector3.zero, "ItemSlot - Skill", _resultPanelViewport);
+                    skillSlot.GetComponent<SkillItemSlot>().UpdateSlot(item.Key as SkillData, true);
+                }
             }
 
         }

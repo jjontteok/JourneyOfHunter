@@ -241,31 +241,31 @@ public class SkillSystem : MonoBehaviour
 
     }
 
-    public float GetShortestSkillDistance()
-    {
-        float min = -1;
-        foreach (var slot in _activeSkillSlotList)
-        {
-            if (slot != null)
-            {
-                if (min < 0)
-                {
-                    min = slot.SkillData.TargetDistance;
-                }
-                else
-                {
-                    min = Mathf.Min(min, slot.SkillData.TargetDistance);
-                }
-            }
-        }
-        if (min < 0)
-        {
-            min = BasicSkillSlot.SkillData.TargetDistance;
-        }
+    //public float GetShortestSkillDistance()
+    //{
+    //    float min = -1;
+    //    foreach (var slot in _activeSkillSlotList)
+    //    {
+    //        if (slot != null)
+    //        {
+    //            if (min < 0)
+    //            {
+    //                min = slot.SkillData.TargetDistance;
+    //            }
+    //            else
+    //            {
+    //                min = Mathf.Min(min, slot.SkillData.TargetDistance);
+    //            }
+    //        }
+    //    }
+    //    if (min < 0)
+    //    {
+    //        min = BasicSkillSlot.SkillData.TargetDistance;
+    //    }
 
-        OnShortestSkillDistanceChanged?.Invoke(min);
-        return min;
-    }
+    //    OnShortestSkillDistanceChanged?.Invoke(min);
+    //    return min;
+    //}
 
     void StartSkillInterval(float cool = default)
     {
@@ -284,10 +284,14 @@ public class SkillSystem : MonoBehaviour
     {
         foreach (var slot in _activeSkillSlotList)
         {
-            if (slot.Skill != null && slot.Skill.gameObject.activeSelf)
+            if (slot != null && slot.Skill.gameObject.activeSelf)
             {
                 slot.Skill.transform.Translate(Vector3.back * Define.TeleportDistance);
             }
+        }
+        if (_ultimateSkillSlot != null && _ultimateSkillSlot.Skill.gameObject.activeSelf)
+        {
+            _ultimateSkillSlot.Skill.transform.Translate(Vector3.back * Define.TeleportDistance);
         }
     }
 
