@@ -12,9 +12,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e807fb188ff3a544ba349f772e49f4cc, type: 3}
   m_Name: GoblinExplosion
   m_EditorClassIdentifier: 
-  SkillName: GoblinExplosion
-  SkillDescription: 
-  SkillIcon: {fileID: 0}
+  Name: GoblinExplosion
+  Description: 
+  IconImage: {fileID: 0}
+  count: 0
   CoolTime: 0
   DurationTime: 2
   TargetDistance: 0

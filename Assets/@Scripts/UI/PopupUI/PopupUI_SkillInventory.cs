@@ -1,6 +1,8 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using TMPro;
+using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.EventSystems;
@@ -43,11 +45,16 @@ public class PopupUI_SkillInventory : MonoBehaviour
     SkillItemSlot[] _passiveSlots = new SkillItemSlot[12];
 
     SkillData _selectedSkillData;
+    int skillCount = 0;
+    int ultimateSkillCount = 0;
+    int passiveSkillCount = 0;
 
     Dictionary<GameObject, SkillItemSlot> _slotUIs = new Dictionary<GameObject, SkillItemSlot>();
 
     public Action<SkillData> OnUseSkillItem;
+    // 스킬 장착 시 이벤트
     public Action<SkillData> OnEquipSkill;
+    // 스킬 해제 시 이벤트
     public Action<SkillData> OnReleaseSkill;
     public event Action OnExitButtonClicked;
 
@@ -94,6 +101,7 @@ public class PopupUI_SkillInventory : MonoBehaviour
     }
     #endregion
 
+    // 처음 게임 시작 시, SkillItemSlot 생성 및 보유 중인 스킬 업데이트
     void CreateSlot()
     {
         for (int i = 0; i < _slots.Length; i++)
@@ -142,27 +150,59 @@ public class PopupUI_SkillInventory : MonoBehaviour
             go.name = "PassiveSkillItemSlot " + i;
         }
 
-        int skillCount = 0;
-        int ultimateSkillCount = 0;
-        int passiveSkillCount = 0;
         // 플레이어가 보유 중인 스킬리스트를 스킬 인벤토리에 등록
         foreach (var skill in PlayerManager.Instance.SkillSystem.SkillList)
         {
-            // 기본 공격은 등록하지 않음
-            if (skill.SkillData.SkillName == "PlayerBasicAttack")
-                continue;
-            // 궁극기는 궁극기 인벤토리 영역에 따로 저장
-            if (skill.SkillData.IsUltimate)
+            UpdateSkillItemSlotList(skill.SkillData);
+            //// 기본 공격은 등록하지 않음
+            //if (skill.SkillData.Name == "PlayerBasicAttack")
+            //    continue;
+            //// 궁극기는 궁극기 인벤토리 영역에 따로 저장
+            //if (skill.SkillData.IsUltimate)
+            //{
+            //    _ultimateSlots[ultimateSkillCount++].UpdateSlot(skill.SkillData);
+            //}
+            //else if (skill.SkillData.IsPassive)
+            //{
+            //    _passiveSlots[passiveSkillCount++].UpdateSlot(skill.SkillData);
+            //}
+            //else
+            //{
+            //    _slots[skillCount++].UpdateSlot(skill.SkillData);
+            //}
+        }
+    }
+
+    void UpdateSkillItemSlotList(SkillData skillData)
+    {
+        // 기본 공격은 등록하지 않음
+        if (skillData.Name == "PlayerBasicAttack")
+            return;
+        SkillItemSlot slot;
+        // 궁극기는 궁극기 인벤토리 영역에 따로 저장
+        if (skillData.IsUltimate)
+        {
+            slot = _ultimateSlots.FirstOrDefault(s => s.SkillData?.Name == skillData.Name);
+            // 새로운 스킬일 경우
+            if (slot == null)
             {
-                _ultimateSlots[ultimateSkillCount++].UpdateSlot(skill.SkillData);
+                _ultimateSlots[ultimateSkillCount++].UpdateSlot(skillData);
             }
-            else if (skill.SkillData.IsPassive)
+        }
+        else if (skillData.IsPassive)
+        {
+            slot = _passiveSlots.FirstOrDefault(s => s.SkillData?.Name == skillData.Name);
+            if (slot == null)
             {
-                _passiveSlots[passiveSkillCount++].UpdateSlot(skill.SkillData);
+                _passiveSlots[passiveSkillCount++].UpdateSlot(skillData);
             }
-            else
+        }
+        else
+        {
+            slot = _slots.FirstOrDefault(s => s.SkillData?.Name == skillData.Name);
+            if (slot == null)
             {
-                _slots[skillCount++].UpdateSlot(skill.SkillData);
+                _slots[skillCount++].UpdateSlot(skillData);
             }
         }
     }
@@ -201,6 +241,7 @@ public class PopupUI_SkillInventory : MonoBehaviour
         SkillSystem skillSystem = PlayerManager.Instance.SkillSystem;
         OnEquipSkill += skillSystem.AddSkill;
         OnReleaseSkill += skillSystem.RemoveSkill;
+        skillSystem.OnSkillSummon += UpdateSkillItemSlotList;
 
         UpdateCurrentSkillIcon(SkillManager.Instance.CurrentSkillIcons());
     }
@@ -209,10 +250,10 @@ public class PopupUI_SkillInventory : MonoBehaviour
     {
         bool isEmpty = data == null;
         _selectedSkillData = data;
-        _skillNameText.text = isEmpty ? string.Empty : data.SkillName;
-        _skillDescriptionText.text = isEmpty ? string.Empty : data.SkillDescription;
-        _skillAttributeText.text = isEmpty ? string.Empty : Define.SkillAttributes[(int)data.SkillAttribute];
-        _skillIconImage.sprite = isEmpty ? null : data.SkillIcon;
+        _skillNameText.text = isEmpty ? string.Empty : data.Name;
+        _skillDescriptionText.text = isEmpty ? string.Empty : data.Description;
+        _skillAttributeText.text = $"속성: {(isEmpty ? Define.SkillAttributes[0] : Define.SkillAttributes[(int)data.SkillAttribute])}\t/\t개수: {(isEmpty ? 0 : data.Count)}";
+        _skillIconImage.sprite = isEmpty ? null : data.IconImage;
         _skillIconImage.color = isEmpty ? Color.clear : Color.white;
         // 액티브스킬에 대해서만 장착 및 해제 버튼 활성화
         if (data != null && !data.IsPassive)
@@ -235,6 +276,7 @@ public class PopupUI_SkillInventory : MonoBehaviour
         SkillManager.Instance.UpdateEnhancedAttribute(EnvironmentManager.Instance.CurrentType);
     }
 
+    #region ButtonEvents
     void OnReleaseButtonClick()
     {
         // 현재 스킬 슬롯에 있는 스킬이면 해제
@@ -276,4 +318,5 @@ public class PopupUI_SkillInventory : MonoBehaviour
             _currentSkillIconImage[i].color = sprites[i] == null ? Color.clear : Color.white;
         }
     }
+    #endregion
 }

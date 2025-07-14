@@ -26,7 +26,7 @@ public class SkillItemSlot : MonoBehaviour
     {
         bool isExist = skillData ? true : false;
         _skillData = skillData;
-        _skillIconImage.sprite = isExist ? skillData.SkillIcon : null;
+        _skillIconImage.sprite = isExist ? skillData.IconImage : null;
         _skillIconImage.color = isExist ? new Color(1, 1, 1, 1) : new Color(0, 0, 0, 0);
 
         for (int i = 0; i < _skillAttributeSprites.Length; i++)
@@ -41,7 +41,7 @@ public class SkillItemSlot : MonoBehaviour
             }
         }
 
-        _skillName.text = isExist ? skillData.SkillName : string.Empty;
+        _skillName.text = isExist ? skillData.Name : string.Empty;
     }
 
     private void Awake()

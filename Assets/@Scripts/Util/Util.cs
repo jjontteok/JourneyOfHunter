@@ -2,6 +2,18 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
+public class Pair<T, U>
+{
+    public Pair(T first, U second)
+    {
+        First = first;
+        Second = second;
+    }
+
+    public T First { get; set; }
+    public U Second { get; set; }
+};
+
 public class Util
 {
     static public bool NullCheck<T>(T t) where T : Object

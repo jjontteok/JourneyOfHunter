@@ -48,7 +48,7 @@ public class SkillSlot : MonoBehaviour
         }
         else
         {
-            Debug.Log("Cannot Find Skill Resource named " + data.SkillName);
+            Debug.Log("Cannot Find Skill Resource named " + data.Name);
             return false;
         }
         _skill = Instantiate(skill) as ActiveSkill;
