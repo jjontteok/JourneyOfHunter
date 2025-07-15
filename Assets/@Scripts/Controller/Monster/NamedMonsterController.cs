@@ -62,6 +62,7 @@ public class NamedMonsterController : MonsterController
         _runtimeData.Atk *= 2;
         _runtimeData.Def *= 2;
         _runtimeData.MaxHP *= 2;
+        _runtimeData.CurrentHP = _runtimeData.MaxHP;
     }
 
     void SetOriginPos()
