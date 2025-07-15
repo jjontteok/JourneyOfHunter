@@ -29,8 +29,8 @@ MonoBehaviour:
   IsPassive: 1
   Offset: {x: 0, y: 0, z: 0}
   SkillAttribute: 0
-  BuffStatus: 7
-  BuffAmount: -10
+  BuffStatus: 6
+  BuffAmount: 10
   IsUltimate: 0
   SkillAnimationName: 
   Level: 1

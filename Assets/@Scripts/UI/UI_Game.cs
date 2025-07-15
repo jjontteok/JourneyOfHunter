@@ -8,7 +8,6 @@ using UnityEngine.UI;
 public class UI_Game : MonoBehaviour
 {
     [SerializeField] TMP_Text _playerNameText;
-    [SerializeField] TMP_Text _playerLevelText;
     [SerializeField] Button _statusButton;
     [SerializeField] Button _inventoryButton;
     [SerializeField] Button _skillInventoryButton;
