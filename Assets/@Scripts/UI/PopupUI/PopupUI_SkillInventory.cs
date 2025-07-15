@@ -216,7 +216,7 @@ public class PopupUI_SkillInventory : MonoBehaviour
         // 스킬 설명 초기화
         ActivateDescription();
         // 일반스킬 뷰포트 활성화
-        OnGeneralButtonClick();
+        SetGeneralViewPort();
     }
 
     private void Awake()
@@ -330,11 +330,16 @@ public class PopupUI_SkillInventory : MonoBehaviour
         AudioManager.Instance.PlayClickSound();
     }
 
-    void OnGeneralButtonClick()
+    void SetGeneralViewPort()
     {
         _generalSkillScrollView.gameObject.SetActive(true);
         _ultimateSkillScrollView.gameObject.SetActive(false);
         _passiveSkillScrollView.gameObject.SetActive(false);
+    }
+
+    void OnGeneralButtonClick()
+    {
+        SetGeneralViewPort();
         AudioManager.Instance.PlayClickSound();
     }
 

@@ -77,8 +77,9 @@ public class CutSceneController : MonoBehaviour
 
         UIManager.Instance.DeactivateUIGame();
 
-        _checkAuto = PlayerManager.Instance.IsAuto;
-        PlayerManager.Instance.IsAuto = false;
+        //_checkAuto = PlayerManager.Instance.IsAuto;
+        //PlayerManager.Instance.IsAuto = false;
+        PlayerManager.Instance.Player.SetIsAttacking(true);
     }
 
     void FinishCutScene(PlayableDirector pd)
@@ -91,7 +92,8 @@ public class CutSceneController : MonoBehaviour
         PopupUIManager.Instance.ActivateNamedMonsterInfo();
         PopupUIManager.Instance.ModifyBuffTextPos();
 
-        PlayerManager.Instance.IsAuto = _checkAuto;
+        //PlayerManager.Instance.IsAuto = _checkAuto;
+        PlayerManager.Instance.Player.SetIsAttacking(false);
 
         OnCutSceneFinished?.Invoke();
     }

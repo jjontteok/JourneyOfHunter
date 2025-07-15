@@ -19,7 +19,7 @@ MonoBehaviour:
   count: 0
   CoolTime: 60
   DurationTime: 2
-  TargetDistance: 0
+  TargetDistance: 20
   Damage: 40
   Speed: 0
   Angle: 0

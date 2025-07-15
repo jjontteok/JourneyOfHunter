@@ -455,6 +455,11 @@ public class PlayerController : MonoBehaviour, IDamageable
         }
     }
 
+    public void SetIsAttacking(bool flag)
+    {
+        _animator.SetBool(Define.IsAttacking, flag);
+    }
+
     void SetTarget()
     {
         // 던전인 경우, 몬스터 찾기

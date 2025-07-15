@@ -34,7 +34,7 @@ public class PopupUI_RandomSummon : MonoBehaviour
     private void OnEnable()
     {
         _resultPanel.SetActive(false);
-        OnEquipmentGachaPanel();
+        SetEquipGatchaPanel();
     }
 
     private void Initialize()
@@ -58,10 +58,15 @@ public class PopupUI_RandomSummon : MonoBehaviour
         AudioManager.Instance.PlayClickSound();
     }
 
-    void OnEquipmentGachaPanel()
+    void SetEquipGatchaPanel()
     {
         _equipmentGachaPanel.SetActive(true);
         _skillGachaPanel.SetActive(false);
+    }
+
+    void OnEquipmentGachaPanel()
+    {
+        SetEquipGatchaPanel();
         AudioManager.Instance.PlayClickSound();
     }
 

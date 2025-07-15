@@ -59,8 +59,9 @@ public class PlayerManager : Singleton<PlayerManager>, IEventSubscriber
                 }
                 else if (FieldManager.Instance.StageController.StageActionStatus == Define.StageActionStatus.Challenge)
                 {
-                    //StageController.Instance.StageActionStatus = Define.StageActionStatus.ExitStage;
+                    FieldManager.Instance.StageController.StageActionStatus = Define.StageActionStatus.Challenging;
                     FieldManager.Instance.StageController.IsSpawnNamedMonster = true;
+                    //FieldManager.Instance.StageController.StageActionStatus = Define.StageActionStatus.AutoChallenge;
                 }
             }
             Debug.Log($"Current AutoMoving: {_isAutoMoving}, Current IsClear: {FieldManager.Instance.IsClear}");
