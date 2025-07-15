@@ -131,6 +131,7 @@ public class NamedMonsterController : MonsterController
                 ActivateLongAttack(distance);
             }
         }
+        _animator.SetBool(Define.IsAttacking, false);
     }
 
     void ActivateCloseAttack()

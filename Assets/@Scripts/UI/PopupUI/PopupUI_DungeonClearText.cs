@@ -2,7 +2,6 @@ using System.Collections;
 using TMPro;
 using UnityEngine;
 
-//나중에 하자...오늘은 안할랭
 public class PopupUI_DungeonClearText : MonoBehaviour
 {
     UIEffectsManager _uiEffectManager;
