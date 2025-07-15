@@ -96,7 +96,7 @@ public class UI_StatusSlot : MonoBehaviour
 
     void UpgradeButton()
     {
-        if (_isButtonDown)
+        if (_isButtonDown && !_isSilverCoinLack)
         {
             _time += Time.deltaTime;
 
@@ -152,6 +152,7 @@ public class UI_StatusSlot : MonoBehaviour
                 _playerData.Def += amount; finalValue = _playerData.Def;
                 break;
         }
+        PlayerManager.Instance.Player.ApplyUpgradeStatus(_playerData);
         return finalValue;
     }
 }

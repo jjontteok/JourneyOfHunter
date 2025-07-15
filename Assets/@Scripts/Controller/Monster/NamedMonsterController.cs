@@ -28,12 +28,12 @@ public class NamedMonsterController : MonsterController
         moveRange.transform.parent = this.gameObject.transform;
         _moveRangeController = moveRange.GetOrAddComponent<MoveRangeController>();
         _moveRangeController.Intiailize(_runtimeData.MoveRange);
-        _weapon.SetColliderInfo(_runtimeData.Atk);
     }
     protected override void OnEnable()
     {
         SetOriginPos();
         base.OnEnable();
+        _weapon.SetColliderInfo(_runtimeData.Atk);
         _isMoveToOrigin = false;
         _moveRangeController.OnMoveToTarget += OnMoveToTarget;
         _moveRangeController.OnMoveToOrigin += StopMove;
@@ -55,6 +55,13 @@ public class NamedMonsterController : MonsterController
     {
         RotateNamedMonster();
         CheckMoveToOrigin();
+    }
+
+    protected override void UpgradeStatus(int stage)
+    {
+        _runtimeData.Atk *= 2;
+        _runtimeData.Def *= 2;
+        _runtimeData.MaxHP *= 2;
     }
 
     void SetOriginPos()
