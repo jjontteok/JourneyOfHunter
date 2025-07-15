@@ -131,6 +131,7 @@ public class Inventory
     {
         _goods[type] += amount;
         ApplyChangesToSO(PlayerManager.Instance.Player.PlayerInventoryData);
+        OnValueChanged?.Invoke(type);
     }
 
     public void UseGoods(Define.GoodsType type, int amount)
