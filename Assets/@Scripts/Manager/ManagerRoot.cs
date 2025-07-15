@@ -36,6 +36,8 @@ public class ManagerRoot : MonoBehaviour
 
         PoolManager.Instance.CreateManager();
 
+        AudioManager.Instance.CreateManager();
+
         PopupUIManager.Instance.CreateManager();
 
 

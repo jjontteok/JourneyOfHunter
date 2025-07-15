@@ -28,6 +28,7 @@ public class PopupUIManager : Singleton<PopupUIManager>, IEventSubscriber, IDeac
     private GameObject _panelMerchant;
     private GameObject _panelGacha;
     private GameObject _panelItemInfo;
+    private GameObject _panelSetting;
 
     private GameObject _activePopup;
 
@@ -67,6 +68,7 @@ public class PopupUIManager : Singleton<PopupUIManager>, IEventSubscriber, IDeac
         _panelMerchant = Instantiate(ObjectManager.Instance.PopupMerchantPanel, _canvasPopupUI.transform);
         _panelGacha = Instantiate(ObjectManager.Instance.PopupGachaPanel, _canvasPopupUI.transform);
         _panelItemInfo = Instantiate(ObjectManager.Instance.PopupItemInfoPanel, _canvasPopupUI.transform);
+        _panelSetting = Instantiate(ObjectManager.Instance.PopupSettingPanel, _canvasPopupUI.transform);
 
         // 진짜 바보같은 코드... 가장 마지막으로보내버림
         _toolTipPanel = Instantiate(ObjectManager.Instance.ToolTipPanel, _canvasPopupUI.transform);
@@ -100,6 +102,7 @@ public class PopupUIManager : Singleton<PopupUIManager>, IEventSubscriber, IDeac
         _panelMerchant.GetComponent<PopupUI_Merchant>().OnExitButtonClicked += DeactivatePopup;
         _panelGacha.GetComponent<PopupUI_RandomSummon>().OnExitButtonClicked += DeactivatePopup;
         _popupMerchantAppear.GetComponentInChildren<Button>().onClick.AddListener(ActivateMerchantPanel);
+        _panelSetting.GetComponent<PopupUI_Setting>().OnExitButtonClicked += DeactivatePopup;
     }
     #endregion
 
@@ -135,6 +138,7 @@ public class PopupUIManager : Singleton<PopupUIManager>, IEventSubscriber, IDeac
         _panelMerchant.SetActive(false);
         _panelGacha.SetActive(false);
         _panelItemInfo.SetActive(false);
+        _panelSetting.SetActive(false);
     }
     #endregion
 
@@ -251,7 +255,7 @@ public class PopupUIManager : Singleton<PopupUIManager>, IEventSubscriber, IDeac
     public void ActivateDungeonAppear()
     {
         _popupDungeonAppear.SetActive(true);
-        AudioManager.PlayWarning?.Invoke(true);
+        AudioManager.Instance.PlayWarningSound(true);
         foreach (var effect in _popupDungeonAppear.GetComponentsInChildren<UIEffectsManager>())
         {
             StartCoroutine(effect.PerformEffect(0));
@@ -287,6 +291,14 @@ public class PopupUIManager : Singleton<PopupUIManager>, IEventSubscriber, IDeac
     {
         _panelItemInfo.SetActive(true);
         _panelItemInfo.GetComponent<PopupUI_ItemInfo>().SetItemInfo(itemSlot);
+    }
+
+    public void ActivateSettingPanel()
+    {
+        DeactivatePopup();
+        ActivatePopupPanel();
+        _activePopup = _panelSetting;
+        _panelSetting.SetActive(true);
     }
     #endregion
 
@@ -344,7 +356,7 @@ public class PopupUIManager : Singleton<PopupUIManager>, IEventSubscriber, IDeac
     {
         yield return time;
         go.SetActive(false);
-        AudioManager.PlayWarning?.Invoke(false);
+        AudioManager.Instance.PlayWarningSound(false);
     }
 
     public void DeactivateBuffText()

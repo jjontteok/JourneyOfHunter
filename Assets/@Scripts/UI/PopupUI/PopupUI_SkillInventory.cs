@@ -305,6 +305,7 @@ public class PopupUI_SkillInventory : MonoBehaviour
         // 현재 스킬 슬롯에 없는 스킬이면 장착
         OnEquipSkill?.Invoke(_selectedSkillData);
         SkillManager.Instance.UpdateEnhancedAttribute(EnvironmentManager.Instance.CurrentType);
+        AudioManager.Instance.PlayClickSound();
     }
 
     void OnReleaseButtonClick()
@@ -313,17 +314,20 @@ public class PopupUI_SkillInventory : MonoBehaviour
         // 현재 스킬 슬롯에 없는 스킬이면 경고문?
         OnReleaseSkill?.Invoke(_selectedSkillData);
         SkillManager.Instance.UpdateEnhancedAttribute(EnvironmentManager.Instance.CurrentType);
+        AudioManager.Instance.PlayClickSound();
     }
 
     void OnUpgradeButtonClick()
     {
         OnUpgradeSkill?.Invoke(_selectedSkillData);
         ActivateDescription(_selectedSkillData);
+        AudioManager.Instance.PlayClickSound();
     }
 
     void OnExitButtonClick()
     {
         OnExitButtonClicked?.Invoke();
+        AudioManager.Instance.PlayClickSound();
     }
 
     void OnGeneralButtonClick()
@@ -331,6 +335,7 @@ public class PopupUI_SkillInventory : MonoBehaviour
         _generalSkillScrollView.gameObject.SetActive(true);
         _ultimateSkillScrollView.gameObject.SetActive(false);
         _passiveSkillScrollView.gameObject.SetActive(false);
+        AudioManager.Instance.PlayClickSound();
     }
 
     void OnUltimateButtonClick()
@@ -338,6 +343,7 @@ public class PopupUI_SkillInventory : MonoBehaviour
         _generalSkillScrollView.gameObject.SetActive(false);
         _ultimateSkillScrollView.gameObject.SetActive(true);
         _passiveSkillScrollView.gameObject.SetActive(false);
+        AudioManager.Instance.PlayClickSound();
     }
 
     void OnPassiveButtonClick()
@@ -345,6 +351,7 @@ public class PopupUI_SkillInventory : MonoBehaviour
         _generalSkillScrollView.gameObject.SetActive(false);
         _ultimateSkillScrollView.gameObject.SetActive(false);
         _passiveSkillScrollView.gameObject.SetActive(true);
+        AudioManager.Instance.PlayClickSound();
     }
 
     void UpdateCurrentSkillIcon(Sprite[] sprites)

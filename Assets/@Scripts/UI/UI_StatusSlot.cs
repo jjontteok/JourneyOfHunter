@@ -131,6 +131,7 @@ public class UI_StatusSlot : MonoBehaviour
         _statusSlotData.currentStatusCount = (int)ApplyUpgrade(_statusSlotData.statusType, 5);
         _upgradeCostText.text = _statusSlotData.upgradeCost.ToString();
         _currentStatusText.text = _statusSlotData.currentStatusCount.ToString();
+        AudioManager.Instance.PlayClickSound();
 
     }
 
