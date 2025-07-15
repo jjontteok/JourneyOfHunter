@@ -23,7 +23,10 @@ public class MerchantItemSlot : MonoBehaviour
             _noticeText.text = "젬 부족";
         }
         else
+        {
+            _noticeText.text = "";
             _purchaseButton.interactable = true;
+        }
     }
 
     private void Awake()

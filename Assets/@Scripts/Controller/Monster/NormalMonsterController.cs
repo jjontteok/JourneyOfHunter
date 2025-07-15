@@ -29,6 +29,13 @@ public class NormalMonsterController : MonsterController
         MoveToTarget(_target.transform.position);
     }
 
+    protected override void UpgradeStatus(int stage)
+    {
+        _runtimeData.Atk *= 2;
+        _runtimeData.Def *= 2;
+        _runtimeData.MaxHP *= 2;
+    }
+
     public override void Die()
     {
         base.Die();

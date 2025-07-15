@@ -25,7 +25,7 @@ public class UI_Game : MonoBehaviour
     private List<UI_PlayerVital> _playerVitalList;
     private GameObject _playerVitalCanvas;
     private PlayerController _player;
-    private PlayerInventoryData _inventoryData;
+    private Inventory _playerInventory;
 
     private int _currentPlayers;
 
@@ -52,13 +52,13 @@ public class UI_Game : MonoBehaviour
     {
         ReleaseEvent();
         _player = PlayerManager.Instance.Player;
-        _inventoryData = _player.PlayerInventoryData;
+        _playerInventory = _player.Inventory;
 
         MonsterController.OnMonsterDead += GainGoods;
         PlayerManager.Instance.Player.OnHPValueChanged += UpdatePlayerHp;
         EnvironmentManager.Instance.OnTypeChanged += UpdateAttribute;
         EnvironmentManager.Instance.OnTypeChanged?.Invoke(EnvironmentManager.Instance.CurrentType);
-        //_inventoryData.OnValueChanged += UpdateGoods;
+        _playerInventory.OnValueChanged += UpdateGoods;
 
         _statusButton.onClick.AddListener(OnStatusButtonClick);
         _inventoryButton.onClick.AddListener(OnInventoryButtonClick);
@@ -66,7 +66,8 @@ public class UI_Game : MonoBehaviour
         _gachaButton.onClick.AddListener(OnGachaButtonClick);
         _settingButton.onClick.AddListener(OnSettingButtonClick);
 
-        _silverCoinText.text = _inventoryData.SilverCoin.ToString();
+        _silverCoinText.text = _playerInventory.Goods[Define.GoodsType.SilverCoin].ToString();
+        _gemText.text = _playerInventory.Goods[Define.GoodsType.Gem].ToString();
         _autoToggle.onValueChanged.AddListener(OnAutoToggleClick);
         _doubleSpeedToggle.onValueChanged.AddListener(OnDoubleSpeedToggleClick);
         _inventoryButton.onClick.AddListener(OnInventoryButtonClick);
@@ -134,9 +135,10 @@ public class UI_Game : MonoBehaviour
         switch (type)
         {
             case Define.GoodsType.SilverCoin:
-                _silverCoinText.text = _inventoryData.SilverCoin.ToString();
+                _silverCoinText.text = _playerInventory.Goods[Define.GoodsType.SilverCoin].ToString();
                 break;
             case Define.GoodsType.Gem:
+                _gemText.text = _playerInventory.Goods[Define.GoodsType.Gem].ToString();
                 break;
         }
     }
