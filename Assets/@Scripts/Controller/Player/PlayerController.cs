@@ -44,6 +44,7 @@ public class PlayerController : MonoBehaviour, IDamageable
     public Action<float> OnJourneyExpChanged;
     public Action OnPlayerCrossed;
     public Action OnPlayerDead;
+    public Action OnAutoMerchantAppear;
 
     PlayerStatus _runtimeData;
     Vector3 _direction;
@@ -128,11 +129,13 @@ public class PlayerController : MonoBehaviour, IDamageable
         get { return _playerData.JourneyExp; }
         set
         {
+            int changeExpCount = 0;
             _playerData.JourneyExp = value;
+
             //해당 레벨의 맥스 값보다 현재 메달 값이 높으면 
-            if (_playerData.JourneyRankData.MaxJourneyExp <= _playerData.JourneyExp)
+            while (_playerData.JourneyRankData.MaxJourneyExp <= _playerData.JourneyExp)
             {
-                //현재 메달 변경
+                changeExpCount++;
                 _playerData.JourneyRankData =
                     ObjectManager.Instance.JourneyRankResourceList[(_playerData.JourneyRankData.Index + 1).ToString()];
             }
@@ -191,14 +194,15 @@ public class PlayerController : MonoBehaviour, IDamageable
         else
             journeyExp = amount;
 
-        OnJourneyExpChanged?.Invoke(journeyExp);
         JourneyExp += journeyExp;
-        Debug.Log("여정의 증표 획득 " + journeyExp);
+        OnJourneyExpChanged?.Invoke(journeyExp);
+        Debug.Log("여정의 증표 획득 " + journeyExp + "현재 여정의 증표 "+JourneyExp);
     }
 
     public void Move()
     {
-        //if (!PlayerManager.Instance.IsGameStart) return;
+        if (!PlayerManager.Instance.IsGameStart) 
+            return;
 
         // 죽은 상태이거나 공격 모션 중일 땐 움직이지 않도록
         if (_animator.GetInteger(Define.DieType) > 0 || _animator.GetBool(Define.IsAttacking))
@@ -472,7 +476,8 @@ public class PlayerController : MonoBehaviour, IDamageable
                 }
                 else if (FieldManager.Instance.CurrentEventType == Define.JourneyType.Merchant)
                 {
-                    // TBD
+                    PlayerManager.Instance.IsAutoMoving = true;
+                    OnAutoMerchantAppear?.Invoke();
                 }
                 else if (FieldManager.Instance.CurrentEventType == Define.JourneyType.OtherObject)
                 {

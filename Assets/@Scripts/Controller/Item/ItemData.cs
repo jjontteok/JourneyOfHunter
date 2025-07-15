@@ -8,6 +8,7 @@ public abstract class ItemData : ScriptableObject
     public int Id;
     public string Name;
     public string Description;
+    public int Cost;
 
     public Sprite IconImage;
     public Define.ItemType Type;

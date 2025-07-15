@@ -35,7 +35,7 @@ public class RewardSystem
             else if(reward.Key == Define.RewardType.Gem)
             {
                 rewardName = "젬";
-                PlayerManager.Instance.Player.Inventory.AddGoods(Define.GoodsType.SilverCoin, reward.Value);
+                PlayerManager.Instance.Player.Inventory.AddGoods(Define.GoodsType.Gem, reward.Value);
             }
             TextManager.Instance.ActivateRewardText(pos, rewardName, reward.Value);
         }
@@ -48,6 +48,7 @@ public class FieldManager : Singleton<FieldManager>, IEventSubscriber, IDeactiva
     public event Action<Define.JourneyType, Define.ItemValue> OnJourneyEvent;
     public event Action OnFailedDungeonClear;
     public event Action<int> OnUpgradeMonsterStatus;
+    public event Action OnMerchantAppeared;
 
     StageController _stageController;
     SpawnController _spawnController;
@@ -132,11 +133,10 @@ public class FieldManager : Singleton<FieldManager>, IEventSubscriber, IDeactiva
         else
         {
             rnd = UnityEngine.Random.Range(0, 100);
-            rnd = 80;
+            rnd = 90;
             if (rnd < 90)
             {
                 Define.ItemValue rank = SetRank();
-
                 //80% 확률로 기타 오브젝트 등장
                 if (rnd < 80)
                 {
@@ -159,6 +159,7 @@ public class FieldManager : Singleton<FieldManager>, IEventSubscriber, IDeactiva
             else if (rnd < 100)
             {
                 rnd = (int)Define.JourneyType.Merchant;
+                OnMerchantAppeared?.Invoke();
             }
         }
         _currentType = (Define.JourneyType)rnd;
