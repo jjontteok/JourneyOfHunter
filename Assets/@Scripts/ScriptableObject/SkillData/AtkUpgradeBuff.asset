@@ -15,7 +15,7 @@ MonoBehaviour:
   Name: "\uACF5\uACA9\uB825 \uBC84\uD504"
   Description: "10\uCD08\uAC04 \uACF5\uACA9\uB825\uC774 5 \uC99D\uAC00\uD569\uB2C8\uB2E4."
   IconImage: {fileID: 21300000, guid: 457aa8e6df280fc4182b0e65df8441fc, type: 3}
-  count: 0
+  count: 1
   CoolTime: 15
   DurationTime: 10
   TargetDistance: 0
@@ -33,3 +33,4 @@ MonoBehaviour:
   BuffAmount: 5
   IsUltimate: 0
   SkillAnimationName: 
+  Level: 1

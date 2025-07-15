@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using TMPro;
-using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.EventSystems;
@@ -26,9 +25,11 @@ public class PopupUI_SkillInventory : MonoBehaviour
     [SerializeField] Transform _generalSkillContainer;
     [SerializeField] Transform _ultimateSkillContainer;
     [SerializeField] Transform _passiveSkillContainer;
+    [SerializeField] Transform _skillAttributePos;
 
     [SerializeField] Button _equipButton;
     [SerializeField] Button _releaseButton;
+    [SerializeField] Button _upgradeButton;
     [SerializeField] Button _exitButton;
     [SerializeField] Button _generalButton;
     [SerializeField] Button _ultimateButton;
@@ -36,13 +37,16 @@ public class PopupUI_SkillInventory : MonoBehaviour
 
     [SerializeField] TMP_Text _skillNameText;
     [SerializeField] TMP_Text _skillDescriptionText;
-    [SerializeField] TMP_Text _skillAttributeText;
+    [SerializeField] TMP_Text _skillCountText;
+    [SerializeField] TMP_Text _skillCoolAndLevelText;
     [SerializeField] Image _skillIconImage;
     [SerializeField] Image[] _currentSkillIconImage = new Image[6];
+    [SerializeField] GameObject[] _skillAttributePrefabs = new GameObject[4];
 
     SkillItemSlot[] _slots = new SkillItemSlot[24];
     SkillItemSlot[] _ultimateSlots = new SkillItemSlot[12];
     SkillItemSlot[] _passiveSlots = new SkillItemSlot[12];
+    GameObject[] _skillAttributeSprites = new GameObject[4];
 
     SkillData _selectedSkillData;
     int skillCount = 0;
@@ -51,11 +55,14 @@ public class PopupUI_SkillInventory : MonoBehaviour
 
     Dictionary<GameObject, SkillItemSlot> _slotUIs = new Dictionary<GameObject, SkillItemSlot>();
 
-    public Action<SkillData> OnUseSkillItem;
+    //public Action<SkillData> OnUseSkillItem;
     // 스킬 장착 시 이벤트
-    public Action<SkillData> OnEquipSkill;
+    public event Action<SkillData> OnEquipSkill;
     // 스킬 해제 시 이벤트
-    public Action<SkillData> OnReleaseSkill;
+    public event Action<SkillData> OnReleaseSkill;
+    // 스킬 강화 시 이벤트
+    public event Action<SkillData> OnUpgradeSkill;
+    // 스킬 인벤토리 닫기
     public event Action OnExitButtonClicked;
 
     public static Action<Sprite[]> OnCurrentSkillIconSet;
@@ -104,6 +111,7 @@ public class PopupUI_SkillInventory : MonoBehaviour
     // 처음 게임 시작 시, SkillItemSlot 생성 및 보유 중인 스킬 업데이트
     void CreateSlot()
     {
+        // 일반 스킬 아이템 슬롯
         for (int i = 0; i < _slots.Length; i++)
         {
             GameObject go = Instantiate(_slot, _generalSkillContainer);
@@ -120,6 +128,7 @@ public class PopupUI_SkillInventory : MonoBehaviour
             _slotUIs.Add(go, _slots[i]);
             go.name = "SkillItemSlot " + i;
         }
+        // 궁극기 스킬 아이템 슬롯
         for (int i = 0; i < _ultimateSlots.Length; i++)
         {
             GameObject go = Instantiate(_slot, _ultimateSkillContainer);
@@ -136,6 +145,7 @@ public class PopupUI_SkillInventory : MonoBehaviour
             _slotUIs.Add(go, _ultimateSlots[i]);
             go.name = "UltimateSkillItemSlot " + i;
         }
+        // 패시브 스킬 아이템 슬롯
         for (int i = 0; i < _passiveSlots.Length; i++)
         {
             GameObject go = Instantiate(_slot, _passiveSkillContainer);
@@ -151,6 +161,13 @@ public class PopupUI_SkillInventory : MonoBehaviour
 
             _slotUIs.Add(go, _passiveSlots[i]);
             go.name = "PassiveSkillItemSlot " + i;
+        }
+
+        for (int i = 0; i < _skillAttributeSprites.Length; i++)
+        {
+            _skillAttributeSprites[i] = Instantiate(_skillAttributePrefabs[i], _skillAttributePos);
+            _skillAttributeSprites[i].transform.localPosition = Vector3.zero;
+            _skillAttributeSprites[i].SetActive(false);
         }
 
         // 플레이어가 보유 중인 스킬리스트를 스킬 인벤토리에 등록
@@ -219,6 +236,7 @@ public class PopupUI_SkillInventory : MonoBehaviour
         CreateSlot();
         _equipButton.onClick.AddListener(OnEquipButtonClick);
         _releaseButton.onClick.AddListener(OnReleaseButtonClick);
+        _upgradeButton.onClick.AddListener(OnUpgradeButtonClick);
         _exitButton.onClick.AddListener(OnExitButtonClick);
         _generalButton.onClick.AddListener(OnGeneralButtonClick);
         _ultimateButton.onClick.AddListener(OnUltimateButtonClick);
@@ -228,6 +246,7 @@ public class PopupUI_SkillInventory : MonoBehaviour
         SkillSystem skillSystem = PlayerManager.Instance.SkillSystem;
         OnEquipSkill += skillSystem.AddSkill;
         OnReleaseSkill += skillSystem.RemoveSkill;
+        OnUpgradeSkill += skillSystem.UpgradeSkill;
         skillSystem.OnSkillSummon += UpdateSkillItemSlotList;
 
         UpdateCurrentSkillIcon(SkillManager.Instance.CurrentSkillIcons());
@@ -239,9 +258,33 @@ public class PopupUI_SkillInventory : MonoBehaviour
         _selectedSkillData = data;
         _skillNameText.text = isEmpty ? string.Empty : data.Name;
         _skillDescriptionText.text = isEmpty ? string.Empty : data.Description;
-        _skillAttributeText.text = isEmpty ? string.Empty : $"속성: {Define.SkillAttributes[(int)data.SkillAttribute]}\t/\t개수: {data.Count}";
+        _skillCountText.text = isEmpty ? string.Empty : $"{data.Count} / {data.Level * 2 - 1}";
+        _skillCoolAndLevelText.text = isEmpty ? string.Empty : $"쿨타임: {data.CoolTime}초\t레벨: {data.Level}";
         _skillIconImage.sprite = isEmpty ? null : data.IconImage;
         _skillIconImage.color = isEmpty ? Color.clear : Color.white;
+
+        if (isEmpty)
+        {
+            foreach (var attribute in _skillAttributeSprites)
+            {
+                attribute.SetActive(false);
+            }
+        }
+        else
+        {
+            for (int i = 0; i < _skillAttributeSprites.Length; i++)
+            {
+                if (i == (int)data.SkillAttribute - 1)
+                {
+                    _skillAttributeSprites[i].SetActive(true);
+                }
+                else
+                {
+                    _skillAttributeSprites[i].SetActive(false);
+                }
+            }
+        }
+
         // 액티브스킬에 대해서만 장착 및 해제 버튼 활성화
         if (data != null && !data.IsPassive)
         {
@@ -255,6 +298,7 @@ public class PopupUI_SkillInventory : MonoBehaviour
         }
     }
 
+    #region ButtonEvents
     void OnEquipButtonClick()
     {
         // 현재 스킬 슬롯에 이미 있는 스킬이면 경고문?
@@ -263,7 +307,6 @@ public class PopupUI_SkillInventory : MonoBehaviour
         SkillManager.Instance.UpdateEnhancedAttribute(EnvironmentManager.Instance.CurrentType);
     }
 
-    #region ButtonEvents
     void OnReleaseButtonClick()
     {
         // 현재 스킬 슬롯에 있는 스킬이면 해제
@@ -271,6 +314,13 @@ public class PopupUI_SkillInventory : MonoBehaviour
         OnReleaseSkill?.Invoke(_selectedSkillData);
         SkillManager.Instance.UpdateEnhancedAttribute(EnvironmentManager.Instance.CurrentType);
     }
+
+    void OnUpgradeButtonClick()
+    {
+        OnUpgradeSkill?.Invoke(_selectedSkillData);
+        ActivateDescription(_selectedSkillData);
+    }
+
     void OnExitButtonClick()
     {
         OnExitButtonClicked?.Invoke();

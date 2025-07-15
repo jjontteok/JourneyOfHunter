@@ -1,6 +1,5 @@
 using System;
 using System.Collections;
-using Unity.VisualScripting;
 using UnityEngine;
 
 public struct PlayerStatus
@@ -596,10 +595,6 @@ public class PlayerController : MonoBehaviour, IDamageable
 
             case Define.StatusType.Def:
                 _runtimeData.Def += amount;
-                break;
-
-            case Define.StatusType.Damage:
-                _runtimeData.Damage += amount;
                 break;
 
             case Define.StatusType.HP:

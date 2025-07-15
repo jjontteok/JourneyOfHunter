@@ -16,7 +16,7 @@ MonoBehaviour:
   Description: "\uD50C\uB808\uC774\uC5B4 \uC8FC\uBCC0\uC5D0 \uB208\uC7A5\uD310\uC744
     \uC0DD\uC131\uD569\uB2C8\uB2E4."
   IconImage: {fileID: 21300000, guid: 1fc24b8715e8aa04aa737e33ce39ed2b, type: 3}
-  count: 0
+  count: 1
   CoolTime: 5
   DurationTime: 1
   TargetDistance: 6
@@ -34,3 +34,4 @@ MonoBehaviour:
   BuffAmount: 0
   IsUltimate: 0
   SkillAnimationName: 
+  Level: 2

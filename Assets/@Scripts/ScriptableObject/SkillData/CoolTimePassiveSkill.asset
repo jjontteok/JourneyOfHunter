@@ -33,3 +33,4 @@ MonoBehaviour:
   BuffAmount: -10
   IsUltimate: 0
   SkillAnimationName: 
+  Level: 1
