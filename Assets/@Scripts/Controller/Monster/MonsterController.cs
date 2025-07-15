@@ -164,7 +164,7 @@ public abstract class MonsterController : MonoBehaviour, IDamageable
         Instantiate(_monsterData.SpawnEffect);
     }
 
-    protected virtual void UpgradeStatus(int stage)
+    protected virtual void UpgradeStatus(float amount)
     {
        
     }
