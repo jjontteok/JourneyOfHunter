@@ -10,6 +10,7 @@ public class SkillItemSlot : MonoBehaviour
     [SerializeField] Image _skillIconImage;
     [SerializeField] TMP_Text _skillName;
     [SerializeField] Transform _skillAttributePos;
+    [SerializeField] Sprite[] _skillFrames = new Sprite[2];
     [SerializeField] GameObject[] _skillAttributePrefabs = new GameObject[4];
     GameObject[] _skillAttributeSprites = new GameObject[4];
 
@@ -22,37 +23,43 @@ public class SkillItemSlot : MonoBehaviour
 
     public Action<SkillItemSlot> OnPostUpdate;
 
-    public void UpdateSlot(SkillData skillData = null)
+    public void UpdateSlot(SkillData skillData = null, bool isSummon = default)
     {
         bool isExist = skillData ? true : false;
         _skillData = skillData;
-        _skillIconImage.sprite = isExist ? skillData.SkillIcon : null;
+        _skillIconImage.sprite = isExist ? skillData.IconImage : null;
         _skillIconImage.color = isExist ? new Color(1, 1, 1, 1) : new Color(0, 0, 0, 0);
 
         for (int i = 0; i < _skillAttributeSprites.Length; i++)
         {
-            if (i == (int)skillData.SkillAttribute - 1)
+            if (_skillAttributeSprites[i] == null)
             {
-                _skillAttributeSprites[i].SetActive(true);
-            }
-            else
-            {
+                _skillAttributeSprites[i] = Instantiate(_skillAttributePrefabs[i], _skillAttributePos);
+                _skillAttributeSprites[i].transform.localPosition = Vector3.zero;
                 _skillAttributeSprites[i].SetActive(false);
+            }
+            if (skillData != null)
+            {
+                if (i == (int)skillData.SkillAttribute - 1)
+                {
+                    _skillAttributeSprites[i].SetActive(true);
+                }
+                else
+                {
+                    _skillAttributeSprites[i].SetActive(false);
+                }
             }
         }
 
-        _skillName.text = isExist ? skillData.SkillName : string.Empty;
-    }
-
-    private void Awake()
-    {
-        _skillIconImage.color = new Color(0, 0, 0, 0);
-        _skillName.text = string.Empty;
-        for (int i = 0; i < _skillAttributeSprites.Length; i++)
+        if (_skillName != null)
         {
-            _skillAttributeSprites[i] = Instantiate(_skillAttributePrefabs[i], _skillAttributePos);
-            _skillAttributeSprites[i].transform.localPosition = Vector3.zero;
-            _skillAttributeSprites[i].SetActive(false);
+            _skillName.text = isExist ? skillData.Name : string.Empty;
+        }
+
+        if (isSummon)
+        {
+            GetComponent<Image>().sprite = skillData.IsUltimate ? _skillFrames[1] : _skillFrames[0];
+            _skillIconImage.transform.localPosition = skillData.IsUltimate ? Define.SkillImagePosOffset : Vector2.zero;
         }
     }
 }

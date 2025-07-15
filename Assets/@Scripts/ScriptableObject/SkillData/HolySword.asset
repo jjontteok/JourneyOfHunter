@@ -12,11 +12,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e807fb188ff3a544ba349f772e49f4cc, type: 3}
   m_Name: HolySword
   m_EditorClassIdentifier: 
-  SkillName: "\uC2EC\uD310\uC758\uAC80"
-  SkillDescription: "(\uAD81\uADF9\uAE30) \uBC94\uC704 \uB0B4 \uAC00\uC7A5 \uAC00\uAE4C\uC6B4
+  Name: "\uC2EC\uD310\uC758\uAC80"
+  Description: "(\uAD81\uADF9\uAE30) \uBC94\uC704 \uB0B4 \uAC00\uC7A5 \uAC00\uAE4C\uC6B4
     \uC801\uC5D0\uAC8C \uC2E0\uC131\uAC80\uC774 \uB5A8\uC5B4\uC9C0\uBA70 \uC7A5\uD310\uC744
     \uC0DD\uC131\uD569\uB2C8\uB2E4."
-  SkillIcon: {fileID: 21300000, guid: 52e23de419d757d47ac72ffe73114d92, type: 3}
+  IconImage: {fileID: 21300000, guid: 52e23de419d757d47ac72ffe73114d92, type: 3}
+  count: 0
   CoolTime: 8
   DurationTime: 7
   TargetDistance: 10
@@ -34,3 +35,4 @@ MonoBehaviour:
   BuffAmount: 0
   IsUltimate: 1
   SkillAnimationName: HolySword
+  Level: 1

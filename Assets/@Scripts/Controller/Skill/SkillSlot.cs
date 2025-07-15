@@ -35,7 +35,7 @@ public class SkillSlot : MonoBehaviour
         _player = PlayerManager.Instance.Player;
     }
 
-    // 처음 슬롯 생성 시 스킬 등록
+    // 슬롯 생성 시 스킬 등록
     public bool SetSkill(SkillData data)
     {
         IsActivatePossible = true;
@@ -48,7 +48,8 @@ public class SkillSlot : MonoBehaviour
         }
         else
         {
-            Debug.Log("Cannot Find Skill Resource named " + data.SkillName);
+            Debug.Log("Cannot Find Skill Resource named " + data.Name);
+            Destroy(gameObject);
             return false;
         }
         _skill = Instantiate(skill) as ActiveSkill;
@@ -78,7 +79,7 @@ public class SkillSlot : MonoBehaviour
     {
         float realCoolTime = _skill.SkillData.CoolTime;
         Debug.Log($"Real Cool Time: {realCoolTime}");
-        realCoolTime *= 1 + (_player.PlayerStatus.GetCoolTimeDecrease() + Util.GetCoolTimeDecreaseByDayType(_skill.SkillData)) / 100;
+        realCoolTime *= 1 - (_player.PlayerStatus.GetCoolTimeDecrease() + Util.GetCoolTimeDecreaseByDayType(_skill.SkillData)) / 100;
         Debug.Log($"Reduced Cool Time: {realCoolTime}");
 
         OnActivateSkill?.Invoke(realCoolTime);

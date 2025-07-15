@@ -2,7 +2,7 @@ using System;
 using System.Collections;
 using UnityEngine;
 
-public class TreasureBoxController : MonoBehaviour, IDamageable
+public class TreasureBoxController : MonoBehaviour, IDamageable, IDelayAutoMoving
 {
     AudioSource _rewardSound;
 
@@ -91,11 +91,13 @@ public class TreasureBoxController : MonoBehaviour, IDamageable
         _isObtained = true;
         PlayOpenAnimation();
         FieldManager.Instance.RewardSystem.GainReward(transform.position + Vector3.up * 2);
+        FieldManager.Instance.IsClear = true;
         StartCoroutine(CoSetAutoMoving());
         _rewardSound.Play();
+       
     }
 
-    IEnumerator CoSetAutoMoving()
+    public IEnumerator CoSetAutoMoving()
     {
         yield return new WaitForSeconds(2f);
         PlayerManager.Instance.IsAutoMoving = true;

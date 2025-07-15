@@ -2,6 +2,18 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
+public class Pair<T, U>
+{
+    public Pair(T first, U second)
+    {
+        First = first;
+        Second = second;
+    }
+
+    public T First { get; set; }
+    public U Second { get; set; }
+};
+
 public class Util
 {
     static public bool NullCheck<T>(T t) where T : Object
@@ -19,7 +31,8 @@ public class Util
         if (FieldManager.Instance.CurrentEventType == Define.JourneyType.TreasureBox)
         {
             GameObject go = GameObject.FindGameObjectWithTag(Define.FieldObjectTag);
-            if (go.GetComponent<Animator>().GetBool(Define.Open) || Vector3.Distance(origin, go.transform.position) > distance)
+            float current = Vector3.Distance(origin, go.transform.position);
+            if (go.GetComponent<Animator>().GetBool(Define.Open) || current > distance)
             {
                 return null;
             }
@@ -167,28 +180,28 @@ public class Util
             case Define.TimeOfDayType.Morning:
                 if (data.SkillAttribute == Define.SkillAttribute.Water || data.SkillAttribute == Define.SkillAttribute.Light)
                 {
-                    reduction = -20;
+                    reduction = 20;
                 }
                 break;
 
             case Define.TimeOfDayType.Noon:
                 if (data.SkillAttribute == Define.SkillAttribute.Fire || data.SkillAttribute == Define.SkillAttribute.Light)
                 {
-                    reduction = -20;
+                    reduction = 20;
                 }
                 break;
 
             case Define.TimeOfDayType.Evening:
                 if (data.SkillAttribute == Define.SkillAttribute.Fire || data.SkillAttribute == Define.SkillAttribute.Dark)
                 {
-                    reduction = -20;
+                    reduction = 20;
                 }
                 break;
 
             case Define.TimeOfDayType.Night:
                 if (data.SkillAttribute == Define.SkillAttribute.Water || data.SkillAttribute == Define.SkillAttribute.Dark)
                 {
-                    reduction = -20;
+                    reduction = 20;
                 }
                 break;
 

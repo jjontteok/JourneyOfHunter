@@ -31,9 +31,9 @@ public class SkillDescriptionPanel : MonoBehaviour
         }
         gameObject.SetActive(true);
         _skillData = skillData;
-        _skillName.text = skillData.SkillName;
-        _skillDescription.text = skillData.SkillDescription;
-        _skillIcon.sprite = skillData.SkillIcon;
+        _skillName.text = skillData.Name;
+        _skillDescription.text = skillData.Description;
+        _skillIcon.sprite = skillData.IconImage;
         // 패시브 스킬은 스킬 아이콘 슬롯에 등록 x
         if(skillData.IsPassive)
         {

@@ -1,18 +1,22 @@
 using System.Collections;
 using UnityEngine;
 
-public class BuffSkill : ActiveSkill, IStatusChangeSkill
+public class BuffSkill : ActiveSkill, IStatusChangeSkill, ICheckActivation
 {
     bool _isCoroutineRunning = false;
 
     public override bool ActivateSkill(Vector3 pos)
     {
-        gameObject.SetActive(true);
-        transform.position = pos;
-        StatusChange(true);
+        if (IsActivatePossible(pos))
+        {
+            gameObject.SetActive(true);
+            transform.position = pos;
+            StatusChange(true);
 
-        StartCoroutine(DeActivateSkill());
-        return true;
+            StartCoroutine(DeActivateSkill());
+            return true;
+        }
+        return false;
     }
 
     public override void Initialize(Status status)
@@ -38,7 +42,7 @@ public class BuffSkill : ActiveSkill, IStatusChangeSkill
     private void OnDestroy()
     {
         // 버프 진행 중에 겜 종료 / 스킬 제거 등 발생 시
-        if(_isCoroutineRunning)
+        if (_isCoroutineRunning)
         {
             StatusChange(false);
             StopAllCoroutines();
@@ -55,5 +59,10 @@ public class BuffSkill : ActiveSkill, IStatusChangeSkill
         }
 
         _player.OnOffStatusUpgrade(SkillData.BuffStatus, coeff);
+    }
+
+    public bool IsActivatePossible(Vector3 pos)
+    {
+        return FieldManager.Instance.CurrentEventType == Define.JourneyType.Dungeon;
     }
 }

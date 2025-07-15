@@ -20,6 +20,8 @@ public class PopupUIManager : Singleton<PopupUIManager>, IEventSubscriber, IDeac
     private GameObject _popupBuffText;
     private GameObject _popupDungeonAppear;
     private GameObject _popupDungeonClearText;
+    private GameObject _popupMerchantAppear;
+    private GameObject _popupMerchantDialogue;
     private GameObject _panelStatus;
     private GameObject _panelInventory;
     private GameObject _panelSkillInventory;
@@ -30,7 +32,7 @@ public class PopupUIManager : Singleton<PopupUIManager>, IEventSubscriber, IDeac
     private GameObject _activePopup;
 
     WaitForSeconds _oneFiveSecondsTime = new WaitForSeconds(1.5f);
-    WaitForSeconds _twoSecondsTime= new WaitForSeconds(2f);
+    WaitForSeconds _twoSecondsTime = new WaitForSeconds(2f);
 
     bool _isDownBuffTextPos = false;
 
@@ -57,6 +59,8 @@ public class PopupUIManager : Singleton<PopupUIManager>, IEventSubscriber, IDeac
         _popupBuffText = Instantiate(ObjectManager.Instance.PopupBuffText, _canvasPopupUI.transform);
         _popupDungeonAppear = Instantiate(ObjectManager.Instance.PopupDungeonAppear, _canvasPopupUI.transform);
         _popupDungeonClearText = Instantiate(ObjectManager.Instance.PopupDungeonClearText, _canvasPopupUI.transform);
+        _popupMerchantAppear = Instantiate(ObjectManager.Instance.PopupMerchantAppear, _canvasPopupUI.transform);
+        _popupMerchantDialogue = Instantiate(ObjectManager.Instance.PopupMerchantDialogue, _canvasPopupUI.transform);
         _panelStatus = Instantiate(ObjectManager.Instance.PopupStatusPanel, _canvasPopupUI.transform);
         _panelInventory = Instantiate(ObjectManager.Instance.PopupInventoryPanel, _canvasPopupUI.transform);
         _panelSkillInventory = Instantiate(ObjectManager.Instance.PopupSkillInventory, _canvasPopupUI.transform);
@@ -76,6 +80,7 @@ public class PopupUIManager : Singleton<PopupUIManager>, IEventSubscriber, IDeac
         UIManager.Instance.UI_Main.OnStartButtonClicked += ActivateJourneyInfo;
         FieldManager.Instance.OnStageChanged += ActivateStageText;
         FieldManager.Instance.DungeonController.OnDungeonEnter += DeactivateJourneyInfo;
+        FieldManager.Instance.DungeonController.OnDungeonEnter += DeactivateMerchantAppear;
         FieldManager.Instance.DungeonController.OnDungeonEnter += ActivateStageInfo;
         FieldManager.Instance.DungeonController.OnDungeonEnter += ActivateBuffText;
         FieldManager.Instance.DungeonController.OnSpawnNamedMonster += DeactivateStageInfo;
@@ -85,13 +90,16 @@ public class PopupUIManager : Singleton<PopupUIManager>, IEventSubscriber, IDeac
         FieldManager.Instance.DungeonController.OnDungeonExit += DeactivateStageInfo;
         FieldManager.Instance.DungeonController.OnDungeonExit += DeactivateBuffText;
         FieldManager.Instance.DungeonController.OnDungeonExit += ActivateJourneyInfo;
+        FieldManager.Instance.OnMerchantAppeared += ActivateMerchantDialogue;
+        PlayerManager.Instance.Player.OnAutoMerchantAppear += ActivateMerchantAppear;
 
         _popupPanel.GetComponent<PopupUI_Panel>().OnPopupPanelClicked += DeactivatePopup;
         _panelStatus.GetComponent<PopupUI_Status>().OnExitButtonClicked += DeactivatePopup;
         _panelInventory.GetComponent<PopupUI_Inventory>().OnExitButtonClicked += DeactivatePopup;
         _panelSkillInventory.GetComponent<PopupUI_SkillInventory>().OnExitButtonClicked += DeactivatePopup;
         _panelMerchant.GetComponent<PopupUI_Merchant>().OnExitButtonClicked += DeactivatePopup;
-        _panelGacha.GetComponent<PopupUI_RandomSummon>().OnExitButtonClicked += DeactivatePopup;    
+        _panelGacha.GetComponent<PopupUI_RandomSummon>().OnExitButtonClicked += DeactivatePopup;
+        _popupMerchantAppear.GetComponentInChildren<Button>().onClick.AddListener(ActivateMerchantPanel);
     }
     #endregion
 
@@ -119,6 +127,8 @@ public class PopupUIManager : Singleton<PopupUIManager>, IEventSubscriber, IDeac
         _popupBuffText.SetActive(false);
         _popupDungeonAppear.SetActive(false);
         _popupDungeonClearText.SetActive(false);
+        _popupMerchantAppear.SetActive(false);
+        _popupMerchantDialogue.SetActive(false);
         _panelStatus.SetActive(false);
         _panelInventory.SetActive(false);
         _panelSkillInventory.SetActive(false);
@@ -166,6 +176,10 @@ public class PopupUIManager : Singleton<PopupUIManager>, IEventSubscriber, IDeac
     public void ActivateMerchantPanel()
     {
         DeactivatePopup();
+        if (_popupMerchantAppear.activeSelf)
+        {
+            
+        }
         ActivatePopupPanel();
         _activePopup = _panelMerchant;
         _panelMerchant.SetActive(true);
@@ -228,16 +242,17 @@ public class PopupUIManager : Singleton<PopupUIManager>, IEventSubscriber, IDeac
 
     public void ActivateBuffText()
     {
-        if(FieldManager.Instance.FailedCount != 0 &&_popupBuffText != null)
+        if (FieldManager.Instance.FailedCount != 0 && _popupBuffText != null)
         {
-            _popupBuffText.SetActive(true);         
+            _popupBuffText.SetActive(true);
         }
     }
 
     public void ActivateDungeonAppear()
     {
         _popupDungeonAppear.SetActive(true);
-        foreach(var effect in _popupDungeonAppear.GetComponentsInChildren<UIEffectsManager>())
+        AudioManager.PlayWarning?.Invoke(true);
+        foreach (var effect in _popupDungeonAppear.GetComponentsInChildren<UIEffectsManager>())
         {
             StartCoroutine(effect.PerformEffect(0));
         }
@@ -248,6 +263,16 @@ public class PopupUIManager : Singleton<PopupUIManager>, IEventSubscriber, IDeac
     {
         _popupDungeonClearText.GetComponent<PopupUI_DungeonClearText>().IsClear = isClear;
         _popupDungeonClearText.SetActive(true);
+    }
+
+    public void ActivateMerchantAppear()
+    {
+        _popupMerchantAppear.SetActive(true);
+    }
+
+    public void ActivateMerchantDialogue()
+    {
+        _popupMerchantDialogue.SetActive(true);
     }
 
     public void ActivateGachaPanel()
@@ -294,7 +319,7 @@ public class PopupUIManager : Singleton<PopupUIManager>, IEventSubscriber, IDeac
         _popupPanel.SetActive(false);
         _activePopup = null;
     }
-    
+
     public void DeactivateToolTipPanel()
     {
         _toolTipPanel.SetActive(false);
@@ -319,12 +344,18 @@ public class PopupUIManager : Singleton<PopupUIManager>, IEventSubscriber, IDeac
     {
         yield return time;
         go.SetActive(false);
+        AudioManager.PlayWarning?.Invoke(false);
     }
 
     public void DeactivateBuffText()
     {
         SetOriginBuffTextPos();
         _popupBuffText.SetActive(false);
+    }
+
+    public void DeactivateMerchantAppear()
+    {
+        _popupMerchantAppear.SetActive(false);
     }
     #endregion
 
