@@ -56,7 +56,8 @@ public class Define : MonoBehaviour
     public const string RewardTextPath = "UI/Text/TreasureText/Text - Reward";
     public const string PlayerVitalCanvasPath = "UI/PlayerVital/UI_Vital";
     public const string PlayerVitalPath = "UI/PlayerVital/PlayerVital";
-    public const string ItemSlotPath = "UI/PopupUI/IconSlotResources";
+    public const string ItemSlotPath = "UI/PopupUI/IconSlotResources/ItemSlot";
+    public const string MerchantSlotPath = "UI/PopupUI/IconSlotResources/MerchantItemSlot/MerchantItemSlot";
 
     public const string UIMainPath = "UI/MainUI/UI_Main";
     public const string UIGamePath = "UI/MainUI/UI_Game";
@@ -163,7 +164,7 @@ public class Define : MonoBehaviour
         Bronze,
         Silver,
         Gold,
-        Master
+        Master,
     }
 
     public enum JourneyType

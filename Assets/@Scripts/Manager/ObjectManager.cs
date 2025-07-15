@@ -55,6 +55,7 @@ public class ObjectManager : Singleton<ObjectManager>
     private GameObject _popupItemInfoPanel;
     private GameObject _popupMerchantAppear;
     private GameObject _popupMerchantDialogue;
+    private GameObject _merchantItemSlot;
 
     private GameObject _systemTextResource;
     private GameObject _rewardTextResource;
@@ -486,6 +487,16 @@ public class ObjectManager : Singleton<ObjectManager>
             return _popupMerchantDialogue;
         }
     }
+
+    public GameObject MerchantItemSlot
+    {
+        get
+        {
+            if (NullCheck(_merchantItemSlot))
+                return null;
+            return _merchantItemSlot;
+        }
+    }
     
     public GameObject TreasureBoxOpenEffectResource
     {
@@ -580,6 +591,7 @@ public class ObjectManager : Singleton<ObjectManager>
         CutSceneResourceLoad();
         CameraResourceLoad();
         ItemSlotResourceLoad();
+        MerchantItemSlotResourceLoad();
     }
 
     // * 플레이어 리소스 로드 메서드
@@ -698,6 +710,11 @@ public class ObjectManager : Singleton<ObjectManager>
         {
             Resources.LoadAll<GameObject>(Define.ItemSlotPath).ToList(_itemSlotList);
         }
+    }
+
+    private void MerchantItemSlotResourceLoad()
+    {
+        _merchantItemSlot = Resources.Load<GameObject>(Define.MerchantSlotPath);
     }
 
     private void EnvironmentResourceLoad()

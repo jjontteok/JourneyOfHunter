@@ -465,7 +465,7 @@ MonoBehaviour:
     m_HighlightedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
     m_PressedColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 1}
     m_SelectedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
-    m_DisabledColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 0.5019608}
+    m_DisabledColor: {r: 0.31132078, g: 0.3027066, b: 0.29516736, a: 1}
     m_ColorMultiplier: 1
     m_FadeDuration: 0.1
   m_SpriteState:
@@ -479,7 +479,7 @@ MonoBehaviour:
     m_PressedTrigger: Pressed
     m_SelectedTrigger: Selected
     m_DisabledTrigger: Disabled
-  m_Interactable: 1
+  m_Interactable: 0
   m_TargetGraphic: {fileID: 2755664465066211190}
   m_OnClick:
     m_PersistentCalls:
@@ -581,6 +581,7 @@ MonoBehaviour:
   _statusNameText: {fileID: 952712120338918019}
   _currentStatusText: {fileID: 870921545383497414}
   _upgradeCostText: {fileID: 3192476421072358861}
+  _statusType: 1
 --- !u!1 &989457006260057926
 GameObject:
   m_ObjectHideFlags: 0
@@ -1794,7 +1795,7 @@ MonoBehaviour:
     m_HighlightedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
     m_PressedColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 1}
     m_SelectedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
-    m_DisabledColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 0.5019608}
+    m_DisabledColor: {r: 0.31132078, g: 0.3027066, b: 0.29516736, a: 1}
     m_ColorMultiplier: 1
     m_FadeDuration: 0.1
   m_SpriteState:
@@ -1808,7 +1809,7 @@ MonoBehaviour:
     m_PressedTrigger: Pressed
     m_SelectedTrigger: Selected
     m_DisabledTrigger: Disabled
-  m_Interactable: 1
+  m_Interactable: 0
   m_TargetGraphic: {fileID: 7059725292369616019}
   m_OnClick:
     m_PersistentCalls:
@@ -2913,6 +2914,7 @@ MonoBehaviour:
   _statusNameText: {fileID: 9061109497436191116}
   _currentStatusText: {fileID: 1729090501066195812}
   _upgradeCostText: {fileID: 5067441671715529706}
+  _statusType: 3
 --- !u!1 &5830467077502830059
 GameObject:
   m_ObjectHideFlags: 0
@@ -4045,7 +4047,7 @@ MonoBehaviour:
     m_HighlightedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
     m_PressedColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 1}
     m_SelectedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
-    m_DisabledColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 0.5019608}
+    m_DisabledColor: {r: 0.31132078, g: 0.3027066, b: 0.29516736, a: 1}
     m_ColorMultiplier: 1
     m_FadeDuration: 0.1
   m_SpriteState:
@@ -4059,7 +4061,7 @@ MonoBehaviour:
     m_PressedTrigger: Pressed
     m_SelectedTrigger: Selected
     m_DisabledTrigger: Disabled
-  m_Interactable: 1
+  m_Interactable: 0
   m_TargetGraphic: {fileID: 8998005394985026169}
   m_OnClick:
     m_PersistentCalls:
@@ -4243,7 +4245,7 @@ MonoBehaviour:
     m_HighlightedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
     m_PressedColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 1}
     m_SelectedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
-    m_DisabledColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 0.5019608}
+    m_DisabledColor: {r: 0.31132078, g: 0.3027066, b: 0.29516736, a: 1}
     m_ColorMultiplier: 1
     m_FadeDuration: 0.1
   m_SpriteState:
@@ -4257,7 +4259,7 @@ MonoBehaviour:
     m_PressedTrigger: Pressed
     m_SelectedTrigger: Selected
     m_DisabledTrigger: Disabled
-  m_Interactable: 1
+  m_Interactable: 0
   m_TargetGraphic: {fileID: 6002921368657561729}
   m_OnClick:
     m_PersistentCalls:
@@ -4359,6 +4361,7 @@ MonoBehaviour:
   _statusNameText: {fileID: 7638969208409301209}
   _currentStatusText: {fileID: 2972562658459547815}
   _upgradeCostText: {fileID: 3866464385375032139}
+  _statusType: 0
 --- !u!1 &7152313289665112913
 GameObject:
   m_ObjectHideFlags: 0
@@ -5107,6 +5110,7 @@ MonoBehaviour:
   _statusNameText: {fileID: 6961753637850647617}
   _currentStatusText: {fileID: 5761527558071201993}
   _upgradeCostText: {fileID: 7273597122182937386}
+  _statusType: 4
 --- !u!1 &8751028214111527100
 GameObject:
   m_ObjectHideFlags: 0

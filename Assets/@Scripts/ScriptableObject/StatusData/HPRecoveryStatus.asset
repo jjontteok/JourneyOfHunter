@@ -12,8 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2d6e6af76e2c69c4998a6772577ffa7d, type: 3}
   m_Name: HPRecoveryStatus
   m_EditorClassIdentifier: 
-  statusType: 2
+  statusType: 4
   level: 1
   statusName: "\uCCB4\uB825 \uD68C\uBCF5"
   currentStatusCount: 1
-  upgradeCost: 10
+  upgradeCost: 15

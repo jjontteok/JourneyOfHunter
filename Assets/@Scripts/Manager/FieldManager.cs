@@ -147,9 +147,8 @@ public class FieldManager : Singleton<FieldManager>, IEventSubscriber, IDeactiva
         else
         {
             int rnd = UnityEngine.Random.Range(0, 100);
-            //rnd = 80;
-            //if (rnd < 90)
-            if (rnd < 75)
+            rnd = 90;
+            if (rnd < 90)
             {
                 //80% 확률로 기타 오브젝트 등장
                 //if (rnd < 80)

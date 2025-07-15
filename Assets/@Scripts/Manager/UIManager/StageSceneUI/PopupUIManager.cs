@@ -85,11 +85,11 @@ public class PopupUIManager : Singleton<PopupUIManager>, IEventSubscriber, IDeac
         FieldManager.Instance.DungeonController.OnDungeonEnter += ActivateBuffText;
         FieldManager.Instance.DungeonController.OnSpawnNamedMonster += DeactivateStageInfo;
         FieldManager.Instance.DungeonController.OnSpawnNamedMonster += DeactivateBuffText;
-        //FieldManager.Instance.DungeonController.OnSpawnNamedMonster += ActivateNamedMonsterInfo;
         FieldManager.Instance.DungeonController.OnDungeonExit += DeactivateNamedMonsterInfo;
         FieldManager.Instance.DungeonController.OnDungeonExit += DeactivateStageInfo;
         FieldManager.Instance.DungeonController.OnDungeonExit += DeactivateBuffText;
         FieldManager.Instance.DungeonController.OnDungeonExit += ActivateJourneyInfo;
+        FieldManager.Instance.DungeonController.OnDungeonClear += DeactivateNamedMonsterInfo;
         FieldManager.Instance.OnMerchantAppeared += ActivateMerchantDialogue;
         PlayerManager.Instance.Player.OnAutoMerchantAppear += ActivateMerchantAppear;
 

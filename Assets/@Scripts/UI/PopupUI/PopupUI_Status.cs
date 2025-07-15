@@ -24,12 +24,13 @@ public class PopupUI_Status : MonoBehaviour
 
     private void OnEnable()
     {
-        //_inventoryData.OnValueChanged += UpdateStatusUI;
+        _inventoryData.OnValueChanged += UpdateStatusUI;
+        _silverCoinText.text = _inventoryData.Goods[Define.GoodsType.SilverCoin].ToString();
     }
 
     private void OnDisable()
     {
-        //_inventoryData.OnValueChanged -= UpdateStatusUI;
+        _inventoryData.OnValueChanged -= UpdateStatusUI;
     }
 
     void Initialize() {

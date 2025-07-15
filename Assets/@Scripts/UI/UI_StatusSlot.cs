@@ -1,11 +1,13 @@
 using extension;
 using System;
+using System.Data;
 using TMPro;
 using Unity.VisualScripting;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
+using static Define;
 
 public class UI_StatusSlot : MonoBehaviour
 {
@@ -15,6 +17,7 @@ public class UI_StatusSlot : MonoBehaviour
     [SerializeField] TMP_Text _statusNameText;
     [SerializeField] TMP_Text _currentStatusText;
     [SerializeField] TMP_Text _upgradeCostText;
+    [SerializeField] Define.StatusType _statusType;
 
     EventTrigger _eventTrigger;
     PlayerData _playerData;
@@ -39,7 +42,8 @@ public class UI_StatusSlot : MonoBehaviour
         {
             if (!_isSilverCoinLack)
             {
-                _isButtonDown = true; UpgradeStatus();
+                _isButtonDown = true;
+                UpgradeStatus();
             }
         });
 
@@ -51,17 +55,46 @@ public class UI_StatusSlot : MonoBehaviour
         _eventTrigger.triggers.Add(entryPointerUp);
     }
 
+    private void OnEnable()
+    {
+        SetStatus();
+    }
+
+
     public void Initialize(PlayerData playerData, Inventory inventoryData)
     {
         _playerData = playerData;
         _inventoryData = inventoryData;
+    }
 
+    void SetStatus()
+    {
         _upgradeCostText.text = _statusSlotData.upgradeCost.ToString();
-        _currentStatusText.text = _statusSlotData.currentStatusCount.ToString();
+        float status=0;
+        //일단 구현해
+        switch (_statusType)
+        {
+            case Define.StatusType.Atk:
+                status = _playerData.Atk; break;
+            case Define.StatusType.Def:
+                status = _playerData.Def; break;
+            case Define.StatusType.HP:
+                status = _playerData.HP; break;
+            case Define.StatusType.HPRecoveryPerSec:
+                status = _playerData.HPRecoveryPerSec; break;
+
+        }
+        _currentStatusText.text = status.ToString();
     }
 
 
     private void Update()
+    {
+        UpgradeButton();
+        CheckUpgradeButton();
+    }
+
+    void UpgradeButton()
     {
         if (_isButtonDown)
         {
@@ -78,44 +111,47 @@ public class UI_StatusSlot : MonoBehaviour
             _delay = 0.3f;
     }
 
+    void CheckUpgradeButton()
+    {
+        upgradeButton.interactable =
+            _statusSlotData.upgradeCost > _inventoryData.Goods[Define.GoodsType.SilverCoin] ?
+            false : true;
+        _isSilverCoinLack = upgradeButton.interactable ? false : true;
+    }
+
+
     //스탯 업그레이드
     //근데 업글 비용과 스탯 수?를 정해야 한다
     public void UpgradeStatus()
     {
-        //if (_inventoryData.ModifyGoods(Define.GoodsType.SilverCoin, -_statusSlotData.upgradeCost))
-        //{
-        //    _statusSlotData.level++;
-        //    _statusSlotData.upgradeCost += 10 * _statusSlotData.level;
-        //    _statusSlotData.currentStatusCount += 5 + _statusSlotData.level;
+        _inventoryData.UseGoods(Define.GoodsType.SilverCoin, _statusSlotData.upgradeCost);
+        _statusSlotData.level++;
+        _statusSlotData.upgradeCost += 10 * _statusSlotData.level;
 
-        //    _upgradeCostText.text = _statusSlotData.upgradeCost.ToString();
-        //    _currentStatusText.text = _statusSlotData.currentStatusCount.ToString();
+        _statusSlotData.currentStatusCount = (int)ApplyUpgrade(_statusSlotData.statusType, 5);
+        _upgradeCostText.text = _statusSlotData.upgradeCost.ToString();
+        _currentStatusText.text = _statusSlotData.currentStatusCount.ToString();
 
-        //    ApplyUpgrade(_statusSlotData.statusType, _statusSlotData.currentStatusCount);
-        //    _isSilverCoinLack = false;
-        //}
-        //else
-        //{
-        //    _isSilverCoinLack = true;
-        //}
     }
 
-    void ApplyUpgrade(Define.StatusType type, int amount)
+    float ApplyUpgrade(Define.StatusType type, int amount)
     {
+        float finalValue = 0;
         switch (type)
         {
             case Define.StatusType.Atk:
-                _playerData.Atk = amount;
+                _playerData.Atk += amount; finalValue = _playerData.Atk;
                 break;
             case Define.StatusType.HP:
-                _playerData.HP = amount;
+                _playerData.HP += amount*2; finalValue = _playerData.HP;
                 break;
             case Define.StatusType.HPRecoveryPerSec:
-                _playerData.HPRecoveryPerSec = amount;
+                _playerData.HPRecoveryPerSec += amount/5; finalValue = _playerData.HPRecoveryPerSec;
                 break;
             case Define.StatusType.Def:
-                _playerData.Def = amount;
+                _playerData.Def += amount; finalValue = _playerData.Def;
                 break;
         }
+        return finalValue;
     }
 }

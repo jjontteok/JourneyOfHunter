@@ -31,9 +31,10 @@ public class Inventory
     }
 
     public event Action<Dictionary<Define.ItemType, List<ItemData>>> OnInventorySet;
-    //public event Action<Define.GoodsType> OnValueChanged;
+    public event Action<Define.GoodsType> OnValueChanged;
     public event Action<Define.ItemType, Define.PendingTaskType, int> OnItemAdd;
     public event Action<Define.ItemType, Define.PendingTaskType, int> OnItemRemove;
+
 
     // 생성자
     public Inventory(PlayerInventoryData so)
@@ -132,15 +133,10 @@ public class Inventory
         ApplyChangesToSO(PlayerManager.Instance.Player.PlayerInventoryData);
     }
 
-    public int UseGoods(Define.GoodsType type, int amount)
+    public void UseGoods(Define.GoodsType type, int amount)
     {
-        if (_goods[type] < amount)
-            return 0;
-        else
-        {
-            _goods[type] -= amount;
-            ApplyChangesToSO(PlayerManager.Instance.Player.PlayerInventoryData);
-            return amount;
-        }
+        _goods[type] -= amount;
+        ApplyChangesToSO(PlayerManager.Instance.Player.PlayerInventoryData);
+        OnValueChanged?.Invoke(type);
     }
 }
