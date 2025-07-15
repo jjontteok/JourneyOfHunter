@@ -695,5 +695,13 @@ public class PlayerController : MonoBehaviour, IDamageable
         _runtimeData.CoolTimeDecrease -= itemStatus.CoolTimeDecrease;
         _runtimeData.Speed -= itemStatus.Speed;
     }
+
+    public void ApplyUpgradeStatus(PlayerData playerData)
+    {
+        _runtimeData.Atk = playerData.Atk;
+        _runtimeData.Def = playerData.Def;
+        _runtimeData.HP = playerData.HP;
+        _runtimeData.HPRecoveryPerSec = playerData.HPRecoveryPerSec;
+    }
     #endregion
 }

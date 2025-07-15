@@ -65,12 +65,12 @@ public abstract class MonsterController : MonoBehaviour, IDamageable
 
     protected virtual void OnEnable()
     {
-        _runtimeData = new MonsterStatus(_monsterData);
         FieldManager.Instance.OnUpgradeMonsterStatus += UpgradeStatus;
     }
 
     void OnDisable()
     {
+        _runtimeData = new MonsterStatus(_monsterData);
         _runtimeData.CurrentHP = _runtimeData.MaxHP;
     }
 
@@ -164,11 +164,9 @@ public abstract class MonsterController : MonoBehaviour, IDamageable
         Instantiate(_monsterData.SpawnEffect);
     }
 
-    void UpgradeStatus(int stage)
+    protected virtual void UpgradeStatus(int stage)
     {
-        _runtimeData.Atk *= 2;
-        _runtimeData.Def *= 2;
-        _runtimeData.MaxHP *= 2;
+       
     }
 
     // * 플레이어 충돌 및 공격 중일 시 데미지 계산
