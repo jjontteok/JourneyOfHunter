@@ -55,7 +55,7 @@ public class SkillSystem : MonoBehaviour
 
         // 오브젝트매니저가 보유 중인 스킬 프리팹들을 플레이어의 스킬리스트에 넣기
         Dictionary<string, GameObject> skillList = ObjectManager.Instance.PlayerSkillResourceList;
-        SkillData[] skillDatas = _player.PlayerData.CurrentSkillData;
+        List<SkillData> skillDatas = _player.PlayerData.CurrentSkillData;
         foreach (var skillData in skillDatas)
         {
             Skill skill = skillList[skillData.name].GetComponent<Skill>();
@@ -96,6 +96,7 @@ public class SkillSystem : MonoBehaviour
         }
     }
 
+    // 기본 공격 가능한지 여부 판단
     bool IsBasicAttackPossible()
     {
         // skill interval이거나
@@ -103,6 +104,7 @@ public class SkillSystem : MonoBehaviour
         return SkillManager.Instance.IsSkillInterval || _activeSkillSlotList.All(slot => !slot || !slot.IsActivatePossible);
     }
 
+    // 플레이어가 소유한 스킬데이터 기반으로 스킬슬롯 생성 및 스킬 장착
     public void SetSkillSlotList()
     {
         // 플레이어가 현재 보유 중인 스킬 중에서 열린 슬롯 개수만큼 가져와야함
@@ -115,6 +117,7 @@ public class SkillSystem : MonoBehaviour
         }
     }
 
+    // 실질적으로 스킬 슬롯 생성하는 메서드
     public void AddSkill(SkillData data)
     {
         if (data == null)
@@ -241,31 +244,19 @@ public class SkillSystem : MonoBehaviour
 
     }
 
-    //public float GetShortestSkillDistance()
-    //{
-    //    float min = -1;
-    //    foreach (var slot in _activeSkillSlotList)
-    //    {
-    //        if (slot != null)
-    //        {
-    //            if (min < 0)
-    //            {
-    //                min = slot.SkillData.TargetDistance;
-    //            }
-    //            else
-    //            {
-    //                min = Mathf.Min(min, slot.SkillData.TargetDistance);
-    //            }
-    //        }
-    //    }
-    //    if (min < 0)
-    //    {
-    //        min = BasicSkillSlot.SkillData.TargetDistance;
-    //    }
-
-    //    OnShortestSkillDistanceChanged?.Invoke(min);
-    //    return min;
-    //}
+    public void UpgradeSkill(SkillData data)
+    {
+        // 현재 레벨, 다음 레벨까지 필요한 스킬 개수
+        int upgradeCost = data.Level * 2 - 1;
+        if (data.Count < upgradeCost)
+        {
+            Debug.Log("강화를 위한 스킬 개수가 부족합니다!!!");
+            return;
+        }
+        data.Count -= upgradeCost;
+        data.Level++;
+        data.Damage++;
+    }
 
     void StartSkillInterval(float cool = default)
     {
@@ -325,8 +316,18 @@ public class SkillSystem : MonoBehaviour
         if (skill == null)
         {
             skill = ObjectManager.Instance.PlayerSkillResourceList[skillData.name].GetComponent<Skill>();
-            skill.SkillData.Count = count;
+            // ex) 3개 획득 시, 하나는 해금용이고 쌓이는 개수는 2개
+            skill.SkillData.Count = count - 1;
+            if (skill.SkillData.Level > 1)
+            {
+                // 강화된 만큼의 대미지 빼주기
+                skill.SkillData.Damage -= skill.SkillData.Level - 1;
+                // 레벨은 1부터 시작
+                skill.SkillData.Level = 1;
+            }
+
             _skillList.Add(skill);
+            _player.PlayerData.CurrentSkillData.Add(skill.SkillData);
         }
         else
         {

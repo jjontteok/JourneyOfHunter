@@ -34,7 +34,6 @@ public class Util
             float current = Vector3.Distance(origin, go.transform.position);
             if (go.GetComponent<Animator>().GetBool(Define.Open) || current > distance)
             {
-                Debug.Log("Current Distance: " + current);
                 return null;
             }
             return go;
@@ -181,28 +180,28 @@ public class Util
             case Define.TimeOfDayType.Morning:
                 if (data.SkillAttribute == Define.SkillAttribute.Water || data.SkillAttribute == Define.SkillAttribute.Light)
                 {
-                    reduction = -20;
+                    reduction = 20;
                 }
                 break;
 
             case Define.TimeOfDayType.Noon:
                 if (data.SkillAttribute == Define.SkillAttribute.Fire || data.SkillAttribute == Define.SkillAttribute.Light)
                 {
-                    reduction = -20;
+                    reduction = 20;
                 }
                 break;
 
             case Define.TimeOfDayType.Evening:
                 if (data.SkillAttribute == Define.SkillAttribute.Fire || data.SkillAttribute == Define.SkillAttribute.Dark)
                 {
-                    reduction = -20;
+                    reduction = 20;
                 }
                 break;
 
             case Define.TimeOfDayType.Night:
                 if (data.SkillAttribute == Define.SkillAttribute.Water || data.SkillAttribute == Define.SkillAttribute.Dark)
                 {
-                    reduction = -20;
+                    reduction = 20;
                 }
                 break;
 

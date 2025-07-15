@@ -60,6 +60,7 @@ public class PlayerManager : Singleton<PlayerManager>, IEventSubscriber
                     FieldManager.Instance.StageController.IsSpawnNamedMonster = true;
                 }
             }
+            Debug.Log($"Current AutoMoving: {_isAutoMoving}, Current IsClear: {FieldManager.Instance.IsClear}");
         }
     }
 

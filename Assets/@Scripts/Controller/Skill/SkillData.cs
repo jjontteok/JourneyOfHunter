@@ -23,4 +23,5 @@ public class SkillData : Data
 
     public bool IsUltimate;
     public string SkillAnimationName;
+    public int Level;
 }

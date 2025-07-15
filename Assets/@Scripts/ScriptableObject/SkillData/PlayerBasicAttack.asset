@@ -15,7 +15,7 @@ MonoBehaviour:
   Name: PlayerBasicAttack
   Description: 
   IconImage: {fileID: 0}
-  count: 0
+  count: 1
   CoolTime: 0.75
   DurationTime: 0.4
   TargetDistance: 3
@@ -33,3 +33,4 @@ MonoBehaviour:
   BuffAmount: 0
   IsUltimate: 0
   SkillAnimationName: 
+  Level: 1

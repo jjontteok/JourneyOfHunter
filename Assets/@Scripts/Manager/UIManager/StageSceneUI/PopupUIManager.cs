@@ -294,10 +294,6 @@ public class PopupUIManager : Singleton<PopupUIManager>, IEventSubscriber, IDeac
     #region Deactivate UI
     void DeactivatePopup()
     {
-        if (_activePopup == _panelMerchant)
-        {
-            PlayerManager.Instance.IsAutoMoving = true;
-        }
         _activePopup.SetActive(false);
         _popupPanel.SetActive(false);
         _activePopup = null;

@@ -36,13 +36,22 @@ public class PopupUI_Merchant : MonoBehaviour
     private void OnEnable()
     {
         SetItemList();
+        // 상인 구매창 뜨면 가만히 서있도록
+        PlayerManager.Instance.IsAutoMoving = false;
+        FieldManager.Instance.IsClear = true;
     }
 
-    void SetItemList() { 
+    void SetItemList()
+    {
     }
 
     void OnExitButtonClick()
     {
         OnExitButtonClicked?.Invoke();
+    }
+
+    private void OnDisable()
+    {
+        PlayerManager.Instance.IsAutoMoving = true;
     }
 }

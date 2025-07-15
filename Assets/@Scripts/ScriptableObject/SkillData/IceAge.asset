@@ -34,3 +34,4 @@ MonoBehaviour:
   BuffAmount: 0
   IsUltimate: 1
   SkillAnimationName: IceAge
+  Level: 1
