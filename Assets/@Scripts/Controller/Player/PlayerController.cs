@@ -36,6 +36,7 @@ public class PlayerController : MonoBehaviour, IDamageable
 {
     Animator _animator;
     Rigidbody _rigidbody;
+    AudioSource _footstepSound;
     [SerializeField] Transform _target;
 
     public Action<float, float> OnHPValueChanged;
@@ -173,6 +174,7 @@ public class PlayerController : MonoBehaviour, IDamageable
         _hp = _playerData.HP;
         _animator = GetComponent<Animator>();
         _rigidbody = GetComponent<Rigidbody>();
+        _footstepSound = GetComponent<AudioSource>();
         _runtimeData = new PlayerStatus(_playerData);
         _playerData.JourneyRankData =
             ObjectManager.Instance.JourneyRankResourceList[_playerData.JourneyRankData.Index.ToString()];
@@ -207,6 +209,7 @@ public class PlayerController : MonoBehaviour, IDamageable
         {
             _rigidbody.linearVelocity = new Vector3(0, _rigidbody.linearVelocity.y, 0);
             _animator.SetFloat(Define.Speed, 0);
+            _footstepSound.Stop();
             return;
         }
         //던전에 들어가지 않았을 때 플레이어의 위치를 이동시킴
@@ -232,6 +235,7 @@ public class PlayerController : MonoBehaviour, IDamageable
                 SetTarget();
                 if (_target == null)
                 {
+                    _footstepSound.Play();
                     MoveAlongRoad();
                 }
             }
@@ -242,6 +246,7 @@ public class PlayerController : MonoBehaviour, IDamageable
                     SetTarget();
                     if (_target == null)
                     {
+                        _footstepSound.Play();
                         MoveAlongRoad();
                     }
                 }
@@ -257,6 +262,7 @@ public class PlayerController : MonoBehaviour, IDamageable
                         //{
                         //    PlayerManager.Instance.IsAutoMoving = true;
                         //}
+                        _footstepSound.Play();
                         MoveToTarget(_shortestSkillDistance);
                     }
                     else
@@ -265,6 +271,7 @@ public class PlayerController : MonoBehaviour, IDamageable
                         //{
                         //    PlayerManager.Instance.IsAutoMoving = true;
                         //}
+                        _footstepSound.Play();
                         MoveToTarget(0.5f);
                     }
                 }
@@ -275,6 +282,8 @@ public class PlayerController : MonoBehaviour, IDamageable
         {
             if (!_animator.GetBool(Define.IsAttacking) && _direction != Vector3.zero)
             {
+                Debug.Log("리워드 사운드 " + _footstepSound.isPlaying);
+                _footstepSound.Play();
                 _rigidbody.MovePosition(_rigidbody.position + _direction.normalized * _playerData.Speed * 1 * Time.fixedDeltaTime);
 
                 _animator.SetFloat(Define.Speed, _direction.magnitude);
@@ -282,6 +291,7 @@ public class PlayerController : MonoBehaviour, IDamageable
             }
             else
             {
+                _footstepSound.Stop();
                 _rigidbody.linearVelocity = new Vector3(0, _rigidbody.linearVelocity.y, 0);
                 _animator.SetFloat(Define.Speed, 0);
             }
