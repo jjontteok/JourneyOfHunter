@@ -12,10 +12,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e807fb188ff3a544ba349f772e49f4cc, type: 3}
   m_Name: QuickSnowSlash
   m_EditorClassIdentifier: 
-  SkillName: "\uBC1C\uB3C4\uC220: \uBC31\uC57C"
-  SkillDescription: "\uD50C\uB808\uC774\uC5B4\uAC00 \uBC14\uB77C\uBCF4\uB294 \uBC29\uD5A5\uC73C\uB85C
+  Name: "\uBC1C\uB3C4\uC220:\uBC31\uC57C"
+  Description: "\uD50C\uB808\uC774\uC5B4\uAC00 \uBC14\uB77C\uBCF4\uB294 \uBC29\uD5A5\uC73C\uB85C
     \uADFC\uAC70\uB9AC \uACF5\uACA9\uC744 \uD569\uB2C8\uB2E4."
-  SkillIcon: {fileID: 21300000, guid: b2199029c8a0ad0499a0c73a889dbefd, type: 3}
+  IconImage: {fileID: 21300000, guid: b2199029c8a0ad0499a0c73a889dbefd, type: 3}
+  count: 0
   CoolTime: 3
   DurationTime: 0.3
   TargetDistance: 6

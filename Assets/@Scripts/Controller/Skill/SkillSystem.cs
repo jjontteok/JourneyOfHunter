@@ -7,6 +7,7 @@ using UnityEngine;
 //플레이어에 부착할 스크립트
 public class SkillSystem : MonoBehaviour
 {
+    [SerializeField]
     //플레이어가 보유 중인 스킬 리소스들을 담은 리스트
     List<Skill> _skillList = new List<Skill>();
 
@@ -24,6 +25,7 @@ public class SkillSystem : MonoBehaviour
     Animator _animator;
 
     public Action<float> OnShortestSkillDistanceChanged;
+    public event Action<SkillData> OnSkillSummon;
 
     public List<Skill> SkillList { get { return _skillList; } }
 
@@ -56,7 +58,12 @@ public class SkillSystem : MonoBehaviour
         SkillData[] skillDatas = _player.PlayerData.CurrentSkillData;
         foreach (var skillData in skillDatas)
         {
-            _skillList.Add(skillList[skillData.name].GetComponent<Skill>());
+            Skill skill = skillList[skillData.name].GetComponent<Skill>();
+            if (skill.SkillData.Count <= 0)
+            {
+                skill.SkillData.Count = 1;
+            }
+            _skillList.Add(skill);
         }
     }
 
@@ -142,7 +149,7 @@ public class SkillSystem : MonoBehaviour
         SkillSlot skillSlot = _activeSkillSlotList.Find((slot) => slot.SkillData == data);
         if (skillSlot != null)
         {
-            Debug.Log($"Skill named {data.SkillName} already exists!!!");
+            Debug.Log($"Skill named {data.Name} already exists!!!");
             return;
         }
 
@@ -215,7 +222,7 @@ public class SkillSystem : MonoBehaviour
         {
             if (_ultimateSkillSlot == null || _ultimateSkillSlot.SkillData != data)
             {
-                Debug.Log($"Your ultimate skill is not {data.SkillName}");
+                Debug.Log($"Your ultimate skill is not {data.Name}");
                 return;
             }
             _ultimateSkillSlot.DestroySkillSlot();
@@ -225,7 +232,7 @@ public class SkillSystem : MonoBehaviour
             SkillSlot slot = _activeSkillSlotList.Find((slot) => slot.SkillData == data);
             if (slot == null)
             {
-                Debug.Log("Cannot Find Skill with Name " + data.SkillName);
+                Debug.Log("Cannot Find Skill with Name " + data.Name);
                 return;
             }
             slot.DestroySkillSlot();
@@ -234,31 +241,31 @@ public class SkillSystem : MonoBehaviour
 
     }
 
-    public float GetShortestSkillDistance()
-    {
-        float min = -1;
-        foreach (var slot in _activeSkillSlotList)
-        {
-            if (slot != null)
-            {
-                if (min < 0)
-                {
-                    min = slot.SkillData.TargetDistance;
-                }
-                else
-                {
-                    min = Mathf.Min(min, slot.SkillData.TargetDistance);
-                }
-            }
-        }
-        if (min < 0)
-        {
-            min = BasicSkillSlot.SkillData.TargetDistance;
-        }
+    //public float GetShortestSkillDistance()
+    //{
+    //    float min = -1;
+    //    foreach (var slot in _activeSkillSlotList)
+    //    {
+    //        if (slot != null)
+    //        {
+    //            if (min < 0)
+    //            {
+    //                min = slot.SkillData.TargetDistance;
+    //            }
+    //            else
+    //            {
+    //                min = Mathf.Min(min, slot.SkillData.TargetDistance);
+    //            }
+    //        }
+    //    }
+    //    if (min < 0)
+    //    {
+    //        min = BasicSkillSlot.SkillData.TargetDistance;
+    //    }
 
-        OnShortestSkillDistanceChanged?.Invoke(min);
-        return min;
-    }
+    //    OnShortestSkillDistanceChanged?.Invoke(min);
+    //    return min;
+    //}
 
     void StartSkillInterval(float cool = default)
     {
@@ -277,10 +284,14 @@ public class SkillSystem : MonoBehaviour
     {
         foreach (var slot in _activeSkillSlotList)
         {
-            if (slot.Skill != null && slot.Skill.gameObject.activeSelf)
+            if (slot != null && slot.Skill.gameObject.activeSelf)
             {
                 slot.Skill.transform.Translate(Vector3.back * Define.TeleportDistance);
             }
+        }
+        if (_ultimateSkillSlot != null && _ultimateSkillSlot.Skill.gameObject.activeSelf)
+        {
+            _ultimateSkillSlot.Skill.transform.Translate(Vector3.back * Define.TeleportDistance);
         }
     }
 
@@ -306,5 +317,29 @@ public class SkillSystem : MonoBehaviour
         SkillManager.Instance.LockIconSlots(_skillSlotCount - 1);
         SkillManager.Instance.UpdateEnhancedAttribute(EnvironmentManager.Instance.CurrentType);
         _skillSlotCount--;
+    }
+
+    public void AddSkillItem(SkillData skillData, int count)
+    {
+        Skill skill = _skillList.Find(skill => skill.SkillData.Name == skillData.Name);
+        if (skill == null)
+        {
+            skill = ObjectManager.Instance.PlayerSkillResourceList[skillData.name].GetComponent<Skill>();
+            skill.SkillData.Count = count;
+            _skillList.Add(skill);
+        }
+        else
+        {
+            skill.SkillData.Count += count;
+        }
+        OnSkillSummon?.Invoke(skill.SkillData);
+    }
+
+    public void AddSkillItem(Dictionary<Data, int> skillDatas)
+    {
+        foreach (var skillData in skillDatas)
+        {
+            AddSkillItem(skillData.Key as SkillData, skillData.Value);
+        }
     }
 }

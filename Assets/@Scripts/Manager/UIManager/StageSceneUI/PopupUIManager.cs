@@ -31,7 +31,7 @@ public class PopupUIManager : Singleton<PopupUIManager>, IEventSubscriber, IDeac
     private GameObject _activePopup;
 
     WaitForSeconds _oneFiveSecondsTime = new WaitForSeconds(1.5f);
-    WaitForSeconds _twoSecondsTime= new WaitForSeconds(2f);
+    WaitForSeconds _twoSecondsTime = new WaitForSeconds(2f);
 
     bool _isDownBuffTextPos = false;
 
@@ -230,16 +230,17 @@ public class PopupUIManager : Singleton<PopupUIManager>, IEventSubscriber, IDeac
 
     public void ActivateBuffText()
     {
-        if(FieldManager.Instance.FailedCount != 0 &&_popupBuffText != null)
+        if (FieldManager.Instance.FailedCount != 0 && _popupBuffText != null)
         {
-            _popupBuffText.SetActive(true);         
+            _popupBuffText.SetActive(true);
         }
     }
 
     public void ActivateDungeonAppear()
     {
         _popupDungeonAppear.SetActive(true);
-        foreach(var effect in _popupDungeonAppear.GetComponentsInChildren<UIEffectsManager>())
+        AudioManager.PlayWarning?.Invoke(true);
+        foreach (var effect in _popupDungeonAppear.GetComponentsInChildren<UIEffectsManager>())
         {
             StartCoroutine(effect.PerformEffect(0));
         }
@@ -293,11 +294,15 @@ public class PopupUIManager : Singleton<PopupUIManager>, IEventSubscriber, IDeac
     #region Deactivate UI
     void DeactivatePopup()
     {
+        if (_activePopup == _panelMerchant)
+        {
+            PlayerManager.Instance.IsAutoMoving = true;
+        }
         _activePopup.SetActive(false);
         _popupPanel.SetActive(false);
         _activePopup = null;
     }
-    
+
     public void DeactivateToolTipPanel()
     {
         _toolTipPanel.SetActive(false);
@@ -322,6 +327,7 @@ public class PopupUIManager : Singleton<PopupUIManager>, IEventSubscriber, IDeac
     {
         yield return time;
         go.SetActive(false);
+        AudioManager.PlayWarning?.Invoke(false);
     }
 
     public void DeactivateBuffText()

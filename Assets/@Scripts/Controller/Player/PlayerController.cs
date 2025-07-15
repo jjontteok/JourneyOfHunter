@@ -1,5 +1,6 @@
 using System;
 using System.Collections;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public struct PlayerStatus
@@ -38,6 +39,7 @@ public class PlayerController : MonoBehaviour, IDamageable
     Rigidbody _rigidbody;
     AudioSource _footstepSound;
     [SerializeField] Transform _target;
+    float _targetDistance;
 
     public Action<float, float> OnHPValueChanged;
     public Action<float, float> OnMPValueChanged;
@@ -107,6 +109,11 @@ public class PlayerController : MonoBehaviour, IDamageable
     {
         get { return _target; }
         set { _target = value; }
+    }
+
+    public AudioSource AudioSource
+    {
+        get { return _footstepSound; }
     }
 
     // 데이터는 getter만 되도록?
@@ -209,7 +216,7 @@ public class PlayerController : MonoBehaviour, IDamageable
         {
             _rigidbody.linearVelocity = new Vector3(0, _rigidbody.linearVelocity.y, 0);
             _animator.SetFloat(Define.Speed, 0);
-            _footstepSound.Stop();
+            //_footstepSound.Stop();
             return;
         }
         //던전에 들어가지 않았을 때 플레이어의 위치를 이동시킴
@@ -229,53 +236,71 @@ public class PlayerController : MonoBehaviour, IDamageable
         // 자동 모드일 때
         if (!_isSwifting && PlayerManager.Instance.IsAuto && !_animator.GetBool(Define.IsAttacking))
         {
-            // 타겟 생기면 IsAutoMoving=false
             if (PlayerManager.Instance.IsAutoMoving)
             {
-                SetTarget();
-                if (_target == null)
-                {
-                    _footstepSound.Play();
-                    MoveAlongRoad();
-                }
+                MoveAlongRoad();
             }
             else
             {
-                if (_target == null)
+                // IsAutoMoving == false && IsClear == true ==> 정지해 있기
+                if (FieldManager.Instance.IsClear)
                 {
-                    SetTarget();
-                    if (_target == null)
-                    {
-                        _footstepSound.Play();
-                        MoveAlongRoad();
-                    }
+                    StandStill();
                 }
+                // IsAutoMoving == false && IsClear == false ==> 타겟을 향해 움직이기
                 else
                 {
-                    if (_target == null || !_target.gameObject.activeSelf)
+                    if (_target == null)
                     {
                         SetTarget();
                     }
-                    if (((_target != null && !_target.CompareTag(Define.PortalTag)) && FieldManager.Instance.CurrentEventType == Define.JourneyType.Dungeon) || FieldManager.Instance.CurrentEventType == Define.JourneyType.TreasureBox)
-                    {
-                        //if (!MoveToTarget(_shortestSkillDistance))
-                        //{
-                        //    PlayerManager.Instance.IsAutoMoving = true;
-                        //}
-                        _footstepSound.Play();
-                        MoveToTarget(_shortestSkillDistance);
-                    }
-                    else
-                    {
-                        //if (!MoveToTarget(0.5f))
-                        //{
-                        //    PlayerManager.Instance.IsAutoMoving = true;
-                        //}
-                        _footstepSound.Play();
-                        MoveToTarget(0.5f);
-                    }
+                    MoveToTarget();
                 }
             }
+
+            // 타겟 생기면 IsAutoMoving=false
+            //if (PlayerManager.Instance.IsAutoMoving)
+            //{
+            //    // 필드 클리어한 상태면 길따라
+            //    if(FieldManager.Instance.IsClear)
+            //    {
+            //        MoveAlongRoad();
+            //    }
+            //    else
+            //    {
+            //        SetTarget();
+            //        if (_target == null)
+            //        {
+            //            MoveAlongRoad();
+            //        }
+            //    }
+            //}
+            //else
+            //{
+            //    if (_target == null)
+            //    {
+            //        SetTarget();
+            //        if (_target == null)
+            //        {
+            //            MoveAlongRoad();
+            //        }
+            //    }
+            //    else
+            //    {
+            //        if (_target == null || !_target.gameObject.activeSelf)
+            //        {
+            //            SetTarget();
+            //        }
+            //        if (((_target != null && !_target.CompareTag(Define.PortalTag)) && FieldManager.Instance.CurrentEventType == Define.JourneyType.Dungeon) || FieldManager.Instance.CurrentEventType == Define.JourneyType.TreasureBox)
+            //        {
+            //            MoveToTarget(_shortestSkillDistance);
+            //        }
+            //        else
+            //        {
+            //            MoveToTarget(0.5f);
+            //        }
+            //    }
+            //}
         }
         // 수동 모드일 때
         else
@@ -283,7 +308,6 @@ public class PlayerController : MonoBehaviour, IDamageable
             if (!_animator.GetBool(Define.IsAttacking) && _direction != Vector3.zero)
             {
                 Debug.Log("리워드 사운드 " + _footstepSound.isPlaying);
-                _footstepSound.Play();
                 _rigidbody.MovePosition(_rigidbody.position + _direction.normalized * _playerData.Speed * 1 * Time.fixedDeltaTime);
 
                 _animator.SetFloat(Define.Speed, _direction.magnitude);
@@ -291,46 +315,61 @@ public class PlayerController : MonoBehaviour, IDamageable
             }
             else
             {
-                _footstepSound.Stop();
-                _rigidbody.linearVelocity = new Vector3(0, _rigidbody.linearVelocity.y, 0);
-                _animator.SetFloat(Define.Speed, 0);
+                StandStill();
             }
         }
         ClampPosition();
     }
 
     // target과의 거리가 distance 이하가 될 때까지 움직임
-    bool MoveToTarget(float distance)
+    bool MoveToTarget()
     {
         if (_target == null)
+        {
+            // 타겟 없으면 일단 앞으로 전진
+            MoveAlongRoad();
             return true;
+        }
 
+        //float distance;
+        //// 몬스터 타겟이거나, 보물상자 타겟일 경우
+        //if (_target.CompareTag(Define.MonsterTag) || FieldManager.Instance.CurrentEventType == Define.JourneyType.TreasureBox)
+        //{
+        //    distance=_shortestSkillDistance;
+        //}
+        //// 포탈, 오브젝트 등 접촉해야 하는 경우엔 거리를 짧게 설정
+        //else
+        //{
+        //    distance=0.5f;
+        //}
         //타겟과 거리가 distance 이하로 되면 정지
         Vector3 targetPos = _target.position;
         targetPos.y = 0;
         Vector3 playerPos = transform.position;
         playerPos.y = 0;
-        float tmp = Vector3.Distance(targetPos, playerPos);
-        //Debug.Log($"Current distance to target: {tmp}");
-        if (tmp <= distance)
+        float currentDistance = Vector3.Distance(targetPos, playerPos);
+        if (currentDistance <= _targetDistance)
         {
-            _direction = Vector3.zero;
-            _rigidbody.linearVelocity = new Vector3(0, _rigidbody.linearVelocity.y, 0);
+            //_direction = Vector3.zero;
+            //_rigidbody.linearVelocity = new Vector3(0, _rigidbody.linearVelocity.y, 0);
 
-            _animator.SetFloat(Define.Speed, 0);
+            //_animator.SetFloat(Define.Speed, 0);
+            StandStill();
             return false;
         }
         else
         {
-            if (PlayerManager.Instance.IsAutoMoving && Mathf.Abs(_rigidbody.position.x) > 0.1f)
-            {
-                _direction = new Vector3(_target.position.x - transform.position.x, 0, 1);
-            }
-            else
-            {
-                _direction = _target.position - transform.position;
-                _direction.y = 0;
-            }
+            //if (PlayerManager.Instance.IsAutoMoving && Mathf.Abs(_rigidbody.position.x) > 0.1f)
+            //{
+            //    _direction = new Vector3(_target.position.x - transform.position.x, 0, 1);
+            //}
+            //else
+            //{
+            //    _direction = _target.position - transform.position;
+            //    _direction.y = 0;
+            //}
+            _direction = _target.position - transform.position;
+            _direction.y = 0;
             // 공격 모션 중이지 않을 때 이동
             if (!_animator.GetBool(Define.IsAttacking))
             {
@@ -356,10 +395,17 @@ public class PlayerController : MonoBehaviour, IDamageable
         {
             _direction = Vector3.forward;
         }
-        _rigidbody.MovePosition(_rigidbody.position + _direction.normalized * _playerData.Speed * Time.fixedDeltaTime);
+        _rigidbody.MovePosition(_rigidbody.position + _direction * _playerData.Speed * Time.fixedDeltaTime);
         _animator.SetFloat(Define.Speed, _direction.magnitude);
         //타겟 바라보게 회전
         transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(_direction), _playerData.Speed * Time.deltaTime);
+    }
+
+    // 가만히 서있기
+    void StandStill()
+    {
+        _rigidbody.linearVelocity = new Vector3(0, _rigidbody.linearVelocity.y, 0);
+        _animator.SetFloat(Define.Speed, 0);
     }
 
     void ClampPosition()
@@ -368,14 +414,6 @@ public class PlayerController : MonoBehaviour, IDamageable
         newPos.x = Mathf.Clamp(newPos.x, -23, 23);
         newPos.z = Mathf.Clamp(newPos.z, -100, 300);
         _rigidbody.position = newPos;
-    }
-
-    public void Attack()
-    {
-        if (!_animator.GetBool(Define.IsAttacking) && Input.GetMouseButtonDown(0))
-        {
-            _animator.SetTrigger(Define.Attack);
-        }
     }
 
     public void Rotate(Vector3 direction)
@@ -431,25 +469,27 @@ public class PlayerController : MonoBehaviour, IDamageable
             // 없으면 
             if (_target == null || !_target.gameObject.activeSelf)
             {
-
                 //쵸비상 몬스터 풀 어케 가져옴
                 //stage info에서 현재 스테이지의 몬스터 정보를 받아와서 이름으로
                 _target = Util.GetNearestTarget(transform.position, 100f)?.transform;
                 if (_target == null)
                 {
-                    Debug.Log("No target on field!!!");
-                    PlayerManager.Instance.IsAutoMoving = true;
+                    Debug.Log("No monster on field!!!");
+                    //PlayerManager.Instance.IsAutoMoving = true;
                     _target = FindAnyObjectByType<DungeonPortalController>()?.transform;
+                    // 포탈 타겟 있으면
                     if (_target != null)
                     {
                         PlayerManager.Instance.IsAutoMoving = false;
                     }
                 }
+                // 장거리 몬스터 타겟 있으면
                 else
                 {
                     PlayerManager.Instance.IsAutoMoving = false;
                 }
             }
+            // 근거리 몬스터 타겟 있으면
             else
             {
                 PlayerManager.Instance.IsAutoMoving = false;
@@ -460,30 +500,54 @@ public class PlayerController : MonoBehaviour, IDamageable
         {
             _target = GameObject.FindGameObjectWithTag(Define.FieldObjectTag)?.transform;
 
-            if (_target != null)
+            // 상인이면 그냥 지나가기
+            if (FieldManager.Instance.CurrentEventType == Define.JourneyType.Merchant)
             {
-                if (FieldManager.Instance.CurrentEventType == Define.JourneyType.TreasureBox)
-                {
-                    if (_target.GetComponent<Animator>().GetBool(Define.Open))
-                    {
-                        PlayerManager.Instance.IsAutoMoving = true;
-                        _target = null;
-                    }
-                    else
-                    {
-                        PlayerManager.Instance.IsAutoMoving = false;
-                    }
-                }
-                else if (FieldManager.Instance.CurrentEventType == Define.JourneyType.Merchant)
-                {
-                    PlayerManager.Instance.IsAutoMoving = true;
-                    OnAutoMerchantAppear?.Invoke();
-                }
-                else if (FieldManager.Instance.CurrentEventType == Define.JourneyType.OtherObject)
-                {
-                    // TBD
-                }
+                PlayerManager.Instance.IsAutoMoving = true;
+                OnAutoMerchantAppear?.Invoke();
             }
+            else
+            {
+                PlayerManager.Instance.IsAutoMoving = false;
+            }
+            //if (_target != null)
+            //{
+            //    if (FieldManager.Instance.CurrentEventType == Define.JourneyType.TreasureBox)
+            //    {
+            //        if (_target.GetComponent<Animator>().GetBool(Define.Open))
+            //        {
+            //            PlayerManager.Instance.IsAutoMoving = true;
+            //            _target = null;
+            //        }
+            //        else
+            //        {
+            //            PlayerManager.Instance.IsAutoMoving = false;
+            //        }
+            //    }
+            //    //
+            //    else if (FieldManager.Instance.CurrentEventType == Define.JourneyType.Merchant)
+            //    {
+            //        PlayerManager.Instance.IsAutoMoving = true;
+            //    }
+            //    else if (FieldManager.Instance.CurrentEventType == Define.JourneyType.OtherObject)
+            //    {
+            //        PlayerManager.Instance.IsAutoMoving = false;
+            //    }
+            //}
+        }
+
+        if (_target == null)
+            return;
+
+        // 몬스터 타겟이거나, 보물상자 타겟일 경우
+        if (_target.CompareTag(Define.MonsterTag) || FieldManager.Instance.CurrentEventType == Define.JourneyType.TreasureBox)
+        {
+            _targetDistance = _shortestSkillDistance;
+        }
+        // 포탈, 오브젝트 등 접촉해야 하는 경우엔 거리를 짧게 설정
+        else
+        {
+            _targetDistance = 0.5f;
         }
     }
 
@@ -500,7 +564,7 @@ public class PlayerController : MonoBehaviour, IDamageable
 
     public void SetShortestSkillDistance(float distance)
     {
-        _shortestSkillDistance = distance;
+        _shortestSkillDistance = distance - 0.5f;
     }
 
     void SetPlayerCollision(bool flag)
@@ -567,8 +631,8 @@ public class PlayerController : MonoBehaviour, IDamageable
     {
         HP = _playerData.HP;
         _animator.SetInteger(Define.DieType, 0);
+        PlayerManager.Instance.IsAutoMoving = true;
     }
-
     #endregion
 
 

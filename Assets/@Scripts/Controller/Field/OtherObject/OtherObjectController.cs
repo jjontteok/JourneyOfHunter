@@ -1,6 +1,7 @@
+using System.Collections;
 using UnityEngine;
 
-public class OtherObjectController : MonoBehaviour
+public class OtherObjectController : MonoBehaviour, IDelayAutoMoving
 {
     bool _isObtained;
     AudioSource _audioSource;
@@ -20,6 +21,12 @@ public class OtherObjectController : MonoBehaviour
         _isObtained = false;
     }
 
+    public IEnumerator CoSetAutoMoving()
+    {
+        yield return new WaitForSeconds(1f);
+        PlayerManager.Instance.IsAutoMoving = true;
+    }
+
     private void OnCollisionEnter(Collision collision)
     {
         if (collision.collider.CompareTag(Define.PlayerTag))
@@ -29,7 +36,9 @@ public class OtherObjectController : MonoBehaviour
                 _isObtained = true;
                 _audioSource.Stop();
                 FieldManager.Instance.RewardSystem.GainReward(transform.position + Vector3.up);
-                PlayerManager.Instance.IsAutoMoving = true;
+                FieldManager.Instance.IsClear = true;
+                // 1초간 정지
+                StartCoroutine(CoSetAutoMoving());
             }
         }
     }

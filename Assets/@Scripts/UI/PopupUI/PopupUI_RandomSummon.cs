@@ -46,8 +46,8 @@ public class PopupUI_RandomSummon : MonoBehaviour
 
         _drawOneTimeEquipmentItemButton.onClick.AddListener(OnClick_DrawEquipment_One);
         _drawTenTimeEquipmentItemButton.onClick.AddListener(OnClick_DrawEquipment_Ten);
-        //_drawOneTimeSkillButton.onClick.AddListener(OnClick_DrawSkill_One);
-        //_drawTenTimeSkillButton.onClick.AddListener(OnClick_DrawSkill_Ten);
+        _drawOneTimeSkillButton.onClick.AddListener(OnClick_DrawSkill_One);
+        _drawTenTimeSkillButton.onClick.AddListener(OnClick_DrawSkill_Ten);
 
         _randomSummonService = new RandomSummonService(_randomItems, _randomSkillItems);
     }
@@ -77,20 +77,21 @@ public class PopupUI_RandomSummon : MonoBehaviour
     public void OnClickDrawButton(int drawCount, Define.DrawItemType drawItemType)
     {
         _resultPanel.SetActive(true);
-        List<ItemData> items;
+        Dictionary<Data, int> items;
+        items = _randomSummonService.Draw(drawCount, drawItemType);
 
         switch (drawItemType)
         {
             case Define.DrawItemType.Equipment:
-                items = _randomSummonService.Draw(drawCount, drawItemType);
                 PlayerManager.Instance.Player.Inventory.AddItem(items);
-                SetResultPanel(items);
                 break;
             case Define.DrawItemType.Skill:
+                PlayerManager.Instance.SkillSystem.AddSkillItem(items);
                 break;
             default:
                 break;
         }
+        SetResultPanel(items);
     }
 
     public void OnClick_DrawEquipment_One() => OnClickDrawButton(1, Define.DrawItemType.Equipment);
@@ -98,9 +99,52 @@ public class PopupUI_RandomSummon : MonoBehaviour
     public void OnClick_DrawSkill_One() => OnClickDrawButton(1, Define.DrawItemType.Skill);
     public void OnClick_DrawSkill_Ten() => OnClickDrawButton(10, Define.DrawItemType.Skill);
 
-    private void SetResultPanel(List<ItemData> items)
+    private void SetResultPanel(Dictionary<Data, int> items)
     {
+        ClearSlots();
 
+        foreach (var item in items)
+        {
+            Debug.Log($"{item.Key.Name}: {item.Value}개 뽑음");
+        }
+        PlayerManager.Instance.Player.Inventory.ApplyChangesToSO(PlayerManager.Instance.Player.PlayerInventoryData);
+        foreach (var item in items)
+        {
+            if (item.Key is ItemData)
+            {
+                string slotName = ((ItemData)item.Key).Value switch
+                {
+                    Define.ItemValue.Common => "ItemSlot - Common",
+                    Define.ItemValue.Uncommon => "ItemSlot - Uncommon",
+                    Define.ItemValue.Rare => "ItemSlot - Rare",
+                    Define.ItemValue.Epic => "ItemSlot - Epic",
+                    Define.ItemValue.Legendary => "ItemSlot - Legendary",
+                    _ => "ItemSlot - Normal"
+                };
+                for (int i = 0; i < item.Value; i++)
+                {
+                    GameObject itemSlot = PoolManager.Instance.GetObjectFromPool<ItemSlot>(Vector3.zero, slotName, _resultPanelViewport);
+                    itemSlot.GetComponent<ItemSlot>().SetData(item.Key as ItemData);
+                }
+            }
+            else if (item.Key is SkillData)
+            {
+                for (int i = 0; i < item.Value; i++)
+                {
+                    GameObject skillSlot = PoolManager.Instance.GetObjectFromPool<SkillItemSlot>(Vector3.zero, "ItemSlot - Skill", _resultPanelViewport);
+                    skillSlot.GetComponent<SkillItemSlot>().UpdateSlot(item.Key as SkillData, true);
+                }
+            }
+
+        }
+    }
+    void ClearSlots()
+    {
+        for (int i = 0; i < _resultPanelViewport.childCount; i++)
+        {
+            GameObject slotObj = _resultPanelViewport.GetChild(i).gameObject;
+            slotObj.SetActive(false); // 또는 PoolManager로 반환
+        }
     }
 
     #region RandomSummonService
@@ -116,15 +160,22 @@ public class PopupUI_RandomSummon : MonoBehaviour
             _skillList = skillItemList;
         }
 
-        public List<ItemData> Draw(int count, Define.DrawItemType type)
+        public Dictionary<Data, int> Draw(int count, Define.DrawItemType type)
         {
-            var result = new List<ItemData>();
+            var result = new Dictionary<Data, int>();
             for (int i = 0; i < count; i++)
             {
-                var item = (type == Define.DrawItemType.Equipment)
+                Data item = (type == Define.DrawItemType.Equipment)
                     ? _itemList.GetRandomItem()
                     : _skillList.GetRandomSkillItem();
-                result.Add(item);
+                if (result.ContainsKey(item))
+                {
+                    result[item]++;
+                }
+                else
+                {
+                    result[item] = 1;
+                }
             }
             return result;
         }

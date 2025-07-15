@@ -160,6 +160,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: faad88a27561d0f44b2ac89e3a0edb31, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _skillList: []
 --- !u!114 &2137289205230158522
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -200,8 +201,8 @@ AudioSource:
   m_audioClip: {fileID: 8300000, guid: fb8c7b6eba1cb3a41b53bf855e7670c6, type: 3}
   m_Resource: {fileID: 8300000, guid: fb8c7b6eba1cb3a41b53bf855e7670c6, type: 3}
   m_PlayOnAwake: 0
-  m_Volume: 1
-  m_Pitch: 1
+  m_Volume: 0.3
+  m_Pitch: 2.5
   Loop: 1
   Mute: 0
   Spatialize: 0

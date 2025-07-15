@@ -246,6 +246,7 @@ public class Define : MonoBehaviour
     public const int MinUnlockedSkillSlotCount = 2;
     public const int MaxUnlockedSkillSlotCount = TotalSkillIconSlotNum - 1;
     public readonly static string[] SkillAttributes = { "", "불", "물", "빛", "암" };
+    public readonly static Vector2 SkillImagePosOffset = new Vector2(3f, -2.4f);
 
     public const string Morning = "MorningSkyBox";
     public const string Noon = "NoonSkyBox";
@@ -322,7 +323,7 @@ public class Define : MonoBehaviour
         { Evening, 90f },
         { Night, 90f }
     };
-#endregion
+    #endregion
 
     #region TreasureBoxColor
     public static Dictionary<Define.ItemValue, Color> EffectColorList = new()

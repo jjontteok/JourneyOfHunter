@@ -109,7 +109,7 @@ public class Inventory
 
     }
 
-    public void AddItem(ItemData item)
+    public void AddItem(ItemData item,int count)
     {
         if (!_items.ContainsKey(item.Type))
             _items[item.Type] = new List<ItemData>();
@@ -125,16 +125,19 @@ public class Inventory
             if (existItem == null)
                 _items[item.Type].Add(item);
             else
-                existItem.Count++;
+            {
+                //existItem.Count++;
+                existItem.Count += count;
+            }
         }
         OnItemAdd?.Invoke(item.Type);
     }
 
-    public void AddItem(List<ItemData> items)
+    public void AddItem(Dictionary<Data,int> items)
     {
-        foreach (ItemData item in items)
+        foreach (var item in items)
         {
-            AddItem(item);
+            AddItem(item.Key as ItemData, item.Value);
         }
     }
 

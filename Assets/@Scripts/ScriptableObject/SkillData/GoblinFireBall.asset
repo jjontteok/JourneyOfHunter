@@ -12,9 +12,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e807fb188ff3a544ba349f772e49f4cc, type: 3}
   m_Name: GoblinFireBall
   m_EditorClassIdentifier: 
-  SkillName: GoblinFireBall
-  SkillDescription: 
-  SkillIcon: {fileID: 0}
+  Name: GoblinFireBall
+  Description: 
+  IconImage: {fileID: 0}
+  count: 0
   CoolTime: 3
   DurationTime: 5
   TargetDistance: 1000

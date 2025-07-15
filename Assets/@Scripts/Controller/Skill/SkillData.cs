@@ -1,16 +1,14 @@
 using UnityEngine;
 
 [CreateAssetMenu(fileName = "SkillData", menuName = "Scriptable Objects/SkillData")]
-public class SkillData : ScriptableObject
+public class SkillData : Data
 {
-    public string SkillName;
-    public string SkillDescription;
-    public Sprite SkillIcon;
     public float CoolTime;
     public float DurationTime;
     public float TargetDistance;
     public float Damage;
     public float Speed;
+    [Tooltip("DirectionNonTarget 스킬의 각도")]
     public float Angle;                     //DirectionNonTarget 각도
     public GameObject ConnectedSkillPrefab;
     public GameObject HitEffectPrefab;

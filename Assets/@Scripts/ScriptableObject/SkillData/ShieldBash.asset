@@ -12,22 +12,25 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e807fb188ff3a544ba349f772e49f4cc, type: 3}
   m_Name: ShieldBash
   m_EditorClassIdentifier: 
-  SkillName: "\uBC29\uD328 \uBC00\uCE58\uAE30"
-  SkillDescription: "\uD50C\uB808\uC774\uC5B4 \uC8FC\uBCC0 \uC801\uB4E4\uC744 \uC0AC\uBC29\uC73C\uB85C
+  Name: "\uBC29\uD328 \uBC00\uCE58\uAE30"
+  Description: "\uD50C\uB808\uC774\uC5B4 \uC8FC\uBCC0 \uC801\uB4E4\uC73C \uC0AC\uBC29\uC73C\uB85C
     \uBC00\uC5B4\uB0C5\uB2C8\uB2E4."
-  SkillIcon: {fileID: 21300000, guid: 2555411e270654348afe48d2fb07fe2d, type: 3}
+  IconImage: {fileID: 0}
+  count: 0
   CoolTime: 4
   DurationTime: 0.2
   TargetDistance: 0
   Damage: 5
   Speed: 0
   Angle: 0
-  MP: 5
   ConnectedSkillPrefab: {fileID: 0}
   HitEffectPrefab: {fileID: 8460667080445658512, guid: e313f3097c7c5d044ab46111b7f775e2, type: 3}
   TargetExistence: 0
   IsPlayerSkill: 1
   IsPassive: 0
   Offset: {x: 0, y: 0, z: 0}
+  SkillAttribute: 0
   BuffStatus: 8
   BuffAmount: 0
+  IsUltimate: 0
+  SkillAnimationName: 
