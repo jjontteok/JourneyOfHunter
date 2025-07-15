@@ -12,8 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d659629e91875b340bb073fa107da346, type: 3}
   m_Name: PlayerInventoryData
   m_EditorClassIdentifier: 
-  SilverCoin: 2640
-  Gem: 220
+  SilverCoin: 9985
+  Gem: 260
   Items:
   - {fileID: 11400000, guid: 9f9bee8cca132c7468e4f1a70ccbca0a, type: 2}
   - {fileID: 11400000, guid: 9f9bee8cca132c7468e4f1a70ccbca0a, type: 2}
