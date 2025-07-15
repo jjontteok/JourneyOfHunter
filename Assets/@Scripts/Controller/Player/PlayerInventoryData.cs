@@ -68,7 +68,7 @@ public class Inventory
     }
 
     public event Action<Dictionary<Define.ItemType, List<ItemData>>> OnInventorySet;
-    //public event Action<Define.GoodsType> OnValueChanged;
+    public event Action<Define.GoodsType> OnValueChanged;
     public event Action<Define.ItemType> OnItemAdd;
     public event Action<Define.ItemType> OnItemRemove;
 
@@ -105,7 +105,6 @@ public class Inventory
     {
         so.SilverCoin = _goods[Define.GoodsType.SilverCoin];
         so.Gem = _goods[Define.GoodsType.Gem];
-
 
     }
 
@@ -153,5 +152,13 @@ public class Inventory
     public void AddGoods(Define.GoodsType type, int amount)
     {
         _goods[type] += amount;
+        ApplyChangesToSO(PlayerManager.Instance.Player.PlayerInventoryData);
+    }
+
+    public void UseGoods(Define.GoodsType type, int amount)
+    {
+        _goods[type] -= amount;
+        ApplyChangesToSO(PlayerManager.Instance.Player.PlayerInventoryData);
+        OnValueChanged?.Invoke(type);
     }
 }

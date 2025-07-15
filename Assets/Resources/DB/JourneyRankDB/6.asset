@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Index: 6
   RankType: 1
-  Name: "\uC740\uBA54\uB2EC3"
+  Name: "\uC2E4\uBC843"
   MinJourneyExp: 2000
   MaxJourneyExp: 5000
   TextColor: {r: 0.5294118, g: 0.5294118, b: 0.5294118, a: 1}
