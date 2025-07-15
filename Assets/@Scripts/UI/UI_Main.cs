@@ -32,6 +32,6 @@ public class UI_Main : MonoBehaviour
     {
         OnPlayerNameInputted?.Invoke(_inputeField.text);
         OnStartButtonClicked?.Invoke();
-        AudioManager.Instance.PlayClick();
+        AudioManager.Instance.PlayClickSound();
     }
 }

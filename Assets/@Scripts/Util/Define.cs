@@ -32,6 +32,9 @@ public class Define : MonoBehaviour
     public const string MonsterTag = "Monster";
     public const string FieldObjectTag = "FieldObject";
     public const string PortalTag = "Portal";
+    public const string BGM = "BGM";
+    public const string VFX = "VFX";
+    public const string Click = "Click";
     #endregion
 
     #region Path
@@ -81,7 +84,9 @@ public class Define : MonoBehaviour
     public const string PopupGachaPanelPath = "UI/PopupUI/RandomSummonPanel - Popup";
     public const string PopupItemInfoPanelPath = "UI/PopupUI/Panel - ItemInfo";
     public const string PopupMerchantAppearPanelPath = "UI/PopupUI/Panel - MerchantAppear";
-    
+    public const string PopupSettingPanelPath = "UI/PopupUI/Panel - Setting";
+
+
     public const string GoblinKingCutScenePath = "CutScene/GoblinCutScene";
     public const string StartCameraPath = "Camera/StartCamera";
     public const string FollowCameraPath = "Camera/FollowPlayerCamera";
@@ -89,6 +94,7 @@ public class Define : MonoBehaviour
 
     public const string JourneyRankPath = "DB/JourneyRankDB";
 
+    public const string MasterMixerPath = "Sound/MasterMixer";
     public const string BackgroundSoundPath = "Sound/BGM/BGM";
     public const string WarningSoundPath = "Sound/Warning";
     public const string ClickSoundPath = "Sound/Click";

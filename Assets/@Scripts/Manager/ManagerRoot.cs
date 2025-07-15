@@ -36,6 +36,8 @@ public class ManagerRoot : MonoBehaviour
 
         PoolManager.Instance.CreateManager();
 
+        AudioManager.Instance.CreateManager();
+
         PopupUIManager.Instance.CreateManager();
 
 
@@ -50,8 +52,6 @@ public class ManagerRoot : MonoBehaviour
         EnvironmentManager.Instance.CreateManager();
 
         CameraManager.Instance.CreateManager();
-
-        AudioManager.Instance.CreateManager();
     }
 
     // * 이벤트 구독 메서드

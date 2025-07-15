@@ -52,7 +52,7 @@ public class SkillDescriptionPanel : MonoBehaviour
         // 현재 스킬 슬롯에 이미 있는 스킬이면 경고문?
         // 현재 스킬 슬롯에 없는 스킬이면 장착
         OnEquipSkill?.Invoke(_skillData);
-        AudioManager.Instance.PlayClick();
+        AudioManager.Instance.PlayClickSound();
     }
 
     void OnReleaseButtonClick()
@@ -60,6 +60,6 @@ public class SkillDescriptionPanel : MonoBehaviour
         // 현재 스킬 슬롯에 있는 스킬이면 해제
         // 현재 스킬 슬롯에 없는 스킬이면 경고문?
         OnReleaseSkill?.Invoke(_skillData);
-        AudioManager.Instance.PlayClick();
+        AudioManager.Instance.PlayClickSound();
     }
 }

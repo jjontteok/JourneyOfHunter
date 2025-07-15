@@ -945,6 +945,7 @@ MonoBehaviour:
   _inventoryButton: {fileID: 3745565010407714904}
   _skillInventoryButton: {fileID: 1385875563291227863}
   _gachaButton: {fileID: 1139296657370517066}
+  _settingButton: {fileID: 3251804339783096372}
   _silverCoinText: {fileID: 7008672487138290105}
   _gemText: {fileID: 2694038106008095932}
   _autoToggle: {fileID: 7389231475503108680}

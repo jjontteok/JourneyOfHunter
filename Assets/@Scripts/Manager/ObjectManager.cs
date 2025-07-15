@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.Audio;
 using static extension.Extension;
 
 // * ObjectManager 스크립트
@@ -56,6 +57,7 @@ public class ObjectManager : Singleton<ObjectManager>
     private GameObject _popupMerchantAppear;
     private GameObject _popupMerchantDialogue;
     private GameObject _merchantItemSlot;
+    private GameObject _popupSettingPanel;
 
     private GameObject _systemTextResource;
     private GameObject _rewardTextResource;
@@ -72,6 +74,7 @@ public class ObjectManager : Singleton<ObjectManager>
     private AudioClip _backgroundSoundClip;
     private AudioClip _warningSoundClip;
     private AudioClip _clickSoundClip;
+    private AudioMixer _masterMixer;
 
     // * 프로퍼티
     #region Dictionary
@@ -470,9 +473,29 @@ public class ObjectManager : Singleton<ObjectManager>
         }
     }
 
+    public GameObject PopupSettingPanel
+    {
+        get
+        {
+            if (NullCheck(_popupSettingPanel))
+                return null;
+            return _popupSettingPanel;
+        }
+    }
+
     #endregion
 
     #region Sound
+    public AudioMixer MasterMixer
+    {
+        get
+        {
+            if (NullCheck(_masterMixer))
+                return null;
+            return _masterMixer;
+        }
+    }
+
     public AudioClip BackgroundSoundClip
     {
         get
@@ -790,6 +813,7 @@ public class ObjectManager : Singleton<ObjectManager>
         _popupItemInfoPanel = Resources.Load<GameObject>(Define.PopupItemInfoPanelPath);
         _popupMerchantAppear = Resources.Load<GameObject>(Define.PopupMerchantAppearPanelPath);
         _popupMerchantDialogue = Resources.Load<GameObject>(Define.PopupMerchantDialoguePanelPath);
+        _popupSettingPanel = Resources.Load<GameObject>(Define.PopupSettingPanelPath);
     }
 
     // * 컷신 리소스 로드 메서드
@@ -807,6 +831,7 @@ public class ObjectManager : Singleton<ObjectManager>
 
     private void SoundResourceLoad()
     {
+        _masterMixer = Resources.Load<AudioMixer>(Define.MasterMixerPath);
         _backgroundSoundClip = Resources.Load<AudioClip>(Define.BackgroundSoundPath);
         _warningSoundClip = Resources.Load<AudioClip>(Define.WarningSoundPath);
         _clickSoundClip = Resources.Load<AudioClip>(Define.ClickSoundPath);
