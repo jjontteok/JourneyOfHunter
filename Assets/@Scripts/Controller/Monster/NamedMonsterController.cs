@@ -56,12 +56,16 @@ public class NamedMonsterController : MonsterController
         CheckMoveToOrigin();
     }
 
-    protected override void UpgradeStatus(int stage)
+    protected override void UpgradeStatus(float amount)
     {
-        _runtimeData.Atk *= 2;
-        _runtimeData.Def *= 2;
-        _runtimeData.MaxHP *= 2;
-        _runtimeData.CurrentHP = _runtimeData.MaxHP;
+        _monsterData.Atk *= amount;
+        _monsterData.Def *= amount;
+        _monsterData.HP *= amount;
+
+        _runtimeData.Atk = _monsterData.Atk;
+        _runtimeData.Def = _monsterData.Def;
+        _runtimeData.CurrentHP = _monsterData.HP;
+        _runtimeData.MaxHP = _monsterData.HP;
     }
 
     void SetOriginPos()

@@ -47,7 +47,7 @@ public class FieldManager : Singleton<FieldManager>, IEventSubscriber, IDeactiva
     public event Action<int> OnStageChanged;
     public event Action<Define.JourneyType, Define.ItemValue> OnJourneyEvent;
     public event Action OnFailedDungeonClear;
-    public event Action<int> OnUpgradeMonsterStatus;
+    public event Action<float> OnUpgradeMonsterStatus;
     public event Action OnMerchantAppeared;
 
     StageController _stageController;
@@ -69,6 +69,11 @@ public class FieldManager : Singleton<FieldManager>, IEventSubscriber, IDeactiva
     public DungeonController DungeonController
     {
         get { return _dungeonController; }
+    }
+
+    public SpawnController SpawnController
+    {
+        get { return _spawnController; }
     }
 
     public int StageCount
@@ -133,7 +138,8 @@ public class FieldManager : Singleton<FieldManager>, IEventSubscriber, IDeactiva
 
         if (_stageCount % 10 == 0)
         {
-            OnUpgradeMonsterStatus?.Invoke(_stageCount / 10);
+            OnUpgradeMonsterStatus?.Invoke(2);
+            //노말 몬스터의 원본 데이터에 접근해서 *2 해주기 -> 실패 시 /2 해주기
         }
 
         Define.ItemValue rank = SetRank();
@@ -147,6 +153,7 @@ public class FieldManager : Singleton<FieldManager>, IEventSubscriber, IDeactiva
         else
         {
             int rnd = UnityEngine.Random.Range(0, 100);
+            rnd = 80;
             if (rnd < 90)
             {
                 //80% 확률로 기타 오브젝트 등장
@@ -206,6 +213,10 @@ public class FieldManager : Singleton<FieldManager>, IEventSubscriber, IDeactiva
     // * 던전을 깨지 못했을 떄 실행되는 함수
     public void FailedDungeonClear()
     {
+        if (_stageCount % 10 == 0)
+        {
+            OnUpgradeMonsterStatus?.Invoke(0.5f);
+        }
         DungeonClear(false);
         StageCount -= 5;
         _stageCount = StageCount;
