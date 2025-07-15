@@ -5,20 +5,28 @@ using UnityEngine.UI;
 
 // * 아이템 슬롯 클래스
 [RequireComponent(typeof(EventTrigger))]
-public class ItemSlot : MonoBehaviour, IPointerDownHandler, IPointerUpHandler, IPointerExitHandler
+public class ItemSlot : MonoBehaviour, IPointerDownHandler, IPointerUpHandler, IPointerExitHandler, IBeginDragHandler, IDragHandler, IEndDragHandler
 {
     public float longPressedTime = 0.5f;
 
     private Coroutine _longPressCoroutine;
     private Vector2 _toolTipOffSet = new Vector2(150, 100);
+    private bool _isInInventory = false;
 
     [SerializeField] Sprite _itemImage;
 
     ItemData _itemData;
 
-    // 아이템 슬롯 초기화 필수 메서드
-    public void SetData(ItemData itemData)
+    public ItemData ItemData
     {
+        get { return _itemData; }
+    }
+
+
+    // 아이템 슬롯 초기화 필수 메서드
+    public void SetData(ItemData itemData, bool isInInventory)
+    {
+        _isInInventory = isInInventory;
         _itemData = itemData;
         _itemImage = _itemData.IconImage;
         gameObject.transform.GetChild(0).GetComponent<Image>().sprite = _itemImage;
@@ -37,6 +45,10 @@ public class ItemSlot : MonoBehaviour, IPointerDownHandler, IPointerUpHandler, I
     public void OnPointerUp(PointerEventData eventData)
     {
         StopLongPress();
+        if(_isInInventory)
+        {
+            PopupUIManager.Instance.ActivateItemInfoPanel(this);
+        }
     }
 
     private IEnumerator CheckLongPress(Vector2 touchPos)
@@ -65,4 +77,27 @@ public class ItemSlot : MonoBehaviour, IPointerDownHandler, IPointerUpHandler, I
         }
         OffToolTip();
     }
+
+    #region ScrollRect
+    private ScrollRect _scrollRect;
+
+    public void OnBeginDrag(PointerEventData eventData)
+    {
+        _isInInventory = false;
+        _scrollRect = transform.parent.parent.parent.GetComponentInParent<ScrollRect>(true);
+        StopLongPress(); // 롱프레스 도중 드래그 시작하면 툴팁 끄기
+        _scrollRect?.OnBeginDrag(eventData);
+    }
+
+    public void OnDrag(PointerEventData eventData)
+    {
+        _scrollRect?.OnDrag(eventData);
+    }
+
+    public void OnEndDrag(PointerEventData eventData)
+    {
+        _scrollRect?.OnEndDrag(eventData);
+        _isInInventory = true;
+    }
+    #endregion
 }

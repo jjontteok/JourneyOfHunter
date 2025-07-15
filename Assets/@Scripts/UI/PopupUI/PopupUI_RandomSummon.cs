@@ -100,7 +100,31 @@ public class PopupUI_RandomSummon : MonoBehaviour
 
     private void SetResultPanel(List<ItemData> items)
     {
+        ClearSlots();
+        PlayerManager.Instance.Player.Inventory.ApplyChangesToSO(PlayerManager.Instance.Player.PlayerInventoryData);
+        foreach(ItemData item in items)
+        {
+            string slotName = item.Value switch
+            {
+                Define.ItemValue.Common => "ItemSlot - Common",
+                Define.ItemValue.Uncommon => "ItemSlot - Uncommon",
+                Define.ItemValue.Rare => "ItemSlot - Rare",
+                Define.ItemValue.Epic => "ItemSlot - Epic",
+                Define.ItemValue.Legendary => "ItemSlot - Legendary",
+                _ => "ItemSlot - Normal"
+            };
 
+            GameObject itemSlot = PoolManager.Instance.GetObjectFromPool<ItemSlot>(Vector3.zero, slotName, _resultPanelViewport);
+            itemSlot.GetComponent<ItemSlot>().SetData(item, false);
+        }
+    }
+    void ClearSlots()
+    {
+        for (int i = 0; i < _resultPanelViewport.childCount; i++)
+        {
+            GameObject slotObj = _resultPanelViewport.GetChild(i).gameObject;
+            slotObj.SetActive(false); // 또는 PoolManager로 반환
+        }
     }
 
     #region RandomSummonService

@@ -4260,6 +4260,11 @@ MonoBehaviour:
   _consumeItemButton: {fileID: 9030098202055923492}
   _otherItemButton: {fileID: 5019596277353503007}
   _exitButton: {fileID: 4826602352031025268}
+  _helmetEquipment: {fileID: 8640577923461240138}
+  _armorEquipment: {fileID: 7182837352084124932}
+  _glovesEquipment: {fileID: 3044247073316584870}
+  _shoesEquipment: {fileID: 4115619724497218878}
+  _weaponEquipment: {fileID: 6805651280348163749}
 --- !u!114 &4274310700215690649
 MonoBehaviour:
   m_ObjectHideFlags: 0

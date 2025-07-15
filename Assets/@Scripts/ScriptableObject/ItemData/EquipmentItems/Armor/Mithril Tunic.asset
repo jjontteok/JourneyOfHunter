@@ -10,20 +10,21 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 2a11eeb062f8b32458de83e3f3058dce, type: 3}
-  m_Name: "\uC911\uAE09 \uAE30\uC0AC\uC758 \uAC11\uC637"
+  m_Name: Mithril Tunic
   m_EditorClassIdentifier: 
-  Id: 1
-  Name: "\uC911\uAE09 \uAE30\uC0AC\uC758 \uAC11\uC637"
-  Description: "\uC911\uAE09 \uAE30\uC0AC\uC758 \uAC11\uC637\uC774\uB2E4."
-  IconImage: {fileID: 21300000, guid: c720139856ac0f44d894498956e1b55f, type: 3}
+  Id: 3
+  Name: "\uACE0\uB300\uC758 \uBBF8\uC2A4\uB9B4 \uD29C\uB2C9"
+  Description: "\uBBF8\uC2A4\uB9B4\uB85C \uC774\uB8E8\uC5B4\uC9C4 \uACE0\uB300\uC758
+    \uD29C\uB2C9\uC774\uB2E4."
+  IconImage: {fileID: 21300000, guid: b07164769129b7d47818470b1cea1909, type: 3}
   Type: 0
-  Value: 1
+  Value: 3
   EquipmentType: 1
   ItemStatus:
     Atk: 0
-    Def: 50
-    HP: 50
+    Def: 100
+    HP: 200
     HPRecoveryPerSec: 50
     MP: 0
     MPRecoveryPerSec: 0
-    CoolTimeDecrease: 0
+    CoolTimeDecrease: 50

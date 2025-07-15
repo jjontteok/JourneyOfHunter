@@ -16,6 +16,7 @@ public class SkillColliderController : MonoBehaviour
         _skillData = skillData;
         _status = status;
         _damage = skillData.Damage;
+        _damage += PlayerManager.Instance.Player.PlayerStatus.Atk;
         _hitEffect = skillData.HitEffectPrefab;
 
         if (skillData.ConnectedSkillPrefab != null)
@@ -49,6 +50,8 @@ public class SkillColliderController : MonoBehaviour
     // 트리거 충돌 시 메서드
     protected virtual void ProcessTrigger(Collider other)
     {
+        _damage = _skillData.Damage;
+        _damage += PlayerManager.Instance.Player.PlayerStatus.Atk;
         IDamageable damageable = other.GetComponent<IDamageable>();
         if (damageable != null)
         {

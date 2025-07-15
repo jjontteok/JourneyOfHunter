@@ -27,11 +27,12 @@ public class PopupUI_JourneyInfo : MonoBehaviour
 
     private void OnDisable()
     {
-        if(PlayerManager.Instance.Player != null)
+        if (PlayerManager.Instance.Player != null)
         {
             PlayerManager.Instance.Player.OnJourneyExpChanged -= UpdateJourneyExp;
         }
     }
+
     void Initialize()
     {
         _journeyRankData = PlayerManager.Instance.Player.PlayerData.JourneyRankData;

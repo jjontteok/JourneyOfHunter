@@ -77,6 +77,7 @@ public class Define : MonoBehaviour
     public const string PopupDungeonAppearPanelPath = "UI/PopupUI/Panel - DungeonAppear";
     public const string PopupDungeonClearPanelPath = "UI/PopupUI/Panel - DungeonClearText";
     public const string PopupGachaPanelPath = "UI/PopupUI/RandomSummonPanel - Popup";
+    public const string PopupItemInfoPanelPath = "UI/PopupUI/Panel - ItemInfo";
 
     public const string GoblinKingCutScenePath = "CutScene/GoblinCutScene";
     public const string StartCameraPath = "Camera/StartCamera";
@@ -126,7 +127,6 @@ public class Define : MonoBehaviour
     {
         Atk,
         Def,
-        Damage,
         HP,
         HPRecoveryPerSec,
         MP,
@@ -322,10 +322,10 @@ public class Define : MonoBehaviour
     };
 #endregion
 
-#region TreasureBoxColor
-public static Dictionary<Define.ItemValue, Color> EffectColorList = new()
+    #region TreasureBoxColor
+    public static Dictionary<Define.ItemValue, Color> EffectColorList = new()
     {
-        { Define.ItemValue.Common, new Color(0, 0, 0, 0) },
+        { Define.ItemValue.Common, new Color(1, 1, 1, 1) },
         { Define.ItemValue.Uncommon, new Color(0.2f, 1, 0, 1) },
         { Define.ItemValue.Rare, new Color(0, 0.35f, 1, 1) },
         { Define.ItemValue.Epic, new Color(0.5f, 0, 1, 1) },

@@ -35,7 +35,7 @@ public class RewardSystem
             else if(reward.Key == Define.RewardType.Gem)
             {
                 rewardName = "젬";
-                PlayerManager.Instance.Player.Inventory.AddGoods(Define.GoodsType.SilverCoin, reward.Value);
+                PlayerManager.Instance.Player.Inventory.AddGoods(Define.GoodsType.Gem, reward.Value);
             }
             TextManager.Instance.ActivateRewardText(pos, rewardName, reward.Value);
         }
@@ -123,8 +123,7 @@ public class FieldManager : Singleton<FieldManager>, IEventSubscriber, IDeactiva
         }
 
         //5의 배수마다 던전 두두둥장
-        //if (_stageCount % 5 == 0)
-        if(true)
+        if (_stageCount % 5 == 0)
         {
             rnd = (int)Define.JourneyType.Dungeon;
             _rewardSystem.SetReward(Define.RewardType.JourneyExp, 10 * _stageCount);
@@ -132,7 +131,6 @@ public class FieldManager : Singleton<FieldManager>, IEventSubscriber, IDeactiva
         else
         {
             rnd = UnityEngine.Random.Range(0, 100);
-            rnd = 80;
             if (rnd < 90)
             {
                 Define.ItemValue rank = SetRank();
