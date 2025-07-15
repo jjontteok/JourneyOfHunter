@@ -14,9 +14,8 @@ public class ItemStatus
     public float Def;                       //방어력
     public float HP;                        //체력
     public float HPRecoveryPerSec;          //체력회복
-    public float MP;                        //마나
-    public float MPRecoveryPerSec;          //마나회복
     public float CoolTimeDecrease;          //쿨타임 감소
+    public float Speed;                     //이동속도
 
     public void ApplyStatus(ref PlayerData playerStatus)
     {

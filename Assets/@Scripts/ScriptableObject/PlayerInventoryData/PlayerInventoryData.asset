@@ -12,11 +12,26 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d659629e91875b340bb073fa107da346, type: 3}
   m_Name: PlayerInventoryData
   m_EditorClassIdentifier: 
-  SilverCoin: 5
-  Gem: 20
+  SilverCoin: 2640
+  Gem: 220
   Items:
-  - {fileID: 11400000, guid: 5251f5be332561249964cee2f4d97fb0, type: 2}
-  - {fileID: 11400000, guid: 6b59a8f4dda163143a9ec1fa9c8088fc, type: 2}
+  - {fileID: 11400000, guid: 9f9bee8cca132c7468e4f1a70ccbca0a, type: 2}
+  - {fileID: 11400000, guid: 9f9bee8cca132c7468e4f1a70ccbca0a, type: 2}
+  - {fileID: 11400000, guid: 703561a53eb9e6f45b122f0aa93e6944, type: 2}
+  - {fileID: 11400000, guid: 9f9bee8cca132c7468e4f1a70ccbca0a, type: 2}
+  - {fileID: 11400000, guid: 6b6cac7b8bb2c08469cbc72b373b617b, type: 2}
   - {fileID: 11400000, guid: ee5a6f97d2fcc7e4fbf46cd4c23accc9, type: 2}
-  - {fileID: 11400000, guid: c734a6738d8530b4d9d5f7bafd3f8ac3, type: 2}
-  - {fileID: 11400000, guid: d9c4e06036e2c7b40acdd5abf5a04ef2, type: 2}
+  - {fileID: 11400000, guid: 3f03fbc2943b6504aa4a34a2ceac40d1, type: 2}
+  - {fileID: 11400000, guid: 9f9bee8cca132c7468e4f1a70ccbca0a, type: 2}
+  - {fileID: 11400000, guid: 9f9bee8cca132c7468e4f1a70ccbca0a, type: 2}
+  - {fileID: 11400000, guid: 6b6cac7b8bb2c08469cbc72b373b617b, type: 2}
+  - {fileID: 11400000, guid: 9f9bee8cca132c7468e4f1a70ccbca0a, type: 2}
+  - {fileID: 11400000, guid: 9f9bee8cca132c7468e4f1a70ccbca0a, type: 2}
+  - {fileID: 11400000, guid: 37c5e079ae6790542a78d41af25134d4, type: 2}
+  - {fileID: 11400000, guid: 703561a53eb9e6f45b122f0aa93e6944, type: 2}
+  - {fileID: 11400000, guid: 6b6cac7b8bb2c08469cbc72b373b617b, type: 2}
+  - {fileID: 11400000, guid: 5340719bc97ccfa4bbd811c650e0d9da, type: 2}
+  - {fileID: 11400000, guid: 9f9bee8cca132c7468e4f1a70ccbca0a, type: 2}
+  - {fileID: 11400000, guid: 9f9bee8cca132c7468e4f1a70ccbca0a, type: 2}
+  - {fileID: 11400000, guid: 672361af122b8f549acc93b1ef25057b, type: 2}
+  - {fileID: 11400000, guid: 9f9bee8cca132c7468e4f1a70ccbca0a, type: 2}

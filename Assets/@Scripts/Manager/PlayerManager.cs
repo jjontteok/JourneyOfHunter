@@ -1,10 +1,13 @@
 using extension;
+using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class PlayerManager : Singleton<PlayerManager>, IEventSubscriber
 {
     private PlayerController _player;
     private SkillSystem _skillSystem;
+    //private InventoryChangeQueue _inventoryChangeQueue;
 
     private bool _isGameStart = false;
     private bool _isAuto = false;
@@ -60,6 +63,7 @@ public class PlayerManager : Singleton<PlayerManager>, IEventSubscriber
                     FieldManager.Instance.StageController.IsSpawnNamedMonster = true;
                 }
             }
+            Debug.Log($"Current AutoMoving: {_isAutoMoving}, Current IsClear: {FieldManager.Instance.IsClear}");
         }
     }
 
@@ -84,6 +88,11 @@ public class PlayerManager : Singleton<PlayerManager>, IEventSubscriber
     {
         get { return _player; }
     }
+
+    //public InventoryChangeQueue InventoryChangeQueue
+    //{
+    //    get { return _inventoryChangeQueue; }
+    //}
     #endregion
 
     protected override void Initialize()
@@ -92,11 +101,69 @@ public class PlayerManager : Singleton<PlayerManager>, IEventSubscriber
         _player = Instantiate(ObjectManager.Instance.PlayerResource, _originPos, Quaternion.identity).GetComponent<PlayerController>();
         _skillSystem = _player.gameObject.GetOrAddComponent<SkillSystem>();
         _skillSystem.InitializeSkillSystem();
+        //_inventoryChangeQueue = new InventoryChangeQueue();
     }
 
     public void Subscribe()
     {
         UIManager.Instance.UI_Main.OnStartButtonClicked += () => _isGameStart = true;
+        //_player.Inventory.OnItemAdd += _inventoryChangeQueue.PushTask;
+        //_player.Inventory.OnItemRemove += InventoryChangeQueue.PushTask;
     }
-
 }
+
+
+//// 변경사항 구조체
+//// 아이템 변경 사항 내용
+//// 1. 아이템 생성 및 삭제
+//public class PendingChange
+//{
+//    public Define.PendingTaskType TaskType;
+//    public int Value;
+
+//    public PendingChange(Define.PendingTaskType pendingTaskType, int value)
+//    {
+//        TaskType = pendingTaskType;
+//        Value = value;
+//    }
+//}
+
+//// 대기중인 변경사항 관리 클래스
+//// 작업 별 큐에 변경사항 작업 내용 저장
+//// 해당 인벤토리 탭 오픈 시에 작업 내용 pop 및 적용
+//// 우선 아이템 타입별로 작업 내용이 존재하는 지를 확인할 수 있어야 함 -> 이걸 체크해서 불필요한 과정을 줄이자. 그냥 queue의 사이즈를 보고 판단하면 될듯?
+//public class InventoryChangeQueue
+//{
+//    private Dictionary<Define.ItemType, Queue<PendingChange>> _pendingChangeList;
+//    private Dictionary<Define.ItemType, List<ItemData>> _cachedInventory;
+
+//    public InventoryChangeQueue()
+//    {
+//        _pendingChangeList = new Dictionary<Define.ItemType, Queue<PendingChange>>();
+
+//        foreach (Define.ItemType itemType in Enum.GetValues(typeof(Define.ItemType)))
+//        {
+//            _pendingChangeList.Add(itemType, new Queue<PendingChange>());
+//        }
+//    }
+
+//    public bool IsExistTask(Define.ItemType itemType)
+//    {
+//        if (_pendingChangeList[itemType].Count > 0)
+//            return true;
+//        return false;
+//    }
+
+//    public void PushTask(Define.ItemType itemType, Define.PendingTaskType taskType, int value)
+//    {
+//        PendingChange pendingChange = new PendingChange(taskType, value);
+//        _pendingChangeList[itemType].Enqueue(pendingChange);
+//    }
+
+//    public PendingChange PopTask(Define.ItemType itemType)
+//    {
+//        if (!IsExistTask(itemType))
+//            return null;
+//        return _pendingChangeList[itemType].Dequeue();
+//    }
+//}

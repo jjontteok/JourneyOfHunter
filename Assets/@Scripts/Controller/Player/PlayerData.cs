@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 [CreateAssetMenu(fileName = "PlayerData", menuName = "Scriptable Objects/PlayerData")]
@@ -14,5 +15,5 @@ public class PlayerData : Status
     public float JourneyExp;                //모험 게이지
     public float Speed;
     public JourneyRankData JourneyRankData;
-    public SkillData[] CurrentSkillData;
+    public List<SkillData> CurrentSkillData;
 }

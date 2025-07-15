@@ -41,6 +41,8 @@ public class PopupUI_Merchant : MonoBehaviour
 
     private void OnEnable()
     {
+        PlayerManager.Instance.IsAutoMoving = false;
+        FieldManager.Instance.IsClear = true;
         SetItemList();
         DrawMerchantItem();
     }
@@ -72,5 +74,10 @@ public class PopupUI_Merchant : MonoBehaviour
     void OnExitButtonClick()
     {
         OnExitButtonClicked?.Invoke();
+    }
+
+    private void OnDisable()
+    {
+        PlayerManager.Instance.IsAutoMoving = true;
     }
 }

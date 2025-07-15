@@ -79,7 +79,7 @@ public class SkillSlot : MonoBehaviour
     {
         float realCoolTime = _skill.SkillData.CoolTime;
         Debug.Log($"Real Cool Time: {realCoolTime}");
-        realCoolTime *= 1 + (_player.PlayerStatus.GetCoolTimeDecrease() + Util.GetCoolTimeDecreaseByDayType(_skill.SkillData)) / 100;
+        realCoolTime *= 1 - (_player.PlayerStatus.GetCoolTimeDecrease() + Util.GetCoolTimeDecreaseByDayType(_skill.SkillData)) / 100;
         Debug.Log($"Reduced Cool Time: {realCoolTime}");
 
         OnActivateSkill?.Invoke(realCoolTime);

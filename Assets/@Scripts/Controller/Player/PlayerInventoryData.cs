@@ -12,43 +12,6 @@ public class PlayerInventoryData : ScriptableObject
     public List<ItemData> Items;
 }
 
-// 변경사항 구조체
-// 아이템 변경 사항 내용
-// 1. 아이템 생성 및 삭제
-// 2. 아이템 개수 변환
-// 3. 
-public struct PendingChange
-{
-    public Define.PendingTaskType TaskType;
-    // UI상 아이템정보?
-}
-
-// 대기중인 변경사항 관리 클래스
-// 작업 별 큐에 변경사항 작업 내용 저장
-// 해당 인벤토리 탭 오픈 시에 작업 내용 pop 및 적용
-// 우선 아이템 타입별로 작업 내용이 존재하는 지를 확인할 수 있어야 함 -> 이걸 체크해서 불필요한 과정을 줄이자. 그냥 queue의 사이즈를 보고 판단하면 될듯?
-public class InventoryChangeQueue
-{
-    private Dictionary<Define.ItemType, Queue<PendingChange>> _pendingChangeList;
-
-    InventoryChangeQueue()
-    {
-        _pendingChangeList = new Dictionary<Define.ItemType, Queue<PendingChange>>();
-
-        foreach(Define.ItemType itemType in Enum.GetValues(typeof(Define.ItemType)))
-        {
-            _pendingChangeList.Add(itemType, new Queue<PendingChange>());
-        }
-    }
-
-    private bool IsExistTask(Define.ItemType itemType)
-    {
-        if (_pendingChangeList[itemType].Count > 0)
-            return true;
-        return false;
-    }
-}
-
 // 실제 인벤토리 클래스
 public class Inventory
 {
@@ -69,8 +32,9 @@ public class Inventory
 
     public event Action<Dictionary<Define.ItemType, List<ItemData>>> OnInventorySet;
     public event Action<Define.GoodsType> OnValueChanged;
-    public event Action<Define.ItemType> OnItemAdd;
-    public event Action<Define.ItemType> OnItemRemove;
+    public event Action<Define.ItemType, Define.PendingTaskType, int> OnItemAdd;
+    public event Action<Define.ItemType, Define.PendingTaskType, int> OnItemRemove;
+
 
     // 생성자
     public Inventory(PlayerInventoryData so)
@@ -80,7 +44,7 @@ public class Inventory
         InitializeFromSO(so);
     }
 
-    public void InitializeFromSO(PlayerInventoryData so)
+    private void InitializeFromSO(PlayerInventoryData so)
     {
         _goods[Define.GoodsType.SilverCoin] = so.SilverCoin;
         _goods[Define.GoodsType.Gem] = so.Gem;
@@ -106,6 +70,14 @@ public class Inventory
         so.SilverCoin = _goods[Define.GoodsType.SilverCoin];
         so.Gem = _goods[Define.GoodsType.Gem];
 
+        so.Items.Clear();
+        foreach (Define.ItemType itemType in Enum.GetValues(typeof(Define.ItemType)))
+        {
+            for(int i = 0; i < _items[itemType].Count; i++)
+            {
+                so.Items.Add(_items[itemType][i]);
+            }
+        }
     }
 
     public void AddItem(ItemData item,int count)
@@ -129,7 +101,7 @@ public class Inventory
                 existItem.Count += count;
             }
         }
-        OnItemAdd?.Invoke(item.Type);
+        OnItemAdd?.Invoke(item.Type, Define.PendingTaskType.ItemAddTask, 1);
     }
 
     public void AddItem(Dictionary<Data,int> items)
@@ -145,8 +117,14 @@ public class Inventory
     public void RemoveItem(ItemData item)
     {
         if (_items.TryGetValue(item.Type, out var list))
-            list.Remove(item);
-        OnItemRemove?.Invoke(item.Type);
+        {
+            ItemData existItem = list.FirstOrDefault(i => i.Id == item.Id);
+            if (existItem == null)
+                _items[item.Type].Remove(existItem);
+            else
+                existItem.Count--;
+        }
+        OnItemRemove?.Invoke(item.Type, Define.PendingTaskType.ItemRemoveTask, 1);
     }
 
     public void AddGoods(Define.GoodsType type, int amount)
