@@ -119,7 +119,7 @@ public class PopupUI_RandomSummon : MonoBehaviour
                 for (int i = 0; i < item.Value; i++)
                 {
                     GameObject itemSlot = PoolManager.Instance.GetObjectFromPool<ItemSlot>(Vector3.zero, slotName, _resultPanelViewport);
-                    itemSlot.GetComponent<ItemSlot>().SetData(item.Key as ItemData);
+                    itemSlot.GetComponent<ItemSlot>().SetData(item.Key as ItemData, false);
                 }
             }
             else if (item.Key is SkillData)
