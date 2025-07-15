@@ -74,7 +74,6 @@ public class PopupUI_StageInfo : MonoBehaviour
         switch (_stageController.StageActionStatus)
         {
             case Define.StageActionStatus.Challenge:
-                _stageController.StageActionStatus = Define.StageActionStatus.ExitStage;
                 _stageController.IsSpawnNamedMonster = true;
                 break;
             case Define.StageActionStatus.AutoChallenge:
@@ -82,13 +81,6 @@ public class PopupUI_StageInfo : MonoBehaviour
                 break;
             case Define.StageActionStatus.NotChallenge:
                 _stageController.StageActionStatus = Define.StageActionStatus.AutoChallenge;
-                break;
-            case Define.StageActionStatus.GoFinalStage:
-                _stageController.StageActionStatus = Define.StageActionStatus.NotChallenge;
-                break;
-            case Define.StageActionStatus.ExitStage:
-                _stageController.StageActionStatus = Define.StageActionStatus.NotChallenge;
-                // 탈출 이벤트 연결
                 break;
             default:
                 break;
@@ -109,12 +101,12 @@ public class PopupUI_StageInfo : MonoBehaviour
             case Define.StageActionStatus.NotChallenge:
                 _currentStatusImage = null;
                 break;
-            case Define.StageActionStatus.GoFinalStage:
-                _currentStatusImage = _statusImages[4];
-                break;
-            case Define.StageActionStatus.ExitStage:
-                _currentStatusImage = _statusImages[3];
-                break;
+            //case Define.StageActionStatus.GoFinalStage:
+            //    _currentStatusImage = _statusImages[4];
+            //    break;
+            //case Define.StageActionStatus.ExitStage:
+            //    _currentStatusImage = _statusImages[3];
+            //    break;
             default:
                 break;
         }

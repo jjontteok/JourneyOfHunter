@@ -53,5 +53,6 @@ public class PopupUI_Status : MonoBehaviour
     void OnExitButtonClick()
     {
         OnExitButtonClicked?.Invoke();
+        AudioManager.Instance.PlayClickSound();
     }
 }

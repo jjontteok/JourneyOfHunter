@@ -12,6 +12,7 @@ public class UI_Game : MonoBehaviour
     [SerializeField] Button _inventoryButton;
     [SerializeField] Button _skillInventoryButton;
     [SerializeField] Button _gachaButton;
+    [SerializeField] Button _settingButton;
     [SerializeField] TMP_Text _silverCoinText;
     [SerializeField] TMP_Text _gemText;
     [SerializeField] Toggle _autoToggle;
@@ -62,7 +63,8 @@ public class UI_Game : MonoBehaviour
         _statusButton.onClick.AddListener(OnStatusButtonClick);
         _inventoryButton.onClick.AddListener(OnInventoryButtonClick);
         _skillInventoryButton.onClick.AddListener(OnSkillInventoryButtonClick);
-        _gachaButton.onClick.AddListener(OnGachaButtoneClick);
+        _gachaButton.onClick.AddListener(OnGachaButtonClick);
+        _settingButton.onClick.AddListener(OnSettingButtonClick);
 
         _silverCoinText.text = _playerInventory.Goods[Define.GoodsType.SilverCoin].ToString();
         _gemText.text = _playerInventory.Goods[Define.GoodsType.Gem].ToString();
@@ -144,33 +146,45 @@ public class UI_Game : MonoBehaviour
     void OnStatusButtonClick()
     {
         PopupUIManager.Instance.ActivateStatusPanel();
+        AudioManager.Instance.PlayClickSound();
     }
 
     void OnInventoryButtonClick()
     {
         PopupUIManager.Instance.ActivateInventoryPanel();
+        AudioManager.Instance.PlayClickSound();
     }
 
     void OnSkillInventoryButtonClick()
     {
         PopupUIManager.Instance.ActivateSkillInventoryPanel();
+        AudioManager.Instance.PlayClickSound();
     }
 
-    void OnGachaButtoneClick()
+    void OnGachaButtonClick()
     {
         PopupUIManager.Instance.ActivateGachaPanel();
+        AudioManager.Instance.PlayClickSound();
+    }
+
+    void OnSettingButtonClick()
+    {
+        PopupUIManager.Instance.ActivateSettingPanel();
+        AudioManager.Instance.PlayClickSound();
     }
 
     void OnAutoToggleClick(bool flag)
     {
         //Debug.Log($"Auto: {flag}");
         OnAutoChanged?.Invoke(flag);
+        AudioManager.Instance.PlayClickSound();
     }
 
     void OnDoubleSpeedToggleClick(bool flag)
     {
         OnDoubleSpeedChanged?.Invoke(flag);
         _doubleSpeedToggle.isOn = flag;
+        AudioManager.Instance.PlayClickSound();
     }
 
     void OnAutoToggleOff()

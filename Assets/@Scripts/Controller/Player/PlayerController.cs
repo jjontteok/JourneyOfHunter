@@ -455,6 +455,11 @@ public class PlayerController : MonoBehaviour, IDamageable
         }
     }
 
+    public void SetIsAttacking(bool flag)
+    {
+        _animator.SetBool(Define.IsAttacking, flag);
+    }
+
     void SetTarget()
     {
         // 던전인 경우, 몬스터 찾기
@@ -671,7 +676,8 @@ public class PlayerController : MonoBehaviour, IDamageable
 
     public float CalculateFinalDamage(float damage, float def)
     {
-        return damage * (1 - def / Define.MaxDef);
+        float calc = damage - def;
+        return calc > 0 ? calc : 0;
     }
     #endregion
 

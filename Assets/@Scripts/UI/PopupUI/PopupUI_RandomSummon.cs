@@ -34,7 +34,7 @@ public class PopupUI_RandomSummon : MonoBehaviour
     private void OnEnable()
     {
         _resultPanel.SetActive(false);
-        OnEquipmentGachaPanel();
+        SetEquipGatchaPanel();
     }
 
     private void Initialize()
@@ -55,23 +55,32 @@ public class PopupUI_RandomSummon : MonoBehaviour
     void OnExitButtonClick()
     {
         OnExitButtonClicked?.Invoke();
+        AudioManager.Instance.PlayClickSound();
+    }
+
+    void SetEquipGatchaPanel()
+    {
+        _equipmentGachaPanel.SetActive(true);
+        _skillGachaPanel.SetActive(false);
     }
 
     void OnEquipmentGachaPanel()
     {
-        _equipmentGachaPanel.SetActive(true);
-        _skillGachaPanel.SetActive(false);
+        SetEquipGatchaPanel();
+        AudioManager.Instance.PlayClickSound();
     }
 
     void OnSkillGachaPanel()
     {
         _equipmentGachaPanel.SetActive(false);
         _skillGachaPanel.SetActive(true);
+        AudioManager.Instance.PlayClickSound();
     }
 
     void OnResultPanelExit()
     {
         _resultPanel.SetActive(false);
+        AudioManager.Instance.PlayClickSound();
     }
 
     public void OnClickDrawButton(int drawCount, Define.DrawItemType drawItemType)
@@ -92,6 +101,7 @@ public class PopupUI_RandomSummon : MonoBehaviour
                 break;
         }
         SetResultPanel(items);
+        AudioManager.Instance.PlayClickSound();
     }
 
     public void OnClick_DrawEquipment_One() => OnClickDrawButton(1, Define.DrawItemType.Equipment);

@@ -58,7 +58,7 @@ public class PopupUI_Inventory : MonoBehaviour
     //- 활성화 시 기본 세팅인 장비창으로 탭 활성화
     private void OnEnable()
     {
-        OnTabButtonClick(Define.ItemType.Equipment);
+        SetViewPort(Define.ItemType.Equipment);
     }
 
     private void Initialize()
@@ -122,22 +122,22 @@ public class PopupUI_Inventory : MonoBehaviour
     ////- 변경 사항 대기 큐에 존재하는 작업 내용을 수행
     //void UpdateInventory(Define.ItemType itemType)
     //{
-        //while(PlayerManager.Instance.InventoryChangeQueue.IsExistTask(itemType))
-        //{
-        //    PendingChange pc = PlayerManager.Instance.InventoryChangeQueue.PopTask(itemType);
-        //    switch (pc.TaskType)
-        //    {
-        //        case Define.PendingTaskType.ItemAddTask:
-        //            CreateSlot(itemType, )
-        //            break;
-        //        case Define.PendingTaskType.ItemRemoveTask:
-        //            break;
-        //        case Define.PendingTaskType.ItemUpdateTask:
-        //            break;
-        //        default:
-        //            break;
-        //    }
-        //}
+    //while(PlayerManager.Instance.InventoryChangeQueue.IsExistTask(itemType))
+    //{
+    //    PendingChange pc = PlayerManager.Instance.InventoryChangeQueue.PopTask(itemType);
+    //    switch (pc.TaskType)
+    //    {
+    //        case Define.PendingTaskType.ItemAddTask:
+    //            CreateSlot(itemType, )
+    //            break;
+    //        case Define.PendingTaskType.ItemRemoveTask:
+    //            break;
+    //        case Define.PendingTaskType.ItemUpdateTask:
+    //            break;
+    //        default:
+    //            break;
+    //    }
+    //}
     //}
 
     // * 각 버튼 클릭 리스너 이벤트에서 메서드 실행
@@ -145,11 +145,21 @@ public class PopupUI_Inventory : MonoBehaviour
     public void OnEquipmentButtonClick() => OnTabButtonClick(Define.ItemType.Equipment);
     public void OnConsumeButtonClick() => OnTabButtonClick(Define.ItemType.Consumable);
     public void OnOtherButtonClick() => OnTabButtonClick(Define.ItemType.Other);
-    void OnExitButtonClick() => OnExitButtonClicked?.Invoke();
+    void OnExitButtonClick()
+    {
+        OnExitButtonClicked?.Invoke();
+        AudioManager.Instance.PlayClickSound();
+    }
 
     // * 아이템 타입 별 버튼 클릭 메서드
     //- 아이템 타입 별 뷰포트 내용 동기화
     void OnTabButtonClick(Define.ItemType itemType)
+    {
+        SetViewPort(itemType);
+        AudioManager.Instance.PlayClickSound();
+    }
+
+    void SetViewPort(Define.ItemType itemType)
     {
         // 모든 탭 비활성화
         _equipmentViewPort?.SetActive(false);

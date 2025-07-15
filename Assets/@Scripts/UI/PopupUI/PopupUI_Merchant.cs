@@ -74,6 +74,7 @@ public class PopupUI_Merchant : MonoBehaviour
     void OnExitButtonClick()
     {
         OnExitButtonClicked?.Invoke();
+        AudioManager.Instance.PlayClickSound();
     }
 
     private void OnDisable()

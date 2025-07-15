@@ -29,10 +29,9 @@ public class NamedMonsterController : MonsterController
         _moveRangeController = moveRange.GetOrAddComponent<MoveRangeController>();
         _moveRangeController.Intiailize(_runtimeData.MoveRange);
     }
-    protected override void OnEnable()
+    private void OnEnable()
     {
         SetOriginPos();
-        base.OnEnable();
         _weapon.SetColliderInfo(_runtimeData.Atk);
         _isMoveToOrigin = false;
         _moveRangeController.OnMoveToTarget += OnMoveToTarget;
