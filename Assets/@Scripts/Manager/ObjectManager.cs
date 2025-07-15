@@ -68,6 +68,10 @@ public class ObjectManager : Singleton<ObjectManager>
     private GameObject _followCam;
     private GameObject _cutSceneCam;
 
+    // * Sound
+    private AudioClip _backgroundSoundClip;
+    private AudioClip _warningSoundClip;
+    private AudioClip _clickSoundClip;
 
     // * 프로퍼티
     #region Dictionary
@@ -467,7 +471,39 @@ public class ObjectManager : Singleton<ObjectManager>
     }
 
     #endregion
-    
+
+    #region Sound
+    public AudioClip BackgroundSoundClip
+    {
+        get
+        {
+            if (NullCheck(_backgroundSoundClip))
+                return null;
+            return _backgroundSoundClip;
+        }
+    }
+
+    public AudioClip WarningSoundClip
+    {
+        get
+        {
+            if (NullCheck(_warningSoundClip))
+                return null;
+            return _warningSoundClip;
+        }
+    }
+
+    public AudioClip ClickSoundClip
+    {
+        get
+        {
+            if (NullCheck(_clickSoundClip))
+                return null;
+            return _clickSoundClip;
+        }
+    }
+    #endregion
+
     public GameObject PopupMerchantAppear
     {
         get
@@ -497,7 +533,7 @@ public class ObjectManager : Singleton<ObjectManager>
             return _merchantItemSlot;
         }
     }
-    
+
     public GameObject TreasureBoxOpenEffectResource
     {
         get
@@ -592,6 +628,7 @@ public class ObjectManager : Singleton<ObjectManager>
         CameraResourceLoad();
         ItemSlotResourceLoad();
         MerchantItemSlotResourceLoad();
+        SoundResourceLoad();
     }
 
     // * 플레이어 리소스 로드 메서드
@@ -755,8 +792,6 @@ public class ObjectManager : Singleton<ObjectManager>
         _popupMerchantDialogue = Resources.Load<GameObject>(Define.PopupMerchantDialoguePanelPath);
     }
 
-
-
     // * 컷신 리소스 로드 메서드
     private void CutSceneResourceLoad()
     {
@@ -768,6 +803,13 @@ public class ObjectManager : Singleton<ObjectManager>
         _startCam = Resources.Load<GameObject>(Define.StartCameraPath);
         _followCam = Resources.Load<GameObject>(Define.FollowCameraPath);
         _cutSceneCam = Resources.Load<GameObject>(Define.CutSceneCameraPath);
+    }
+
+    private void SoundResourceLoad()
+    {
+        _backgroundSoundClip = Resources.Load<AudioClip>(Define.BackgroundSoundPath);
+        _warningSoundClip = Resources.Load<AudioClip>(Define.WarningSoundPath);
+        _clickSoundClip = Resources.Load<AudioClip>(Define.ClickSoundPath);
     }
     #endregion
 
@@ -813,7 +855,7 @@ public class ObjectManager : Singleton<ObjectManager>
             GameObject obj = Instantiate(SystemTextResource, spawnPos, Quaternion.identity);
             return obj;
         }
-        else if (type == typeof(ItemSlot)||type==typeof(SkillItemSlot))
+        else if (type == typeof(ItemSlot) || type == typeof(SkillItemSlot))
         {
             GameObject obj = Instantiate(ItemSlotList[name]);
             return obj;

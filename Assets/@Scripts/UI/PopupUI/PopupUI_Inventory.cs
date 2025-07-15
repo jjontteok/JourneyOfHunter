@@ -170,6 +170,7 @@ public class PopupUI_Inventory : MonoBehaviour
 
         ClearSlots(itemType);
         CreateSlot(itemType, PlayerManager.Instance.Player.Inventory.Items[itemType]);
+        AudioManager.Instance.PlayClick();
     }
 
     // * 아이템 타입 별 bool 변수 Set

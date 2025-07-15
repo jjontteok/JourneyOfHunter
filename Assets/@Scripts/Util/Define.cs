@@ -88,6 +88,10 @@ public class Define : MonoBehaviour
     public const string CutSceneCameraPath = "Camera/CutSceneCamera";
 
     public const string JourneyRankPath = "DB/JourneyRankDB";
+
+    public const string BackgroundSoundPath = "Sound/BGM/BGM";
+    public const string WarningSoundPath = "Sound/Warning";
+    public const string ClickSoundPath = "Sound/Click";
     #endregion
 
     #region DungeonSpots

@@ -1,37 +1,49 @@
 using System;
 using UnityEngine;
+using extension;
+using Unity.VisualScripting;
 
-public class AudioManager : MonoBehaviour
+public class AudioManager : Singleton<AudioManager>
 {
-    [SerializeField] AudioSource _dungeonSound;
-    [SerializeField] AudioSource _warningSound;
-    public static Action<bool> PlayDungeon;
-    public static Action<bool> PlayWarning;
+    AudioSource _backgroundSound;
+    AudioSource _warningSound;
+    AudioSource _clickSound;
 
-    //protected override void Initialize()
-    //{
-    //    base.Initialize();
-    //    _dungeonSound
-    //}
-    private void Start()
+    public Action<bool> PlayBackground;
+    public Action<bool> PlayWarning;
+    public Action PlayClick;
+
+    protected override void Initialize()
     {
-        PlayDungeon += OnOffDungeonSound;
-        PlayWarning += OnOffWarningSound;
+        base.Initialize();
+        _backgroundSound = this.GetOrAddComponent<AudioSource>();
+        _backgroundSound.clip = ObjectManager.Instance.BackgroundSoundClip;
+        _backgroundSound.volume = 0.05f;
+        _warningSound = this.GetOrAddComponent<AudioSource>();
+        _warningSound.clip = ObjectManager.Instance.WarningSoundClip;
+        _warningSound.volume = 0.2f;
+        _clickSound = this.GetOrAddComponent<AudioSource>();
+        _clickSound.clip = ObjectManager.Instance.ClickSoundClip;
+        _clickSound.volume = 0.5f;
+
+        PlayBackground += PlayBackgroundSound;
+        PlayWarning += PlayWarningSound;
+        PlayClick += PlayClickSound;
     }
 
-    public void OnOffDungeonSound(bool flag)
+    public void PlayBackgroundSound(bool flag)
     {
-        if(flag)
+        if (flag)
         {
-            _dungeonSound.Play();
+            _backgroundSound.Play();
         }
         else
         {
-            _dungeonSound.Stop();
+            _backgroundSound.Stop();
         }
     }
 
-    public void OnOffWarningSound(bool flag)
+    public void PlayWarningSound(bool flag)
     {
         if (flag)
         {
@@ -41,5 +53,10 @@ public class AudioManager : MonoBehaviour
         {
             _warningSound.Stop();
         }
+    }
+
+    void PlayClickSound()
+    {
+        _clickSound.Play();
     }
 }

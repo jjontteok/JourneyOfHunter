@@ -62,7 +62,7 @@ public class UI_Game : MonoBehaviour
         _statusButton.onClick.AddListener(OnStatusButtonClick);
         _inventoryButton.onClick.AddListener(OnInventoryButtonClick);
         _skillInventoryButton.onClick.AddListener(OnSkillInventoryButtonClick);
-        _gachaButton.onClick.AddListener(OnGachaButtoneClick);
+        _gachaButton.onClick.AddListener(OnGachaButtonClick);
 
         _silverCoinText.text = _inventoryData.SilverCoin.ToString();
         _autoToggle.onValueChanged.AddListener(OnAutoToggleClick);
@@ -142,33 +142,39 @@ public class UI_Game : MonoBehaviour
     void OnStatusButtonClick()
     {
         PopupUIManager.Instance.ActivateStatusPanel();
+        AudioManager.Instance.PlayClick();
     }
 
     void OnInventoryButtonClick()
     {
         PopupUIManager.Instance.ActivateInventoryPanel();
+        AudioManager.Instance.PlayClick();
     }
 
     void OnSkillInventoryButtonClick()
     {
         PopupUIManager.Instance.ActivateSkillInventoryPanel();
+        AudioManager.Instance.PlayClick();
     }
 
-    void OnGachaButtoneClick()
+    void OnGachaButtonClick()
     {
         PopupUIManager.Instance.ActivateGachaPanel();
+        AudioManager.Instance.PlayClick();
     }
 
     void OnAutoToggleClick(bool flag)
     {
         //Debug.Log($"Auto: {flag}");
         OnAutoChanged?.Invoke(flag);
+        AudioManager.Instance.PlayClick();
     }
 
     void OnDoubleSpeedToggleClick(bool flag)
     {
         OnDoubleSpeedChanged?.Invoke(flag);
         _doubleSpeedToggle.isOn = flag;
+        AudioManager.Instance.PlayClick();
     }
 
     void OnAutoToggleOff()

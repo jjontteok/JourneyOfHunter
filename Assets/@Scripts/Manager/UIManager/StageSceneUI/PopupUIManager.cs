@@ -251,7 +251,7 @@ public class PopupUIManager : Singleton<PopupUIManager>, IEventSubscriber, IDeac
     public void ActivateDungeonAppear()
     {
         _popupDungeonAppear.SetActive(true);
-        AudioManager.PlayWarning?.Invoke(true);
+        AudioManager.Instance.PlayWarning?.Invoke(true);
         foreach (var effect in _popupDungeonAppear.GetComponentsInChildren<UIEffectsManager>())
         {
             StartCoroutine(effect.PerformEffect(0));
@@ -344,7 +344,7 @@ public class PopupUIManager : Singleton<PopupUIManager>, IEventSubscriber, IDeac
     {
         yield return time;
         go.SetActive(false);
-        AudioManager.PlayWarning?.Invoke(false);
+        AudioManager.Instance.PlayWarning?.Invoke(false);
     }
 
     public void DeactivateBuffText()
