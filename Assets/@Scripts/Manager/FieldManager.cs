@@ -147,12 +147,12 @@ public class FieldManager : Singleton<FieldManager>, IEventSubscriber, IDeactiva
         else
         {
             int rnd = UnityEngine.Random.Range(0, 100);
-            rnd = 90;
+            //rnd = 90;
             if (rnd < 90)
             {
                 //80% 확률로 기타 오브젝트 등장
-                //if (rnd < 80)
-                if (rnd < 50)
+                if (rnd < 80)
+                //if (rnd < 50)
                 {
                     _currentType = Define.JourneyType.OtherObject;
                     _rewardSystem.SetReward(Define.RewardType.JourneyExp, 25 * _stageCount * (int)(rank + 1));
