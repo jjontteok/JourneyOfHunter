@@ -41,7 +41,7 @@ public abstract class MonsterController : MonoBehaviour, IDamageable
 
     public static event Action OnMonsterDead;
 
-    protected MonsterStatus _runtimeData;
+    [SerializeField] protected MonsterStatus _runtimeData;
     protected Animator _animator;
     protected AttackRangeController _attackRangeController;
     protected Rigidbody _rigidbody;
@@ -63,12 +63,7 @@ public abstract class MonsterController : MonoBehaviour, IDamageable
         //Spawned();
     }
 
-    protected virtual void OnEnable()
-    {
-        FieldManager.Instance.OnUpgradeMonsterStatus += UpgradeStatus;
-    }
-
-    void OnDisable()
+    protected virtual void OnDisable()
     {
         _runtimeData = new MonsterStatus(_monsterData);
         _runtimeData.CurrentHP = _runtimeData.MaxHP;
@@ -92,6 +87,7 @@ public abstract class MonsterController : MonoBehaviour, IDamageable
         _attackRangeController.OnAttack += Attack;
         _attackRangeController.OffAttack += EndAttack;
 
+        FieldManager.Instance.OnUpgradeMonsterStatus += UpgradeStatus;
     }
 
     // 타겟 이동 메서드
@@ -144,7 +140,8 @@ public abstract class MonsterController : MonoBehaviour, IDamageable
 
     public float CalculateFinalDamage(float damage, float def)
     {
-        return damage * (1 - def / Define.MaxDef);
+        float calc = damage - def;
+        return calc > 0 ? calc : 0;
     }
 
     // * 사망 메서드

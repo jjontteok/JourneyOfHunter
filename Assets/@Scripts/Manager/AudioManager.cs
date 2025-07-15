@@ -41,20 +41,20 @@ public class AudioManager : Singleton<AudioManager>
 
     public void SetBGMVolume(float volume)
     {
-        volume = Mathf.Clamp(volume, 0f, 1f);
+        volume = Mathf.Clamp(volume, 0.0001f, 1f);
         MasterMixer.SetFloat(Define.BGM, Mathf.Log10(volume) * 20f);
     }
 
     public void SetVFXVolume(float volume)
     {
         volume = Mathf.Clamp(volume, 0.0001f, 1f);
-        MasterMixer.SetFloat(Define.VFX, Mathf.Log10(volume) * 12f);
+        MasterMixer.SetFloat(Define.VFX, Mathf.Log10(volume) * 20f);
     }
 
     public void SetClickVolume(float volume)
     {
         volume = Mathf.Clamp(volume, 0.0001f, 1f);
-        MasterMixer.SetFloat(Define.Click, Mathf.Log10(volume) * 10f);
+        MasterMixer.SetFloat(Define.Click, Mathf.Log10(volume) * 20f);
     }
 
     public void PlayBackgroundSound(bool flag)

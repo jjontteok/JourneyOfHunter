@@ -102,11 +102,11 @@ AudioMixerController:
   m_UpdateMode: 0
   m_ExposedParameters:
   - guid: 07aaa001e35978048ac225d814045605
-    name: BGMVolume
+    name: BGM
   - guid: f68c5048da58a9147adeca4be9bee674
-    name: ClickVolume
+    name: Click
   - guid: 85dad03a96736d64c9f7b412e831f43e
-    name: VFXVolume
+    name: VFX
   m_AudioMixerGroupViews:
   - guids:
     - 331eeca73b6deb1428bcf5eba3dfe7e1

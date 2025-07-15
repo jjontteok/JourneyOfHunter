@@ -31,19 +31,19 @@ public class PopupUI_Setting : MonoBehaviour
     {
         if (AudioManager.Instance.MasterMixer == null)
             return;
-        if(AudioManager.Instance.MasterMixer.GetFloat(Define.BGM,out float currentBGM))
+        if (AudioManager.Instance.MasterMixer.GetFloat(Define.BGM, out float currentBGM))
         {
-            float linear = Mathf.Pow(10f, currentBGM);
+            float linear = Mathf.Pow(10f, currentBGM / 20f);
             _sliderBGM.SetValueWithoutNotify(linear);
         }
         if (AudioManager.Instance.MasterMixer.GetFloat(Define.VFX, out float currentVFX))
         {
-            float linear = Mathf.Pow(10f, currentVFX / 12f);
+            float linear = Mathf.Pow(10f, currentVFX / 20f);
             _sliderVFX.SetValueWithoutNotify(linear);
         }
         if (AudioManager.Instance.MasterMixer.GetFloat(Define.Click, out float currentClick))
         {
-            float linear = Mathf.Pow(10f, currentClick / 10f);
+            float linear = Mathf.Pow(10f, currentClick / 20f);
             _sliderClick.SetValueWithoutNotify(linear);
         }
     }

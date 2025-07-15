@@ -671,7 +671,8 @@ public class PlayerController : MonoBehaviour, IDamageable
 
     public float CalculateFinalDamage(float damage, float def)
     {
-        return damage * (1 - def / Define.MaxDef);
+        float calc = damage - def;
+        return calc > 0 ? calc : 0;
     }
     #endregion
 

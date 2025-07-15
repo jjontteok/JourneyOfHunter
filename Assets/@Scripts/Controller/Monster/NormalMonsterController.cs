@@ -13,14 +13,14 @@ public class NormalMonsterController : MonsterController
         _weapon.SetColliderInfo(_runtimeData.Atk);
     }
 
-    protected override void OnEnable()
+    private void OnEnable()
     {
-        base.OnEnable();
         s_AliveCount++;
     }
 
-    private void OnDisable()
+    protected override void OnDisable()
     {
+        base.OnDisable();
         s_AliveCount--;
     }
 
