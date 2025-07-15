@@ -1,4 +1,5 @@
 using System.Collections;
+using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -12,10 +13,15 @@ public class PopupUI_JourneyInfo : MonoBehaviour
     [SerializeField] Image _rankImage;
     [SerializeField] Image _journeyGaugeBarImage;
 
+    Queue<float> _journeyExpQueue;      //증가될 여정의 증표 큐 -> 이게 맞?나?
+
     PlayerData _currentPlayerData;      //플레이어 데이터
     JourneyRankData _journeyRankData;   //플레이어 데이터의 여정 랭크 데이터
     float _currentJourneyExp;
     int _currentJourneyRank;
+
+    bool _isJourneyCoroutineRun = false;
+
     private void Awake()
     {
         Initialize();
@@ -34,6 +40,7 @@ public class PopupUI_JourneyInfo : MonoBehaviour
     }
     void Initialize()
     {
+        _journeyExpQueue = new();
         _journeyRankData = PlayerManager.Instance.Player.PlayerData.JourneyRankData;
         _currentPlayerData = PlayerManager.Instance.Player.PlayerData;
         _currentJourneyExp = _currentPlayerData.JourneyExp;
@@ -50,12 +57,27 @@ public class PopupUI_JourneyInfo : MonoBehaviour
     void UpdateJourneyExp(float journeyExp)
     {
         _currentJourneyExp += journeyExp;
+        _journeyExpQueue.Enqueue(_currentJourneyExp);   //일단 큐에 넣어
         _journeyExpText.text = (_currentJourneyExp).ToString();
         _journeyExpText.color = Color.white;
 
-        //EXP가 점진적으로 차오르도록
-        StartCoroutine(StartJourneyExp(_currentJourneyExp));
+        if(!_isJourneyCoroutineRun) //코루틴이 실행 중이 아니라면
+            //EXP가 점진적으로 차오르도록
+            StartCoroutine(ProcessJourneyExpQueue());
     }
+
+    IEnumerator ProcessJourneyExpQueue()
+    {
+        _isJourneyCoroutineRun = true;
+        while (_journeyExpQueue.Count > 0)
+        {
+            float journeyExp = _journeyExpQueue.Dequeue();
+
+            yield return StartCoroutine(StartJourneyExp(journeyExp));
+        }
+        _isJourneyCoroutineRun = false;
+    } 
+
 
     // * PlayerController의 OnJourneyRankChanged이벤트 구독하는 함수
     void UpdateJourneyRank(int medal)
@@ -87,13 +109,13 @@ public class PopupUI_JourneyInfo : MonoBehaviour
         float start = _journeyGaugeBarImage.fillAmount;
 
         //증가량이 현재 메달의 최대게이지보다 높으면
-        if (end >= 1)
+        while (end >= 1)
         {
             //다 채우고
             while (_journeyGaugeBarImage.fillAmount < 1)
             {
-                t += Time.deltaTime * (end - start) * 20;
-                _journeyGaugeBarImage.fillAmount = Mathf.Lerp(start, end, t);
+                t += Time.deltaTime * (1 - start) * 50;
+                _journeyGaugeBarImage.fillAmount = Mathf.Lerp(start, 1, t);
                 yield return null;
             }
             t = 0;
@@ -111,9 +133,9 @@ public class PopupUI_JourneyInfo : MonoBehaviour
                 / (_journeyRankData.MaxJourneyExp - _journeyRankData.MinJourneyExp);
         }
 
-        while (Mathf.Abs(end-_journeyGaugeBarImage.fillAmount)>0.001f)
+        while (Mathf.Abs(end- _journeyGaugeBarImage.fillAmount) > 0.001f)
         {
-            t += Time.deltaTime * Mathf.Abs(end - start) * 20;
+            t += Time.deltaTime * Mathf.Abs(end - start) * 50;
             _journeyGaugeBarImage.fillAmount = Mathf.Lerp(start, end, t);
             yield return null;
         }

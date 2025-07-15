@@ -52,6 +52,8 @@ public class ObjectManager : Singleton<ObjectManager>
     private GameObject _popupDungeonAppear;
     private GameObject _popupDungeonClearText;
     private GameObject _popupGachaPanel;
+    private GameObject _popupMerchantAppear;
+    private GameObject _popupMerchantDialogue;
 
     private GameObject _systemTextResource;
     private GameObject _rewardTextResource;
@@ -439,6 +441,25 @@ public class ObjectManager : Singleton<ObjectManager>
         }
     }
 
+    public GameObject PopupMerchantAppear
+    {
+        get
+        {
+            if (NullCheck(_popupMerchantAppear))
+                return null;
+            return _popupMerchantAppear;
+        }
+    }
+
+    public GameObject PopupMerchantDialogue
+    {
+        get
+        {
+            if (NullCheck(_popupMerchantDialogue))
+                return null;
+            return _popupMerchantDialogue;
+        }
+    }
 
     public GameObject TreasureBoxOpenEffectResource
     {
@@ -684,6 +705,8 @@ public class ObjectManager : Singleton<ObjectManager>
         _popupDungeonAppear = Resources.Load<GameObject>(Define.PopupDungeonAppearPanelPath);
         _popupDungeonClearText = Resources.Load<GameObject>(Define.PopupDungeonClearPanelPath);
         _popupGachaPanel = Resources.Load<GameObject>(Define.PopupGachaPanelPath);
+        _popupMerchantAppear = Resources.Load<GameObject>(Define.PopupMerchantAppearPanelPath);
+        _popupMerchantDialogue = Resources.Load<GameObject>(Define.PopupMerchantDialoguePanelPath);
     }
 
 

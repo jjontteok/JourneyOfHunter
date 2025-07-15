@@ -70,6 +70,7 @@ public class Define : MonoBehaviour
     public const string PopupStageInfoPanelPath = "UI/PopupUI/Panel - StageInfo";
     public const string PopupNamedMonsterInfoPanelPath = "UI/PopupUI/Panel - NamedMonsterInfo";
     public const string PopupMerchantPanelPath = "UI/PopupUI/MerchantPanel - Popup";
+    public const string PopupMerchantDialoguePanelPath = "UI/PopupUI/MerchantDialogue - Popup";
 
     public const string PopupStageTextPanelPath = "UI/PopupUI/Panel - StageText";
     public const string PopupTreasureAppearPanelPath = "UI/PopupUI/Panel - TreasureAppearText";
@@ -77,6 +78,7 @@ public class Define : MonoBehaviour
     public const string PopupDungeonAppearPanelPath = "UI/PopupUI/Panel - DungeonAppear";
     public const string PopupDungeonClearPanelPath = "UI/PopupUI/Panel - DungeonClearText";
     public const string PopupGachaPanelPath = "UI/PopupUI/RandomSummonPanel - Popup";
+    public const string PopupMerchantAppearPanelPath = "UI/PopupUI/Panel - MerchantAppear";
 
     public const string GoblinKingCutScenePath = "CutScene/GoblinCutScene";
     public const string StartCameraPath = "Camera/StartCamera";
@@ -322,8 +324,8 @@ public class Define : MonoBehaviour
     };
 #endregion
 
-#region TreasureBoxColor
-public static Dictionary<Define.ItemValue, Color> EffectColorList = new()
+    #region TreasureBoxColor
+    public static Dictionary<Define.ItemValue, Color> EffectColorList = new()
     {
         { Define.ItemValue.Common, new Color(0, 0, 0, 0) },
         { Define.ItemValue.Uncommon, new Color(0.2f, 1, 0, 1) },
@@ -333,6 +335,14 @@ public static Dictionary<Define.ItemValue, Color> EffectColorList = new()
     };
     #endregion
 
+    #endregion
 
+    #region List
+    public static List<string> MerchantDialogue = new()
+    {
+        "후후.. 좋은 물건이 들어왔지.",
+        "오랜만이군, 여행자",
+        "오늘은 자네가 운이 좋군"
+    };
     #endregion
 }
