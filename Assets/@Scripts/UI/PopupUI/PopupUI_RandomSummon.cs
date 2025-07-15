@@ -102,11 +102,6 @@ public class PopupUI_RandomSummon : MonoBehaviour
     private void SetResultPanel(Dictionary<Data, int> items)
     {
         ClearSlots();
-
-        foreach (var item in items)
-        {
-            Debug.Log($"{item.Key.Name}: {item.Value}개 뽑음");
-        }
         PlayerManager.Instance.Player.Inventory.ApplyChangesToSO(PlayerManager.Instance.Player.PlayerInventoryData);
         foreach (var item in items)
         {
@@ -135,7 +130,6 @@ public class PopupUI_RandomSummon : MonoBehaviour
                     skillSlot.GetComponent<SkillItemSlot>().UpdateSlot(item.Key as SkillData, true);
                 }
             }
-
         }
     }
     void ClearSlots()

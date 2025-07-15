@@ -27,6 +27,7 @@ public class PopupUIManager : Singleton<PopupUIManager>, IEventSubscriber, IDeac
     private GameObject _panelSkillInventory;
     private GameObject _panelMerchant;
     private GameObject _panelGacha;
+    private GameObject _panelItemInfo;
 
     private GameObject _activePopup;
 
@@ -38,6 +39,11 @@ public class PopupUIManager : Singleton<PopupUIManager>, IEventSubscriber, IDeac
     public GameObject PanelSkillInventory
     {
         get { return _panelSkillInventory; }
+    }
+
+    public GameObject PanelInventory
+    {
+        get { return _panelInventory; }
     }
 
     #region Initialize
@@ -60,6 +66,7 @@ public class PopupUIManager : Singleton<PopupUIManager>, IEventSubscriber, IDeac
         _panelSkillInventory = Instantiate(ObjectManager.Instance.PopupSkillInventory, _canvasPopupUI.transform);
         _panelMerchant = Instantiate(ObjectManager.Instance.PopupMerchantPanel, _canvasPopupUI.transform);
         _panelGacha = Instantiate(ObjectManager.Instance.PopupGachaPanel, _canvasPopupUI.transform);
+        _panelItemInfo = Instantiate(ObjectManager.Instance.PopupItemInfoPanel, _canvasPopupUI.transform);
 
         // 진짜 바보같은 코드... 가장 마지막으로보내버림
         _toolTipPanel = Instantiate(ObjectManager.Instance.ToolTipPanel, _canvasPopupUI.transform);
@@ -127,6 +134,7 @@ public class PopupUIManager : Singleton<PopupUIManager>, IEventSubscriber, IDeac
         _panelSkillInventory.SetActive(false);
         _panelMerchant.SetActive(false);
         _panelGacha.SetActive(false);
+        _panelItemInfo.SetActive(false);
     }
     #endregion
 
@@ -142,6 +150,7 @@ public class PopupUIManager : Singleton<PopupUIManager>, IEventSubscriber, IDeac
     }
     public void ActivateStatusPanel()
     {
+        DeactivatePopup();
         ActivatePopupPanel();
         _activePopup = _panelStatus;
         _panelStatus.SetActive(true);
@@ -149,6 +158,7 @@ public class PopupUIManager : Singleton<PopupUIManager>, IEventSubscriber, IDeac
 
     public void ActivateInventoryPanel()
     {
+        DeactivatePopup();
         ActivatePopupPanel();
         _activePopup = _panelInventory;
         _panelInventory.SetActive(true);
@@ -156,6 +166,7 @@ public class PopupUIManager : Singleton<PopupUIManager>, IEventSubscriber, IDeac
 
     public void ActivateSkillInventoryPanel()
     {
+        DeactivatePopup();
         ActivatePopupPanel();
         _activePopup = _panelSkillInventory;
         _panelSkillInventory.SetActive(!_panelSkillInventory.activeSelf);
@@ -164,6 +175,7 @@ public class PopupUIManager : Singleton<PopupUIManager>, IEventSubscriber, IDeac
 
     public void ActivateMerchantPanel()
     {
+        DeactivatePopup();
         if (_popupMerchantAppear.activeSelf)
         {
             
@@ -265,9 +277,16 @@ public class PopupUIManager : Singleton<PopupUIManager>, IEventSubscriber, IDeac
 
     public void ActivateGachaPanel()
     {
+        DeactivatePopup();
         ActivatePopupPanel();
         _activePopup = _panelGacha;
         _panelGacha.SetActive(true);
+    }
+
+    public void ActivateItemInfoPanel(ItemSlot itemSlot)
+    {
+        _panelItemInfo.SetActive(true);
+        _panelItemInfo.GetComponent<PopupUI_ItemInfo>().SetItemInfo(itemSlot);
     }
     #endregion
 
@@ -294,6 +313,8 @@ public class PopupUIManager : Singleton<PopupUIManager>, IEventSubscriber, IDeac
     #region Deactivate UI
     void DeactivatePopup()
     {
+        if (_activePopup == null)
+            return;
         _activePopup.SetActive(false);
         _popupPanel.SetActive(false);
         _activePopup = null;

@@ -99,13 +99,9 @@ public abstract class MonsterController : MonoBehaviour, IDamageable
     {
         if (!_animator.GetBool(Define.IsAttacking))
         {
-            //Debug.Log("걷는중");
-
             Vector3 targetDir = (targetPos - transform.position).normalized;
             targetDir.y = 0;
             transform.position += targetDir * _runtimeData.Speed * Time.deltaTime;
-            //transform.Translate(targetPos*Time.deltaTime);
-            //Debug.Log($"transform local position : {transform.localPosition}, targetPos : {targetPos}, targetDir.y : {targetDir}");
             Quaternion toRotation = Quaternion.LookRotation(targetDir, Vector3.up);
             transform.rotation = Quaternion.Slerp(transform.rotation, toRotation, 10 * Time.deltaTime);
 

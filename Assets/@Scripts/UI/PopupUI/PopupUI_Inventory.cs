@@ -19,12 +19,19 @@ public class PopupUI_Inventory : MonoBehaviour
     [SerializeField] Button _otherItemButton;
     [SerializeField] Button _exitButton;
 
+    [SerializeField] GameObject _helmetEquipment;
+    [SerializeField] GameObject _armorEquipment;
+    [SerializeField] GameObject _glovesEquipment;
+    [SerializeField] GameObject _shoesEquipment;
+    [SerializeField] GameObject _weaponEquipment;
+
+    // 장착된 아이템 슬롯 리스트
+    Dictionary<Define.EquipmentItemType, ItemSlot> _equipmentItemSlots = new Dictionary<Define.EquipmentItemType, ItemSlot>();
     // 아이템 슬롯 리스트
-    Dictionary<Define.ItemType, List<GameObject>> _itemSlots = new Dictionary<Define.ItemType, List<GameObject>>();
+    Dictionary<Define.ItemType, List<ItemSlot>> _itemSlots = new Dictionary<Define.ItemType, List<ItemSlot>>();
 
     // PopupUIManager에서 DeactivatePopup 연결
     public event Action OnExitButtonClicked;
-    public event Action<Define.ItemType> OnUpdateInventory;
 
     // 아이템 타입 별 뷰포트 첫 오픈 체크 변수
     bool _isFirstOpenEquipment = true;
@@ -56,6 +63,16 @@ public class PopupUI_Inventory : MonoBehaviour
 
     private void Initialize()
     {
+        _equipmentItemSlots.Clear();
+        foreach (Define.EquipmentItemType equipmentItemType in Enum.GetValues(typeof(Define.EquipmentItemType)))
+        {
+            _equipmentItemSlots.Add(equipmentItemType, null);
+        }
+
+        _itemSlots[Define.ItemType.Equipment] = new List<ItemSlot>();
+        _itemSlots[Define.ItemType.Consumable] = new List<ItemSlot>();
+        _itemSlots[Define.ItemType.Other] = new List<ItemSlot>();
+
         _exitButton.onClick.AddListener(OnExitButtonClick);
         _equipmentItemButton.onClick.AddListener(OnEquipmentButtonClick);
         _consumeItemButton.onClick.AddListener(OnConsumeButtonClick);
@@ -64,9 +81,9 @@ public class PopupUI_Inventory : MonoBehaviour
 
     // * 슬롯 생성 메서드
     //- 인벤토리 첫 오픈 시 아이템 슬롯 생성
-    void CreateSlot(Define.ItemType itemType)
+    void CreateSlot(Define.ItemType itemType, List<ItemData> itemsList)
     {
-        List<ItemData> itemList = PlayerManager.Instance.Player.Inventory.Items[itemType];
+        List<ItemData> itemList = itemsList;
 
         Transform viewPort = GetViewPortTransform(itemType);
 
@@ -83,8 +100,9 @@ public class PopupUI_Inventory : MonoBehaviour
             };
 
             GameObject itemSlot = PoolManager.Instance.GetObjectFromPool<ItemSlot>(Vector3.zero, slotName, viewPort.GetChild(0).GetChild(0));
-            itemSlot.GetComponent<ItemSlot>().SetData(itemData);
-            //_itemSlots[itemType].Add
+            itemSlot.GetComponent<ItemSlot>().SetData(itemData, true);
+
+            _itemSlots[itemType].Add(itemSlot.GetComponent<ItemSlot>());
         }
     }
     // * 아이템 타입에 따른 뷰포트 return 메서드
@@ -99,13 +117,28 @@ public class PopupUI_Inventory : MonoBehaviour
         };
     }
 
-    // * 인벤토리 동기화 메서드
-    //- 탭의 첫 오픈이 아닐 경우 호출
-    //- 변경 사항 대기 큐에 존재하는 작업 내용을 수행
-    void UpdateInventory(Define.ItemType itemType)
-    {
-        OnUpdateInventory?.Invoke(itemType);
-    }
+    //// * 인벤토리 동기화 메서드
+    ////- 탭의 첫 오픈이 아닐 경우 호출
+    ////- 변경 사항 대기 큐에 존재하는 작업 내용을 수행
+    //void UpdateInventory(Define.ItemType itemType)
+    //{
+        //while(PlayerManager.Instance.InventoryChangeQueue.IsExistTask(itemType))
+        //{
+        //    PendingChange pc = PlayerManager.Instance.InventoryChangeQueue.PopTask(itemType);
+        //    switch (pc.TaskType)
+        //    {
+        //        case Define.PendingTaskType.ItemAddTask:
+        //            CreateSlot(itemType, )
+        //            break;
+        //        case Define.PendingTaskType.ItemRemoveTask:
+        //            break;
+        //        case Define.PendingTaskType.ItemUpdateTask:
+        //            break;
+        //        default:
+        //            break;
+        //    }
+        //}
+    //}
 
     // * 각 버튼 클릭 리스너 이벤트에서 메서드 실행
     //- 아이템 타입 별 뷰포트 활성화 메서드 수행
@@ -135,18 +168,10 @@ public class PopupUI_Inventory : MonoBehaviour
             _ => false
         };
 
-        if (isFirstOpen)
-        {
-            //CreateSlot(itemType);
-            // 첫 오픈 플래그 false 처리 필요
-            SetFirstOpenFlag(itemType, false);
-            CreateSlot(itemType);
-        }
-        else
-        {
-            //UpdateInventory(itemType);
-        }
+        ClearSlots(itemType);
+        CreateSlot(itemType, PlayerManager.Instance.Player.Inventory.Items[itemType]);
     }
+
     // * 아이템 타입 별 bool 변수 Set
     void SetFirstOpenFlag(Define.ItemType itemType, bool value)
     {
@@ -156,5 +181,69 @@ public class PopupUI_Inventory : MonoBehaviour
             case Define.ItemType.Consumable: _isFirstOpenConsume = value; break;
             case Define.ItemType.Other: _isFirstOpenOther = value; break;
         }
+    }
+
+    // * 모든 슬롯 정리
+    void ClearSlots(Define.ItemType itemType)
+    {
+        Transform content = GetViewPortTransform(itemType).GetChild(0).GetChild(0);
+
+        for (int i = 0; i < content.childCount; i++)
+        {
+            GameObject slotObj = content.GetChild(i).gameObject;
+            slotObj.SetActive(false); // 또는 PoolManager로 반환
+        }
+
+        _itemSlots[itemType].Clear();
+    }
+
+    // 아이템 슬롯 장착 메서드
+    public void EquipItem(ItemSlot _itemSlot)
+    {
+        Define.EquipmentItemType itemType = ((EquipmentItemData)_itemSlot.ItemData).EquipmentType;
+
+        if (_itemSlots[Define.ItemType.Equipment].Contains(_itemSlot))
+        {
+            UnEquipItem(_equipmentItemSlots[itemType]);
+            _equipmentItemSlots[itemType] = _itemSlot;
+            _itemSlot.gameObject.transform.SetParent(GetEquipmentTransform(itemType));
+            _itemSlot.gameObject.transform.localPosition = Vector3.zero;
+            PlayerManager.Instance.Player.ApplyItemStatus(((EquipmentItemData)(_itemSlot.ItemData)).ItemStatus);
+        }
+        else
+            Debug.Log("아이템이 이미 장착되어 있습니다.");
+    }
+
+    // 아이템 슬롯 장착 해제 메서드
+    public void UnEquipItem(ItemSlot _itemSlot)
+    {
+        if (_itemSlot == null)
+            return;
+
+        Define.EquipmentItemType itemType = ((EquipmentItemData)_itemSlot.ItemData).EquipmentType;
+        if (_equipmentItemSlots[((EquipmentItemData)_itemSlot.ItemData).EquipmentType] == _itemSlot)
+        {
+            _itemSlot.gameObject.transform.SetParent(_equipmentViewPort.transform.GetChild(0).GetChild(0));
+            _itemSlot.gameObject.transform.localPosition = Vector3.zero;
+            PlayerManager.Instance.Player.ReleaseItemStatus(((EquipmentItemData)_itemSlot.ItemData).ItemStatus);
+            _equipmentItemSlots[itemType] = null;
+        }
+        else
+            Debug.Log("아이템이 장착되어있지 않습니다.");
+
+    }
+
+    // 부위별 장착 위치 반환 메서드
+    Transform GetEquipmentTransform(Define.EquipmentItemType itemType)
+    {
+        return itemType switch
+        {
+            Define.EquipmentItemType.Helmet => _helmetEquipment.transform,
+            Define.EquipmentItemType.Weapon => _weaponEquipment.transform,
+            Define.EquipmentItemType.Gloves => _glovesEquipment.transform,
+            Define.EquipmentItemType.Shoes => _shoesEquipment.transform,
+            Define.EquipmentItemType.Armor => _armorEquipment.transform,
+            _ => null,
+        };
     }
 }

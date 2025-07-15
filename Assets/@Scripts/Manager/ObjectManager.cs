@@ -52,6 +52,7 @@ public class ObjectManager : Singleton<ObjectManager>
     private GameObject _popupDungeonAppear;
     private GameObject _popupDungeonClearText;
     private GameObject _popupGachaPanel;
+    private GameObject _popupItemInfoPanel;
     private GameObject _popupMerchantAppear;
     private GameObject _popupMerchantDialogue;
 
@@ -414,6 +415,16 @@ public class ObjectManager : Singleton<ObjectManager>
         }
     }
 
+    public GameObject PopupItemInfoPanel
+    {
+        get
+        {
+            if (NullCheck(_popupItemInfoPanel))
+                return null;
+            return _popupItemInfoPanel;
+        }
+    }
+
     public GameObject PopupTreasureAppearText
     {
         get
@@ -722,6 +733,7 @@ public class ObjectManager : Singleton<ObjectManager>
         _popupDungeonAppear = Resources.Load<GameObject>(Define.PopupDungeonAppearPanelPath);
         _popupDungeonClearText = Resources.Load<GameObject>(Define.PopupDungeonClearPanelPath);
         _popupGachaPanel = Resources.Load<GameObject>(Define.PopupGachaPanelPath);
+        _popupItemInfoPanel = Resources.Load<GameObject>(Define.PopupItemInfoPanelPath);
         _popupMerchantAppear = Resources.Load<GameObject>(Define.PopupMerchantAppearPanelPath);
         _popupMerchantDialogue = Resources.Load<GameObject>(Define.PopupMerchantDialoguePanelPath);
     }

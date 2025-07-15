@@ -139,7 +139,6 @@ public class FieldManager : Singleton<FieldManager>, IEventSubscriber, IDeactiva
         Define.ItemValue rank = SetRank();
         //5의 배수마다 던전 두두둥장
         if (_stageCount % 5 == 0)
-        //if(true)
         {
             _rewardSystem.SetReward(Define.RewardType.JourneyExp, 10 * _stageCount);
             _currentType = Define.JourneyType.Dungeon;

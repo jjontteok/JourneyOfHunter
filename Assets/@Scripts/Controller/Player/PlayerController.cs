@@ -2,11 +2,11 @@ using System;
 using System.Collections;
 using UnityEngine;
 
+[Serializable]
 public struct PlayerStatus
 {
     public float Atk;
     public float Def;
-    public float Damage;
     public float HP;
     public float HPRecoveryPerSec;
     public float CoolTimeDecrease;
@@ -17,7 +17,6 @@ public struct PlayerStatus
     {
         Atk = playerData.Atk;
         Def = playerData.Def;
-        Damage = playerData.Damage;
         HP = playerData.HP;
         HPRecoveryPerSec = playerData.HPRecoveryPerSec;
         CoolTimeDecrease = playerData.CoolTimeDecrease;
@@ -29,7 +28,6 @@ public struct PlayerStatus
     {
         return CoolTimeDecrease;
     }
-
 }
 
 public class PlayerController : MonoBehaviour, IDamageable
@@ -47,7 +45,7 @@ public class PlayerController : MonoBehaviour, IDamageable
     public Action OnPlayerDead;
     public Action OnAutoMerchantAppear;
 
-    PlayerStatus _runtimeData;
+    [SerializeField] PlayerStatus _runtimeData;
     Vector3 _direction;
     float _hp;
 
@@ -306,11 +304,10 @@ public class PlayerController : MonoBehaviour, IDamageable
         {
             if (!_animator.GetBool(Define.IsAttacking) && _direction != Vector3.zero)
             {
-                Debug.Log("리워드 사운드 " + _footstepSound.isPlaying);
-                _rigidbody.MovePosition(_rigidbody.position + _direction.normalized * _playerData.Speed * 1 * Time.fixedDeltaTime);
+                _rigidbody.MovePosition(_rigidbody.position + _direction.normalized * _runtimeData.Speed * 1 * Time.fixedDeltaTime);
 
                 _animator.SetFloat(Define.Speed, _direction.magnitude);
-                transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(_direction), _playerData.Speed * Time.deltaTime);
+                transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(_direction), _runtimeData.Speed * Time.deltaTime);
             }
             else
             {
@@ -372,11 +369,11 @@ public class PlayerController : MonoBehaviour, IDamageable
             // 공격 모션 중이지 않을 때 이동
             if (!_animator.GetBool(Define.IsAttacking))
             {
-                _rigidbody.MovePosition(_rigidbody.position + _direction.normalized * _playerData.Speed * Time.fixedDeltaTime);
+                _rigidbody.MovePosition(_rigidbody.position + _direction.normalized * _runtimeData.Speed * Time.fixedDeltaTime);
 
                 _animator.SetFloat(Define.Speed, _direction.magnitude);
                 //타겟 바라보게 회전
-                transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(_direction), _playerData.Speed * Time.deltaTime);
+                transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(_direction), _runtimeData.Speed * Time.deltaTime);
             }
 
             return true;
@@ -394,10 +391,10 @@ public class PlayerController : MonoBehaviour, IDamageable
         {
             _direction = Vector3.forward;
         }
-        _rigidbody.MovePosition(_rigidbody.position + _direction * _playerData.Speed * Time.fixedDeltaTime);
+        _rigidbody.MovePosition(_rigidbody.position + _direction.normalized * _runtimeData.Speed * Time.fixedDeltaTime);
         _animator.SetFloat(Define.Speed, _direction.magnitude);
         //타겟 바라보게 회전
-        transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(_direction), _playerData.Speed * Time.deltaTime);
+        transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(_direction), _runtimeData.Speed * Time.deltaTime);
     }
 
     // 가만히 서있기
@@ -675,6 +672,28 @@ public class PlayerController : MonoBehaviour, IDamageable
     public float CalculateFinalDamage(float damage, float def)
     {
         return damage * (1 - def / Define.MaxDef);
+    }
+    #endregion
+
+    #region Equipment
+    public void ApplyItemStatus(ItemStatus itemStatus)
+    {
+        _runtimeData.Atk += itemStatus.Atk;
+        _runtimeData.Def += itemStatus.Def;
+        _runtimeData.HP += itemStatus.HP;
+        _runtimeData.HPRecoveryPerSec += itemStatus.HPRecoveryPerSec;
+        _runtimeData.CoolTimeDecrease += itemStatus.CoolTimeDecrease;
+        _runtimeData.Speed += itemStatus.Speed;
+    }
+
+    public void ReleaseItemStatus(ItemStatus itemStatus)
+    {
+        _runtimeData.Atk -= itemStatus.Atk;
+        _runtimeData.Def -= itemStatus.Def;
+        _runtimeData.HP -= itemStatus.HP;
+        _runtimeData.HPRecoveryPerSec -= itemStatus.HPRecoveryPerSec;
+        _runtimeData.CoolTimeDecrease -= itemStatus.CoolTimeDecrease;
+        _runtimeData.Speed -= itemStatus.Speed;
     }
     #endregion
 }
