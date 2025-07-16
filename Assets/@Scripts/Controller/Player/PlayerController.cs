@@ -209,7 +209,7 @@ public class PlayerController : MonoBehaviour, IDamageable
             return;
 
         // 죽은 상태이거나 공격 모션 중일 땐 움직이지 않도록
-        if (_animator.GetInteger(Define.DieType) > 0 || _animator.GetBool(Define.IsAttacking))
+        if (_animator.GetInteger(Define.DieType) > 0 || _animator.GetBool(Define.IsAttacking) || PlayerManager.Instance.IsCutSceneOn)
         {
             _rigidbody.linearVelocity = new Vector3(0, _rigidbody.linearVelocity.y, 0);
             _animator.SetFloat(Define.Speed, 0);

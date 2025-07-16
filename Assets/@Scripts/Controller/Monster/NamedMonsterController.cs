@@ -52,6 +52,8 @@ public class NamedMonsterController : MonsterController
 
     private void Update()
     {
+        if (PlayerManager.Instance.IsCutSceneOn)
+            return;
         RotateNamedMonster();
         CheckMoveToOrigin();
     }

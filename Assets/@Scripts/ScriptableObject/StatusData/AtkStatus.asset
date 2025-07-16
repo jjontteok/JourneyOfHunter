@@ -16,4 +16,4 @@ MonoBehaviour:
   level: 1
   statusName: "\uACF5\uACA9\uB825"
   currentStatusCount: 10
-  upgradeCost: 15
+  upgradeCost: 10

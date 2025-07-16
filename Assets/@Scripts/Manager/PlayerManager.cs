@@ -15,6 +15,8 @@ public class PlayerManager : Singleton<PlayerManager>, IEventSubscriber
 
     readonly Vector3 _originPos = new Vector3(0f, 0.1f, 0.5f);
 
+    public bool IsCutSceneOn = false;
+
     #region Properties
 
     public SkillSystem SkillSystem { get { return _skillSystem; } }

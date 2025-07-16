@@ -12,8 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b5a2bd60270c28542a965d0ea4006cc1, type: 3}
   m_Name: Goblin
   m_EditorClassIdentifier: 
-  Atk: 10
-  Def: 5
+  Atk: 20
+  Def: 10
   SpawnEffect: {fileID: 0}
   DeadEffect: {fileID: 0}
   Name: Goblin

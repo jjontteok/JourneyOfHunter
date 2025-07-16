@@ -79,7 +79,7 @@ public class CutSceneController : MonoBehaviour
 
         //_checkAuto = PlayerManager.Instance.IsAuto;
         //PlayerManager.Instance.IsAuto = false;
-        PlayerManager.Instance.Player.SetIsAttacking(true);
+        PlayerManager.Instance.IsCutSceneOn = true;
     }
 
     void FinishCutScene(PlayableDirector pd)
@@ -93,7 +93,7 @@ public class CutSceneController : MonoBehaviour
         PopupUIManager.Instance.ModifyBuffTextPos();
 
         //PlayerManager.Instance.IsAuto = _checkAuto;
-        PlayerManager.Instance.Player.SetIsAttacking(false);
+        PlayerManager.Instance.IsCutSceneOn = false;
 
         OnCutSceneFinished?.Invoke();
     }

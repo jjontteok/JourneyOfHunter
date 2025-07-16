@@ -33,7 +33,8 @@ public class PopupUI_Status : MonoBehaviour
         _inventoryData.OnValueChanged -= UpdateStatusUI;
     }
 
-    void Initialize() {
+    void Initialize() 
+    {
         _player = PlayerManager.Instance.Player;
         _inventoryData = _player.Inventory;
         _silverCoinText.text = _inventoryData.Goods[Define.GoodsType.SilverCoin].ToString();

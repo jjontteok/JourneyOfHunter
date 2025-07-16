@@ -69,7 +69,7 @@ public class SkillSystem : MonoBehaviour
 
     private void Update()
     {
-        if (PlayerManager.Instance.IsAuto && _animator.GetInteger(Define.DieType) == 0)
+        if (PlayerManager.Instance.IsAuto && _animator.GetInteger(Define.DieType) == 0 && !PlayerManager.Instance.IsCutSceneOn)
         {
             // 기본 공격할 타이밍인지 체크
             if (IsBasicAttackPossible())
