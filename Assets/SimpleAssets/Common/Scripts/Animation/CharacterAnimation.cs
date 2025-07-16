@@ -75,12 +75,12 @@ namespace SimpleAssets.Common.Character
 
         public void PlayAttack()
         {
-            /*if (gameObject.name == "Ghoul-Blue (Action RPG Player)(Clone)")
+            /*if (gameObject.Name == "Ghoul-Blue (Action RPG Player)(Clone)")
                 Debug.Log("PlayAttack");*/
             Animator.SetTrigger(AttackHash);
         }
 
-        // speed beahavior
+        // Speed beahavior
         public void SetWalkSpeed(float speed)
         {
             Animator.SetFloat(MoveSpeedHash, speed);

@@ -1,26 +1,38 @@
+using System.Collections;
 using UnityEngine;
 
+[RequireComponent(typeof(AudioSource))]
 public class ActiveSkill : Skill
 {
-    // 스킬 오브젝트 활성화 + 모션 실행 + 비활성화 코루틴
-    public override void ActivateSkill(Transform target = null, Vector3 pos = default)
+    protected AudioSource _skillSound;
+
+    // 스킬 오브젝트 활성화(default 포지션) + 시전 끝나면 비활성화 코루틴
+    public override bool ActivateSkill(Vector3 pos)
     {
-        //플레이어 위치에 스킬 활성화
+        //시전 위치에 스킬 활성화
+        //스킬 오브젝트 자체는 슬롯의 자식이 아니므로 position 필요
         gameObject.SetActive(true);
         transform.position = pos;
-        // particle system인 경우
-        ParticleSystem particleSystem = gameObject.GetComponent<ParticleSystem>();
-        if (particleSystem != null)
+
+        if (_skillSound != null)
         {
-            particleSystem.Play();
+            _skillSound.Play();
         }
 
         //스킬 시전 후 스킬 비활성화
         StartCoroutine(DeActivateSkill());
+        return true;
     }
 
-    public override void Initialize()
+    public override void Initialize(Status status)
     {
-        base.Initialize();
+        base.Initialize(status);
+        _skillSound = GetComponent<AudioSource>();
+    }
+
+    protected virtual IEnumerator DeActivateSkill()
+    {
+        yield return _skillDurationTime;
+        gameObject.SetActive(false);
     }
 }

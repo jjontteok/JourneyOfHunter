@@ -1,20 +1,27 @@
 using UnityEngine;
 
 [CreateAssetMenu(fileName = "SkillData", menuName = "Scriptable Objects/SkillData")]
-public class SkillData : ScriptableObject
+public class SkillData : Data
 {
-    public string skillName;
-    public float coolTime;
-    public float durationTime;
-    public float castingTime;
-    public float targetDistance;
-    public float damage;
-    public float speed;
-    public float force;
-    public float angle;                   //DirectionNonTarget 각도
-    public GameObject connectedSkillPrefab;
-    public GameObject hitEffectPrefab;
-    public Define.SkillType skillType;
-    public Define.MotionType motionType;
-    public Define.HandlerType handlerType;
+    public float CoolTime;
+    public float DurationTime;
+    public float TargetDistance;
+    public float Damage;
+    public float Speed;
+    [Tooltip("DirectionNonTarget 스킬의 각도")]
+    public float Angle;                     //DirectionNonTarget 각도
+    public GameObject ConnectedSkillPrefab;
+    public GameObject HitEffectPrefab;
+    public bool TargetExistence;
+    public bool IsPlayerSkill;
+    public bool IsPassive;
+    public Vector3 Offset;
+
+    public Define.SkillAttribute SkillAttribute;
+    public Define.StatusType BuffStatus;
+    public float BuffAmount;
+
+    public bool IsUltimate;
+    public string SkillAnimationName;
+    public int Level;
 }

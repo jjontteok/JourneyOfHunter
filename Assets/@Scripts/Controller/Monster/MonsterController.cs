@@ -1,5 +1,6 @@
 using UnityEngine;
 using extension;
+using System;
 
 // * Monster Status 구조체
 //- Scriptable Object의 런타임 복사용으로 활용
@@ -9,7 +10,8 @@ public struct MonsterStatus
     public string Description;          // 설명
     public float Atk;                   // 공격력
     public float Def;                   // 방어력
-    public float HP;                    // 체력
+    public float MaxHP;                 // 최대 체력
+    public float CurrentHP;             // 현재 체력
     public float Speed;                 // 이동 속도
     public float AttackSpeed;           // 공격 속도
     public float MoveRange;             // 이동 범위
@@ -21,7 +23,8 @@ public struct MonsterStatus
         Description = monsterData.Description;
         Atk = monsterData.Atk;
         Def = monsterData.Def;
-        HP = monsterData.HP;
+        MaxHP = monsterData.HP;
+        CurrentHP = monsterData.HP;
         Speed = monsterData.Speed;
         AttackSpeed = monsterData.AttackSpeed;
         MoveRange = monsterData.MoveRange;
@@ -31,12 +34,14 @@ public struct MonsterStatus
 
 // * MonsterController 스크립트
 //- 이동, 공격, 충돌, 사망
-public abstract class MonsterController : MonoBehaviour
+public abstract class MonsterController : MonoBehaviour, IDamageable
 {
     [SerializeField] protected MonsterData _monsterData;
     [SerializeField] protected GameObject _target;
 
-    protected MonsterStatus _runtimeData;
+    public static event Action OnMonsterDead;
+
+    [SerializeField] protected MonsterStatus _runtimeData;
     protected Animator _animator;
     protected AttackRangeController _attackRangeController;
     protected Rigidbody _rigidbody;
@@ -58,6 +63,12 @@ public abstract class MonsterController : MonoBehaviour
         //Spawned();
     }
 
+    protected virtual void OnDisable()
+    {
+        _runtimeData = new MonsterStatus(_monsterData);
+        _runtimeData.CurrentHP = _runtimeData.MaxHP;
+    }
+
     // * 초기화 메서드
     //- 컴포넌트 연결 및 공격 범위 오브젝트 생성
     //- 공격 이벤트에 공격 메서드 구독
@@ -66,17 +77,17 @@ public abstract class MonsterController : MonoBehaviour
         _runtimeData = new MonsterStatus(_monsterData);
         _animator = GetComponent<Animator>();
         _rigidbody = GetComponent<Rigidbody>();
-        _target = GameObject.Find(Define.PlayerTag);
+        _target = PlayerManager.Instance.Player.gameObject;
 
         GameObject attackRange = new GameObject("AttackRange");
+        attackRange.layer = LayerMask.NameToLayer(Define.MonsterAttackRangeLayer);
         attackRange.transform.parent = this.gameObject.transform;
         _attackRangeController = attackRange.GetOrAddComponent<AttackRangeController>();
         _attackRangeController.Initialize(_runtimeData.AttackRange);
         _attackRangeController.OnAttack += Attack;
         _attackRangeController.OffAttack += EndAttack;
 
-        Physics.IgnoreLayerCollision(LayerMask.NameToLayer(Define.PlayerTag), LayerMask.NameToLayer(Define.PlayerSkillLayer));
-        Physics.IgnoreLayerCollision(LayerMask.NameToLayer(Define.MonsterTag), LayerMask.NameToLayer(Define.MonsterSkillLayer));
+        FieldManager.Instance.OnUpgradeMonsterStatus += UpgradeStatus;
     }
 
     // 타겟 이동 메서드
@@ -84,17 +95,13 @@ public abstract class MonsterController : MonoBehaviour
     {
         if (!_animator.GetBool(Define.IsAttacking))
         {
-            //Debug.Log("걷는중");
-
             Vector3 targetDir = (targetPos - transform.position).normalized;
+            targetDir.y = 0;
             transform.position += targetDir * _runtimeData.Speed * Time.deltaTime;
-            //transform.Translate(targetPos*Time.deltaTime);
-            //Debug.Log($"transform local position : {transform.localPosition}, targetPos : {targetPos}, targetDir.y : {targetDir}");
             Quaternion toRotation = Quaternion.LookRotation(targetDir, Vector3.up);
             transform.rotation = Quaternion.Slerp(transform.rotation, toRotation, 10 * Time.deltaTime);
 
             _animator.SetFloat(Define.WalkSpeed, _runtimeData.Speed / 2);
-            _animator.SetTrigger(Define.Walk);
         }
         else
         {
@@ -119,33 +126,32 @@ public abstract class MonsterController : MonoBehaviour
     public virtual void EndAttack()
     {
         _animator.SetBool(Define.IsAttacking, false);
-        _animator.SetTrigger(Define.EndAttack);
-        //Debug.Log("공격 종료");
-    }
-
-    // * 방어력 미적용 데미지 계산 메서드
-    public void GetRealDamaged(float damage)
-    {
-        _runtimeData.HP -= damage;
-        if (_monsterData.HP <= 0)
-            Die();
     }
 
     // * 방어력 적용 데미지 계산 메서드
-    public void GetDamaged(float damage)
+    public virtual void GetDamage(float damage)
     {
-        float finalDamage = damage - _runtimeData.Def > 0 ? damage - _runtimeData.Def : 0;
-        _runtimeData.HP -= damage;
-        //if (_runtimeData.HP <= 0)
-        //    Die();
+        float finalDamage = CalculateFinalDamage(damage, _runtimeData.Def);
+        _runtimeData.CurrentHP -= finalDamage;
+        DamageTextEvent.Invoke(Util.GetDamageTextPosition(gameObject.GetComponent<Collider>()), finalDamage, false);
+        if (_runtimeData.CurrentHP <= 0)
+            Die();
+    }
+
+    public float CalculateFinalDamage(float damage, float def)
+    {
+        float calc = damage - def;
+        return calc > 0 ? calc : 0;
     }
 
     // * 사망 메서드
     //- 오브젝트 풀링 대비 비활성화 처리
     public virtual void Die()
     {
-        Instantiate(_monsterData.DeadEffect);
+        //Instantiate(_monsterData.DeadEffect);
+        OnMonsterDead?.Invoke();
         gameObject.SetActive(false);
+        PlayerManager.Instance.Player.ReleaseTarget();
     }
 
     // * 생성 메서드
@@ -155,18 +161,23 @@ public abstract class MonsterController : MonoBehaviour
         Instantiate(_monsterData.SpawnEffect);
     }
 
+    protected virtual void UpgradeStatus(float amount)
+    {
+       
+    }
+
     // * 플레이어 충돌 및 공격 중일 시 데미지 계산
     //- stay로 처리했기에 피격 쿨타임을 적용 시켜 밸런스 조정 필요
-    private void OnCollisionStay(Collision collision)
-    {
-        if (_animator.GetBool(Define.IsAttacking))
-        {
-            if (collision.gameObject.CompareTag(Define.PlayerTag))
-            {
-                // 공격 처리
-                // collision.gameObject.GetComponent<PlayerController>().피격메서드;
-                // 피격 메서드 내에서 피격 쿨타임 활용해보아도 될듯합니다.
-            }
-        }
-    }
+    //private void OnCollisionStay(Collision collision)
+    //{
+    //    if (_animator.GetBool(Define.IsAttacking))
+    //    {
+    //        if (collision.gameObject.CompareTag(Define.PlayerTag))
+    //        {
+    //            // 공격 처리
+    //            // collision.gameObject.GetComponent<PlayerController>().피격메서드;
+    //            // 피격 메서드 내에서 피격 쿨타임 활용해보아도 될듯합니다.
+    //        }
+    //    }
+    //}
 }

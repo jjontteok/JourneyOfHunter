@@ -1,0 +1,24 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 078d978801e632f43a7e3dda15e82fd7, type: 3}
+  m_Name: UncommonBuffPotion
+  m_EditorClassIdentifier: 
+  Name: "\uC77C\uBC18 \uB9E5\uC8FC"
+  Description: "\uC8FC\uC810\uC5D0\uC11C \uD310\uB9E4\uD558\uB294 \uD754\uD55C \uB9E5\uC8FC\uC774\uB2E4."
+  IconImage: {fileID: 21300000, guid: 1f3800f79b39dd84aa25f985117791a3, type: 3}
+  count: 0
+  Id: 1
+  Cost: 100
+  Type: 1
+  Value: 1
+  ConsumerItemStatus:
+    ConsumeTarget: 0

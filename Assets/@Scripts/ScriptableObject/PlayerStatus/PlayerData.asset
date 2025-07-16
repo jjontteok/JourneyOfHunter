@@ -1,0 +1,30 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 607570ebac24e4a45abeea4b538c7693, type: 3}
+  m_Name: PlayerData
+  m_EditorClassIdentifier: 
+  Atk: 10
+  Def: 0
+  Name: YongJinNa
+  Level: 1
+  Exp: 0
+  Damage: 0
+  HP: 100
+  HPRecoveryPerSec: 1
+  CoolTimeDecrease: 0
+  UnlockedSkillSlotCount: 5
+  JourneyExp: 0
+  Speed: 10
+  JourneyRankData: {fileID: 11400000, guid: cf6733ab564429b4e9cc4721b7277c58, type: 2}
+  CurrentSkillData:
+  - {fileID: 11400000, guid: fd5198dc4616eb641b608a206e87ff74, type: 2}
+  - {fileID: 11400000, guid: a813ec37f6ba9874fb28e91f4e83b765, type: 2}

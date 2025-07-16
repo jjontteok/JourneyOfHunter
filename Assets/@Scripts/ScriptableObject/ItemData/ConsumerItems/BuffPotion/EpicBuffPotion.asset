@@ -1,0 +1,24 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 078d978801e632f43a7e3dda15e82fd7, type: 3}
+  m_Name: EpicBuffPotion
+  m_EditorClassIdentifier: 
+  Name: "\uC7A5\uC778 \uB9E5\uC8FC"
+  Description: "1\uB4F1 \uC591\uC870\uC7A5 \uC7A5\uC778\uC774 \uB9CC\uB4E0 \uB9E5\uC8FC\uC774\uB2E4."
+  IconImage: {fileID: 21300000, guid: d7b340945a4cde349bcb0ab41b5fe7b6, type: 3}
+  count: 0
+  Id: 3
+  Cost: 500
+  Type: 1
+  Value: 3
+  ConsumerItemStatus:
+    ConsumeTarget: 0

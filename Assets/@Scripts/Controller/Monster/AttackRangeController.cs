@@ -25,10 +25,10 @@ public class AttackRangeController : MonoBehaviour
     // 플레이어 감지 시 공격 이벤트 발생
     private void OnTriggerStay(Collider other)
     {
-        //Debug.Log($"충돌 발생: {other.name}, 태그: {other.tag}, 기대 태그: {Define.PlayerTag}");
-        if(other.CompareTag(Define.PlayerTag))
+        //Debug.Log($"충돌 발생: {other.Name}, 태그: {other.tag}, 기대 태그: {Define.PlayerTag}");
+        if (other.CompareTag(Define.PlayerTag) && other.GetComponent<Animator>().GetInteger(Define.DieType) == 0)
         {
-            Debug.Log("충돌");
+            //Debug.Log("충돌");
             OnAttack.Invoke();
         }
     }
