@@ -120,14 +120,7 @@ public class UI_Game : MonoBehaviour
     //얘도 몬스터 처치 시 재화를 얼만큼 획득할지 정해야 한당
     void GainGoods()
     {
-        Define.GoodsType type;
-        float amount;
-        float r = UnityEngine.Random.Range(0, 1);
-        if (r < 0.3f)
-        {
-            type = Define.GoodsType.SilverCoin;
-            amount = 100;
-        }
+        PlayerManager.Instance.Player.Inventory.AddGoods(Define.GoodsType.SilverCoin, 100);
     }
 
     void UpdateGoods(Define.GoodsType type)
