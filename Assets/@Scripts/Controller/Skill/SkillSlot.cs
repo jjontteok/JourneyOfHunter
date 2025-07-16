@@ -68,6 +68,16 @@ public class SkillSlot : MonoBehaviour
         {
             rotation.OnActivateSkill += _player.Rotate;
         }
+
+        // 버프 처럼 스킬 발동 시 버프아이콘 띄워야 하는 스킬
+        var statusEffect=_skill.GetComponent<IStatusEffectSkill>();
+        {
+            if (statusEffect != null && UIManager.Instance.UI_Game != null)
+            {
+                statusEffect.OnStatusEffect += UIManager.Instance.UI_Game.StatusEffect.UpdateStatusEffect;
+            }
+        }
+
         _skill.gameObject.SetActive(false);
 
         OnGenerateSlot?.Invoke(data);
