@@ -12,17 +12,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2a11eeb062f8b32458de83e3f3058dce, type: 3}
   m_Name: Moon Sword
   m_EditorClassIdentifier: 
-  Name: 
-  Description: 
-  IconImage: {fileID: 0}
+  Name: "\uC6D4\uAD11\uAC80"
+  Description: "\uB2EC\uBE5B\uC774 \uC2A4\uBA70\uB4E0 \uC7A5\uAC80\uC774\uB2E4."
+  IconImage: {fileID: 21300000, guid: b906fea0feef57a4ab4ae21578cc1c5a, type: 3}
   count: 0
-  Id: 0
+  Id: 3
   Cost: 0
   Type: 0
   Value: 3
   EquipmentType: 4
   ItemStatus:
-    Atk: 0
+    Atk: 200
     Def: 0
     HP: 0
     HPRecoveryPerSec: 0

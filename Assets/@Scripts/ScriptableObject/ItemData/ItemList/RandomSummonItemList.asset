@@ -31,6 +31,7 @@ MonoBehaviour:
   - ItemValue: 3
     items:
     - {fileID: 11400000, guid: ee5a6f97d2fcc7e4fbf46cd4c23accc9, type: 2}
+    - {fileID: 11400000, guid: aa97b0a82f478494c977c39371d0eca3, type: 2}
   - ItemValue: 4
     items:
     - {fileID: 11400000, guid: 3f03fbc2943b6504aa4a34a2ceac40d1, type: 2}
