@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 078d978801e632f43a7e3dda15e82fd7, type: 3}
-  m_Name: UncommonHPPotion1
+  m_Name: UncommonHPPotion
   m_EditorClassIdentifier: 
   Id: 1
   Name: "\uB098\uADF8\uB124 \uD68C\uBCF5\uC57D"
