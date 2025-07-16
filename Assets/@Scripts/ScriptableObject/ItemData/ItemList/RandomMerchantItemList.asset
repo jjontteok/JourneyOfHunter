@@ -16,12 +16,12 @@ MonoBehaviour:
   - ItemValue: 0
     items:
     - {fileID: 11400000, guid: d9c4e06036e2c7b40acdd5abf5a04ef2, type: 2}
-    - {fileID: 11400000, guid: 8f131a254b8a22242942e7ef8f342ae4, type: 2}
+    - {fileID: 11400000, guid: c734a6738d8530b4d9d5f7bafd3f8ac3, type: 2}
     - {fileID: 11400000, guid: 45105fd3835fa3a40bd9c323129f1341, type: 2}
   - ItemValue: 1
     items:
     - {fileID: 11400000, guid: 24341808ef3d05f41b4ebcd7dc513bd3, type: 2}
-    - {fileID: 11400000, guid: c734a6738d8530b4d9d5f7bafd3f8ac3, type: 2}
+    - {fileID: 11400000, guid: 21322a522d9aebf4eba5d9142ac01b42, type: 2}
     - {fileID: 11400000, guid: da74e5349284b2d419737bc0444767e6, type: 2}
   - ItemValue: 2
     items:
