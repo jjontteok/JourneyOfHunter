@@ -18,7 +18,7 @@ MonoBehaviour:
     \uC0DD\uC131\uD569\uB2C8\uB2E4."
   IconImage: {fileID: 21300000, guid: 52e23de419d757d47ac72ffe73114d92, type: 3}
   count: 0
-  CoolTime: 8
+  CoolTime: 60
   DurationTime: 7
   TargetDistance: 10
   Damage: 40

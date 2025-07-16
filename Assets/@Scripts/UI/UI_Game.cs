@@ -21,6 +21,7 @@ public class UI_Game : MonoBehaviour
     // 불/물/빛/암
     [SerializeField] GameObject[] _attributePrefab = new GameObject[4];
     [SerializeField] Image _hpBar;
+    [SerializeField] UI_StatusEffect _statusEffect;
 
     private List<UI_PlayerVital> _playerVitalList;
     private GameObject _playerVitalCanvas;
@@ -39,6 +40,11 @@ public class UI_Game : MonoBehaviour
             _playerName = value;
             _playerNameText.text = _playerName;
         }
+    }
+
+    public UI_StatusEffect StatusEffect
+    {
+        get { return _statusEffect; }
     }
 
     //private void Awake()
@@ -120,14 +126,7 @@ public class UI_Game : MonoBehaviour
     //얘도 몬스터 처치 시 재화를 얼만큼 획득할지 정해야 한당
     void GainGoods()
     {
-        Define.GoodsType type;
-        float amount;
-        float r = UnityEngine.Random.Range(0, 1);
-        if (r < 0.3f)
-        {
-            type = Define.GoodsType.SilverCoin;
-            amount = 100;
-        }
+        PlayerManager.Instance.Player.Inventory.AddGoods(Define.GoodsType.SilverCoin, 100);
     }
 
     void UpdateGoods(Define.GoodsType type)

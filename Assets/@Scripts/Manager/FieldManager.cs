@@ -50,7 +50,7 @@ public class RewardSystem
 
 public class FieldManager : Singleton<FieldManager>, IEventSubscriber, IDeactivateObject
 {
-    public event Action<int> OnStageChanged;
+    public event Action<int, bool> OnStageChanged;
     public event Action<Define.JourneyType, Define.ItemValue> OnJourneyEvent;
     public event Action OnFailedDungeonClear;
     public event Action<float> OnUpgradeMonsterStatus;
@@ -138,8 +138,13 @@ public class FieldManager : Singleton<FieldManager>, IEventSubscriber, IDeactiva
     //플레이어가 구역을 지나면 호출될 함수
     void OnPlayerCross()
     {
+        // 랜덤 필드 요소 정하기
+        int rnd = UnityEngine.Random.Range(0, 100);
+        if (_failedCount > 0)
+            rnd = 50;
+
         _stageCount = ++StageCount;
-        OnStageChanged?.Invoke(_stageCount);
+        OnStageChanged?.Invoke(_stageCount, (rnd < 70));
         IsClear = false;
 
         if (_stageCount % 10 == 0)
@@ -150,42 +155,43 @@ public class FieldManager : Singleton<FieldManager>, IEventSubscriber, IDeactiva
 
         Define.ItemValue rank = SetRank();
         _rewardSystem.ClearRewardList();
-        //5의 배수마다 던전 두두둥장
-        if (_stageCount % 5 == 0)
+        ////5의 배수마다 던전 두두둥장
+        //if (_stageCount % 5 == 0)
+        //{
+        //    _rewardSystem.SetReward(Define.RewardType.JourneyExp, 10 * _stageCount);
+        //    _currentType = Define.JourneyType.Dungeon;
+        //    rank = Define.ItemValue.Common;
+        //}
+            // 70퍼 확률로 던전 등장
+        if (rnd < 70)
         {
             _rewardSystem.SetReward(Define.RewardType.JourneyExp, 10 * _stageCount);
             _currentType = Define.JourneyType.Dungeon;
             rank = Define.ItemValue.Common;
         }
-        else
+        else if (rnd < 90)
         {
-            int rnd = UnityEngine.Random.Range(0, 90);
-            rnd = 90;
-            if (rnd < 90)
+            //50% 확률로 기타 오브젝트 등장
+            if (rnd < 80)
             {
-                //80% 확률로 기타 오브젝트 등장
-                if (rnd < 70)
-                //if (rnd < 50)
-                {
-                    _currentType = Define.JourneyType.OtherObject;
-                    _rewardSystem.SetReward(Define.RewardType.JourneyExp, 25 * _stageCount * (int)(rank + 1));
-                }
-                //10% 확률로 보물상자 등장
-                else
-                {
-                    _currentType = Define.JourneyType.TreasureBox;
-                    _rewardSystem.SetReward(Define.RewardType.JourneyExp, 50 * _stageCount * (int)(rank + 1));
-                    _rewardSystem.SetReward(Define.RewardType.Gem, 10 * _stageCount * (int)(rank + 1));
-                    _rewardSystem.SetReward(Define.RewardType.SilverCoin, 100 * _stageCount * (int)(rank + 1));
-                }
+                _currentType = Define.JourneyType.OtherObject;
+                _rewardSystem.SetReward(Define.RewardType.JourneyExp, 25 * _stageCount * (int)(rank + 1));
             }
-            //10%의 확률로 상인 등장
+            //50% 확률로 보물상자 등장
             else
             {
-                _currentType = Define.JourneyType.Merchant;
-                rank = Define.ItemValue.Common;
-                OnMerchantAppeared?.Invoke();
+                _currentType = Define.JourneyType.TreasureBox;
+                _rewardSystem.SetReward(Define.RewardType.JourneyExp, 50 * _stageCount * (int)(rank + 1));
+                _rewardSystem.SetReward(Define.RewardType.Gem, 10 * _stageCount * (int)(rank + 1));
+                _rewardSystem.SetReward(Define.RewardType.SilverCoin, 100 * _stageCount * (int)(rank + 1));
             }
+        }
+        //10%의 확률로 상인 등장
+        else
+        {
+            _currentType = Define.JourneyType.Merchant;
+            rank = Define.ItemValue.Common;
+            OnMerchantAppeared?.Invoke();
         }
         OnJourneyEvent?.Invoke(_currentType, rank);
         PlayerManager.Instance.IsAutoMoving = false;
@@ -225,7 +231,7 @@ public class FieldManager : Singleton<FieldManager>, IEventSubscriber, IDeactiva
             OnUpgradeMonsterStatus?.Invoke(0.5f);
         }
         DungeonClear(false);
-        StageCount -= 5;
+        StageCount -= 1;
         _stageCount = StageCount;
         OnFailedDungeonClear?.Invoke();
         if (_failedCount < 3)

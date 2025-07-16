@@ -215,13 +215,12 @@ public class PopupUIManager : Singleton<PopupUIManager>, IEventSubscriber, IDeac
             SetNamedMonsterHpBar(curHp, maxHp);
     }
 
-    public void ActivateStageText(int stage)
+    public void ActivateStageText(int stage, bool isDungeon)
     {
-        if (stage % 5 == 0)
+        if (isDungeon)
         {
             _popupStageInfo.GetComponent<PopupUI_StageInfo>().Stage = stage;
             ActivateDungeonAppear();
-            return;
         }
         TMP_Text stageText = _popupStageText.GetComponentInChildren<TMP_Text>();
         stageText.text = $"- Stage {stage} -";

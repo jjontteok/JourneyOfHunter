@@ -52,9 +52,9 @@ public class NamedMonsterController : MonsterController
 
     private void Update()
     {
+        RotateNamedMonster();
         if (PlayerManager.Instance.IsCutSceneOn)
             return;
-        RotateNamedMonster();
         CheckMoveToOrigin();
     }
 
@@ -108,6 +108,8 @@ public class NamedMonsterController : MonsterController
     //5~8범위 내에서는 이동
     void OnMoveToTarget()
     {
+        if (_animator.GetBool(Define.IsAttacking))
+            return;
         float distance = Vector3.Distance(transform.position, _target.transform.position);
         if (distance > _closeAttackLimit && distance <= _runtimeData.MoveRange)
             MoveToTarget(_target.transform.position);
@@ -152,7 +154,7 @@ public class NamedMonsterController : MonsterController
         if (_target.GetComponent<Animator>().GetInteger(Define.DieType) > 0)
             return;
         _animator.SetTrigger(Define.CloseAttack);
-        _animator.SetBool(Define.IsAttacking, true);
+        //_animator.SetBool(Define.IsAttacking, true);
     }
 
     //원거리 공격 활성화

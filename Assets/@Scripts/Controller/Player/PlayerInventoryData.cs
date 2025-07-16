@@ -86,7 +86,8 @@ public class Inventory
             _items[item.Type] = new List<ItemData>();
         if(item.Type == Define.ItemType.Equipment)
         {
-            _items[item.Type].Add(item);
+            for(int i = 0; i < count; i++)
+                _items[item.Type].Add(item);
         }
         else
         {
@@ -104,7 +105,7 @@ public class Inventory
                 existItem.Count += count;
             }
         }
-        OnItemAdd?.Invoke(item.Type, Define.PendingTaskType.ItemAddTask, 1);
+        //OnItemAdd?.Invoke(item.Type, Define.PendingTaskType.ItemAddTask, 1);
     }
 
     public void AddItem(Dictionary<Data,int> items)

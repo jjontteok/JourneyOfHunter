@@ -343,4 +343,16 @@ public class SkillSystem : MonoBehaviour
             AddSkillItem(skillData.Key as SkillData, skillData.Value);
         }
     }
+
+    public void SubscribeStatusEffect()
+    {
+        foreach (var slot in _activeSkillSlotList)
+        {
+            IStatusEffectSkill effect = slot.Skill.GetComponent<IStatusEffectSkill>();
+            if (effect != null)
+            {
+                effect.OnStatusEffect += UIManager.Instance.UI_Game.StatusEffect.UpdateStatusEffect;
+            }
+        }
+    }
 }
