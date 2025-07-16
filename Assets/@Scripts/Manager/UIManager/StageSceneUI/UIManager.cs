@@ -13,6 +13,11 @@ public class UIManager : Singleton<UIManager>
         get { return ui_main; }
     }
 
+    public UI_Game UI_Game
+    {
+        get { return ui_game; }
+    }
+
     protected override void Initialize()
     {
         base.Initialize();
@@ -22,6 +27,7 @@ public class UIManager : Singleton<UIManager>
 
         //빌드 시 로그 확인용 임시 텍스트
         ui_game = _uiGame.GetComponent<UI_Game>();
+        PlayerManager.Instance.SkillSystem.SubscribeStatusEffect();
         ui_main = _uiMain.GetComponent<UI_Main>();
 
         ui_main.OnPlayerNameInputted += (name) => ui_game.PlayerName = name;

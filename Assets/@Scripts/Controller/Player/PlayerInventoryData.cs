@@ -86,7 +86,8 @@ public class Inventory
             _items[item.Type] = new List<ItemData>();
         if(item.Type == Define.ItemType.Equipment)
         {
-            _items[item.Type].Add(item);
+            for(int i = 0; i < count; i++)
+                _items[item.Type].Add(item);
         }
         else
         {
@@ -94,14 +95,17 @@ public class Inventory
             ItemData existItem = list.FirstOrDefault(i => i.Id == item.Id);
 
             if (existItem == null)
+            {
+                item.Count++;
                 _items[item.Type].Add(item);
+            }
             else
             {
                 //existItem.Count++;
                 existItem.Count += count;
             }
         }
-        OnItemAdd?.Invoke(item.Type, Define.PendingTaskType.ItemAddTask, 1);
+        //OnItemAdd?.Invoke(item.Type, Define.PendingTaskType.ItemAddTask, 1);
     }
 
     public void AddItem(Dictionary<Data,int> items)
@@ -120,9 +124,10 @@ public class Inventory
         {
             ItemData existItem = list.FirstOrDefault(i => i.Id == item.Id);
             if (existItem == null)
+                return;
+            existItem.Count--;
+            if (existItem.Count <= 0)
                 _items[item.Type].Remove(existItem);
-            else
-                existItem.Count--;
         }
         OnItemRemove?.Invoke(item.Type, Define.PendingTaskType.ItemRemoveTask, 1);
     }

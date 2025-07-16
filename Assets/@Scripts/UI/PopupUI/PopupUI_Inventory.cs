@@ -101,6 +101,7 @@ public class PopupUI_Inventory : MonoBehaviour
 
             GameObject itemSlot = PoolManager.Instance.GetObjectFromPool<ItemSlot>(Vector3.zero, slotName, viewPort.GetChild(0).GetChild(0));
             itemSlot.GetComponent<ItemSlot>().SetData(itemData, true);
+            itemSlot.GetComponent<ItemSlot>().SetItemCount(itemData.Count);
 
             _itemSlots[itemType].Add(itemSlot.GetComponent<ItemSlot>());
         }
@@ -224,6 +225,21 @@ public class PopupUI_Inventory : MonoBehaviour
             Debug.Log("아이템이 이미 장착되어 있습니다.");
     }
 
+    public void UseItem(ItemSlot _itemSlot)
+    {
+        PlayerManager.Instance.Player.Inventory.RemoveItem(_itemSlot.ItemData);
+        int count = _itemSlot.ItemData.Count; //해당 아이템 카운트 감소
+        //아이템 개수가 0보다 작으면 
+        //해당 아이템 슬롯 삭제 및 Inventory Data에서 해당 아이템 없애기
+        if (count <= 0)
+        {
+            _itemSlots[_itemSlot.ItemData.Type].Remove(_itemSlot);
+            _itemSlot.gameObject.SetActive(false);
+            return;
+        }
+        _itemSlot.SetItemCount(count);
+    }
+
     // 아이템 슬롯 장착 해제 메서드
     public void UnEquipItem(ItemSlot _itemSlot)
     {
@@ -237,6 +253,7 @@ public class PopupUI_Inventory : MonoBehaviour
             _itemSlot.gameObject.transform.localPosition = Vector3.zero;
             PlayerManager.Instance.Player.ReleaseItemStatus(((EquipmentItemData)_itemSlot.ItemData).ItemStatus);
             _equipmentItemSlots[itemType] = null;
+            _itemSlot.SetItemCount(++(_itemSlot.ItemData.Count));
         }
         else
             Debug.Log("아이템이 장착되어있지 않습니다.");
