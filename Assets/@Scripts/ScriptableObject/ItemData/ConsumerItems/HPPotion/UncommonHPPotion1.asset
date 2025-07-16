@@ -10,16 +10,15 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 078d978801e632f43a7e3dda15e82fd7, type: 3}
-  m_Name: UncommonHPPotion
+  m_Name: UncommonHPPotion1
   m_EditorClassIdentifier: 
-  Id: 0
-  Name: "\uC751\uAE09 \uD68C\uBCF5\uC57D"
-  Description: "\uD68C\uBCF5 \uBB3C\uC57D\uC774 \uC5C6\uC744 \uB54C \uC0AC\uC6A9\uD558\uB294
-    \uD68C\uBCF5\uC57D\uC774\uB2E4."
-  Cost: 35
-  IconImage: {fileID: 21300000, guid: e301da5d3b9950341bdf9a477ca7f3a9, type: 3}
+  Id: 1
+  Name: "\uB098\uADF8\uB124 \uD68C\uBCF5\uC57D"
+  Description: "\uD76C\uBBF8\uD55C \uBE5B\uC774 \uB3C4\uB294 \uD68C\uBCF5\uC57D\uC774\uB2E4."
+  Cost: 60
+  IconImage: {fileID: 21300000, guid: b1e5e80c65a6d1d4196700933352c5ac, type: 3}
   Type: 1
-  Value: 0
+  Value: 1
   count: 0
   ConsumerItemStatus:
     ConsumeTarget: 0

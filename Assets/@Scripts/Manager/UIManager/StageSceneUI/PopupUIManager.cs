@@ -227,11 +227,6 @@ public class PopupUIManager : Singleton<PopupUIManager>, IEventSubscriber, IDeac
         stageText.text = $"- Stage {stage} -";
         _popupStageText.SetActive(true);
         StartCoroutine(_popupStageText.GetComponentInChildren<UIEffectsManager>().PerformEffect(0));
-        if (stage % 5 == 0)
-        {
-            stageText.color = Color.yellow;
-            StartCoroutine(_popupStageText.GetComponentInChildren<UIEffectsManager>().PerformEffect(1));
-        }
         StartCoroutine(DeactivatePopup(_popupStageText, _oneFiveSecondsTime));
     }
 

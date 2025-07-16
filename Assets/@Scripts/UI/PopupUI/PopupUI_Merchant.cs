@@ -33,7 +33,7 @@ public class PopupUI_Merchant : MonoBehaviour
         {
             GameObject merchantItemSlot = Instantiate(ObjectManager.Instance.MerchantItemSlot);
             _merchantItemSlots.Add(merchantItemSlot.GetOrAddComponent<MerchantItemSlot>());
-
+            merchantItemSlot.GetComponent<MerchantItemSlot>().OnPurchaseItem += UpdateGemText;
             GameObject content = GetComponentInChildren<GridLayoutGroup>().gameObject;
             merchantItemSlot.transform.SetParent(content.transform);
         }
@@ -43,11 +43,9 @@ public class PopupUI_Merchant : MonoBehaviour
     {
         PlayerManager.Instance.IsAutoMoving = false;
         FieldManager.Instance.IsClear = true;
-        DrawMerchantItem();
     }
 
     public void SetItemList() {
-        _gemText.text = PlayerManager.Instance.Player.Inventory.Goods[Define.GoodsType.Gem].ToString();
         _currentitemList.Clear();
 
         for (int i =0; i<4;)
@@ -60,13 +58,16 @@ public class PopupUI_Merchant : MonoBehaviour
                 i++;
             }
         }
+        UpdateGemText();
     }
 
-    void DrawMerchantItem()
+    void UpdateGemText()
     {
-        foreach(var item in _currentitemList)
+        int gem = PlayerManager.Instance.Player.Inventory.Goods[Define.GoodsType.Gem];
+        _gemText.text = gem.ToString();
+        foreach(var item in _merchantItemSlots)
         {
-            
+            item.GetComponent<MerchantItemSlot>().CheckGem(gem);
         }
     }
 
