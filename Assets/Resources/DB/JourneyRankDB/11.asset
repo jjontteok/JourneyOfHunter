@@ -14,8 +14,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Index: 11
   RankType: 3
-  Name: "\uB2E4\uC774\uC5442"
+  Name: "\uB9C8\uC2A4\uD1302"
   MinJourneyExp: 50000
   MaxJourneyExp: 100000
   TextColor: {r: 0.5932823, g: 0.033018887, b: 1, a: 1}
-  RankImage: {fileID: 21300000, guid: 16c6c8bd2f8b8e04a9e21cd2101c2b9c, type: 3}
+  RankImage: {fileID: 21300000, guid: 9d97010975893d54d8e2941244d42605, type: 3}

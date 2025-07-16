@@ -12,6 +12,12 @@ public class RewardSystem
         _rewardList = new();
     }
 
+    public void ClearRewardList()
+    {
+        _rewardList.Clear();
+    }
+
+
     public void SetReward(Define.RewardType rewardType, int rewardAmount)
     {
         _rewardList[rewardType] = rewardAmount;
@@ -143,6 +149,7 @@ public class FieldManager : Singleton<FieldManager>, IEventSubscriber, IDeactiva
         }
 
         Define.ItemValue rank = SetRank();
+        _rewardSystem.ClearRewardList();
         //5의 배수마다 던전 두두둥장
         if (_stageCount % 5 == 0)
         {
@@ -152,12 +159,11 @@ public class FieldManager : Singleton<FieldManager>, IEventSubscriber, IDeactiva
         }
         else
         {
-            int rnd = UnityEngine.Random.Range(0, 100);
-            rnd = 80;
+            int rnd = UnityEngine.Random.Range(0, 90);
             if (rnd < 90)
             {
                 //80% 확률로 기타 오브젝트 등장
-                if (rnd < 80)
+                if (rnd < 70)
                 //if (rnd < 50)
                 {
                     _currentType = Define.JourneyType.OtherObject;

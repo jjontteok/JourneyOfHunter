@@ -43,11 +43,10 @@ public class PopupUI_Merchant : MonoBehaviour
     {
         PlayerManager.Instance.IsAutoMoving = false;
         FieldManager.Instance.IsClear = true;
-        SetItemList();
         DrawMerchantItem();
     }
 
-    void SetItemList() {
+    public void SetItemList() {
         _gemText.text = PlayerManager.Instance.Player.Inventory.Goods[Define.GoodsType.Gem].ToString();
         _currentitemList.Clear();
 
