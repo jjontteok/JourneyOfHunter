@@ -2914,7 +2914,7 @@ MonoBehaviour:
   _statusNameText: {fileID: 9061109497436191116}
   _currentStatusText: {fileID: 1729090501066195812}
   _upgradeCostText: {fileID: 5067441671715529706}
-  _statusType: 3
+  _statusType: 2
 --- !u!1 &5830467077502830059
 GameObject:
   m_ObjectHideFlags: 0
@@ -5110,7 +5110,7 @@ MonoBehaviour:
   _statusNameText: {fileID: 6961753637850647617}
   _currentStatusText: {fileID: 5761527558071201993}
   _upgradeCostText: {fileID: 7273597122182937386}
-  _statusType: 4
+  _statusType: 3
 --- !u!1 &8751028214111527100
 GameObject:
   m_ObjectHideFlags: 0

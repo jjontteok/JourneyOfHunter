@@ -93,6 +93,7 @@ public class PopupUIManager : Singleton<PopupUIManager>, IEventSubscriber, IDeac
         FieldManager.Instance.DungeonController.OnDungeonExit += ActivateJourneyInfo;
         FieldManager.Instance.DungeonController.OnDungeonClear += DeactivateNamedMonsterInfo;
         FieldManager.Instance.OnMerchantAppeared += ActivateMerchantDialogue;
+        FieldManager.Instance.OnMerchantAppeared += UpdateMerchantItemList;
         PlayerManager.Instance.Player.OnAutoMerchantAppear += ActivateMerchantAppear;
 
         _popupPanel.GetComponent<PopupUI_Panel>().OnPopupPanelClicked += DeactivatePopup;
@@ -301,6 +302,11 @@ public class PopupUIManager : Singleton<PopupUIManager>, IEventSubscriber, IDeac
         _panelSetting.SetActive(true);
     }
     #endregion
+
+    void UpdateMerchantItemList()
+    {
+        _panelMerchant.GetComponent<PopupUI_Merchant>().SetItemList();
+    }
 
     //네임드 인포가 활성화 될 떄에는 위치를 옮겨줘야 해,,, 안 그러면 겹치니까
     public void ModifyBuffTextPos()
