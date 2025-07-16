@@ -21,6 +21,7 @@ public class UI_Game : MonoBehaviour
     // 불/물/빛/암
     [SerializeField] GameObject[] _attributePrefab = new GameObject[4];
     [SerializeField] Image _hpBar;
+    [SerializeField] UI_StatusEffect _statusEffect;
 
     private List<UI_PlayerVital> _playerVitalList;
     private GameObject _playerVitalCanvas;
@@ -39,6 +40,11 @@ public class UI_Game : MonoBehaviour
             _playerName = value;
             _playerNameText.text = _playerName;
         }
+    }
+
+    public UI_StatusEffect StatusEffect
+    {
+        get { return _statusEffect; }
     }
 
     //private void Awake()
