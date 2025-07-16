@@ -95,7 +95,10 @@ public class Inventory
             ItemData existItem = list.FirstOrDefault(i => i.Id == item.Id);
 
             if (existItem == null)
+            {
+                item.Count++;
                 _items[item.Type].Add(item);
+            }
             else
             {
                 //existItem.Count++;
@@ -121,9 +124,10 @@ public class Inventory
         {
             ItemData existItem = list.FirstOrDefault(i => i.Id == item.Id);
             if (existItem == null)
+                return;
+            existItem.Count--;
+            if (existItem.Count <= 0)
                 _items[item.Type].Remove(existItem);
-            else
-                existItem.Count--;
         }
         OnItemRemove?.Invoke(item.Type, Define.PendingTaskType.ItemRemoveTask, 1);
     }

@@ -1,4 +1,5 @@
 using System.Collections;
+using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
@@ -14,6 +15,7 @@ public class ItemSlot : MonoBehaviour, IPointerDownHandler, IPointerUpHandler, I
     private bool _isInInventory = false;
 
     [SerializeField] Sprite _itemImage;
+    [SerializeField] TMP_Text _countText;
 
     ItemData _itemData;
 
@@ -22,6 +24,12 @@ public class ItemSlot : MonoBehaviour, IPointerDownHandler, IPointerUpHandler, I
         get { return _itemData; }
     }
 
+    public void SetItemCount(int count)
+    {
+        //장비 아이템이 아닌 기타 및 소비 아이템이면
+        //아이템의 count 값을 받아와 텍스트로 띄우기
+        _countText.text = count.ToString() ;
+    }
 
     // 아이템 슬롯 초기화 필수 메서드
     public void SetData(ItemData itemData, bool isInInventory)
@@ -30,6 +38,7 @@ public class ItemSlot : MonoBehaviour, IPointerDownHandler, IPointerUpHandler, I
         _itemData = itemData;
         _itemImage = _itemData.IconImage;
         gameObject.transform.GetChild(0).GetComponent<Image>().sprite = _itemImage;
+        _countText.enabled = itemData.Count != 0 ? true : false;
     }
 
     public void OnPointerDown(PointerEventData eventData)

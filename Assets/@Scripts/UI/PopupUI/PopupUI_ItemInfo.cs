@@ -128,7 +128,7 @@ public class PopupUI_ItemInfo : MonoBehaviour
         }
         else
         {
-
+            PopupUIManager.Instance.PanelInventory.GetComponent<PopupUI_Inventory>().UseItem(_selectedItem);
         }
     }
 
