@@ -54,9 +54,25 @@ public class SkillManager : Singleton<SkillManager>
 
     public void LockIconSlots(int idx)
     {
+        for (int i = 0; i < idx; i++)
+        {
+            _skillIconSlots[i].ReleaseIconSlot();
+        }
         for (int i = idx; i < _skillIconSlots.Length; i++)
         {
             _skillIconSlots[i].LockIconSlot();
+        }
+    }
+
+    public void SetIconSlot(int idx, bool flag)
+    {
+        if (flag)
+        {
+            _skillIconSlots[idx].ReleaseIconSlot();
+        }
+        else
+        {
+            _skillIconSlots[idx].LockIconSlot();
         }
     }
 

@@ -1,4 +1,3 @@
-using System.Collections;
 using UnityEngine;
 
 public class WeaponColliderController : MonoBehaviour
@@ -11,7 +10,6 @@ public class WeaponColliderController : MonoBehaviour
     {
         _damage = damage;
         _animator = GetComponentInParent<Animator>();
-        //StartCoroutine(EnableAttackCollider());
     }
 
     void InstantiateHitEffect(Collider other)

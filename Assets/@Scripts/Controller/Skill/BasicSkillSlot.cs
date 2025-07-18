@@ -10,7 +10,6 @@ public class BasicSkillSlot : SkillSlot
             {
                 IsActivatePossible = false;
                 StartCoroutine(CoStartCoolTime());
-                //OnActivateSkill?.Invoke();
             }
         }
     }

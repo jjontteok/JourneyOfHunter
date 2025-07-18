@@ -2,18 +2,6 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
-public class Pair<T, U>
-{
-    public Pair(T first, U second)
-    {
-        First = first;
-        Second = second;
-    }
-
-    public T First { get; set; }
-    public U Second { get; set; }
-};
-
 public class Util
 {
     static public bool NullCheck<T>(T t) where T : Object
@@ -120,7 +108,6 @@ public class Util
     public static float GetEnhancedDamage(float damage, SkillData data)
     {
         float newDamage = damage;
-        //Debug.Log($"Current Damage: {newDamage}, Current DayType: {EnvironmentManager.Instance.CurrentType}, Current SkillType: {data.SkillAttribute}");
         switch (EnvironmentManager.Instance.CurrentType)
         {
             // <최종 기획>
@@ -160,7 +147,6 @@ public class Util
             default:
                 break;
         }
-        //Debug.Log("Enhanced damage: " + newDamage);
         return newDamage;
     }
 
@@ -171,8 +157,7 @@ public class Util
         float reduction = 0f;
         switch (EnvironmentManager.Instance.CurrentType)
         {
-            // <최종 기획>
-            // 일단 대미지 20퍼 증가
+            // 대미지 20퍼 증가
             // 아침 - 물, 빛
             // 낮 - 불, 빛
             // 저녁 - 어둠, 불
