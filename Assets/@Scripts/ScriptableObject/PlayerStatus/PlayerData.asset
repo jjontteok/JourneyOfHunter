@@ -22,9 +22,10 @@ MonoBehaviour:
   HPRecoveryPerSec: 1
   CoolTimeDecrease: 0
   UnlockedSkillSlotCount: 5
-  JourneyExp: 0
+  JourneyExp: 2475
   Speed: 10
-  JourneyRankData: {fileID: 11400000, guid: cf6733ab564429b4e9cc4721b7277c58, type: 2}
+  JourneyRankData: {fileID: 11400000, guid: 6a994847c2d8f664583a2daf0f99225e, type: 2}
   CurrentSkillData:
   - {fileID: 11400000, guid: fd5198dc4616eb641b608a206e87ff74, type: 2}
   - {fileID: 11400000, guid: a813ec37f6ba9874fb28e91f4e83b765, type: 2}
+  - {fileID: 11400000, guid: 5606e010ca7b71447adfd98bba35fd09, type: 2}
