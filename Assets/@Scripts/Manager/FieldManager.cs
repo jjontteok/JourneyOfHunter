@@ -155,13 +155,6 @@ public class FieldManager : Singleton<FieldManager>, IEventSubscriber, IDeactiva
 
         Define.ItemValue rank = SetRank();
         _rewardSystem.ClearRewardList();
-        ////5의 배수마다 던전 두두둥장
-        //if (_stageCount % 5 == 0)
-        //{
-        //    _rewardSystem.SetReward(Define.RewardType.JourneyExp, 10 * _stageCount);
-        //    _currentType = Define.JourneyType.Dungeon;
-        //    rank = Define.ItemValue.Common;
-        //}
             // 70퍼 확률로 던전 등장
         if (rnd < 70)
         {

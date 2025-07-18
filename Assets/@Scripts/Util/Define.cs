@@ -158,8 +158,6 @@ public class Define : MonoBehaviour
         AutoChallenge,
         NotChallenge,
         Challenging,
-        //GoFinalStage,
-        //ExitStage
     }
     public enum TimeOfDayType
     {

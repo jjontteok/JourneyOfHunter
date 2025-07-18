@@ -1,5 +1,6 @@
 using System;
 using System.Collections;
+using UnityEditor;
 using UnityEngine;
 
 [Serializable]
@@ -196,12 +197,11 @@ public class PlayerController : MonoBehaviour, IDamageable
 
         JourneyExp += journeyExp;
         OnJourneyExpChanged?.Invoke(journeyExp);
-        Debug.Log("여정의 증표 획득 " + journeyExp + "현재 여정의 증표 "+JourneyExp);
     }
 
     public void Move()
     {
-        if (!PlayerManager.Instance.IsGameStart) 
+        if (!PlayerManager.Instance.IsGameStart)
             return;
 
         // 죽은 상태이거나 공격 모션 중일 땐 움직이지 않도록
@@ -392,6 +392,8 @@ public class PlayerController : MonoBehaviour, IDamageable
 
     void SetTarget()
     {
+        if (_animator.GetBool(Define.IsAttacking))
+            return;
         // 던전인 경우, 몬스터 찾기
         if (FieldManager.Instance.CurrentEventType == Define.JourneyType.Dungeon)
         {
@@ -537,8 +539,14 @@ public class PlayerController : MonoBehaviour, IDamageable
     private void OnDrawGizmos()
     {
         Gizmos.color = Color.black;
-        if(_target!=null)
-        Gizmos.DrawLine(transform.position + Vector3.up, transform.position + transform.forward * 2f + Vector3.up);
+        if (_target != null)
+        {
+            Gizmos.DrawLine(transform.position + Vector3.up, _target.position + Vector3.up);
+        }
+        else
+        {
+            Gizmos.DrawLine(transform.position + Vector3.up, transform.position + transform.forward * 2f + Vector3.up);
+        }
     }
     #endregion
 

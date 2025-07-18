@@ -24,7 +24,6 @@ public class WeaponColliderController : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        Debug.Log("Collision!");
         if (other.CompareTag(Define.PlayerTag) || other.CompareTag(Define.MonsterTag))
         {
             // 상호작용 가능 시간 확인 변수

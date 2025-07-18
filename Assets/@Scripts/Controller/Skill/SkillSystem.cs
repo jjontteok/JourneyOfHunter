@@ -93,7 +93,9 @@ public class SkillSystem : MonoBehaviour
                             slot.ActivateSlotSkill();
                         }
                     }
-                    if (_player.Target != null && _player.Target.gameObject.activeSelf && _player.Target.CompareTag(Define.MonsterTag) && !SkillManager.Instance.IsSkillInterval && _ultimateSkillSlot != null)
+                    if (_player.Target != null && _player.Target.gameObject.activeSelf 
+                        && (_player.Target.CompareTag(Define.MonsterTag)|| _player.Target.gameObject.layer==LayerMask.NameToLayer(Define.TreasureBoxLayer))
+                        && !SkillManager.Instance.IsSkillInterval && _ultimateSkillSlot != null)
                     {
                         _ultimateSkillSlot.ActivateSlotSkill();
                     }
