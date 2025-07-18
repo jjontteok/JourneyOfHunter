@@ -90,6 +90,7 @@ public class UI_Game : MonoBehaviour
 
         OnDoubleSpeedChanged += (flag) => TimeManager.Instance.IsDoubleSpeed = flag;
         _player.OnJourneyExpChanged += OnSystemMessage;
+        _doubleSpeedToggle.gameObject.SetActive(false);
     }
 
     private void ReleaseEvent()

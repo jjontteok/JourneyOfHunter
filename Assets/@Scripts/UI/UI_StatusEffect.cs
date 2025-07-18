@@ -15,6 +15,7 @@ public class UI_StatusEffect : MonoBehaviour
         // 버프 추가
         if (flag)
         {
+            
             Image additionImage = Instantiate(_statusEffectPrefab, gameObject.transform).GetComponent<Image>();
             additionImage.sprite = sprite;
             _statusEffectImages.Add(additionImage);
