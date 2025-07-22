@@ -20,7 +20,7 @@ MonoBehaviour:
   Id: 10
   Cost: 0
   Type: 0
-  Value: 4
+  Value: 5
   EquipmentType: 0
   ItemStatus:
     Atk: 0

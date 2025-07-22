@@ -12,18 +12,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2a11eeb062f8b32458de83e3f3058dce, type: 3}
   m_Name: Emerald Axe
   m_EditorClassIdentifier: 
-  Id: 0
   Name: "\uC5D0\uBA54\uB784\uB4DC \uB3C4\uB07C"
   Description: "\uC5D0\uBA54\uB784\uB4DC \uBE5B\uC774\uB098\uB294 \uB3C4\uB07C\uB2E4"
   IconImage: {fileID: 21300000, guid: a20cd9f8b9ae93b4e9e36accee4f0fc0, type: 3}
+  count: 0
+  Id: 0
+  Cost: 0
   Type: 0
-  Value: 1
+  Value: 2
   EquipmentType: 4
   ItemStatus:
     Atk: 100
     Def: 0
     HP: 0
     HPRecoveryPerSec: 0
-    MP: 0
-    MPRecoveryPerSec: 0
     CoolTimeDecrease: -10
+    Speed: 0

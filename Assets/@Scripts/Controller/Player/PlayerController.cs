@@ -1,5 +1,6 @@
 using System;
 using System.Collections;
+using Unity.VisualScripting;
 using UnityEditor;
 using UnityEngine;
 
@@ -627,12 +628,42 @@ public class PlayerController : MonoBehaviour, IDamageable
         _runtimeData.Speed -= itemStatus.Speed;
     }
 
-    public void ApplyUpgradeStatus(PlayerData playerData)
+    public void ApplyUpgradeStatus(Define.StatusType type, float value, float sustainmentTime =default)
     {
-        _runtimeData.Atk = playerData.Atk;
-        _runtimeData.Def = playerData.Def;
-        _runtimeData.HP = playerData.HP;
-        _runtimeData.HPRecoveryPerSec = playerData.HPRecoveryPerSec;
+        switch (type)
+        {
+            case Define.StatusType.Atk:
+                _runtimeData.Atk += value;
+                break;
+            case Define.StatusType.Def:
+                _runtimeData.Def += value;
+                break;
+            case Define.StatusType.HP:
+                HP = _playerData.HP >= HP + value ? HP + value : _playerData.HP;
+                break;
+            case Define.StatusType.HPRecoveryPerSec:
+                _runtimeData.HPRecoveryPerSec += value;
+                break;
+            case Define.StatusType.Speed:
+                _runtimeData.Speed += value;
+                break;
+        }
+    }
+
+    public void UseItem(Define.StatusType type, float value, float time, Sprite sprite)
+    {
+        ApplyUpgradeStatus(type, value);
+        StartCoroutine(ReleaseItemEffect(type, value, time, sprite));
+    }
+
+    IEnumerator ReleaseItemEffect(Define.StatusType type, float value, float time, Sprite sprite)
+    {
+        WaitForSeconds releaseTime = new WaitForSeconds(time);
+        yield return releaseTime;
+        if (type != Define.StatusType.HP)
+            ApplyUpgradeStatus(type, -value);
+        UIManager.Instance.UI_Game.StatusEffect.UpdateStatusEffect(sprite, false);
+        Debug.Log("아이템 효과 해제");
     }
     #endregion
 }

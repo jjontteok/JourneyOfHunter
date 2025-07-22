@@ -141,19 +141,25 @@ public class UI_StatusSlot : MonoBehaviour
         switch (type)
         {
             case Define.StatusType.Atk:
-                _playerData.Atk += amount; finalValue = _playerData.Atk;
+                _playerData.Atk += amount;
+                finalValue = _playerData.Atk;
                 break;
             case Define.StatusType.HP:
-                _playerData.HP += amount*2; finalValue = _playerData.HP;
+                amount *= 2;
+                _playerData.HP += amount;
+                finalValue = _playerData.HP;
                 break;
             case Define.StatusType.HPRecoveryPerSec:
-                _playerData.HPRecoveryPerSec += amount/5; finalValue = _playerData.HPRecoveryPerSec;
+                amount /= 5;
+                _playerData.HPRecoveryPerSec += amount;
+                finalValue = _playerData.HPRecoveryPerSec;
                 break;
             case Define.StatusType.Def:
-                _playerData.Def += amount; finalValue = _playerData.Def;
+                _playerData.Def += amount;
+                finalValue = _playerData.Def;
                 break;
         }
-        PlayerManager.Instance.Player.ApplyUpgradeStatus(_playerData);
+        PlayerManager.Instance.Player.ApplyUpgradeStatus(type, amount);
         return finalValue;
     }
 }

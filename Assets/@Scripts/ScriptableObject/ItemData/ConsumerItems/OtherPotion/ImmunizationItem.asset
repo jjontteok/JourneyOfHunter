@@ -17,9 +17,9 @@ MonoBehaviour:
     \uC785\uC9C0 \uC54A\uB294\uB2E4."
   IconImage: {fileID: 21300000, guid: 4877a834a197829459021e4a455cd69d, type: 3}
   count: 0
-  Id: 13
+  Id: 23
   Cost: 500
   Type: 1
-  Value: 3
-  ConsumerItemStatus:
-    ConsumeTarget: 0
+  Value: 4
+  ConsumerType: 4
+  SustainmentTime: 2
