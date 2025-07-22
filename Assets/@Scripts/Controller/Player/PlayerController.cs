@@ -274,8 +274,16 @@ public class PlayerController : MonoBehaviour, IDamageable
     {
         if (_target == null)
         {
-            // 타겟 없으면 일단 앞으로 전진
-            MoveAlongRoad();
+            if (FieldManager.Instance.CurrentEventType == Define.JourneyType.Dungeon)
+            {
+                // 던전인데 타겟 없으면 잠시 서서 대기
+                StandStill();
+            }
+            else
+            {
+                // 타겟 없으면 일단 앞으로 전진
+                MoveAlongRoad();
+            }
             return true;
         }
 

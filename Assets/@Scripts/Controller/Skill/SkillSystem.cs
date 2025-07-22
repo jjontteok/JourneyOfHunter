@@ -75,7 +75,7 @@ public class SkillSystem : MonoBehaviour
     private void Update()
     {
         // 자동 모드이고, 죽지 않은 상태이며, 컷씬 상태가 아닐 때 자동 공격 체크
-        if (PlayerManager.Instance.IsAuto && _animator.GetInteger(Define.DieType) == 0 && !PlayerManager.Instance.IsCutSceneOn)
+        if (PlayerManager.Instance.IsAuto && _animator.GetInteger(Define.DieType) == 0 && !PlayerManager.Instance.IsCutSceneOn && FieldManager.Instance.CurrentEventType != Define.JourneyType.OtherObject)
         {
             // 기본 공격할 타이밍인지 체크
             if (IsBasicAttackPossible())
@@ -93,8 +93,8 @@ public class SkillSystem : MonoBehaviour
                             slot.ActivateSlotSkill();
                         }
                     }
-                    if (_player.Target != null && _player.Target.gameObject.activeSelf 
-                        && (_player.Target.CompareTag(Define.MonsterTag)|| _player.Target.gameObject.layer==LayerMask.NameToLayer(Define.TreasureBoxLayer))
+                    if (_player.Target != null && _player.Target.gameObject.activeSelf
+                        && (_player.Target.CompareTag(Define.MonsterTag) || _player.Target.gameObject.layer == LayerMask.NameToLayer(Define.TreasureBoxLayer))
                         && !SkillManager.Instance.IsSkillInterval && _ultimateSkillSlot != null)
                     {
                         _ultimateSkillSlot.ActivateSlotSkill();

@@ -88,7 +88,9 @@ public class SkillSlot : MonoBehaviour
     protected IEnumerator CoStartCoolTime()
     {
         float realCoolTime = _skill.SkillData.CoolTime;
-        realCoolTime *= 1 - (_player.PlayerStatus.GetCoolTimeDecrease() + Util.GetCoolTimeDecreaseByDayType(_skill.SkillData)) / 100;
+        float coolTimeReduction = _player.PlayerStatus.GetCoolTimeDecrease() + Util.GetCoolTimeDecreaseByDayType(_skill.SkillData);
+        coolTimeReduction = coolTimeReduction > 50f ? 50f : coolTimeReduction;
+        realCoolTime *= 1 - coolTimeReduction / 100;
 
         OnActivateSkill?.Invoke(realCoolTime);
         yield return new WaitForSeconds(realCoolTime);

@@ -101,7 +101,8 @@ public class PopupUI_Inventory : MonoBehaviour
 
             GameObject itemSlot = PoolManager.Instance.GetObjectFromPool<ItemSlot>(Vector3.zero, slotName, viewPort.GetChild(0).GetChild(0));
             itemSlot.GetComponent<ItemSlot>().SetData(itemData, true);
-            itemSlot.GetComponent<ItemSlot>().SetItemCount(itemData.Count);
+            if (itemType != Define.ItemType.Equipment)
+                itemSlot.GetComponent<ItemSlot>().SetItemCount(itemData.Count);
 
             _itemSlots[itemType].Add(itemSlot.GetComponent<ItemSlot>());
         }
@@ -253,7 +254,6 @@ public class PopupUI_Inventory : MonoBehaviour
             _itemSlot.gameObject.transform.localPosition = Vector3.zero;
             PlayerManager.Instance.Player.ReleaseItemStatus(((EquipmentItemData)_itemSlot.ItemData).ItemStatus);
             _equipmentItemSlots[itemType] = null;
-            _itemSlot.SetItemCount(++(_itemSlot.ItemData.Count));
         }
         else
             Debug.Log("아이템이 장착되어있지 않습니다.");
