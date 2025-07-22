@@ -17,7 +17,6 @@ public class BlackHoleSkill : AoENonTargetSkill, IUltimateSkill
         gameObject.SetActive(true);
         // 눈에서 안 보이게 꼼수
         transform.position = new Vector3(0, 500f, 0);
-        //transform.position = pos;
         StartCoroutine(CoActivateSkillwithMotion(pos));
 
         return true;

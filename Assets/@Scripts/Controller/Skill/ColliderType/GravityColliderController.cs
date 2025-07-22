@@ -57,7 +57,6 @@ public class GravityColliderController : DamageOverTimeColliderController, IGrav
                 _gravityObject.SetActive(false);
                 //폭발 이펙트 On
                 _lastExplosion.SetActive(true);
-                //_lastExplosion.transform.localScale = Vector3.one * 0.2f;
                 break;
             }
         }

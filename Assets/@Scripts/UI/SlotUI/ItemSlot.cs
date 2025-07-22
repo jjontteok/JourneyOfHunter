@@ -38,7 +38,7 @@ public class ItemSlot : MonoBehaviour, IPointerDownHandler, IPointerUpHandler, I
         _itemData = itemData;
         _itemImage = _itemData.IconImage;
         gameObject.transform.GetChild(0).GetComponent<Image>().sprite = _itemImage;
-        _countText.enabled = itemData.Count != 0 ? true : false;
+        _countText.enabled = (itemData.Type != Define.ItemType.Equipment && itemData.Count > 0) ? true : false;
     }
 
     public void OnPointerDown(PointerEventData eventData)

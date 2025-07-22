@@ -108,7 +108,6 @@ public class PopupUI_Inventory : MonoBehaviour
                 itemSlot.GetComponent<ItemSlot>().SetItemCount(itemData.Count);
             }
             _itemSlots[itemType].Add(itemSlot.GetComponent<ItemSlot>());    
-
         }
     }
     // * 아이템 타입에 따른 뷰포트 return 메서드

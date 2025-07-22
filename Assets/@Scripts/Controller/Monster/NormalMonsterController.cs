@@ -7,13 +7,6 @@ public class NormalMonsterController : MonsterController
     public static Action s_OnNormalMonsterDie;
     public static int s_AliveCount = 0;
 
-    bool _isFlashed = false;
-
-    public bool IsFlashed
-    {
-        get; set;
-    }
-
     private void Awake()
     {
         base.Initialize();
@@ -28,14 +21,12 @@ public class NormalMonsterController : MonsterController
     protected override void OnDisable()
     {
         base.OnDisable();
-        _isFlashed = false;
         s_AliveCount--;
     }
 
     private void Update()
     {
-        if(!_isFlashed)
-            MoveToTarget(_target.transform.position);
+        MoveToTarget(_target.transform.position);
     }
 
     protected override void UpgradeStatus(float amount)

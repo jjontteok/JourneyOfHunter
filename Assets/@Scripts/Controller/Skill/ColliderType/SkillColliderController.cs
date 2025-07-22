@@ -58,7 +58,6 @@ public class SkillColliderController : MonoBehaviour
             damageable.GetDamage(Util.GetEnhancedDamage(_damage, _skillData));
             InstantiateHitEffect(other);
         }
-        //ActivateConnectedSkill();
     }
 
     public void OnOffHitEffect(bool flag)

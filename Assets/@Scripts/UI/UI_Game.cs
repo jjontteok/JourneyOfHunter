@@ -23,8 +23,6 @@ public class UI_Game : MonoBehaviour
     [SerializeField] Image _hpBar;
     [SerializeField] UI_StatusEffect _statusEffect;
 
-    private List<UI_PlayerVital> _playerVitalList;
-    private GameObject _playerVitalCanvas;
     private PlayerController _player;
     private Inventory _playerInventory;
 
@@ -47,10 +45,6 @@ public class UI_Game : MonoBehaviour
         get { return _statusEffect; }
     }
 
-    //private void Awake()
-    //{
-    //    _playerVitalList = new List<UI_PlayerVital>();
-    //}
     public Action<bool> OnAutoChanged;
     public Action<bool> OnDoubleSpeedChanged;
 
@@ -80,13 +74,6 @@ public class UI_Game : MonoBehaviour
 
         OnAutoChanged += (flag) => PlayerManager.Instance.IsAuto = flag;
         _player.OnAutoOff += OnAutoToggleOff;
-        //_player.OnAutoDungeonChallenge += () =>
-        //{
-        //    if (PlayerManager.Instance.IsAuto)
-        //    {
-        //        OnCreateDungeonButtonClick();
-        //    }
-        //};
 
         OnDoubleSpeedChanged += (flag) => TimeManager.Instance.IsDoubleSpeed = flag;
         _player.OnJourneyExpChanged += OnSystemMessage;
@@ -103,24 +90,6 @@ public class UI_Game : MonoBehaviour
     private void Start()
     {
         Initialize();
-        //_playerVitalCanvas = Instantiate(ObjectManager.Instance.PlayerVitalCanvas);
-        //Canvas canvas = _playerVitalCanvas.GetOrAddComponent<Canvas>();
-
-        ////다 모듈화해주세용
-        ////플레이어 리스트를 받아와서
-        //GameObject[] players = GameObject.FindGameObjectsWithTag(Define.PlayerTag);
-        //_currentPlayers = players.Length;
-
-        ////플레이어 수대로 playerVital을 만들어서 리스트에 넣기
-        //for(int i =0; i< _currentPlayers; i++)
-        //{
-        //    GameObject playerVital = Instantiate(ObjectManager.Instance.PlayerVitalResource);
-        //    playerVital.transform.SetParent(_playerVitalCanvas.transform);
-        //    UI_PlayerVital uiPlayerVital = playerVital.GetOrAddComponent<UI_PlayerVital>();
-        //    uiPlayerVital.Initialize(players[i].transform);
-        //    _playerVitalList.Add(uiPlayerVital);
-        //}
-
     }
 
     // 변경 필수
@@ -175,7 +144,6 @@ public class UI_Game : MonoBehaviour
 
     void OnAutoToggleClick(bool flag)
     {
-        //Debug.Log($"Auto: {flag}");
         OnAutoChanged?.Invoke(flag);
         AudioManager.Instance.PlayClickSound();
     }
@@ -191,14 +159,6 @@ public class UI_Game : MonoBehaviour
     {
         _autoToggle.isOn = false;
     }
-
-    //void ActivateDungeonPortalButton()
-    //{
-    //    if(!PlayerManager.Instance.IsAuto)
-    //    {
-    //        _createDungeonPortalButton.gameObject.SetActive(true);
-    //    }
-    //}
 
     void OnSystemMessage(float score)
     {

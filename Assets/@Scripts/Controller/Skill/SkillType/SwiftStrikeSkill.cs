@@ -49,9 +49,7 @@ public class SwiftStrikeSkill : RotationTargetSkill, ICharacterMovingSkill
     {
         if (Vector3.Distance(_coll.transform.position, _originPos) < _skillData.TargetDistance)
         {
-            //_playerController.transform.Translate(_fixedDirection * _skillData.Speed * Time.deltaTime, Space.World);
             _playerRigidbody.MovePosition(_playerRigidbody.position + _fixedDirection * _skillData.Speed * Time.fixedDeltaTime);
-            //_coll.transform.position = _playerController.transform.position;
             _rigidbody.MovePosition(_rigidbody.position + _fixedDirection * _skillData.Speed * 1.3f * Time.fixedDeltaTime);
         }
         else
@@ -76,7 +74,6 @@ public class SwiftStrikeSkill : RotationTargetSkill, ICharacterMovingSkill
         GameObject particle = Instantiate(_afterEffect, _coll.transform);
         particle.transform.localPosition = Vector3.up;
         particle.transform.localEulerAngles = new Vector3(-90, 0, 0);
-        //PlayerManager.Instance.Player.GetComponent<Animator>().SetTrigger("SkillAttack");
         PlayerManager.Instance.Player.GetComponent<Animator>().SetTrigger(Define.Attack);
         Destroy(particle, 0.5f);
     }

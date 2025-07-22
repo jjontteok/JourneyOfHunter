@@ -21,7 +21,6 @@ public class MoveRangeController : MonoBehaviour
     {
         if (other.CompareTag(Define.PlayerTag))
         {
-            //Debug.Log("이동 범위 안에 들어옴");
             OnMoveToTarget?.Invoke();
         }
     }

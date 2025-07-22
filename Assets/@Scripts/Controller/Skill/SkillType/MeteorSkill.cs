@@ -28,18 +28,6 @@ public class MeteorSkill : TransformTargetSkill, IDelayedDamageSkill, IPositioni
         // 눈에서 안 보이게 꼼수
         transform.position = new Vector3(0, 500f, 0);
         StartCoroutine(CoActivateSkillwithMotion(pos));
-
-        //gameObject.SetActive(true);
-        //transform.position = GetCastPosition(pos);
-        //_coll.transform.localPosition = Vector3.zero;
-        //Physics.IgnoreLayerCollision(LayerMask.NameToLayer(Define.PlayerSkillLayer), LayerMask.NameToLayer(Define.MonsterTag), true);
-        //SetDirection();
-        //_meteorObject.SetActive(true);
-        //// 콜라이더 꺼주고
-        ////_coll.gameObject.SetActive(false);
-        //StartCoroutine(CoActivateDelayedCollider());
-
-        //StartCoroutine(DeActivateSkill());
         return true;
     }
 
@@ -49,14 +37,12 @@ public class MeteorSkill : TransformTargetSkill, IDelayedDamageSkill, IPositioni
         yield return new WaitForSeconds(_delay);
         Physics.IgnoreLayerCollision(LayerMask.NameToLayer(Define.PlayerSkillLayer), LayerMask.NameToLayer(Define.MonsterTag), false);
         _meteorObject.SetActive(false);
-        //_coll.gameObject.SetActive(true);
 
 
         GameObject effect = Instantiate(_skillData.HitEffectPrefab);
         effect.name = $"{_skillData.HitEffectPrefab.name} effect";
 
         RaycastHit ray;
-        //Physics.Raycast(transform.position, _direction, out ray, 100, LayerMask.NameToLayer(Define.GroundTag));
         Physics.Raycast(transform.position, _direction, out ray, 100, LayerMask.GetMask(Define.GroundTag));
         effect.transform.position = ray.point;
         Destroy(effect, 0.5f);
@@ -102,8 +88,6 @@ public class MeteorSkill : TransformTargetSkill, IDelayedDamageSkill, IPositioni
         Physics.IgnoreLayerCollision(LayerMask.NameToLayer(Define.PlayerSkillLayer), LayerMask.NameToLayer(Define.MonsterTag), true);
         SetDirection();
         _meteorObject.SetActive(true);
-        // 콜라이더 꺼주고
-        //_coll.gameObject.SetActive(false);
         StartCoroutine(CoActivateDelayedCollider());
 
         StartCoroutine(DeActivateSkill());
