@@ -5,6 +5,7 @@ using UnityEngine;
 public class BuffSkill : ActiveSkill, IStatusChangeSkill, ICheckActivation, IStatusEffectSkill
 {
     bool _isCoroutineRunning = false;
+    bool _isOn = false;
 
     public event Action<Sprite, bool> OnStatusEffect;
 
@@ -15,6 +16,7 @@ public class BuffSkill : ActiveSkill, IStatusChangeSkill, ICheckActivation, ISta
             gameObject.SetActive(true);
             transform.position = pos;
             StatusChange(true);
+            _isOn = true;
             OnStatusEffect?.Invoke(_skillData.IconImage, true);
 
             StartCoroutine(DeActivateSkill());
@@ -39,6 +41,7 @@ public class BuffSkill : ActiveSkill, IStatusChangeSkill, ICheckActivation, ISta
         yield return _skillDurationTime;
         // 적용됐던 버프 효과 되돌리기
         StatusChange(false);
+        _isOn = false;
         OnStatusEffect?.Invoke(_skillData.IconImage, false);
         gameObject.SetActive(false);
         _isCoroutineRunning = false;
@@ -50,6 +53,8 @@ public class BuffSkill : ActiveSkill, IStatusChangeSkill, ICheckActivation, ISta
         if (_isCoroutineRunning)
         {
             StatusChange(false);
+            _isOn = false;
+            OnStatusEffect?.Invoke(_skillData.IconImage, false);
             StopAllCoroutines();
         }
     }
@@ -68,9 +73,11 @@ public class BuffSkill : ActiveSkill, IStatusChangeSkill, ICheckActivation, ISta
 
     public bool IsActivatePossible(Vector3 pos)
     {
+        if (_isOn)
+            return false;
         // 수동 모드일 땐 타겟 유무 상관없이 그냥 발사
         if (SkillData.IsPlayerSkill && !PlayerManager.Instance.IsAuto)
             return true;
-        return FieldManager.Instance.CurrentEventType == Define.JourneyType.Dungeon;
+        return FieldManager.Instance.CurrentEventType == Define.JourneyType.Dungeon && !_isOn;
     }
 }

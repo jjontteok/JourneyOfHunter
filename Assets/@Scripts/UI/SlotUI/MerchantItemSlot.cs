@@ -49,7 +49,7 @@ public class MerchantItemSlot : MonoBehaviour
 
     void PurchaseItem()
     {
-        PlayerManager.Instance.Player.Inventory.Goods[Define.GoodsType.Gem] -= _item.Cost;
+        PlayerManager.Instance.Player.Inventory.UseGoods(Define.GoodsType.Gem, _item.Cost);
         _noticeText.enabled = true;
         _noticeText.text = "판매 완료";
         _purchaseButton.interactable = false;

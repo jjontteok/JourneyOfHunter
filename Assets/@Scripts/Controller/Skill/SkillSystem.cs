@@ -13,7 +13,8 @@ public class SkillSystem : MonoBehaviour
 
     // 스킬 슬롯 리스트에 실질적으로 들어있는 스킬 개수 확인용
     // 최소 2개, 최대 5개
-    int _skillSlotCount = 0;
+    int _currentSkillSlotCount = 0;
+
     // 스킬 슬롯 리스트 - 액티브형 스킬 보관 슬롯
     List<SkillSlot> _activeSkillSlotList = new List<SkillSlot>();
     // 궁극기 스킬 보관 슬롯
@@ -23,6 +24,8 @@ public class SkillSystem : MonoBehaviour
 
     PlayerController _player;
     Animator _animator;
+
+    readonly WaitForSeconds _interval = new WaitForSeconds(Define.SkillInterval);
 
     public Action<float> OnShortestSkillDistanceChanged;
     public event Action<SkillData> OnSkillSummon;
@@ -69,7 +72,8 @@ public class SkillSystem : MonoBehaviour
 
     private void Update()
     {
-        if (PlayerManager.Instance.IsAuto && _animator.GetInteger(Define.DieType) == 0 && !PlayerManager.Instance.IsCutSceneOn)
+        // 자동 모드이고, 죽지 않은 상태이며, 컷씬 상태가 아닐 때 자동 공격 체크
+        if (PlayerManager.Instance.IsAuto && _animator.GetInteger(Define.DieType) == 0 && !PlayerManager.Instance.IsCutSceneOn && FieldManager.Instance.CurrentEventType != Define.JourneyType.OtherObject)
         {
             // 기본 공격할 타이밍인지 체크
             if (IsBasicAttackPossible())
@@ -87,7 +91,9 @@ public class SkillSystem : MonoBehaviour
                             slot.ActivateSlotSkill();
                         }
                     }
-                    if (_player.Target != null && _player.Target.gameObject.activeSelf && _player.Target.CompareTag(Define.MonsterTag) && !SkillManager.Instance.IsSkillInterval && _ultimateSkillSlot != null)
+                    if (_player.Target != null && _player.Target.gameObject.activeSelf
+                        && (_player.Target.CompareTag(Define.MonsterTag) || _player.Target.gameObject.layer == LayerMask.NameToLayer(Define.TreasureBoxLayer))
+                        && !SkillManager.Instance.IsSkillInterval && _ultimateSkillSlot != null)
                     {
                         _ultimateSkillSlot.ActivateSlotSkill();
                     }
@@ -101,7 +107,7 @@ public class SkillSystem : MonoBehaviour
     {
         // skill interval이거나
         // 모든 스킬 슬롯이 쿨타임 중이거나 스킬이 없을 때
-        return SkillManager.Instance.IsSkillInterval || _activeSkillSlotList.All(slot => !slot || !slot.IsActivatePossible);
+        return SkillManager.Instance.IsSkillInterval || (_activeSkillSlotList.All(slot => !slot || !slot.IsActivatePossible) && (!_ultimateSkillSlot || !_ultimateSkillSlot.IsActivatePossible));
     }
 
     // 플레이어가 소유한 스킬데이터 기반으로 스킬슬롯 생성 및 스킬 장착
@@ -111,7 +117,7 @@ public class SkillSystem : MonoBehaviour
         foreach (var skill in _skillList)
         {
             // 이미 플레이어 세팅만큼 스킬 있으면 패스
-            if (!skill.SkillData.IsUltimate && _skillSlotCount == _player.PlayerData.UnlockedSkillSlotCount)
+            if (!skill.SkillData.IsUltimate && _currentSkillSlotCount == _player.PlayerData.UnlockedSkillSlotCount)
                 continue;
             AddSkill(skill.SkillData);
         }
@@ -141,7 +147,6 @@ public class SkillSystem : MonoBehaviour
             go.transform.localPosition = Vector3.up;
             SkillSlot slot = go.AddComponent<SkillSlot>();
             SkillManager.Instance.SubscribeEvents(slot, -1);
-            // 궁극기는 굳이 스킬 인터벌 줄 이유가?
             slot.OnActivateSkill += StartSkillInterval;
             slot.SetSkill(data);
             _ultimateSkillSlot = slot;
@@ -173,15 +178,17 @@ public class SkillSystem : MonoBehaviour
             // 기본 공격이면 기본공격 슬롯 따로 만들어서 저장 및 관리
             if (data.name == "PlayerBasicAttack")
             {
-                _basicSkillSlot = go.AddComponent<BasicSkillSlot>();
-                _basicSkillSlot.SetSkill(data);
-                OnShortestSkillDistanceChanged?.Invoke(data.TargetDistance);
+                if (_basicSkillSlot == null)
+                {
+                    _basicSkillSlot = go.AddComponent<BasicSkillSlot>();
+                    _basicSkillSlot.SetSkill(data);
+                    OnShortestSkillDistanceChanged?.Invoke(data.TargetDistance);
+                }
             }
-
             else
             {
                 // 이미 스킬 아이콘 슬롯 자리 다 찼으면 슬롯 생성 x
-                if (_skillSlotCount == _player.PlayerData.UnlockedSkillSlotCount)
+                if (_currentSkillSlotCount == _player.PlayerData.UnlockedSkillSlotCount)
                 {
                     Debug.Log("Slot list is already full!!!");
                     Destroy(go);
@@ -207,7 +214,7 @@ public class SkillSystem : MonoBehaviour
                 }
                 if (slot.SetSkill(data))
                 {
-                    _skillSlotCount++;
+                    _currentSkillSlotCount++;
                 }
             }
         }
@@ -239,7 +246,7 @@ public class SkillSystem : MonoBehaviour
                 return;
             }
             slot.DestroySkillSlot();
-            _skillSlotCount--;
+            _currentSkillSlotCount--;
         }
 
     }
@@ -266,7 +273,7 @@ public class SkillSystem : MonoBehaviour
     IEnumerator CoSkillInterval()
     {
         SkillManager.Instance.IsSkillInterval = true;
-        yield return new WaitForSeconds(Define.SkillInterval);
+        yield return _interval;
         SkillManager.Instance.IsSkillInterval = false;
     }
 
@@ -288,26 +295,32 @@ public class SkillSystem : MonoBehaviour
 
     public void IncreaseUnlockedSkillSlotCount()
     {
-        if (_skillSlotCount >= Define.MaxUnlockedSkillSlotCount)
+        if (_player.PlayerData.UnlockedSkillSlotCount >= Define.MaxUnlockedSkillSlotCount)
         {
+            _player.PlayerData.UnlockedSkillSlotCount = Define.MaxUnlockedSkillSlotCount;
             Debug.Log("Cannot increase skill slot any more!!!");
             return;
         }
+        _player.PlayerData.UnlockedSkillSlotCount += 1;
         SetSkillSlotList();
+        SkillManager.Instance.SetIconSlot(_player.PlayerData.UnlockedSkillSlotCount - 1, true);
         SkillManager.Instance.UpdateEnhancedAttribute(EnvironmentManager.Instance.CurrentType);
     }
 
     public void DecreaseUnlockedSkillSlotCount()
     {
-        if (_skillSlotCount <= 2)
+        if (_player.PlayerData.UnlockedSkillSlotCount <= 2)
         {
             Debug.Log("Cannot decrease skill slot any more!!!");
             return;
         }
-        _activeSkillSlotList[_skillSlotCount - 1].DestroySkillSlot();
-        SkillManager.Instance.LockIconSlots(_skillSlotCount - 1);
+        _player.PlayerData.UnlockedSkillSlotCount -= 1;
+        if (_player.PlayerData.UnlockedSkillSlotCount < _currentSkillSlotCount)
+        {
+            _activeSkillSlotList[--_currentSkillSlotCount].DestroySkillSlot();
+        }
+        SkillManager.Instance.SetIconSlot(_player.PlayerData.UnlockedSkillSlotCount, false);
         SkillManager.Instance.UpdateEnhancedAttribute(EnvironmentManager.Instance.CurrentType);
-        _skillSlotCount--;
     }
 
     public void AddSkillItem(SkillData skillData, int count)

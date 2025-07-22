@@ -12,20 +12,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2a11eeb062f8b32458de83e3f3058dce, type: 3}
   m_Name: Valkyrie's Armor
   m_EditorClassIdentifier: 
-  Id: 4
   Name: "\uCC9C\uC0C1\uC758 \uBC1C\uD0A4\uB9AC \uAC11\uC637"
   Description: "\uCC9C\uC0C1\uC758 \uBC1C\uD0A4\uB9AC\uAC00 \uCC29\uC6A9\uD558\uB358
     \uAC11\uC637\uC774\uB2E4. \uC138\uD2B8\uB85C \uCC29\uC6A9 \uC2DC \uAC15\uB825\uD55C
     \uD6A8\uACFC\uB97C \uBC1C\uD718\uD55C\uB2E4."
   IconImage: {fileID: 21300000, guid: 3edb92e7ae01bee4d90875a23cd95317, type: 3}
+  count: 0
+  Id: 4
+  Cost: 0
   Type: 0
-  Value: 4
+  Value: 5
   EquipmentType: 1
   ItemStatus:
     Atk: 0
     Def: 400
     HP: 400
     HPRecoveryPerSec: 400
-    MP: 0
-    MPRecoveryPerSec: 0
     CoolTimeDecrease: 50
+    Speed: 0

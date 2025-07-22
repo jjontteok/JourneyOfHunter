@@ -31,7 +31,6 @@ public class AoENonTargetSkill : ActiveSkill, ICheckActivation
         // 수동 모드일 땐 타겟 유무 상관없이 그냥 발사
         if (SkillData.IsPlayerSkill && !PlayerManager.Instance.IsAuto)
             return true;
-        //return _player.Target != null && Vector3.Distance(_player.Target.position, pos) <= _skillData.TargetDistance;
         return FieldManager.Instance.CurrentEventType == Define.JourneyType.Dungeon;
     }
 }

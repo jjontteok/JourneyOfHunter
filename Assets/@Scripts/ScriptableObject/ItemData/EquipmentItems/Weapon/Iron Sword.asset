@@ -12,18 +12,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2a11eeb062f8b32458de83e3f3058dce, type: 3}
   m_Name: Iron Sword
   m_EditorClassIdentifier: 
-  Id: 1
   Name: "\uCCA0\uC81C \uC7A5\uAC80"
   Description: "\uCCA0\uB85C \uB9CC\uB4E4\uC5B4\uC9C4 \uC7A5\uAC80\uC774\uB2E4."
   IconImage: {fileID: 21300000, guid: 009d4fc67f3ecc341a5229c548eea9a0, type: 3}
+  count: 0
+  Id: 1
+  Cost: 0
   Type: 0
-  Value: 0
+  Value: 1
   EquipmentType: 4
   ItemStatus:
     Atk: 30
     Def: 0
     HP: 0
     HPRecoveryPerSec: 0
-    MP: 0
-    MPRecoveryPerSec: 0
     CoolTimeDecrease: 0
+    Speed: 0

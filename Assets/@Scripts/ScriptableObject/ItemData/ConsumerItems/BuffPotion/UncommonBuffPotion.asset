@@ -19,6 +19,6 @@ MonoBehaviour:
   Id: 1
   Cost: 100
   Type: 1
-  Value: 1
-  ConsumerItemStatus:
-    ConsumeTarget: 0
+  Value: 2
+  ConsumerType: 0
+  SustainmentTime: 2

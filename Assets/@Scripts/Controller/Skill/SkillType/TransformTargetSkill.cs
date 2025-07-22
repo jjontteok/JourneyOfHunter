@@ -6,8 +6,6 @@ public class TransformTargetSkill : ActiveSkill, ITargetSkill, IMovingSkill, IDi
     Transform _target;
     protected Vector3 _direction;
 
-    public Vector3 Direction { get => _direction; }
-
     public override void Initialize(Status status)
     {
         base.Initialize(status);
@@ -41,7 +39,6 @@ public class TransformTargetSkill : ActiveSkill, ITargetSkill, IMovingSkill, IDi
         if (SkillData.IsPlayerSkill && !PlayerManager.Instance.IsAuto)
             return true;
         _target = Util.GetNearestTarget(pos, _skillData.TargetDistance, isPlayerSkill)?.transform;
-        //Debug.Log($"Current Target: {_target.Name}\npostion:{_target.position}");
         return _target != null;
     }
 

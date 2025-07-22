@@ -12,6 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d659629e91875b340bb073fa107da346, type: 3}
   m_Name: PlayerInventoryData
   m_EditorClassIdentifier: 
-  SilverCoin: 0
-  Gem: 0
+  SilverCoin: 1000
+  Gem: 1000
   Items: []

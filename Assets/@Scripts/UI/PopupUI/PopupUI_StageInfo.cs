@@ -1,7 +1,6 @@
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
-using System.Collections.Generic;
 
 public class PopupUI_StageInfo : MonoBehaviour
 {
@@ -101,12 +100,6 @@ public class PopupUI_StageInfo : MonoBehaviour
             case Define.StageActionStatus.NotChallenge:
                 _currentStatusImage = null;
                 break;
-            //case Define.StageActionStatus.GoFinalStage:
-            //    _currentStatusImage = _statusImages[4];
-            //    break;
-            //case Define.StageActionStatus.ExitStage:
-            //    _currentStatusImage = _statusImages[3];
-            //    break;
             default:
                 break;
         }
