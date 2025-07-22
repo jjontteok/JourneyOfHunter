@@ -1,13 +1,15 @@
 using System;
 using System.Collections;
+using UnityEditor;
 using UnityEngine;
 
-public class HolySwordSkill : AreaTargetSkill, IRotationSkill, IUltimateSkill
+public class HolySwordSkill : AreaTargetSkill, IRotationSkill, IDirectionSkill, IUltimateSkill
 {
     [SerializeField] GameObject _lastExplosion;
     ParticleSystem _particle;
     Animator _animator;
     int _animationHash;
+    protected Vector3 _direction;
 
     public event Action<Vector3> OnActivateSkill;
 
@@ -19,13 +21,12 @@ public class HolySwordSkill : AreaTargetSkill, IRotationSkill, IUltimateSkill
 
     public override bool ActivateSkill(Vector3 pos)
     {
-        if(base.ActivateSkill(pos))
+        if (base.ActivateSkill(pos))
         {
             // 눈에서 안 보이게 꼼수
             _particle.Stop();
             _lastExplosion.SetActive(false);
             _coll.gameObject.SetActive(false);
-            //transform.position = new Vector3(0, 500f, 0);
             StartCoroutine(CoActivateSkillwithMotion(pos));
 
             return true;
@@ -37,12 +38,20 @@ public class HolySwordSkill : AreaTargetSkill, IRotationSkill, IUltimateSkill
     {
         // 해당 궁극기의 모션 실행해주고
         _animator.SetTrigger(_animationHash);
-        OnActivateSkill?.Invoke(_target.position);
+        SetDirection();
+        OnActivateSkill?.Invoke(_direction);
         // 특정 타이밍에 스킬 실행
         yield return new WaitUntil(() => _animator.GetBool(Define.UltimateReady));
         _particle.Play();
         _coll.gameObject.SetActive(true);
-        Invoke("ActivateLastExplosion", 0.5f);
+        yield return new WaitForSeconds(0.5f);
+        ActivateLastExplosion();
+    }
+
+    private void OnDrawGizmos()
+    {
+        Gizmos.color = Color.red;
+        Gizmos.DrawLine(transform.position + Vector3.up, PlayerManager.Instance.Player.transform.position + Vector3.up);
     }
 
     public void InitializeAnimationSetting()
@@ -55,5 +64,12 @@ public class HolySwordSkill : AreaTargetSkill, IRotationSkill, IUltimateSkill
     void ActivateLastExplosion()
     {
         _lastExplosion.SetActive(true);
+    }
+
+    public void SetDirection()
+    {
+        Vector3 dir = _target.position - _player.transform.position;
+        dir.y = 0;
+        _direction = dir.normalized;
     }
 }

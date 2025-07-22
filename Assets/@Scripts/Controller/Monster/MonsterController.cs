@@ -46,8 +46,6 @@ public abstract class MonsterController : MonoBehaviour, IDamageable
     protected AttackRangeController _attackRangeController;
     protected Rigidbody _rigidbody;
 
-    //bool _isAttacking = false;
-
     private void Awake()
     {
         Initialize();
@@ -56,11 +54,6 @@ public abstract class MonsterController : MonoBehaviour, IDamageable
     private void Update()
     {
         MoveToTarget(_target.transform.position);
-    }
-
-    private void Start()
-    {
-        //Spawned();
     }
 
     protected virtual void OnDisable()
@@ -117,7 +110,6 @@ public abstract class MonsterController : MonoBehaviour, IDamageable
         {
             _animator.SetBool(Define.IsAttacking, true);
             _animator.SetTrigger(Define.Attack);
-            //Debug.Log("공격 중");
         }
     }
 
@@ -148,36 +140,10 @@ public abstract class MonsterController : MonoBehaviour, IDamageable
     //- 오브젝트 풀링 대비 비활성화 처리
     public virtual void Die()
     {
-        //Instantiate(_monsterData.DeadEffect);
         OnMonsterDead?.Invoke();
         gameObject.SetActive(false);
         PlayerManager.Instance.Player.ReleaseTarget();
     }
 
-    // * 생성 메서드
-    //- start주기함수에서 실행
-    public virtual void Spawned()
-    {
-        Instantiate(_monsterData.SpawnEffect);
-    }
-
-    protected virtual void UpgradeStatus(float amount)
-    {
-       
-    }
-
-    // * 플레이어 충돌 및 공격 중일 시 데미지 계산
-    //- stay로 처리했기에 피격 쿨타임을 적용 시켜 밸런스 조정 필요
-    //private void OnCollisionStay(Collision collision)
-    //{
-    //    if (_animator.GetBool(Define.IsAttacking))
-    //    {
-    //        if (collision.gameObject.CompareTag(Define.PlayerTag))
-    //        {
-    //            // 공격 처리
-    //            // collision.gameObject.GetComponent<PlayerController>().피격메서드;
-    //            // 피격 메서드 내에서 피격 쿨타임 활용해보아도 될듯합니다.
-    //        }
-    //    }
-    //}
+    protected abstract void UpgradeStatus(float amount);
 }

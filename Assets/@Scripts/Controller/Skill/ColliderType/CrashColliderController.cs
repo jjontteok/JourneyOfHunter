@@ -14,7 +14,6 @@ public class CrashColliderController : SkillColliderController
     {
         if (other.CompareTag(Define.PlayerTag) || other.CompareTag(Define.MonsterTag) || other.CompareTag(Define.FieldObjectTag))
         {
-            //ActivateConnectedSkill();
             ProcessTrigger(other);
         }
 

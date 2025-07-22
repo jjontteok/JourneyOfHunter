@@ -11,8 +11,6 @@ public class UI_Main : MonoBehaviour
     [SerializeField] private Button _startButton;
     [SerializeField] private TMP_InputField _inputeField;
 
-    private string _playerName;
-
     private void Awake()
     {
         Initialize();
