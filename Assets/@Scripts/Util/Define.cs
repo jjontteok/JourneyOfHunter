@@ -145,6 +145,7 @@ public class Define : MonoBehaviour
         MP,
         MPRecoveryPerSec,
         CoolTimeDecrease,
+        Speed,
         None,
     }
     public enum GoodsType
@@ -196,12 +197,12 @@ public class Define : MonoBehaviour
 
     public enum ItemValue
     {
+        None,
         Common,
         Uncommon,
         Rare,
         Epic,
         Legendary,
-        None
     }
 
     public enum DrawItemType
@@ -228,10 +229,13 @@ public class Define : MonoBehaviour
 
     public enum ConsumeTarget
     {
-        Player,
-        Field,
-        Dungeon,
-        Goods,
+        Atk,
+        HP,
+        Speed,
+        Flash,
+        Immunization,
+        SkillTime,
+        TreasureProbability,
     }
 
     public enum PendingTaskType

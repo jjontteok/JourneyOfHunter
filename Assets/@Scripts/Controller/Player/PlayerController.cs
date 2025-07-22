@@ -1,5 +1,6 @@
 using System;
 using System.Collections;
+using Unity.VisualScripting;
 using UnityEngine;
 
 [Serializable]
@@ -254,50 +255,6 @@ public class PlayerController : MonoBehaviour, IDamageable
                     MoveToTarget();
                 }
             }
-
-            // 타겟 생기면 IsAutoMoving=false
-            //if (PlayerManager.Instance.IsAutoMoving)
-            //{
-            //    // 필드 클리어한 상태면 길따라
-            //    if(FieldManager.Instance.IsClear)
-            //    {
-            //        MoveAlongRoad();
-            //    }
-            //    else
-            //    {
-            //        SetTarget();
-            //        if (_target == null)
-            //        {
-            //            MoveAlongRoad();
-            //        }
-            //    }
-            //}
-            //else
-            //{
-            //    if (_target == null)
-            //    {
-            //        SetTarget();
-            //        if (_target == null)
-            //        {
-            //            MoveAlongRoad();
-            //        }
-            //    }
-            //    else
-            //    {
-            //        if (_target == null || !_target.gameObject.activeSelf)
-            //        {
-            //            SetTarget();
-            //        }
-            //        if (((_target != null && !_target.CompareTag(Define.PortalTag)) && FieldManager.Instance.CurrentEventType == Define.JourneyType.Dungeon) || FieldManager.Instance.CurrentEventType == Define.JourneyType.TreasureBox)
-            //        {
-            //            MoveToTarget(_shortestSkillDistance);
-            //        }
-            //        else
-            //        {
-            //            MoveToTarget(0.5f);
-            //        }
-            //    }
-            //}
         }
         // 수동 모드일 때
         else
@@ -702,12 +659,42 @@ public class PlayerController : MonoBehaviour, IDamageable
         _runtimeData.Speed -= itemStatus.Speed;
     }
 
-    public void ApplyUpgradeStatus(PlayerData playerData)
+    public void ApplyUpgradeStatus(Define.StatusType type, float value, float sustainmentTime =default)
     {
-        _runtimeData.Atk = playerData.Atk;
-        _runtimeData.Def = playerData.Def;
-        _runtimeData.HP = playerData.HP;
-        _runtimeData.HPRecoveryPerSec = playerData.HPRecoveryPerSec;
+        switch (type)
+        {
+            case Define.StatusType.Atk:
+                _runtimeData.Atk += value;
+                break;
+            case Define.StatusType.Def:
+                _runtimeData.Def += value;
+                break;
+            case Define.StatusType.HP:
+                HP = _playerData.HP >= HP + value ? HP + value : _playerData.HP;
+                break;
+            case Define.StatusType.HPRecoveryPerSec:
+                _runtimeData.HPRecoveryPerSec += value;
+                break;
+            case Define.StatusType.Speed:
+                _runtimeData.Speed += value;
+                break;
+        }
+    }
+
+    public void UseItem(Define.StatusType type, float value, float time, Sprite sprite)
+    {
+        ApplyUpgradeStatus(type, value);
+        StartCoroutine(ReleaseItemEffect(type, value, time, sprite));
+    }
+
+    IEnumerator ReleaseItemEffect(Define.StatusType type, float value, float time, Sprite sprite)
+    {
+        WaitForSeconds releaseTime = new WaitForSeconds(time);
+        yield return releaseTime;
+        if (type != Define.StatusType.HP)
+            ApplyUpgradeStatus(type, -value);
+        UIManager.Instance.UI_Game.StatusEffect.UpdateStatusEffect(sprite, false);
+        Debug.Log("아이템 효과 해제");
     }
     #endregion
 }

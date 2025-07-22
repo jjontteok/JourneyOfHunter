@@ -93,4 +93,21 @@ public class NormalSpawnerController : MonoBehaviour
         Vector3 randomPos = new Vector3(randomDistX, randomDistY, randomDistZ);
         return _offset + randomPos;
     }
+
+    //public void PauseNormalMonster(float time)
+    //{
+    //    foreach(NormalMonsterController demon in transform.GetComponentsInChildren<NormalMonsterController>(true))
+    //    {
+    //        demon.IsFlashed = true;
+    //    }
+    //    Invoke("ResumeNormalMonster", time);
+    //}
+
+    //void ResumeNormalMonster()
+    //{
+    //    foreach (NormalMonsterController demon in transform.GetComponentsInChildren<NormalMonsterController>(true))
+    //    {
+    //        demon.IsFlashed = false;
+    //    }
+    //}
 }

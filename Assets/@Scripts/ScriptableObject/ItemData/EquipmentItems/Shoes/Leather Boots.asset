@@ -12,13 +12,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2a11eeb062f8b32458de83e3f3058dce, type: 3}
   m_Name: Leather Boots
   m_EditorClassIdentifier: 
-  Id: 0
   Name: "\uD558\uAE09 \uAC00\uC8FD \uC7A5\uD654"
   Description: "\uAC00\uC8FD\uC73C\uB85C \uB9CC\uB4E4\uC5B4\uC9C4 \uD558\uAE09 \uC7A5\uD654\uB2E4."
   IconImage: {fileID: 21300000, guid: 0e7073b873373a346a2166e6abacc604, type: 3}
-  Type: 0
-  Value: 0
   count: 0
+  Id: 0
+  Cost: 0
+  Type: 0
+  Value: 1
   EquipmentType: 3
   ItemStatus:
     Atk: 0

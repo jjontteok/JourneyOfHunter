@@ -127,7 +127,10 @@ public class Inventory
                 return;
             existItem.Count--;
             if (existItem.Count <= 0)
+            {
                 _items[item.Type].Remove(existItem);
+                ApplyChangesToSO(PlayerManager.Instance.Player.PlayerInventoryData);
+            }
         }
         OnItemRemove?.Invoke(item.Type, Define.PendingTaskType.ItemRemoveTask, 1);
     }
