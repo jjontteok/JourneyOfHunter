@@ -14,8 +14,6 @@ public class SkillSystem : MonoBehaviour
     // 스킬 슬롯 리스트에 실질적으로 들어있는 스킬 개수 확인용
     // 최소 2개, 최대 5개
     int _currentSkillSlotCount = 0;
-    // 언락된 스킬 슬롯 자리 개수 확인용
-    //int _unlockedSkillSlotCount = 0;
 
     // 스킬 슬롯 리스트 - 액티브형 스킬 보관 슬롯
     List<SkillSlot> _activeSkillSlotList = new List<SkillSlot>();
@@ -149,7 +147,6 @@ public class SkillSystem : MonoBehaviour
             go.transform.localPosition = Vector3.up;
             SkillSlot slot = go.AddComponent<SkillSlot>();
             SkillManager.Instance.SubscribeEvents(slot, -1);
-            // 궁극기는 굳이 스킬 인터벌 줄 이유가?
             slot.OnActivateSkill += StartSkillInterval;
             slot.SetSkill(data);
             _ultimateSkillSlot = slot;
